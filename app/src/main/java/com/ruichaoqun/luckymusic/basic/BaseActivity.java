@@ -9,12 +9,16 @@ import android.support.transition.Fade;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.ruichaoqun.luckymusic.R;
 
 import io.reactivex.disposables.CompositeDisposable;
 
 public class BaseActivity extends AppCompatActivity {
+    protected Toolbar mToolbar;
     protected CompositeDisposable mCompositeDisposable;
 
     @Override
@@ -22,6 +26,25 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         transparentStatusBar(true);
         mCompositeDisposable = new CompositeDisposable();
+    }
+
+    public void initToolbar(){
+        this.mToolbar = (Toolbar) findViewById(R.id.toolbar);
+//        if (this.mToolbar == null) {
+//            this.mToolbar = (Toolbar) getLayoutInflater().inflate(R.layout.aam, null);
+//        }
+        this.mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseActivity.this.onToolBarClick();
+            }
+        });
+        setSupportActionBar(this.mToolbar);
+
+    }
+
+    private void onToolBarClick() {
+
     }
 
     public void transparentStatusBar(boolean z) {

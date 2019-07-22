@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.theme.core.ThemeConfig;
 import com.ruichaoqun.luckymusic.ui.FitSystemWindowHackFrameLayout;
 import com.ruichaoqun.luckymusic.ui.StatusBarHolderView;
 import com.ruichaoqun.luckymusic.util.ReflectUtils;
@@ -405,7 +407,7 @@ public class BaseToolBarActivity extends BaseActivity {
         boolean z2 = true;
         boolean z3 = false;
         if(Build.VERSION.SDK_INT >= 23){
-            getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//            getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             statusBarHolderView.setStatusBarTranslucent(true);
             statusBarHolderView.setBackgroundDrawable(getStatusbarBg());
         }

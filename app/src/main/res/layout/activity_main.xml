@@ -19,22 +19,30 @@
                 android:id="@+id/toolbar"
                 android:layout_width="fill_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary">
+                android:background="?attr/colorPrimary"
+                app:contentInsetStart="0dip">
 
                 <ImageView
                     android:id="@+id/iv_back"
-                    android:layout_width="?dg"
-                    android:layout_height="?dg"
-                    android:background="@drawable/y0"
-                    android:contentDescription="@string/bgw"
-                    android:scaleType="centerInside" />
-
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ap"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"/>
             </android.support.v7.widget.Toolbar>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>

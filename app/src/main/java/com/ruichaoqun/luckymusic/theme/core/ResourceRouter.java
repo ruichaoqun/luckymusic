@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.theme.core;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
@@ -54,8 +55,8 @@ public class ResourceRouter {
         int i;
         Drawable colorDrawable;
         Context context = this.mContext;
-        this.mCacheStatusBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0XFFD33A31, 0XFFD33A31});
-        this.mCacheToolBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0XD33A31, ThemeConfig.COLOR_RED_TOOLBAR_END});
+        this.mCacheStatusBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"), Color.parseColor("#D33A31")});
+        this.mCacheToolBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"),Color.parseColor("#DB3F35")});
     }
 
     @MainThread
@@ -65,6 +66,25 @@ public class ResourceRouter {
         }
         return this.mCacheToolBarDrawable.getConstantState().newDrawable();
     }
+
+    public int getToolbarIconColor() {
+        return getToolbarIconColor(false);
+    }
+
+    public int getToolbarIconColor(boolean z) {
+//        if (z) {
+//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.b.l);
+//        }
+//        if (isWhiteTheme() || isCustomLightTheme() || isCustomColorTheme()) {
+//            return com.netease.cloudmusic.b.f21073e;
+//        }
+//        if (isNightTheme()) {
+//            return 0x99FFFFFF;
+//        }
+        return Color.WHITE;
+    }
+
+
 
 //    public int getToolbarIconColor() {
 //        return getToolbarIconColor(false);

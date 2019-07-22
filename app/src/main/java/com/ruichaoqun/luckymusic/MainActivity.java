@@ -13,10 +13,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.ViewGroup;
 
 import com.ruichaoqun.luckymusic.basic.BaseActivity;
+import com.ruichaoqun.luckymusic.basic.BaseToolBarActivity;
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends BaseToolBarActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -24,6 +26,9 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolBar();
+        transparentStatusBar(true);
+        applyToolbarCurrentTheme();
+        applyStatusBarCurrentTheme();
 //        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 //        NavigationView navigationView = findViewById(R.id.nav_view);
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -33,10 +38,39 @@ public class MainActivity extends BaseActivity
 //        navigationView.setNavigationItemSelectedListener(this);
     }
 
+    @Override
+    public boolean needToolBar() {
+        return false;
+    }
+
+    @Override
+    public boolean needToobarUpIcon() {
+        return false;
+    }
+
+    @Override
+    public void setToolbarBackIcon() {
+    }
+
+    @Override
     public void initToolBar() {
-        super.initToolbar();
+        super.initToolBar();
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+
+
+    @Override
+    public void addStatusBarView() {
+        ((ViewGroup) findViewById(R.id.ll_content)).addView(this.statusBarView, 0);
+    }
+
+    @Override
+    public void applyToolbarCurrentTheme() {
+        super.applyToolbarCurrentTheme();
+//        this.v.applyDrawerIconCurrentTheme();
+    }
+
+
 
 
     @Override

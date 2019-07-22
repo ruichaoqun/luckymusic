@@ -47,13 +47,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:drawableLeft="@mipmap/ic_sign"
+                    android:drawableStart="@mipmap/ic_sign"
                     android:text="签到"
                     android:textColor="@color/white"
                     android:drawablePadding="4dp"
-                    android:paddingLeft="11dp"
-                    android:gravity="center"
-                    android:background=""/>
+                    android:paddingStart="11dp"
+                    android:gravity="center" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

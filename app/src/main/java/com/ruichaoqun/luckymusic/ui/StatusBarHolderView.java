@@ -45,15 +45,18 @@ public class StatusBarHolderView extends View {
         super.setBackgroundDrawable(drawable);
     }
 
+    @Override
     public void setBackgroundColor(int i) {
         setBackgroundDrawable(new ColorDrawable(i));
     }
 
+    @Override
     public void setBackgroundResource(int i) {
         setBackgroundDrawable(getContext().getResources().getDrawable(i));
     }
 
     /* access modifiers changed from: protected */
+    @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!this.isColorDrawable && !this.isTranslucent) {

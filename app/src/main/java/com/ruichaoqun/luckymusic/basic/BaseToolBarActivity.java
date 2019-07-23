@@ -1,6 +1,9 @@
 package com.ruichaoqun.luckymusic.basic;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -10,15 +13,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
@@ -27,6 +37,9 @@ import com.ruichaoqun.luckymusic.theme.core.ThemeConfig;
 import com.ruichaoqun.luckymusic.ui.FitSystemWindowHackFrameLayout;
 import com.ruichaoqun.luckymusic.ui.StatusBarHolderView;
 import com.ruichaoqun.luckymusic.util.ReflectUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -365,15 +378,6 @@ public class BaseToolBarActivity extends BaseActivity {
         return ResourceRouter.getInstance();
     }
 
-
-
-
-
-
-
-
-
-
     /**
      * 设置状态栏当前主题
      */
@@ -439,15 +443,6 @@ public class BaseToolBarActivity extends BaseActivity {
         return ResourceRouter.getInstance().getCacheStatusBarDrawable();
     }
 
-
-
-
-
-
-
-
-
-    /* access modifiers changed from: protected */
     public void addStatusBarView() {
         ViewGroup viewGroup = (ViewGroup) this.toolbar.getParent();
         int i = 0;
@@ -469,6 +464,162 @@ public class BaseToolBarActivity extends BaseActivity {
     }
 
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu2) {
+        if (needApplyCurrentTheme()) {
+            applyMenuItemCurrentTheme(menu2);
+        }
+        return super.onPrepareOptionsMenu(menu2);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu2) {
+        return super.onCreateOptionsMenu(menu2);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackIconClick();
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
 
 
+
+
+    private void applyMenuItemCurrentTheme(Menu menu2) {
+        applyMenuItemCurrentTheme(menu2, this.toolbar);
+    }
+
+
+    public void applyMenuItemCurrentTheme(Menu menu2, Toolbar toolbar2) {
+        applyMenuItemCurrentTheme(menu2, toolbar2, isToolbarOnImage());
+    }
+
+    //改变menu菜单栏主题
+    public void applyMenuItemCurrentTheme(Menu menu2, Toolbar toolbar2, final boolean isToolbarOnImage) {
+        for (int i = 0; i < menu2.size(); i++) {
+            MenuItem item = menu2.getItem(i);
+            if (item.getIcon() != null) {
+                applyMenuItemIconColor(item.getIcon());
+            }
+        }
+        ViewGroup viewGroup = (ViewGroup) ReflectUtils.getDeclaredField(Toolbar.class, (Object) toolbar2, "mMenuView");
+        if (viewGroup != null) {
+            ArrayList arrayList = new ArrayList();
+            findTextViewChild(viewGroup, arrayList);
+            if (arrayList.size() > 0) {
+                Iterator it = arrayList.iterator();
+                while (it.hasNext()) {
+                    applyMenuItemTheme((TextView) it.next(), isToolbarOnImage);
+                }
+                return;
+            }
+            viewGroup.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+                @Override
+                public void onChildViewAdded(View view, View view2) {
+                    if (view2 instanceof ActionMenuItemView) {
+                        applyMenuItemTheme((ActionMenuItemView) view2, isToolbarOnImage);
+                    }
+                }
+
+                @Override
+                public void onChildViewRemoved(View view, View view2) {
+                }
+            });
+        }
+    }
+
+    private void findTextViewChild(ViewGroup viewGroup, ArrayList<TextView> arrayList) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View childAt = viewGroup.getChildAt(i);
+            if ((childAt instanceof TextView)) {
+                arrayList.add((TextView) childAt);
+            } else if (childAt instanceof ViewGroup) {
+                findTextViewChild((ViewGroup) childAt, arrayList);
+            }
+        }
+    }
+
+    public void applyMenuItemIconColor(Drawable drawable) {
+        ThemeHelper.configDrawableTheme(drawable.mutate(), getToolbarIconColor(isToolbarOnImage()));
+    }
+
+    public void applyMenuItemTheme(TextView textView, boolean z) {
+        textView.setTextColor(getTitleTextColor(z));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) getResources().getDimensionPixelSize(R.dimen.toolbar_menu_text_size));
+    }
+
+
+    @Override
+    public void startActivityForResult(Intent intent, int i) {
+        try {
+            super.startActivityForResult(intent, i);
+            overridePendingTransition(R.anim.l, R.anim.m);
+        } catch (SecurityException e2) {
+            e2.printStackTrace();
+        } catch (ActivityNotFoundException e3) {
+            e3.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+//        if ((intent.getFlags() | 131072) > 0) {
+//            this.mIsRestoredToTop = true;
+//        }
+//        if (enablePopFragments()) {
+//            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+//                getSupportFragmentManager().popBackStackImmediate();
+//            }
+//        }
+        overridePendingTransition(R.anim.l, R.anim.m);
+    }
+
+    public String getLogName() {
+        return getClass().getSimpleName();
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+//        boolean z = Build.VERSION.SDK_INT == 19 && co.a(VERSION.RELEASE) && (VERSION.RELEASE.equals(a.c("ektAS1A=")) || VERSION.RELEASE.equals(a.c("ektAS1M=")));
+//        if (this.mIsRestoredToTop && ((z || VERSION.SDK_INT >= 24) && !isTaskRoot())) {
+//            try {
+//                ((ActivityManager) getSystemService(a.c("LwYADBcaETc="))).moveTaskToFront(getTaskId(), 2);
+//            } catch (Exception e2) {
+//                e2.printStackTrace();
+//            }
+//        }
+        overridePendingTransition(0, R.anim.k);
+    }
+
+
+    public void onBackIconClick() {
+        back(true);
+    }
+
+    public void back(boolean b) {
+        if(b){
+            supportFinishAfterTransition();
+            return;
+        }
+        try {
+            super.onBackPressed();
+        } catch (IllegalStateException e2) {
+            e2.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back(false);
+    }
 }

@@ -16,4 +16,6 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
+    <string name="global_search">搜索</string>
+
 </resources>

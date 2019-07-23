@@ -27,7 +27,7 @@
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ap"
+                    android:src="@drawable/icon_menu"
                     android:background="?attr/selectableItemBackgroundBorderless"/>
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tab_layout"

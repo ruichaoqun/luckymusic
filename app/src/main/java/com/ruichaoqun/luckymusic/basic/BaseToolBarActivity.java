@@ -49,6 +49,28 @@ public class BaseToolBarActivity extends BaseActivity {
     protected Toolbar toolbar;
     private Menu menu;
     private boolean hadHackFitSystemWindow;
+    //用于解决FLAG_ACTIVITY_REORDER_TO_FRONT导致的BUG
+    private boolean mIsRestoredToTop;
+
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if ((intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) > 0) {
+            this.mIsRestoredToTop = true;
+        }
+        if (enablePopFragments()) {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+        }
+        overridePendingTransition(R.anim.l, R.anim.m);
+    }
+
+    private boolean enablePopFragments() {
+        return true;
+    }
+
 
     public Toolbar getToolbar() {
         return this.toolbar;
@@ -568,20 +590,6 @@ public class BaseToolBarActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-//        if ((intent.getFlags() | 131072) > 0) {
-//            this.mIsRestoredToTop = true;
-//        }
-//        if (enablePopFragments()) {
-//            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-//                getSupportFragmentManager().popBackStackImmediate();
-//            }
-//        }
-        overridePendingTransition(R.anim.l, R.anim.m);
-    }
-
     public String getLogName() {
         return getClass().getSimpleName();
     }
@@ -590,14 +598,13 @@ public class BaseToolBarActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-//        boolean z = Build.VERSION.SDK_INT == 19 && co.a(VERSION.RELEASE) && (VERSION.RELEASE.equals(a.c("ektAS1A=")) || VERSION.RELEASE.equals(a.c("ektAS1M=")));
-//        if (this.mIsRestoredToTop && ((z || VERSION.SDK_INT >= 24) && !isTaskRoot())) {
-//            try {
-//                ((ActivityManager) getSystemService(a.c("LwYADBcaETc="))).moveTaskToFront(getTaskId(), 2);
-//            } catch (Exception e2) {
-//                e2.printStackTrace();
-//            }
-//        }
+        if (this.mIsRestoredToTop && ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) && !isTaskRoot()) {
+            try {
+                ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_NO_USER_ACTION);
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
         overridePendingTransition(0, R.anim.k);
     }
 

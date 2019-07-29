@@ -17,5 +17,6 @@
     <string name="menu_send">Send</string>
 
     <string name="global_search">搜索</string>
+    <string name="global_search_hint">搜索音乐</string>
 
 </resources>

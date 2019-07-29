@@ -10,6 +10,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.MainThread;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.MyApplication;
 
 /**
@@ -23,6 +24,9 @@ public class ResourceRouter {
     private Resources mResources;
     private Drawable mCacheStatusBarDrawable;
     private Drawable mCacheToolBarDrawable;
+
+    private Integer mPopupBackgroundColor;
+
 
 
     public static synchronized ResourceRouter getInstance() {
@@ -57,6 +61,7 @@ public class ResourceRouter {
         Context context = this.mContext;
         this.mCacheStatusBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"), Color.parseColor("#D33A31")});
         this.mCacheToolBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"),Color.parseColor("#DB3F35")});
+        this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.t_dialogBackground));
     }
 
     @MainThread
@@ -83,6 +88,16 @@ public class ResourceRouter {
 //        }
         return Color.WHITE;
     }
+
+
+    @MainThread
+    public int getPopupBackgroundColor() {
+        if (this.mPopupBackgroundColor == null) {
+            buildCache();
+        }
+        return this.mPopupBackgroundColor.intValue();
+    }
+
 
 
 

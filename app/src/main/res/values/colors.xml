@@ -8,4 +8,7 @@
     <color name="black">#000000</color>
 
     <color name="color_66FFFFFF">#66FFFFFF</color>
+    <color name="t_dialogBackground">#FFFFFFFF</color>
+
+
 </resources>

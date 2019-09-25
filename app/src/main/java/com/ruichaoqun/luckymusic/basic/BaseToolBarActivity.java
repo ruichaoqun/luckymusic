@@ -5,23 +5,18 @@ import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.view.menu.ActionMenuItemView;
-import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -33,7 +28,6 @@ import android.widget.TextView;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
-import com.ruichaoqun.luckymusic.theme.core.ThemeConfig;
 import com.ruichaoqun.luckymusic.ui.FitSystemWindowHackFrameLayout;
 import com.ruichaoqun.luckymusic.ui.StatusBarHolderView;
 import com.ruichaoqun.luckymusic.util.ReflectUtils;
@@ -52,7 +46,6 @@ public class BaseToolBarActivity extends BaseActivity {
     //用于解决FLAG_ACTIVITY_REORDER_TO_FRONT导致的BUG
     private boolean mIsRestoredToTop;
 
-
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -67,20 +60,63 @@ public class BaseToolBarActivity extends BaseActivity {
         overridePendingTransition(R.anim.l, R.anim.m);
     }
 
-    private boolean enablePopFragments() {
-        return true;
-    }
-
-
-    public Toolbar getToolbar() {
-        return this.toolbar;
-    }
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void setContentView(@LayoutRes int layoutResID) {
+        //当前页面是否需要toolbar？
+        if (needToolBar()) {
+            doSetContentViewWithToolBar(layoutResID);
+            transparentStatusBar(true);
+        } else {
+            super.setContentView(layoutResID);
+        }
+        //设置透明主题
+        applyToolbarCurrentTheme();
+        applyStatusBarCurrentTheme();
+        applyCurrentTheme();
     }
+
+    public void doSetContentViewWithToolBar(int layoutResID) {
+        doSetContentViewWithToolBar(getLayoutInflater().inflate(layoutResID, null));
+    }
+
+    public void doSetContentViewWithToolBar(View view) {
+        if (!(view instanceof LinearLayout) || ((LinearLayout) view).getOrientation() != LinearLayout.VERTICAL) {
+            //如果当前根layout不是LinearLayout或者getOrientation不是VERTICAL
+            //例如：根layout是RelativeLayout就会走这儿
+            addToolBarByDefaultWrap(view);
+            return;
+        }
+        //根layout是LinearLayout且VERTICAL走这儿
+        super.setContentView(view);
+        initToolBar();
+        ((LinearLayout) view).addView(this.toolbar, 0);
+    }
+
+    public void addToolBarByDefaultWrap(View view) {
+        super.setContentView((int) R.layout.layout_contain_toolbar);
+        initToolBar();
+        ((ViewGroup) findViewById(R.id.parent)).addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    /**
+     * 初始化toolbar
+     */
+    public void initToolBar() {
+        this.toolbar = findViewById(R.id.toolbar);
+        if (this.toolbar == null) {
+            this.toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.layour_toolbar, null);
+        }
+        setSupportActionBar(this.toolbar);
+        //是否需要设置返回按钮
+        if (needToobarUpIcon()) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                this.toolbar.setNavigationIcon(needCloseButton() ? R.mipmap.icon_toolbar_colse : R.mipmap.icon_arrow_back_white);
+            }
+        }
+    }
+
+
 
     @Override
     public void setTitle(CharSequence charSequence) {
@@ -96,61 +132,28 @@ public class BaseToolBarActivity extends BaseActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void hideActionBar() {
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null && supportActionBar.isShowing()) {
-            supportActionBar.hide();
-            transparentStatusBar(false);
-            if (this.statusBarView != null) {
-                this.statusBarView.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void showActionBar() {
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null && !supportActionBar.isShowing()) {
-            supportActionBar.show();
-            transparentStatusBar(true);
-            if (this.statusBarView != null) {
-                this.statusBarView.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
     /**
      * 设置沉浸式状态栏
-     * @param z
+     *
+     * @param transparent 是否透明状态栏
      */
-    public void transparentStatusBar(boolean z) {
+    public void transparentStatusBar(boolean transparent) {
         boolean hasSet;
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            if (z) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            } else {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            }
-            hasSet = true;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (z) {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                //全屏 并 状态栏显示
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-                //通过setStatusBarColor为状态栏设置背景色，同时需要同步设置FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS这个Window Flag,
-                // 并且需要保证WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS这个Window Flag没有被设置。否则，不会生效。
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                getWindow().setStatusBarColor(Color.TRANSPARENT);
-            } else {
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            }
-            hasSet = true;
+        if (transparent) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            //全屏 并 状态栏显示
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            //通过setStatusBarColor为状态栏设置背景色，同时需要同步设置FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS这个Window Flag,
+            // 并且需要保证WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS这个Window Flag没有被设置。否则，不会生效。
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
         } else {
-            hasSet = false;
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         }
+        hasSet = true;
+
         if (hasSet && !this.hadHackFitSystemWindow) {
             //获取
             ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content);
@@ -160,7 +163,7 @@ public class BaseToolBarActivity extends BaseActivity {
                 viewGroup.removeView(childAt);
                 FitSystemWindowHackFrameLayout fitSystemWindowHackFrameLayout = new FitSystemWindowHackFrameLayout(this);
                 fitSystemWindowHackFrameLayout.addView(childAt, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                viewGroup.addView(fitSystemWindowHackFrameLayout,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                viewGroup.addView(fitSystemWindowHackFrameLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             }
         }
     }
@@ -183,10 +186,6 @@ public class BaseToolBarActivity extends BaseActivity {
         return false;
     }
 
-
-
-
-
     /* access modifiers changed from: protected */
     public boolean needApplyCurrentTheme() {
         return true;
@@ -194,6 +193,7 @@ public class BaseToolBarActivity extends BaseActivity {
 
     /**
      * toolbar是否在image上面
+     *
      * @return
      */
     public boolean isToolbarOnImage() {
@@ -202,52 +202,20 @@ public class BaseToolBarActivity extends BaseActivity {
 
     /**
      * 是否需要toolbar？
+     *
      * @return
      */
     public boolean needToolBar() {
         return true;
     }
 
-    /* access modifiers changed from: protected */
-    public void initToolBar() {
-        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (this.toolbar == null) {
-            this.toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.layour_toolbar, null);
-        }
-        this.toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BaseToolBarActivity.this.onToolBarClick();
-            }
-        });
-        setSupportActionBar(this.toolbar);
-    }
-
-    public void onToolBarClick() {
-    }
-
-    @Override
-    public void setSupportActionBar(Toolbar toolbar2) {
-        super.setSupportActionBar(toolbar2);
-        if (needToobarUpIcon()) {
-            setToolbarBackIcon();
-        }
-    }
-
     public boolean needToobarUpIcon() {
         return true;
     }
 
-    /* access modifiers changed from: protected */
-    public void setToolbarBackIcon() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setToolbarBackIcon(this.toolbar);
-        }
-    }
-
     /**
      * 设置toolbar返回图标
+     *
      * @param toolbar2
      */
     public void setToolbarBackIcon(Toolbar toolbar2) {
@@ -276,76 +244,20 @@ public class BaseToolBarActivity extends BaseActivity {
 
     /**
      * 设置toolbar的返回图标
+     *
      * @param toolbar2
-     * @param z 是否设置
+     * @param z        是否设置
      */
     private void setToolbarBackIcon(Toolbar toolbar2, boolean z) {
         toolbar2.setNavigationIcon(z ? R.mipmap.icon_toolbar_colse : R.mipmap.icon_arrow_back_white);
     }
 
-    public void addToolBarByDefaultWrap(int i) {
-        addToolBarByDefaultWrap(getLayoutInflater().inflate(i, null));
-    }
-
-    public void addToolBarByDefaultWrap(View view) {
-        super.setContentView((int) R.layout.layout_contain_toolbar);
-        initToolBar();
-        ((ViewGroup) findViewById(R.id.parent)).addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-    }
-
-    public void doSetContentViewWithToolBar(int i) {
-        doSetContentViewWithToolBar(getLayoutInflater().inflate(i, null));
-    }
-
-    public void doSetContentViewWithToolBar(View view) {
-        if (!(view instanceof LinearLayout) || ((LinearLayout) view).getOrientation() != LinearLayout.VERTICAL) {
-            addToolBarByDefaultWrap(view);
-            return;
-        }
-        initToolBar();
-        super.setContentView(view);
-        ((LinearLayout) view).addView(this.toolbar, 0);
-    }
-
-
-    @Override
-    public void setContentView(int res) {
-        if (needToolBar()) {
-            doSetContentViewWithToolBar(res);
-            transparentStatusBar(true);
-        } else {
-            super.setContentView(res);
-        }
-        applyCurrentTheme();
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-//        applyRecentTaskPreviewCurrentTheme();
-    }
-
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams layoutParams) {
-        if (needToolBar()) {
-            doSetContentViewWithToolBar(view);
-            transparentStatusBar(true);
-        } else {
-            super.setContentView(view, layoutParams);
-        }
-        applyCurrentTheme();
-    }
-
-
-
 
     public void applyCurrentTheme() {
         if (getSupportActionBar() != null) {
             if (needApplyCurrentTheme()) {
-                applyToolbarCurrentTheme();
-                applyStatusBarCurrentTheme();
+
             }
-//            applyRecentTaskPreviewCurrentTheme();
         }
     }
 
@@ -432,7 +344,7 @@ public class BaseToolBarActivity extends BaseActivity {
     public void setStyleForStatusBarView(StatusBarHolderView statusBarHolderView, boolean z) {
         boolean z2 = true;
         boolean z3 = false;
-        if(Build.VERSION.SDK_INT >= 23){
+        if (Build.VERSION.SDK_INT >= 23) {
 //            getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             statusBarHolderView.setStatusBarTranslucent(true);
             statusBarHolderView.setBackgroundDrawable(getStatusbarBg());
@@ -509,8 +421,6 @@ public class BaseToolBarActivity extends BaseActivity {
                 return super.onOptionsItemSelected(menuItem);
         }
     }
-
-
 
 
     private void applyMenuItemCurrentTheme(Menu menu2) {
@@ -598,7 +508,7 @@ public class BaseToolBarActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        if (this.mIsRestoredToTop && ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) && !isTaskRoot()) {
+        if (this.mIsRestoredToTop && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) && !isTaskRoot()) {
             try {
                 ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_NO_USER_ACTION);
             } catch (Exception e2) {
@@ -614,7 +524,7 @@ public class BaseToolBarActivity extends BaseActivity {
     }
 
     public void back(boolean b) {
-        if(b){
+        if (b) {
             supportFinishAfterTransition();
             return;
         }
@@ -629,4 +539,14 @@ public class BaseToolBarActivity extends BaseActivity {
     public void onBackPressed() {
         back(false);
     }
+
+    private boolean enablePopFragments() {
+        return true;
+    }
+
+
+    public Toolbar getToolbar() {
+        return this.toolbar;
+    }
+
 }

@@ -26,4 +26,10 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mCompositeDisposable = new CompositeDisposable();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.dispose();
+    }
 }

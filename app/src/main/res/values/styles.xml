@@ -15,6 +15,7 @@
     <style name="SplashStyle" parent="@style/AppTheme">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@mipmap/image_splash</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

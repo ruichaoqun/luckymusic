@@ -101,10 +101,6 @@ public class MainActivity extends BaseToolBarActivity{
     }
 
     @Override
-    public void setToolbarBackIcon() {
-    }
-
-    @Override
     public void initToolBar() {
         super.initToolBar();
         getSupportActionBar().setDisplayShowTitleEnabled(false);

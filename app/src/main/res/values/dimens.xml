@@ -10,4 +10,8 @@
 
     <dimen name="toolbar_height">52dp</dimen>
     <dimen name="toolbar_menu_text_size">15sp</dimen>
+
+
+    <dimen name="toolbar_title_size">16sp</dimen>
+    <dimen name="toolbar_title_size_two_line">15sp</dimen>
 </resources>

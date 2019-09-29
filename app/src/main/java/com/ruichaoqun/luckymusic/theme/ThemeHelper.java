@@ -32,12 +32,12 @@ public class ThemeHelper {
         return Color.HSVToColor(fArr);
     }
 
-    public static Drawable configDrawableTheme(Drawable drawable, int i) {
-        return configDrawableThemeUseTint(drawable, i);
+    public static Drawable configDrawableTheme(Drawable drawable, int color) {
+        return configDrawableThemeUseTint(drawable, color);
     }
 
-    public static Drawable configDrawableThemeUseTint(Drawable drawable, int i) {
-        return configDrawableThemeUseTintList(drawable, ColorStateList.valueOf(i));
+    public static Drawable configDrawableThemeUseTint(Drawable drawable, int color) {
+        return configDrawableThemeUseTintList(drawable, ColorStateList.valueOf(color));
     }
 
 
@@ -70,22 +70,17 @@ public class ThemeHelper {
     }
 
     public static void configSearchViewTheme(Toolbar toolbar, SearchView searchView, int toolbarIconColor, boolean z) {
-        ImageView imageView = (ImageView) searchView.findViewById(R.id.search_close_btn);
-//        imageView.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(android.R.drawable.abc_ic_clear_material));
-        configDrawableTheme(imageView.getDrawable(), toolbarIconColor);
-        LinearLayout linearLayout = (LinearLayout) searchView.findViewById(R.id.search_plate);
+        ImageView imageView = searchView.findViewById(R.id.search_close_btn);
+        imageView.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(android.support.v7.appcompat.R.drawable.abc_ic_clear_material));
+        LinearLayout linearLayout =  searchView.findViewById(R.id.search_plate);
         linearLayout.setBackgroundDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.abc_textfield_search_material));
         configDrawableTheme(linearLayout.getBackground(), toolbarIconColor);
-        View findViewById = searchView.findViewById(R.id.search_src_text);
-        findViewById.setPadding(0, findViewById.getPaddingTop(), findViewById.getPaddingRight(), findViewById.getPaddingBottom());
+        View searchText = searchView.findViewById(R.id.search_src_text);
+        searchText.setPadding(0, searchText.getPaddingTop(), searchText.getPaddingRight(), searchText.getPaddingBottom());
         linearLayout.setPadding(0, linearLayout.getPaddingTop(), linearLayout.getPaddingRight(), linearLayout.getPaddingBottom());
-        linearLayout.getLayoutParams().height = findViewById.getLayoutParams().height;
+        linearLayout.getLayoutParams().height = searchText.getLayoutParams().height;
         ((LinearLayout.LayoutParams) searchView.findViewById(R.id.search_edit_frame).getLayoutParams()).leftMargin = 0;
-//        Drawable navigationIcon = toolbar.getNavigationIcon();
-//        if (navigationIcon != null) {
-//            ThemeHelper.configDrawableTheme(navigationIcon.mutate(), toolbarIconColor);
-//        }
-        ImageButton imageButton = (ImageButton) ReflectUtils.getDeclaredField(Toolbar.class, (Object) toolbar, "mNavButtonView");
+        ImageButton imageButton = (ImageButton) ReflectUtils.getDeclaredField(Toolbar.class, (Object) toolbar, "mCollapseButtonView");
         if (imageButton != null) {
             imageButton.setImageResource(R.mipmap.icon_arrow_back_white);
             configDrawableTheme(imageButton.getDrawable().mutate(), toolbarIconColor);

@@ -1,5 +1,6 @@
 package com.ruichaoqun.luckymusic;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ScrollView;
 
 import com.ruichaoqun.luckymusic.basic.BaseToolBarActivity;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
+import com.ruichaoqun.luckymusic.view.TestActivity;
 import com.ruichaoqun.luckymusic.view.search.SearchActivity;
 
 public class MainActivity extends BaseToolBarActivity{
@@ -117,9 +119,6 @@ public class MainActivity extends BaseToolBarActivity{
         this.mDrawIcon.setImageDrawable(ThemeHelper.configDrawableThemeUseTint(this.mDrawerIconDrawable.getConstantState().newDrawable(), getResourceRouter().getToolbarIconColor()));
     }
 
-
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -140,6 +139,7 @@ public class MainActivity extends BaseToolBarActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_search:
+//                startActivity(new Intent(this, TestActivity.class));
                 SearchActivity.launchFrom(this);
                 break;
                 default:

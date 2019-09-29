@@ -18,5 +18,6 @@
 
     <string name="global_search">搜索</string>
     <string name="global_search_hint">搜索音乐</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

@@ -70,8 +70,6 @@ public class BaseToolBarActivity extends BaseActivity {
             super.setContentView(layoutResID);
         }
         //设置透明主题
-        applyToolbarCurrentTheme();
-        applyStatusBarCurrentTheme();
         applyCurrentTheme();
     }
 
@@ -213,50 +211,17 @@ public class BaseToolBarActivity extends BaseActivity {
         return true;
     }
 
-    /**
-     * 设置toolbar返回图标
-     *
-     * @param toolbar2
-     */
-    public void setToolbarBackIcon(Toolbar toolbar2) {
-        setToolbarBackIcon(toolbar2, needCloseButton());
-        //反射获取toolbar中的返回View
-        View view = (View) ReflectUtils.getDeclaredField(Toolbar.class, (Object) toolbar2, "mNavButtonView");
-        if (view != null) {
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    BaseToolBarActivity.this.onIconLongClick();
-                    return true;
-                }
-            });
-        }
-    }
 
     public boolean needCloseButton() {
         return false;
     }
 
 
-    private void onIconLongClick() {
-
-    }
-
-    /**
-     * 设置toolbar的返回图标
-     *
-     * @param toolbar2
-     * @param z        是否设置
-     */
-    private void setToolbarBackIcon(Toolbar toolbar2, boolean z) {
-        toolbar2.setNavigationIcon(z ? R.mipmap.icon_toolbar_colse : R.mipmap.icon_arrow_back_white);
-    }
-
-
     public void applyCurrentTheme() {
         if (getSupportActionBar() != null) {
             if (needApplyCurrentTheme()) {
-
+                applyToolbarCurrentTheme();
+                applyStatusBarCurrentTheme();
             }
         }
     }
@@ -271,9 +236,9 @@ public class BaseToolBarActivity extends BaseActivity {
         applyToolbarCurrentTheme(toolbar2, isToolbarOnImage());
     }
 
-    public void applyToolbarCurrentTheme(Toolbar toolbar2, boolean z) {
+    public void applyToolbarCurrentTheme(Toolbar toolbar2, boolean isToolbarOnImage) {
         toolbar2.setBackgroundDrawable(getToolbarBg());
-        applyToolbarCurrentThemeWithViewColor(toolbar2, z);
+        applyToolbarCurrentThemeWithViewColor(toolbar2, isToolbarOnImage);
     }
 
 
@@ -281,13 +246,13 @@ public class BaseToolBarActivity extends BaseActivity {
         return ResourceRouter.getInstance().getCacheToolBarDrawable();
     }
 
-    public void applyToolbarCurrentThemeWithViewColor(Toolbar toolbar2, boolean z) {
+    public void applyToolbarCurrentThemeWithViewColor(Toolbar toolbar2, boolean isToolbarOnImage) {
         Drawable navigationIcon = toolbar2.getNavigationIcon();
         if (navigationIcon != null) {
-            ThemeHelper.configDrawableTheme(navigationIcon.mutate(), getToolbarIconColor(z));
+            ThemeHelper.configDrawableTheme(navigationIcon.mutate(), getToolbarIconColor(isToolbarOnImage));
         }
-        toolbar2.setTitleTextColor(getTitleTextColor(z));
-        toolbar2.setSubtitleTextColor(getSubtitleTextColor(z));
+        toolbar2.setTitleTextColor(getTitleTextColor(isToolbarOnImage));
+        toolbar2.setSubtitleTextColor(getSubtitleTextColor(isToolbarOnImage));
     }
 
     public int getTitleTextColor(boolean z) {

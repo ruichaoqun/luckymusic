@@ -45,7 +45,7 @@ public class SearchActivity extends BaseToolBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         mSearchView = new SearchView(this);
-        MenuItem searchItem = menu.add(0, 1, 0, R.string.global_search);
+        MenuItem searchItem = menu.add(1, 10, 10, R.string.global_search);
         searchItem.setActionView(this.mSearchView);
         searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
@@ -107,7 +107,7 @@ public class SearchActivity extends BaseToolBarActivity {
         });
         searchItem.expandActionView();
         ThemeHelper.configSearchViewTheme(toolbar,mSearchView);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

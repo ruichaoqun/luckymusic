@@ -14,4 +14,10 @@
 
     <dimen name="toolbar_title_size">16sp</dimen>
     <dimen name="toolbar_title_size_two_line">15sp</dimen>
+
+
+
+    <dimen name="textsize_large">16sp</dimen>
+    <dimen name="textsize_middle">14sp</dimen>
+    <dimen name="textsize_small">12sp</dimen>
 </resources>

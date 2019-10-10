@@ -1,23 +1,23 @@
 package com.ruichaoqun.luckymusic;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.ruichaoqun.luckymusic.basic.BaseToolBarActivity;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
-import com.ruichaoqun.luckymusic.view.TestActivity;
 import com.ruichaoqun.luckymusic.view.search.SearchActivity;
 
 public class MainActivity extends BaseToolBarActivity{
@@ -26,6 +26,8 @@ public class MainActivity extends BaseToolBarActivity{
     private VectorDrawableCompat mDrawerIconDrawable;
     private ActionBarDrawerToggle mDrawerToggle;
     private ScrollView mScrollView;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
 
 
     @Override
@@ -37,6 +39,9 @@ public class MainActivity extends BaseToolBarActivity{
         initDraw();
         applyStatusBarCurrentTheme();
         applyToolbarCurrentTheme();
+        mTabLayout = findViewById(R.id.tab_layout);
+        mViewPager = findViewById(R.id.view_pager);
+
     }
 
     private void initDraw() {
@@ -139,7 +144,6 @@ public class MainActivity extends BaseToolBarActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_search:
-//                startActivity(new Intent(this, TestActivity.class));
                 SearchActivity.launchFrom(this);
                 break;
                 default:

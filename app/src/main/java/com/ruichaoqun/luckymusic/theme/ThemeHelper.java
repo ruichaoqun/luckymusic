@@ -1,13 +1,12 @@
 package com.ruichaoqun.luckymusic.theme;
 
-import android.app.ActionBar;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,7 @@ public class ThemeHelper {
 
     public static void configSearchViewTheme(Toolbar toolbar, SearchView searchView, int toolbarIconColor, boolean z) {
         ImageView imageView = searchView.findViewById(R.id.search_close_btn);
-        imageView.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(android.support.v7.appcompat.R.drawable.abc_ic_clear_material));
+        imageView.setImageDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.abc_ic_clear_material));
         LinearLayout linearLayout =  searchView.findViewById(R.id.search_plate);
         linearLayout.setBackgroundDrawable(MyApplication.getInstance().getResources().getDrawable(R.drawable.abc_textfield_search_material));
         configDrawableTheme(linearLayout.getBackground(), toolbarIconColor);

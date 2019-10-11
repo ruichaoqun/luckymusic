@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui;
+package com.ruichaoqun.luckymusic.widget;
 
 import android.content.Context;
 import android.graphics.Rect;

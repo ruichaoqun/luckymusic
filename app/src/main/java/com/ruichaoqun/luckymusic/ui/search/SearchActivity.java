@@ -1,12 +1,12 @@
-package com.ruichaoqun.luckymusic.view.search;
+package com.ruichaoqun.luckymusic.ui.search;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
+
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
 import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.basic.BaseToolBarActivity;
+import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.util.UiUtils;
 

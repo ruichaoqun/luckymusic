@@ -1,10 +1,9 @@
-package com.ruichaoqun.luckymusic.view.profile;
+package com.ruichaoqun.luckymusic.ui.profile;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.basic.BaseToolBarActivity;
+import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
 
 public class ProfileActivity extends BaseToolBarActivity {
 

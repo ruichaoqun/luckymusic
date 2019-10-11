@@ -20,4 +20,15 @@
     <string name="global_search_hint">搜索音乐</string>
     <string name="title_activity_test">TestActivity</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    
+    <string-array name="main_titles">
+        <item>我的</item>
+        <item>发现</item>
+        <item>视频</item>
+    </string-array>
+    <string name="local_music">本地音乐</string>
 </resources>

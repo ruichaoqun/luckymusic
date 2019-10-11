@@ -9,6 +9,10 @@
 
     <color name="color_66FFFFFF">#66FFFFFF</color>
     <color name="t_dialogBackground">#FFFFFFFF</color>
+    <color name="divider_color">#f2f2f2</color>
 
-
+    <color name="text_color_black">#333333</color>
+    <color name="text_color_gray">#999999</color>
+    <color name="text_color_light">#dddddd</color>
+    <color name="text_color_middle">#555555</color>
 </resources>

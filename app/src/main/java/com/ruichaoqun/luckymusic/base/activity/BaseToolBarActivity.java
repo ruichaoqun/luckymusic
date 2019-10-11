@@ -1,19 +1,15 @@
-package com.ruichaoqun.luckymusic.basic;
+package com.ruichaoqun.luckymusic.base.activity;
 
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.view.menu.ActionMenuItemView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.LayoutRes;
+import androidx.core.graphics.ColorUtils;
+import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,8 +24,8 @@ import android.widget.TextView;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
-import com.ruichaoqun.luckymusic.ui.FitSystemWindowHackFrameLayout;
-import com.ruichaoqun.luckymusic.ui.StatusBarHolderView;
+import com.ruichaoqun.luckymusic.widget.FitSystemWindowHackFrameLayout;
+import com.ruichaoqun.luckymusic.widget.StatusBarHolderView;
 import com.ruichaoqun.luckymusic.util.ReflectUtils;
 
 import java.util.ArrayList;

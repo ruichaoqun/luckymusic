@@ -16,8 +16,14 @@
     <dimen name="toolbar_title_size_two_line">15sp</dimen>
 
 
-
     <dimen name="textsize_large">16sp</dimen>
     <dimen name="textsize_middle">14sp</dimen>
     <dimen name="textsize_small">12sp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="common_row_height">45dp</dimen>
 </resources>

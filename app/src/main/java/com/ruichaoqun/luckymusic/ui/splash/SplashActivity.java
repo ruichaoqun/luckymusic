@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.view.splash;
+package com.ruichaoqun.luckymusic.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.ruichaoqun.luckymusic.MainActivity;
+import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.basic.BaseActivity;
+import com.ruichaoqun.luckymusic.base.activity.BaseActivity;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,14 +1,12 @@
 package com.ruichaoqun.luckymusic.theme.core;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.MainThread;
-import android.support.v4.graphics.drawable.DrawableCompat;
+
+import androidx.annotation.MainThread;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.MyApplication;

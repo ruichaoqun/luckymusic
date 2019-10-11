@@ -1,39 +1,58 @@
-package com.ruichaoqun.luckymusic;
+package com.ruichaoqun.luckymusic.ui.main;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.v4.widget.DrawerLayout;
-
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
-import com.ruichaoqun.luckymusic.basic.BaseToolBarActivity;
-import com.ruichaoqun.luckymusic.theme.ThemeHelper;
-import com.ruichaoqun.luckymusic.view.search.SearchActivity;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+import androidx.viewpager.widget.ViewPager;
 
-public class MainActivity extends BaseToolBarActivity{
-    private DrawerLayout mDrawerLayout;
-    private ImageView mDrawIcon;
+import com.google.android.material.tabs.TabLayout;
+import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
+import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
+import com.ruichaoqun.luckymusic.theme.ThemeHelper;
+import com.ruichaoqun.luckymusic.ui.main.fragment.discover.DiscoverFragment;
+import com.ruichaoqun.luckymusic.ui.main.fragment.mine.MineFragment;
+import com.ruichaoqun.luckymusic.ui.main.fragment.video.VideoFragment;
+import com.ruichaoqun.luckymusic.ui.search.SearchActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class MainActivity extends BaseToolBarActivity {
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.scroll_view)
+    ScrollView mScrollView;
+    @BindView(R.id.iv_back)
+    ImageView mDrawIcon;
     private VectorDrawableCompat mDrawerIconDrawable;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ScrollView mScrollView;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private List<Fragment> mFragments;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         initToolBar();
         transparentStatusBar(true);
         initDraw();
@@ -41,21 +60,19 @@ public class MainActivity extends BaseToolBarActivity{
         applyToolbarCurrentTheme();
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.view_pager);
-
+        initViewPager();
     }
 
+
+
     private void initDraw() {
-        this.mDrawerLayout = findViewById(R.id.drawer_layout);
-        this.mDrawIcon = findViewById(R.id.iv_back);
-        this.mScrollView = findViewById(R.id.scroll_view);
         this.mDrawerIconDrawable = VectorDrawableCompat.create(getResources(), R.drawable.icon_menu, null);
         this.mDrawIcon.setImageDrawable(this.mDrawerIconDrawable);
         this.mDrawerToggle = new ActionBarDrawerToggle(this, this.mDrawerLayout, getToolbar(), R.string.app_name, R.string.app_name) {
             @Override
             public void onDrawerClosed(View drawerView) {
-                double d2 = 0.0d;
                 MainActivity.this.onDrawerClosed(drawerView);
-                mScrollView.fullScroll(33);
+                mScrollView.fullScroll(View.FOCUS_UP);
             }
 
             @Override
@@ -73,24 +90,32 @@ public class MainActivity extends BaseToolBarActivity{
                 super.onDrawerStateChanged(newState);
             }
         };
-        this.mDrawIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleDrawerMenu();
-            }
-        });
         this.mDrawerLayout.addDrawerListener(this.mDrawerToggle);
+    }
+
+    private void initViewPager() {
+        mFragments = new ArrayList<>();
+        mFragments.add(new MineFragment());
+        mFragments.add(new DiscoverFragment());
+        mFragments.add(new VideoFragment());
+        mViewPager.setAdapter(new BaseFragmentStateAdapter(getSupportFragmentManager(),mFragments,getResources().getStringArray(R.array.main_titles)));
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     public void toggleDrawerMenu() {
         if (this.mDrawerLayout != null && this.mScrollView != null) {
-            if (this.mDrawerLayout.isDrawerOpen((int) GravityCompat.START)) {
-                this.mDrawerLayout.closeDrawer((int) GravityCompat.START);
+            if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                this.mDrawerLayout.closeDrawer(GravityCompat.START);
                 return;
             }
 //            this.isFromDraggingOpen = false;
-            this.mDrawerLayout.openDrawer((int) GravityCompat.START);
+            this.mDrawerLayout.openDrawer(GravityCompat.START);
         }
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        toggleDrawerMenu();
     }
 
     private void onDrawerClosed(View drawerView) {
@@ -126,9 +151,8 @@ public class MainActivity extends BaseToolBarActivity{
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -136,19 +160,20 @@ public class MainActivity extends BaseToolBarActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_search:
                 SearchActivity.launchFrom(this);
                 break;
-                default:
+            default:
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }

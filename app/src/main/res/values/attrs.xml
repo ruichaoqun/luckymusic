@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CMRoundedCorner">
+        <attr name="cmRoundedCorner" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomThemeContainer">
+        <attr name="forCard" format="boolean"/>
+        <attr name="newBgPaddingLeft" format="dimension"/>
+        <attr name="bgType" format="integer"/>
+    </declare-styleable>
+</resources>

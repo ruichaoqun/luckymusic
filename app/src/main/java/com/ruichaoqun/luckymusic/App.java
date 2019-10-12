@@ -8,11 +8,11 @@ import android.app.Application;
  * description:
  */
 public class App extends Application {
-    public static Application context;
+    public static App sInstance;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
+        sInstance = this;
     }
 }

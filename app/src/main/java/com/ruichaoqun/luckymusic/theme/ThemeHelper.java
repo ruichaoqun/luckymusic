@@ -1,12 +1,18 @@
 package com.ruichaoqun.luckymusic.theme;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +26,32 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.MyApplication;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.util.ReflectUtils;
+import com.ruichaoqun.luckymusic.widget.drawable.PaddingLeftBackgroundDrawable;
 
 import java.lang.reflect.Field;
 
 public class ThemeHelper {
+
+    public static Drawable getBgSelector(Context context, int res) {
+        return getBgSelector(context, res, false);
+    }
+
+    public static Drawable getBgSelector(Context context, int padding, boolean forCard) {
+        return getBgSelector(context, padding, forCard, false);
+    }
+
+    public static Drawable getBgSelector(Context context, int paddingLeft, boolean forCard, boolean bothPadding) {
+        Drawable drawable;
+        Drawable paddingLeftBackgroundDrawable = (forCard || paddingLeft >= 0) ? new PaddingLeftBackgroundDrawable(paddingLeft, forCard, false, bothPadding) : null;
+        Drawable paddingLeftBackgroundDrawable2 = new PaddingLeftBackgroundDrawable(paddingLeft, forCard, true, bothPadding);
+        if (forCard) {
+            drawable = new LayerDrawable(new Drawable[]{paddingLeftBackgroundDrawable, paddingLeftBackgroundDrawable2});
+        } else {
+            drawable = paddingLeftBackgroundDrawable2;
+        }
+        return getRippleDrawable(context, c.a(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
+    }
+
     public static int getColor700from500(int i) {
         float[] fArr = new float[3];
         Color.colorToHSV(i, fArr);
@@ -117,5 +145,15 @@ public class ThemeHelper {
         }
     }
 
+
+    public static void configPaddingBg(View view, int padding, boolean forCard) {
+        view.setBackgroundDrawable(getBgSelector(view.getContext(), padding, forCard));
+    }
+
+    @TargetApi(21)
+    public static Drawable getRippleDrawable(Context context, Drawable drawable) {
+        boolean isNightTheme = ThemeService.getInstance().isNightTheme();
+        return new RippleDrawable(ColorStateList.valueOf(context.getResources().getColor(isNightTheme ? R.color.theme_ripple_dark : R.color.theme_ripple_light)), drawable, new ColorDrawable(context.getResources().getColor(isNightTheme ? R.color.theme_ripple_mask_dark : R.color.theme_ripple_mask_light)));
+    }
 
 }

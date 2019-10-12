@@ -16,21 +16,6 @@ public class UiUtils {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, MyApplication.getInstance().getResources().getDisplayMetrics());
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 获取状态栏高度
      * @param context

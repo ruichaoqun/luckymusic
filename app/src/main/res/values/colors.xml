@@ -15,4 +15,9 @@
     <color name="text_color_gray">#999999</color>
     <color name="text_color_light">#dddddd</color>
     <color name="text_color_middle">#555555</color>
+
+    <color name="theme_ripple_dark">#1affffff</color>
+    <color name="theme_ripple_light">#1a000000</color>
+    <color name="theme_ripple_mask_dark">#ff000000</color>
+    <color name="theme_ripple_mask_light">@color/white</color>
 </resources>

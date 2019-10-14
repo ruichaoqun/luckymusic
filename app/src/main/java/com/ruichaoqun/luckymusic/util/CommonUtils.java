@@ -13,7 +13,7 @@ public class CommonUtils {
     public static final int COMMON_RADIUS = 5;
 
 
-    public static boolean e() {
+    public static boolean versionAbove19() {
         return VERSION.SDK_INT >= 19;
     }
 

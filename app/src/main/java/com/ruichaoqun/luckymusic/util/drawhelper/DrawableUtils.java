@@ -4,19 +4,29 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.util.StateSet;
+import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.DrawableRes;
 import androidx.core.graphics.ColorUtils;
+import androidx.core.view.ViewCompat;
 
 import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.theme.drawable.ThemeStateDrawable;
 import com.ruichaoqun.luckymusic.util.CommonUtils;
+import com.ruichaoqun.luckymusic.util.UiUtils;
+import com.ruichaoqun.luckymusic.widget.drawable.SupportV21AlphaDrawable;
 
 import java.lang.reflect.Array;
 
@@ -26,25 +36,25 @@ import java.lang.reflect.Array;
  * description:
  */
 public class DrawableUtils {
-    public static ColorStateList a(Context context, @ColorInt int i, int i2) {
-        int alphaComponent = ColorUtils.setAlphaComponent(i, (int) (255.0f / (100.0f / ((float) i2))));
-        return a(context, Integer.valueOf(i), Integer.valueOf(alphaComponent), Integer.valueOf(alphaComponent));
+    public static ColorStateList createColorStateList(Context context, @ColorInt int color, int alpha) {
+        int alphaComponent = ColorUtils.setAlphaComponent(color, (int) (255.0f / (100.0f / ((float) alpha))));
+        return createColorStateList(context, Integer.valueOf(color), Integer.valueOf(alphaComponent), Integer.valueOf(alphaComponent));
     }
 
-    public static ColorStateList b(Context context, @ColorRes int i, int i2) {
-        return a(context, context.getResources().getColor(i), i2);
+    public static ColorStateList createColorStateList2(Context context, @ColorRes int color, int alpha) {
+        return createColorStateList(context, context.getResources().getColor(color), alpha);
     }
 
-    public static ColorStateList a(Context context, Integer num, Integer num2, Integer num3) {
+    public static ColorStateList createColorStateList(Context context, Integer color, Integer alphaComponent, Integer num3) {
         int i;
         int i2;
         int i3;
-        if (num != null) {
+        if (color != null) {
             i = 1;
         } else {
             i = 0;
         }
-        if (num2 != null) {
+        if (alphaComponent != null) {
             i++;
         }
         if (num3 != null) {
@@ -54,20 +64,20 @@ public class DrawableUtils {
         }
         int[][] iArr = (int[][]) Array.newInstance(Integer.TYPE, new int[]{i2, 1});
         int[] iArr2 = new int[i2];
-        if (num2 != null) {
-            iArr[0] = new int[]{16842919};
-            iArr2[0] = num2.intValue();
+        if (alphaComponent != null) {
+            iArr[0] = new int[]{android.R.attr.state_pressed};
+            iArr2[0] = alphaComponent.intValue();
             i3 = 1;
         } else {
             i3 = 0;
         }
-        if (num != null) {
-            iArr[i3] = new int[]{16842910};
-            iArr2[i3] = num.intValue();
+        if (color != null) {
+            iArr[i3] = new int[]{android.R.attr.state_enabled};
+            iArr2[i3] = color.intValue();
             i3++;
         }
         if (num3 != null) {
-            iArr[i3] = new int[]{-16842910};
+            iArr[i3] = new int[]{-android.R.attr.state_enabled};
             iArr2[i3] = num3.intValue();
         }
         return new ColorStateList(iArr, iArr2);
@@ -96,139 +106,141 @@ public class DrawableUtils {
         int[][] iArr = (int[][]) Array.newInstance(Integer.TYPE, new int[]{i2, 1});
         int[] iArr2 = new int[i2];
         if (num4 != null) {
-            iArr[0] = new int[]{16842913};
+            iArr[0] = new int[]{android.R.attr.state_selected};
             iArr2[0] = num4.intValue();
             i3 = 1;
         } else {
             i3 = 0;
         }
         if (num2 != null) {
-            iArr[i3] = new int[]{16842919};
+            iArr[i3] = new int[]{android.R.attr.state_pressed};
             iArr2[i3] = num2.intValue();
             i3++;
         }
         if (num != null) {
-            iArr[i3] = new int[]{16842910};
+            iArr[i3] = new int[]{android.R.attr.state_enabled};
             iArr2[i3] = num.intValue();
             i3++;
         }
         if (num3 != null) {
-            iArr[i3] = new int[]{-16842910};
+            iArr[i3] = new int[]{android.R.attr.state_selected};
             iArr2[i3] = num3.intValue();
         }
         return new ColorStateList(iArr, iArr2);
     }
 
-    public static StateListDrawable a(Context context, int i, int i2, int i3, int i4) {
-        return a(context, i, i2, i3, i4, -1);
+    public static StateListDrawable getTotalStateDrawable(Context context, int normalRes, int pressRes, int focusRes, int notEnableRes) {
+        return getTotalStateDrawable(context, normalRes, pressRes, focusRes, notEnableRes, -1);
     }
 
-    public static StateListDrawable a(Context context, int i, int i2, int i3, int i4, int i5) {
-        return a(context, i, i2, i3, i4, i5, false);
+    public static StateListDrawable getTotalStateDrawable(Context context, int normalRes, int pressRes, int focusRes, int notEnableRes, int selectRes) {
+        return getTotalStateDrawable(context, normalRes, pressRes, focusRes, notEnableRes, selectRes, false);
     }
 
-    public static StateListDrawable a(Context context, int i, int i2, int i3, int i4, int i5, boolean z) {
-        Drawable drawable;
-        Drawable drawable2;
-        Drawable drawable3;
-        Drawable drawable4 = null;
+    public static StateListDrawable getTotalStateDrawable(Context context, int normalRes, int pressRes, int focusRes, int notEnableRes, int selectRes, boolean z) {
+        Drawable pressDrawable;
+        Drawable focusDrawable;
+        Drawable notEnableDrawable;
+        Drawable selectDrawable = null;
         App instance = App.sInstance;
-        Drawable drawable5 = i <= 0 ? null : instance.getResources().getDrawable(i);
-        if (i2 <= 0) {
-            drawable = null;
+        Drawable normalDrawable = normalRes <= 0 ? null : instance.getResources().getDrawable(normalRes);
+        if (pressRes <= 0) {
+            pressDrawable = null;
         } else {
-            drawable = instance.getResources().getDrawable(i2);
+            pressDrawable = instance.getResources().getDrawable(pressRes);
         }
-        if (i3 <= 0) {
-            drawable2 = null;
+        if (focusRes <= 0) {
+            focusDrawable = null;
         } else {
-            drawable2 = instance.getResources().getDrawable(i3);
+            focusDrawable = instance.getResources().getDrawable(focusRes);
         }
-        if (i4 <= 0) {
-            drawable3 = null;
+        if (notEnableRes <= 0) {
+            notEnableDrawable = null;
         } else {
-            drawable3 = instance.getResources().getDrawable(i4);
+            notEnableDrawable = instance.getResources().getDrawable(notEnableRes);
         }
-        if (i5 > 0) {
-            drawable4 = instance.getResources().getDrawable(i5);
+        if (selectRes > 0) {
+            selectDrawable = instance.getResources().getDrawable(selectRes);
         }
-        return a((Context) instance, drawable5, drawable, drawable2, drawable3, drawable4, z);
+        return getTotalStateDrawable((Context) instance, normalDrawable, pressDrawable, focusDrawable, notEnableDrawable, selectDrawable, z);
     }
 
-    public static StateListDrawable a(Context context, Drawable drawable, Drawable drawable2, Drawable drawable3, Drawable drawable4, Drawable drawable5) {
-        return a(context, drawable, drawable2, drawable3, drawable4, drawable5, false);
+    public static StateListDrawable getTotalStateDrawable(Context context, Drawable normalDrawable, Drawable pressDrawable, Drawable focusDrawable, Drawable notEnableDrawable, Drawable selectDrawable) {
+        return getTotalStateDrawable(context, normalDrawable, pressDrawable, focusDrawable, notEnableDrawable, selectDrawable, false);
     }
 
-    public static StateListDrawable a(Context context, Drawable drawable, Drawable drawable2, Drawable drawable3, Drawable drawable4, Drawable drawable5, boolean z) {
-        StateListDrawable stateListDrawable = z ? new a() : new StateListDrawable();
-        stateListDrawable.addState(new int[]{16842919, 16842910}, drawable2);
-        stateListDrawable.addState(new int[]{16842913}, drawable5);
-        stateListDrawable.addState(new int[]{16842908}, drawable3);
-        stateListDrawable.addState(new int[]{-16842910}, drawable4);
-        stateListDrawable.addState(new int[0], drawable);
+    public static StateListDrawable getTotalStateDrawable(Context context, Drawable normalDrawable, Drawable pressDrawable, Drawable focusDrawable, Drawable notEnableDrawable, Drawable selectDrawable, boolean z) {
+        StateListDrawable stateListDrawable = z ? new ThemeStateDrawable() : new StateListDrawable();
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressDrawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_selected}, selectDrawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_focused}, focusDrawable);
+        stateListDrawable.addState(new int[]{-android.R.attr.state_enabled}, notEnableDrawable);
+        stateListDrawable.addState(new int[0], normalDrawable);
         return stateListDrawable;
     }
 
-    public static StateListDrawable c(Context context, int i, int i2) {
+    public static StateListDrawable getCheckedDrawable(Context context, int enableDrawable, @DrawableRes int checkedDrawable) {
         Drawable drawable = null;
+
         StateListDrawable stateListDrawable = new StateListDrawable();
-        Drawable drawable2 = i == -1 ? null : context.getResources().getDrawable(i);
-        if (i2 != -1) {
-            drawable = context.getResources().getDrawable(i2);
+        Drawable drawable2 = enableDrawable == -1 ? null : context.getResources().getDrawable(enableDrawable);
+        if (checkedDrawable != -1) {
+            drawable = context.getResources().getDrawable(checkedDrawable);
         }
-        stateListDrawable.addState(new int[]{16842912, 16842910}, drawable);
-        stateListDrawable.addState(new int[]{16842910}, drawable2);
+        stateListDrawable.addState(new int[]{android.R.attr.state_checked, android.R.attr.state_enabled}, drawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_enabled}, drawable2);
         stateListDrawable.addState(new int[0], drawable2);
         return stateListDrawable;
     }
 
-    public static StateListDrawable a(Context context, Drawable drawable, Drawable drawable2, Drawable drawable3, Drawable drawable4) {
+    public static StateListDrawable getPressedDrawable(Context context, Drawable normalDrawable, Drawable pressDrawable, Drawable focuseDrawable, Drawable notEnableDrawable) {
         StateListDrawable stateListDrawable = new StateListDrawable();
-        stateListDrawable.addState(new int[]{android.R.attr.enabled, 5t16842910}, drawable2);
-        stateListDrawable.addState(new int[]{16842910, 16842908}, drawable3);
-        stateListDrawable.addState(new int[]{16842910}, drawable);
-        stateListDrawable.addState(new int[]{16842908}, drawable3);
-        stateListDrawable.addState(new int[]{-16842910}, drawable4);
-        stateListDrawable.addState(new int[0], drawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressDrawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focuseDrawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_enabled}, normalDrawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_focused}, focuseDrawable);
+        //“-”号代表改属性为false，此时即表示state_enabled为false
+        stateListDrawable.addState(new int[]{-android.R.attr.state_enabled}, notEnableDrawable);
+        stateListDrawable.addState(new int[0], normalDrawable);
         return stateListDrawable;
     }
 
-    public static StateListDrawable a(int i, int i2, int i3) {
-        return a((BitmapDrawable) App.sInstance.getResources().getDrawable(i), i2, i3);
+    public static StateListDrawable getPressdrawableWithAlpha(int drawableRes, int pressAlpha, int notEnableAlpha) {
+        return getPressdrawableWithAlpha((BitmapDrawable) App.sInstance.getResources().getDrawable(drawableRes), pressAlpha, notEnableAlpha);
     }
 
-    public static StateListDrawable a(Drawable drawable, int i, int i2) {
+    public static StateListDrawable getPressdrawableWithAlpha(Drawable drawable, int pressAlpha, int notEnableAlpha) {
         Drawable drawable2;
         Drawable drawable3;
         Drawable drawable4;
-        if (i != -1) {
+        if (pressAlpha != -1) {
             drawable2 = drawable.getConstantState().newDrawable().mutate();
-            drawable2.setAlpha(i);
+            drawable2.setAlpha(pressAlpha);
         } else {
             drawable2 = null;
         }
-        if (i2 != -1) {
+        if (notEnableAlpha != -1) {
             drawable3 = drawable.getConstantState().newDrawable().mutate();
-            drawable3.setAlpha(i2);
+            drawable3.setAlpha(notEnableAlpha);
         } else {
             drawable3 = null;
         }
-        return a((Context) App.sInstance, drawable, drawable2, (Drawable) null, drawable3);
+        return getPressedDrawable((Context) App.sInstance, drawable, drawable2, (Drawable) null, drawable3);
     }
 
-    public static StateListDrawable a(BitmapDrawable bitmapDrawable, int i, int i2) {
+    public static StateListDrawable getPressdrawableWithAlpha(BitmapDrawable bitmapDrawable, int pressAlpha, int notEnableAlpha) {
         Drawable drawable;
         Drawable drawable2;
         Drawable drawable3;
-        if (i != -1) {
+        if (pressAlpha != -1) {
             drawable = new BitmapDrawable(App.sInstance.getResources(), bitmapDrawable.getBitmap());
-            drawable.setAlpha(i);
+            drawable.setAlpha(pressAlpha);
         } else {
             drawable = null;
         }
-        if (i2 != -1) {
+        if (notEnableAlpha != -1) {
             drawable2 = new BitmapDrawable(App.sInstance.getResources(), bitmapDrawable.getBitmap());
-            drawable2.setAlpha(i2);
+            drawable2.setAlpha(notEnableAlpha);
         } else {
             drawable2 = null;
         }
@@ -245,34 +257,34 @@ public class DrawableUtils {
                 drawable = drawable3;
             }
         }
-        return a((Context) App.sInstance, (Drawable) bitmapDrawable, drawable, (Drawable) null, drawable2);
+        return getPressedDrawable((Context) App.sInstance, (Drawable) bitmapDrawable, drawable, (Drawable) null, drawable2);
     }
 
-    public static StateListDrawable a(int i, int i2, int i3, int i4, int i5) {
+    public static StateListDrawable getPressdrawableWithAlpha(int drawableRes, int alpha, int i3, int right, int bottom) {
         Drawable drawable;
         Drawable drawable2;
         Drawable drawable3;
         Drawable drawable4;
         App instance = App.sInstance;
-        Bitmap decodeResource = BitmapFactory.decodeResource(instance.getResources(), i);
+        Bitmap decodeResource = BitmapFactory.decodeResource(instance.getResources(), drawableRes);
         byte[] ninePatchChunk = decodeResource.getNinePatchChunk();
-        Drawable drawable5 = instance.getResources().getDrawable(i);
-        if (i2 != -1) {
+        Drawable drawable5 = instance.getResources().getDrawable(drawableRes);
+        if (alpha != -1) {
             NinePatchDrawable ninePatchDrawable = new NinePatchDrawable(instance.getResources(), decodeResource, ninePatchChunk, new Rect(), null);
-            ninePatchDrawable.setBounds(0, 0, i4, i5);
-            ninePatchDrawable.setAlpha(i2);
+            ninePatchDrawable.setBounds(0, 0, right, bottom);
+            ninePatchDrawable.setAlpha(alpha);
             drawable = ninePatchDrawable;
         } else {
             drawable = null;
         }
         if (i3 != -1) {
             drawable2 = new NinePatchDrawable(instance.getResources(), decodeResource, ninePatchChunk, new Rect(), null);
-            drawable2.setBounds(0, 0, i4, i5);
-            drawable2.setAlpha(i2);
+            drawable2.setBounds(0, 0, right, bottom);
+            drawable2.setAlpha(alpha);
         } else {
             drawable2 = null;
         }
-        if (!v.l()) {
+        if (!CommonUtils.versionAbove21()) {
             if (drawable != null) {
                 drawable4 = new SupportV21AlphaDrawable(drawable);
             } else {
@@ -287,37 +299,37 @@ public class DrawableUtils {
         } else {
             drawable3 = drawable;
         }
-        return a((Context) ApplicationWrapper.getInstance(), drawable5, drawable3, (Drawable) null, drawable2);
+        return getPressedDrawable((Context) App.sInstance, drawable5, drawable3, (Drawable) null, drawable2);
     }
 
-    public static StateListDrawable a(int i, int i2) {
-        return a((BitmapDrawable) ApplicationWrapper.getInstance().getResources().getDrawable(i), (BitmapDrawable) ApplicationWrapper.getInstance().getResources().getDrawable(i2), 76);
+    public static StateListDrawable getPressedDrawable(int i, int i2) {
+        return getPressedDrawable((BitmapDrawable) App.sInstance.getResources().getDrawable(i), (BitmapDrawable) App.sInstance.getResources().getDrawable(i2), 76);
     }
 
-    public static StateListDrawable a(BitmapDrawable bitmapDrawable, BitmapDrawable bitmapDrawable2, int i) {
+    public static StateListDrawable getPressedDrawable(BitmapDrawable bitmapDrawable, BitmapDrawable bitmapDrawable2, int i) {
         Drawable drawable;
         if (i != -1) {
-            drawable = new BitmapDrawable(ApplicationWrapper.getInstance().getResources(), bitmapDrawable.getBitmap());
+            drawable = new BitmapDrawable(App.sInstance.getResources(), bitmapDrawable.getBitmap());
             drawable.setAlpha(i);
         } else {
             drawable = null;
         }
-        if (!v.l() && drawable != null) {
+        if (!CommonUtils.versionAbove21() && drawable != null) {
             drawable = new SupportV21AlphaDrawable(drawable);
         }
-        return a((Context) ApplicationWrapper.getInstance(), (Drawable) bitmapDrawable, (Drawable) bitmapDrawable2, (Drawable) null, drawable);
+        return getPressedDrawable((Context) App.sInstance, (Drawable) bitmapDrawable, (Drawable) bitmapDrawable2, (Drawable) null, drawable);
     }
 
-    public static StateListDrawable b(Context context, int i, int i2, int i3, int i4) {
-        return a(context, NeteaseMusicUtils.a(i), i2, context.getResources().getColor(i3), i2, context.getResources().getColor(i4), (Integer) null);
+    public static StateListDrawable b(Context context, @DimenRes int dimen, int i2, int i3, int i4) {
+        return getTotalStateDrawable(context, UiUtils.getDimensionPixelSize(dimen), i2, context.getResources().getColor(i3), i2, context.getResources().getColor(i4), (Integer) null);
     }
 
     public static StateListDrawable b(Context context, int i, int i2, int i3, int i4, int i5) {
-        return a(context, i, i2, i3, i4, i5, (Integer) null);
+        return getTotalStateDrawable(context, i, i2, i3, i4, i5, (Integer) null);
     }
 
-    public static StateListDrawable a(Context context, int i, int i2, int i3, int i4, int i5, Integer num) {
-        return a(context, (Drawable) b(i, i2, i3), (Drawable) b(i, i4, i5), (Drawable) null, (Drawable) null, (Drawable) num != null ? b(i, i2, num.intValue()) : null);
+    public static StateListDrawable getTotalStateDrawable(Context context, int i, int i2, int i3, int i4, int i5, Integer num) {
+        return getTotalStateDrawable(context, (Drawable) b(i, i2, i3), (Drawable) b(i, i4, i5), (Drawable) null, (Drawable) null,  num != null ? b(i, i2, num.intValue()) : null);
     }
 
     private static ShapeDrawable b(int i, int i2, int i3) {
@@ -334,28 +346,15 @@ public class DrawableUtils {
         return shapeDrawable;
     }
 
-    public static int a(Context context) {
-        int i = 0;
-        int identifier = context.getResources().getIdentifier(a.auu.a.c("PREVERQAOiwEBjoJFgwpDQA="), a.auu.a.c("KgwZAA8="), a.auu.a.c("LwsQFw4aAQ=="));
-        if (identifier > 0) {
-            i = context.getResources().getDimensionPixelSize(identifier);
-        }
-        if (i == 0) {
-            return NeteaseMusicUtils.a(25.0f);
-        }
-        return i;
-    }
-
-    public static int b(Context context) {
-        return ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(C0299b.toolbarHeight);
-    }
-
-    public static int c(Context context) {
-        return b(context) + a(context);
-    }
-
-    public static int d(Context context) {
-        return (v.e() ? a(context) : 0) + b(context);
-    }
-
+//    public static int a(Context context) {
+//        int i = 0;
+//        int identifier = context.getResources().getIdentifier(a.auu.a.c("PREVERQAOiwEBjoJFgwpDQA="), a.auu.a.c("KgwZAA8="), a.auu.a.c("LwsQFw4aAQ=="));
+//        if (identifier > 0) {
+//            i = context.getResources().getDimensionPixelSize(identifier);
+//        }
+//        if (i == 0) {
+//            return UiUtils.dp2px(25.0f);
+//        }
+//        return i;
+//    }
 }

@@ -31,4 +31,12 @@
         <item>视频</item>
     </string-array>
     <string name="local_music">本地音乐</string>
+
+
+
+    <string name="default_theme">默认</string>
+    <string name="classics_red">经典红</string>
+    <string name="custom_color">自选颜色</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="custom_skin">自定义皮肤</string>
 </resources>

@@ -2,6 +2,7 @@ package com.ruichaoqun.luckymusic.service.impl;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import com.ruichaoqun.luckymusic.service.api.IThemeService;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;

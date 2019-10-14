@@ -10,6 +10,7 @@ import androidx.annotation.MainThread;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.MyApplication;
+import com.ruichaoqun.luckymusic.theme.ThemeInfo;
 
 /**
  * @author Rui Chaoqun
@@ -24,7 +25,7 @@ public class ResourceRouter {
     private Drawable mCacheToolBarDrawable;
 
     private Integer mPopupBackgroundColor;
-
+    private ThemeInfo mThemeInfo;
 
 
     public static synchronized ResourceRouter getInstance() {
@@ -32,10 +33,34 @@ public class ResourceRouter {
         synchronized (ResourceRouter.class) {
             if (sResourceRouter == null) {
                 sResourceRouter = new ResourceRouter(MyApplication.mCtx);
+                sResourceRouter.reset();
             }
             resourceRouter = sResourceRouter;
         }
         return resourceRouter;
+    }
+
+    private void reset() {
+        this.mThemeInfo = new ThemeInfo(ThemeConfig.getCurrentThemeId());
+        int id = this.mThemeInfo.getId();
+        if (id == -1) {
+            this.mThemeInfo.setName(this.mContext.getString(R.string.default_theme));
+        } else if (id == -5) {
+            this.mThemeInfo.setName(this.mContext.getString(R.string.classics_red));
+        } else if (id == -2) {
+            this.mThemeInfo.setName(this.mContext.getString(R.string.custom_color));
+        } else if (id == -3) {
+            this.mThemeInfo.setName(this.mContext.getString(R.string.night_mode));
+        } else if (id == -4) {
+            this.mThemeInfo.setName(this.mContext.getString(R.string.custom_skin));
+        } else {
+            this.mThemeInfo.setName(ThemeCache.getInstance().getThemeNameById(id));
+        }
+        if (!this.mThemeInfo.isInternal()) {
+            linkResourceFiles();
+        }
+        this.mCustomColors.delete(com.netease.cloudmusic.b.f21069a);
+
     }
 
 
@@ -96,7 +121,9 @@ public class ResourceRouter {
         return this.mPopupBackgroundColor.intValue();
     }
 
-
+    public boolean isNightTheme() {
+        return false;
+    }
 
 
 //    public int getToolbarIconColor() {

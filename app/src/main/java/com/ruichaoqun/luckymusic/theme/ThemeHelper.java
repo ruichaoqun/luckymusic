@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.MyApplication;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.util.CommonUtils;
 import com.ruichaoqun.luckymusic.util.ReflectUtils;
 import com.ruichaoqun.luckymusic.util.drawhelper.DrawableUtils;
 import com.ruichaoqun.luckymusic.widget.drawable.PaddingLeftBackgroundDrawable;
@@ -50,7 +51,7 @@ public class ThemeHelper {
         } else {
             drawable = paddingLeftBackgroundDrawable2;
         }
-        return getRippleDrawable(context, DrawableUtils.a(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
+        return getRippleDrawable(context, DrawableUtils.getPressedDrawable(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
     }
 
     public static int getColor700from500(int i) {
@@ -59,6 +60,32 @@ public class ThemeHelper {
         fArr[2] = (i == -1 ? 0.8f : 0.85f) * fArr[2];
         return Color.HSVToColor(fArr);
     }
+
+    public static void configBg(View view, int i) {
+        configBg(view, i, false);
+    }
+
+    public static void configBg(View view, int bgType, boolean forCard) {
+        if (CommonUtils.versionAbove19()) {
+            setViewBackground(view, bgType, forCard);
+            return;
+        }
+        int paddingLeft = view.getPaddingLeft();
+        int paddingTop = view.getPaddingTop();
+        int paddingRight = view.getPaddingRight();
+        int paddingBottom = view.getPaddingBottom();
+        setViewBackground(view, bgType, forCard);
+        view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+    }
+
+    private static void setViewBackground(View view, int bgType, boolean forCard) {
+        configPaddingBg(view, bgType == 1 ? 0 : -1, forCard);
+    }
+
+    public static void configDrawableTheme(Drawable drawable) {
+        configDrawableTheme(drawable, ThemeService.getInstance().getThemeColor());
+    }
+
 
     public static Drawable configDrawableTheme(Drawable drawable, int color) {
         return configDrawableThemeUseTint(drawable, color);

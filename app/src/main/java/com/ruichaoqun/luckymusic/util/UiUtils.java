@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.util;
 import android.content.Context;
 import android.util.TypedValue;
 
+import com.ruichaoqun.luckymusic.App;
 import com.ruichaoqun.luckymusic.common.MyApplication;
 
 public class UiUtils {
@@ -14,6 +15,15 @@ public class UiUtils {
      */
     public static int dp2px(float dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, MyApplication.getInstance().getResources().getDisplayMetrics());
+    }
+
+    /**
+     * dimen资源转换成px
+     * @param res
+     * @return
+     */
+    public static int getDimensionPixelSize(int res){
+        return App.sInstance.getResources().getDimensionPixelSize(res);
     }
 
     /**

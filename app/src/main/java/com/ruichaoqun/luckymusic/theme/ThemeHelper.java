@@ -26,6 +26,7 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.MyApplication;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.util.ReflectUtils;
+import com.ruichaoqun.luckymusic.util.drawhelper.DrawableUtils;
 import com.ruichaoqun.luckymusic.widget.drawable.PaddingLeftBackgroundDrawable;
 
 import java.lang.reflect.Field;
@@ -49,7 +50,7 @@ public class ThemeHelper {
         } else {
             drawable = paddingLeftBackgroundDrawable2;
         }
-        return getRippleDrawable(context, c.a(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
+        return getRippleDrawable(context, DrawableUtils.a(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
     }
 
     public static int getColor700from500(int i) {

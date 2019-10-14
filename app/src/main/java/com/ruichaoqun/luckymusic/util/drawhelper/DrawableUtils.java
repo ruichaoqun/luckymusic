@@ -2,9 +2,14 @@ package com.ruichaoqun.luckymusic.util.drawhelper;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -179,7 +184,7 @@ public class DrawableUtils {
 
     public static StateListDrawable a(Context context, Drawable drawable, Drawable drawable2, Drawable drawable3, Drawable drawable4) {
         StateListDrawable stateListDrawable = new StateListDrawable();
-        stateListDrawable.addState(new int[]{16842919, 16842910}, drawable2);
+        stateListDrawable.addState(new int[]{android.R.attr.enabled, 5t16842910}, drawable2);
         stateListDrawable.addState(new int[]{16842910, 16842908}, drawable3);
         stateListDrawable.addState(new int[]{16842910}, drawable);
         stateListDrawable.addState(new int[]{16842908}, drawable3);

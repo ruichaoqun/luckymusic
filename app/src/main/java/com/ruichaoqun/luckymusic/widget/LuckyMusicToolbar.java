@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.util.ReflectUtils;
-import com.ruichaoqun.luckymusic.util.UiUtils;
+import com.ruichaoqun.luckymusic.utils.ReflectUtils;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 /**
  * @author Rui Chaoqun

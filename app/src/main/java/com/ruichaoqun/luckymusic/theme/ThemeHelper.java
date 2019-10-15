@@ -25,9 +25,9 @@ import android.widget.TextView;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.MyApplication;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
-import com.ruichaoqun.luckymusic.util.CommonUtils;
-import com.ruichaoqun.luckymusic.util.ReflectUtils;
-import com.ruichaoqun.luckymusic.util.drawhelper.DrawableUtils;
+import com.ruichaoqun.luckymusic.utils.CommonUtils;
+import com.ruichaoqun.luckymusic.utils.ReflectUtils;
+import com.ruichaoqun.luckymusic.utils.drawhelper.DrawableUtils;
 import com.ruichaoqun.luckymusic.widget.drawable.PaddingLeftBackgroundDrawable;
 
 import java.lang.reflect.Field;

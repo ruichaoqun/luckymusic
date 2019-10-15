@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.util;
+package com.ruichaoqun.luckymusic.utils;
 
 import java.lang.reflect.Field;
 

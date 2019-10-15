@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.util.drawhelper;
+package com.ruichaoqun.luckymusic.utils.drawhelper;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,8 +15,8 @@ import android.view.ViewOutlineProvider;
 import androidx.annotation.RequiresApi;
 
 import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.util.CommonUtils;
-import com.ruichaoqun.luckymusic.util.UiUtils;
+import com.ruichaoqun.luckymusic.utils.CommonUtils;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 /**
  * @author Rui Chaoqun

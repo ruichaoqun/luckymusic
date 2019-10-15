@@ -26,7 +26,7 @@ import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.widget.FitSystemWindowHackFrameLayout;
 import com.ruichaoqun.luckymusic.widget.StatusBarHolderView;
-import com.ruichaoqun.luckymusic.util.ReflectUtils;
+import com.ruichaoqun.luckymusic.utils.ReflectUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

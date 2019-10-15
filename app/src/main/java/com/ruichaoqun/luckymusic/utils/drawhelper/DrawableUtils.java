@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.util.drawhelper;
+package com.ruichaoqun.luckymusic.utils.drawhelper;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -12,20 +12,17 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
-import android.util.StateSet;
-import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.core.graphics.ColorUtils;
-import androidx.core.view.ViewCompat;
 
 import com.ruichaoqun.luckymusic.App;
 import com.ruichaoqun.luckymusic.theme.drawable.ThemeStateDrawable;
-import com.ruichaoqun.luckymusic.util.CommonUtils;
-import com.ruichaoqun.luckymusic.util.UiUtils;
+import com.ruichaoqun.luckymusic.utils.CommonUtils;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.ruichaoqun.luckymusic.widget.drawable.SupportV21AlphaDrawable;
 
 import java.lang.reflect.Array;

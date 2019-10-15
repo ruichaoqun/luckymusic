@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
-import com.ruichaoqun.luckymusic.util.UiUtils;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 public class StatusBarHolderView extends View {
     private boolean isColorDrawable;

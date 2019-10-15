@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.util;
+package com.ruichaoqun.luckymusic.utils;
 
 import android.os.Build;
 import android.os.Build.VERSION;

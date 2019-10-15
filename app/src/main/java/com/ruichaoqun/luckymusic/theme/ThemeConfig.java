@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.theme;
 import androidx.annotation.IntDef;
 
 import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.utils.SharedPreferencesUtils;
 
 import java.io.File;
 import java.lang.annotation.Retention;
@@ -57,11 +58,15 @@ public class ThemeConfig {
 
 
     public static int getCurrentThemeId() {
-        int i = getPrefer().getInt(a.c("LRAGFwQdERERHAAMFg=="), -1);
+        int i = getPrefer().putData();
         if (i <= -1 || !getPrefer().getBoolean(a.c("PhcREz4FDD4="), false) || com.netease.cloudmusic.f.a.a().x()) {
             return i;
         }
         return -1;
+    }
+
+    public static SharedPreferencesUtils getPrefer(){
+        return SharedPreferencesUtils.getInstance();
     }
 
 }

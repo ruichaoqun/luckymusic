@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ruichaoqun.luckymusic.App;
 import com.ruichaoqun.luckymusic.utils.FlowLayoutManager;
-import com.ruichaoqun.luckymusic.utils.UIUtils;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 
 /**
@@ -37,7 +36,7 @@ public class BaseSpaceItemDecoration extends RecyclerView.ItemDecoration {
     public BaseSpaceItemDecoration(int spanCount, int space, boolean needTop) {
         this.needTop = needTop;
         this.spanCount = spanCount;
-        this.space = UIUtils.dip2px(App.context, space);
+        this.space = UiUtils.dp2px(space);
         this.cutSpace = this.space / 3;
     }
 

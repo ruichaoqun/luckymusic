@@ -3,13 +3,14 @@ package com.ruichaoqun.luckymusic.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
+
+import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.common.MyApplication;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by Administrator on 2016/10/11 0011.
- */
-public class UIUtils {
+public class UiUtils {
 
     /** px值转换为dp值 */
     public static int px2dp(Context context, float pxValue) {
@@ -17,16 +18,14 @@ public class UIUtils {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    /** dp值转换为px值 */
-    public static int dip2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
 
-    /** px值转换为sp值 */
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
+    /**
+     * dp转换px
+     * @param dp
+     * @return
+     */
+    public static int dp2px(float dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, MyApplication.getInstance().getResources().getDisplayMetrics());
     }
 
     /** sp值转换为px值*/
@@ -47,18 +46,31 @@ public class UIUtils {
         return dm.heightPixels;
     }
 
+
+    /**
+     * dimen资源转换成px
+     * @param res
+     * @return
+     */
+    public static int getDimensionPixelSize(int res){
+        return App.sInstance.getResources().getDimensionPixelSize(res);
+    }
+
     /**
      * 获取状态栏高度
-     * */
-    public static int getStatuBarHeight(Context context){
-        int statusBarHeight1 = -1;
-        //获取status_bar_height资源的ID
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            //根据资源ID获取响应的尺寸值
-            statusBarHeight1 = context.getResources().getDimensionPixelSize(resourceId);
+     * @param context
+     * @return
+     */
+    public static int getStatusBarHeight(Context context) {
+        int i = 0;
+        int identifier = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (identifier > 0) {
+            i = context.getResources().getDimensionPixelSize(identifier);
         }
-        return statusBarHeight1;
+        if (i == 0) {
+            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, context.getResources().getDisplayMetrics());
+        }
+        return i;
     }
 
     /**
@@ -100,7 +112,6 @@ public class UIUtils {
         return hasNavigationBar;
 
     }
-
 
 
 }

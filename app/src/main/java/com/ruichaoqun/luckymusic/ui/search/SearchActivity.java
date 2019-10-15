@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
-import com.ruichaoqun.luckymusic.util.UiUtils;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 public class SearchActivity extends BaseToolBarActivity {
     private SearchView mSearchView;

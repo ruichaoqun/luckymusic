@@ -16,6 +16,5 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        SharedPreferencesUtils.getInstance().init(this,"luckymusic");
     }
 }

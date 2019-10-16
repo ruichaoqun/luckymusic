@@ -6,7 +6,6 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import com.ruichaoqun.luckymusic.App;
-import com.ruichaoqun.luckymusic.common.MyApplication;
 
 import java.lang.reflect.Method;
 

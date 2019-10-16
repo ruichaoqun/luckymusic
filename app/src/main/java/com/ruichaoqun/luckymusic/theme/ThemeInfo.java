@@ -10,6 +10,10 @@ public class ThemeInfo {
     private int id;
     private String name;
 
+    public ThemeInfo(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -24,5 +28,13 @@ public class ThemeInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * 是否是内部主题
+     * @return
+     */
+    public boolean isInternal() {
+        return this.id <= -1;
     }
 }

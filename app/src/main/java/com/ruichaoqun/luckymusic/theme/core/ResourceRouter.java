@@ -2,7 +2,10 @@ package com.ruichaoqun.luckymusic.theme.core;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -166,12 +169,42 @@ public class ResourceRouter {
         return this.mPopupBackgroundColor.intValue();
     }
 
+
+    public boolean isInternalTheme() {
+        return this.mThemeInfo.getId() <= ThemeConfig.THEME_WHITE;
+    }
+
+
     public boolean isNightTheme() {
-        return false;
+        return this.mThemeInfo.getId() == ThemeConfig.THEME_NIGHT;
     }
 
     public boolean isCustomDarkTheme() {
-        return false;
+        boolean z = true;
+        if (isInternalTheme()) {
+            return false;
+        }
+        if (this.mThemeIsLightTheme != null) {
+            if (this.mThemeIsLightTheme.booleanValue()) {
+                z = false;
+            }
+            return z;
+        }
+        try {
+            int resourceIdentifier = getResourceIdentifier(R.bool.t_isLightTheme);
+            if (resourceIdentifier <= 0) {
+                return false;
+            }
+            this.mThemeIsLightTheme = Boolean.valueOf(this.mThemeResources.getBoolean(resourceIdentifier));
+            if (this.mThemeIsLightTheme.booleanValue()) {
+                z = false;
+            }
+            return z;
+        } catch (NotFoundException e2) {
+            e2.printStackTrace();
+            return false;
+        }
+
     }
 
     public boolean isCustomBgTheme() {
@@ -487,7 +520,7 @@ public class ResourceRouter {
         public void setForPressed(boolean z) {
             ((b) getWrappedDrawable()).a(z);
             if (this.mLeftDecorate != null) {
-                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(419430400, Mode.SRC_ATOP) : null);
+                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(419430400, PorterDuff.Mode.SRC_ATOP) : null);
             }
         }
 

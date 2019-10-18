@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.util.SparseIntArray;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -161,6 +162,18 @@ public class ResourceRouter {
     }
 
 
+    public int getDividerColor() {
+        if (isNightTheme()) {
+            return 0x06FFFFFF;
+        }
+        if (isCustomDarkTheme() || isCustomBgTheme()) {
+            return 0xDFFFFFF;
+        }
+        return 0x0A000000;
+    }
+
+
+
     @MainThread
     public int getPopupBackgroundColor() {
         if (this.mPopupBackgroundColor == null) {
@@ -200,24 +213,95 @@ public class ResourceRouter {
                 z = false;
             }
             return z;
-        } catch (NotFoundException e2) {
+        } catch (Resources.NotFoundException e2) {
             e2.printStackTrace();
             return false;
         }
 
     }
 
+    private int getResourceIdentifier(int i) {
+        if (this.mThemeResourceIdentifiers.indexOfKey(i) >= 0) {
+            return this.mThemeResourceIdentifiers.get(i);
+        }
+        int identifier = this.mThemeResources.getIdentifier(this.mResources.getResourceEntryName(i), this.mResources.getResourceTypeName(i),"com.ruichaoqun.luckymusic");
+        if (identifier <= 0) {
+            return identifier;
+        }
+        this.mThemeResourceIdentifiers.put(i, identifier);
+        return identifier;
+    }
+
+
     public boolean isCustomBgTheme() {
-        return false;
+        return this.mThemeInfo.getId() == ThemeConfig.THEME_CUSTOM_BG;
+
     }
 
     public int getThemeColor() {
-        return 0;
+//        return getColor(R.color.themeColor);
+        return R.color.themeColor;
     }
 
-    public int getColorByDefaultColor(int i) {
-        return 0;
-    }
+//    @ColorInt
+//    public int getColor(int colorRes) {
+//        return getColorByDefaultColor(0, colorRes);
+//    }
+//
+//    @ColorInt
+//    public int getColorByDefaultColor(int colorRes) {
+//        return getColorByDefaultColor(colorRes, 0);
+//    }
+//
+//    @ColorInt
+//    private int getColorByDefaultColor(int i, int colorRes) {
+//        if (!isInternalTheme()) {
+//            if (colorRes == 0) {
+//                if (i == com.netease.cloudmusic.b.f21069a) {
+//                    colorRes = R.color.themeColor;
+//                } else if (i == com.netease.cloudmusic.b.j) {
+//                    colorRes = R.color.kl;
+//                }
+//            }
+//            if (colorRes != 0) {
+//                int skinColorByResId = getSkinColorByResId(colorRes);
+//                if (skinColorByResId != 0) {
+//                    return skinColorByResId;
+//                }
+//            }
+//        }
+//        if (i == 0 && colorRes != 0) {
+//            i = this.mResources.getColor(colorRes);
+//        }
+//        if (isNightTheme()) {
+//            return getNightColor(i);
+//        }
+//        if (isWhiteTheme() || isCustomColorTheme()) {
+//            if (i != com.netease.cloudmusic.b.f21069a || !isCustomColorTheme()) {
+//                return i;
+//            }
+//            return ThemeConfig.getCurrentColor();
+//        } else if (isRedTheme()) {
+//            if (i == com.netease.cloudmusic.b.f21069a) {
+//                return com.netease.cloudmusic.b.f21070b;
+//            }
+//            if (i == com.netease.cloudmusic.b.f21071c) {
+//                return com.netease.cloudmusic.b.f21072d;
+//            }
+//            return i;
+//        } else if (!isCustomLightTheme()) {
+//            return getCustomColor(i);
+//        } else {
+//            int i3 = this.mCompatibleColors.get(i);
+//            if (i3 != 0) {
+//                return i3;
+//            }
+//            return i;
+//        }
+//    }
+
+
+
 
     public int getThemeColorWithNight() {
         return 0;
@@ -267,8 +351,17 @@ public class ResourceRouter {
         return 0;
     }
 
+    /**
+     * 获取分隔线颜色
+     */
     public int getLineColor() {
-        return 0;
+        if (isNightTheme()) {
+            return 0x0CFFFFFF;
+        }
+        if (isGeneralRuleTheme() || isCustomLightTheme()) {
+            return 0x19000000;
+        }
+        return 0x26FFFFFF;
     }
 
     public boolean isCustomColorTheme() {

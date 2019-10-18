@@ -20,4 +20,7 @@
     <color name="theme_ripple_light">#1a000000</color>
     <color name="theme_ripple_mask_dark">#ff000000</color>
     <color name="theme_ripple_mask_light">@color/white</color>
+
+    <color name="themeColor">@color/color_ff3a3a</color>
+    <color name="color_ff3a3a">#ffff3a3a</color>
 </resources>

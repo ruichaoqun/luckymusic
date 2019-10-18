@@ -62,7 +62,6 @@ public class CustomThemeLinearLayout extends LinearLayout implements OnThemeRese
         onThemeReset();
     }
 
-    /* access modifiers changed from: protected */
     @Override
     public void onDraw(Canvas canvas) {
         if (this.mRoundedViewHelper != null) {
@@ -71,7 +70,6 @@ public class CustomThemeLinearLayout extends LinearLayout implements OnThemeRese
         super.onDraw(canvas);
     }
 
-    /* access modifiers changed from: protected */
     public void onParseStyledAttributes(Context context, AttributeSet attributeSet) {
     }
 

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -80,7 +81,7 @@ public class BaseFragmentStateAdapter extends FragmentStatePagerAdapter {
         }
 
         if (titleInts != null && titleInts.length > position) {
-            return App.context.getResources().getString(titleInts[position]);
+            return App.sInstance.getResources().getString(titleInts[position]);
         }
         return super.getPageTitle(position);
     }
@@ -98,5 +99,10 @@ public class BaseFragmentStateAdapter extends FragmentStatePagerAdapter {
         } catch (NullPointerException nullPointerException) {//解决删除item时viewpager意外崩溃问题
             Log.e(this.getClass().getName(), "Catch the NullPointerException in FragmentPagerAdapter.finishUpdate: ");
         }
+    }
+
+    @Override
+    public void startUpdate(@NonNull ViewGroup container) {
+        super.startUpdate(container);
     }
 }

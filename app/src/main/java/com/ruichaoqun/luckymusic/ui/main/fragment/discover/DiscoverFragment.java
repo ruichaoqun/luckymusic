@@ -16,7 +16,6 @@ import com.ruichaoqun.luckymusic.R;
  */
 public class DiscoverFragment extends Fragment {
 
-
     public DiscoverFragment() {
         // Required empty public constructor
     }

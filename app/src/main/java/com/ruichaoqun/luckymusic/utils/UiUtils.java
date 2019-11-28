@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
 
 import java.lang.reflect.Method;
 
@@ -24,7 +24,7 @@ public class UiUtils {
      * @return
      */
     public static int dp2px(float dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, MyApplication.getInstance().getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, LuckyMusicApp.getInstance().getResources().getDisplayMetrics());
     }
 
     /** sp值转换为px值*/
@@ -52,7 +52,7 @@ public class UiUtils {
      * @return
      */
     public static int getDimensionPixelSize(int res){
-        return App.sInstance.getResources().getDimensionPixelSize(res);
+        return LuckyMusicApp.sInstance.getResources().getDimensionPixelSize(res);
     }
 
     /**

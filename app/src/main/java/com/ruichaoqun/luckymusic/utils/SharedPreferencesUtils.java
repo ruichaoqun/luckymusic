@@ -2,15 +2,8 @@ package com.ruichaoqun.luckymusic.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
-import com.ruichaoqun.luckymusic.App;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
 
 /**
  * @author Rui Chaoqun
@@ -32,7 +25,7 @@ public class SharedPreferencesUtils {
 
     //MyAPP.getContext() 是你的Application里面的一个Context
     private SharedPreferencesUtils() {
-        share = App.sInstance.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        share = LuckyMusicApp.sInstance.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         editor = share.edit();
     }
 

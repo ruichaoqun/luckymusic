@@ -16,7 +16,6 @@ import com.ruichaoqun.luckymusic.R;
  */
 public class VideoFragment extends Fragment {
 
-
     public VideoFragment() {
         // Required empty public constructor
     }

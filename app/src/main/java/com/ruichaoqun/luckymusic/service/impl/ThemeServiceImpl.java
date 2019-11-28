@@ -36,7 +36,8 @@ public class ThemeServiceImpl implements IThemeService {
 
     @Override
     public int getColorByDefaultColor(int i) {
-        return ResourceRouter.getInstance().getColorByDefaultColor(i);
+//        return ResourceRouter.getInstance().getColorByDefaultColor(i);
+        return 0;
     }
 
     @Override
@@ -81,7 +82,8 @@ public class ThemeServiceImpl implements IThemeService {
 
     @Override
     public int getColor(int i) {
-        return ResourceRouter.getInstance().getColorByDefaultColor(i);
+//        return ResourceRouter.getInstance().getColorByDefaultColor(i);
+        return 0;
     }
 
     @Override

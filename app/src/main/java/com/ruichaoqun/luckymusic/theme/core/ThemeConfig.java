@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import androidx.annotation.IntDef;
 
-import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.utils.SharedPreferencesUtils;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class ThemeConfig {
     public static final int COLOR_RED = 0xFFCE3D3E;
     public static final int COLOR_RED_TOOLBAR_END = 0xFFDB3F35;
     public static final int COLOR_WHITE = Color.WHITE;
-    public static final String DIR = (App.sInstance.getFilesDir().getPath() + File.separator + "theme");
+    public static final String DIR = (LuckyMusicApp.sInstance.getFilesDir().getPath() + File.separator + "theme");
     public static final int NIGHT_ALPHA = 178;
     private static final String PREF_KEY_CURRENT_COLOR = "current_color";
     private static final String PREF_KEY_CURRENT_THEME = "current_theme";

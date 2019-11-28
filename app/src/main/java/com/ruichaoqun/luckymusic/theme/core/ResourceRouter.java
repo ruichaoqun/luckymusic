@@ -2,23 +2,19 @@ package com.ruichaoqun.luckymusic.theme.core;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.util.SparseIntArray;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.graphics.drawable.DrawableWrapper;
 
-import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeInfo;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
@@ -78,7 +74,7 @@ public class ResourceRouter {
         ResourceRouter resourceRouter;
         synchronized (ResourceRouter.class) {
             if (sResourceRouter == null) {
-                sResourceRouter = new ResourceRouter(App.sInstance);
+                sResourceRouter = new ResourceRouter(LuckyMusicApp.sInstance);
                 sResourceRouter.reset();
             }
             resourceRouter = sResourceRouter;
@@ -579,208 +575,208 @@ public class ResourceRouter {
         }
     }
 
-    /* compiled from: ProGuard */
-    class CustomThemeMiniPlayBarDrawable extends DrawableWrapper {
-        /* access modifiers changed from: private */
-        public Drawable mLeftDecorate;
-        private MyConstantState mMyConstantState;
-
-        /* compiled from: ProGuard */
-        class MyConstantState extends ConstantState {
-            MyConstantState() {
-            }
-
-            @Override
-            @NonNull
-            public Drawable newDrawable() {
-                return new CustomThemeMiniPlayBarDrawable((b) CustomThemeMiniPlayBarDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), CustomThemeMiniPlayBarDrawable.this.mLeftDecorate == null ? null : CustomThemeMiniPlayBarDrawable.this.mLeftDecorate.getConstantState().newDrawable());
-            }
-
-            @Override
-            public int getChangingConfigurations() {
-                return 0;
-            }
-        }
-
-        public CustomThemeMiniPlayBarDrawable(b bVar, Drawable drawable) {
-            super(bVar);
-            this.mLeftDecorate = drawable;
-            if (this.mLeftDecorate != null) {
-                this.mLeftDecorate.setBounds(0, bVar.getIntrinsicHeight() - this.mLeftDecorate.getIntrinsicHeight(), this.mLeftDecorate.getIntrinsicWidth(), bVar.getIntrinsicHeight());
-            }
-        }
-
-        public void setForPressed(boolean z) {
-            ((b) getWrappedDrawable()).a(z);
-            if (this.mLeftDecorate != null) {
-                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(419430400, PorterDuff.Mode.SRC_ATOP) : null);
-            }
-        }
-
-        public void draw(Canvas canvas) {
-            super.draw(canvas);
-            if (this.mLeftDecorate != null) {
-                this.mLeftDecorate.draw(canvas);
-            }
-        }
-
-        @Nullable
-        public ConstantState getConstantState() {
-            if (this.mMyConstantState == null) {
-                this.mMyConstantState = new MyConstantState();
-            }
-            return this.mMyConstantState;
-        }
-    }
-
-    /* compiled from: ProGuard */
-    class DrawerBgDrawable extends DrawableWrapper {
-        public DrawerBgDrawable(Drawable drawable) {
-            super(drawable);
-        }
-
-        /* access modifiers changed from: protected */
-        public void onBoundsChange(Rect rect) {
-            super.onBoundsChange(new Rect(0, 0, getWrappedDrawable().getIntrinsicWidth(), getWrappedDrawable().getIntrinsicHeight()));
-        }
-
-        public int getMinimumWidth() {
-            return aa.a();
-        }
-
-        public void draw(Canvas canvas) {
-            float f2;
-            float f3;
-            float f4 = 0.0f;
-            Drawable wrappedDrawable = getWrappedDrawable();
-            if (wrappedDrawable instanceof ColorDrawable) {
-                super.draw(canvas);
-                return;
-            }
-            int intrinsicWidth = wrappedDrawable.getIntrinsicWidth();
-            int intrinsicHeight = wrappedDrawable.getIntrinsicHeight();
-            int width = getBounds().width();
-            int height = getBounds().height();
-            if (intrinsicWidth * height > width * intrinsicHeight) {
-                f2 = ((float) height) / ((float) intrinsicHeight);
-                f3 = (((float) width) - (((float) intrinsicWidth) * f2)) * 0.5f;
-            } else {
-                f2 = ((float) width) / ((float) intrinsicWidth);
-                f3 = 0.0f;
-                f4 = (((float) height) - (((float) intrinsicHeight) * f2)) * 0.5f;
-            }
-            Matrix matrix = new Matrix();
-            matrix.setScale(f2, f2);
-            matrix.postTranslate(f3, f4);
-            int save = canvas.save();
-            canvas.concat(matrix);
-            wrappedDrawable.draw(canvas);
-            canvas.restoreToCount(save);
-        }
-    }
-
-    /* compiled from: ProGuard */
-    class ResourceIdentifier {
-        String resName;
-        String resType;
-
-        public ResourceIdentifier(String str, String str2) {
-            this.resName = str;
-            this.resType = str2;
-        }
-    }
-
-    /* compiled from: ProGuard */
-    class SizeExplicitDrawable extends DrawableWrapper {
-        /* access modifiers changed from: private */
-        public int mHeight;
-        private MyConstantState mMyConstantState;
-        /* access modifiers changed from: private */
-        public int mWidth;
-
-        /* compiled from: ProGuard */
-        class MyConstantState extends ConstantState {
-            MyConstantState() {
-            }
-
-            @NonNull
-            public Drawable newDrawable() {
-                return new SizeExplicitDrawable(SizeExplicitDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), SizeExplicitDrawable.this.mWidth, SizeExplicitDrawable.this.mHeight);
-            }
-
-            public int getChangingConfigurations() {
-                return 0;
-            }
-        }
-
-        public SizeExplicitDrawable(Drawable drawable, int i, int i2) {
-            super(drawable);
-            this.mWidth = i;
-            this.mHeight = i2;
-        }
-
-        public int getIntrinsicWidth() {
-            return this.mWidth;
-        }
-
-        public int getIntrinsicHeight() {
-            return this.mHeight;
-        }
-
-        @Nullable
-        public ConstantState getConstantState() {
-            if (this.mMyConstantState == null) {
-                this.mMyConstantState = new MyConstantState();
-            }
-            return this.mMyConstantState;
-        }
-    }
-
-    /* compiled from: ProGuard */
-    class WithLineDrawable extends DrawableWrapper {
-        /* access modifiers changed from: private */
-        public boolean mForTop;
-        private Paint mLinePaint = new Paint();
-        private MyConstantState mMyConstantState;
-
-        /* compiled from: ProGuard */
-        class MyConstantState extends ConstantState {
-            MyConstantState() {
-            }
-
-            @NonNull
-            public Drawable newDrawable() {
-                return new WithLineDrawable(WithLineDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), WithLineDrawable.this.mForTop);
-            }
-
-            public int getChangingConfigurations() {
-                return 0;
-            }
-        }
-
-        public WithLineDrawable(Drawable drawable, boolean z) {
-            super(drawable);
-            this.mLinePaint.setColor(ResourceRouter.this.getLineColor());
-            this.mForTop = z;
-        }
-
-        public void draw(Canvas canvas) {
-            super.draw(canvas);
-            if (this.mForTop) {
-                canvas.drawLine(0.0f, 0.0f, (float) getBounds().width(), 0.0f, this.mLinePaint);
-                return;
-            }
-            canvas.drawLine(0.0f, (float) getBounds().height(), (float) getBounds().width(), (float) getBounds().height(), this.mLinePaint);
-        }
-
-        @Nullable
-        public ConstantState getConstantState() {
-            if (this.mMyConstantState == null) {
-                this.mMyConstantState = new MyConstantState();
-            }
-            return this.mMyConstantState;
-        }
-    }
-
+//    /* compiled from: ProGuard */
+//    class CustomThemeMiniPlayBarDrawable extends DrawableWrapper {
+//        /* access modifiers changed from: private */
+//        public Drawable mLeftDecorate;
+//        private MyConstantState mMyConstantState;
+//
+//        /* compiled from: ProGuard */
+//        class MyConstantState extends ConstantState {
+//            MyConstantState() {
+//            }
+//
+//            @Override
+//            @NonNull
+//            public Drawable newDrawable() {
+//                return new CustomThemeMiniPlayBarDrawable((b) CustomThemeMiniPlayBarDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), CustomThemeMiniPlayBarDrawable.this.mLeftDecorate == null ? null : CustomThemeMiniPlayBarDrawable.this.mLeftDecorate.getConstantState().newDrawable());
+//            }
+//
+//            @Override
+//            public int getChangingConfigurations() {
+//                return 0;
+//            }
+//        }
+//
+////        public CustomThemeMiniPlayBarDrawable(b bVar, Drawable drawable) {
+////            super(bVar);
+////            this.mLeftDecorate = drawable;
+////            if (this.mLeftDecorate != null) {
+////                this.mLeftDecorate.setBounds(0, bVar.getIntrinsicHeight() - this.mLeftDecorate.getIntrinsicHeight(), this.mLeftDecorate.getIntrinsicWidth(), bVar.getIntrinsicHeight());
+////            }
+////        }
+//
+//        public void setForPressed(boolean z) {
+////            ((b) getWrappedDrawable()).a(z);
+//////            if (this.mLeftDecorate != null) {
+//////                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(419430400, PorterDuff.Mode.SRC_ATOP) : null);
+//////            }
+//        }
+//
+////        public void draw(Canvas canvas) {
+////            super.draw(canvas);
+////            if (this.mLeftDecorate != null) {
+////                this.mLeftDecorate.draw(canvas);
+////            }
+////        }
+////
+////        @Nullable
+////        public ConstantState getConstantState() {
+////            if (this.mMyConstantState == null) {
+////                this.mMyConstantState = new MyConstantState();
+////            }
+////            return this.mMyConstantState;
+////        }
+//    }
+//
+//    /* compiled from: ProGuard */
+//    class DrawerBgDrawable extends DrawableWrapper {
+//        public DrawerBgDrawable(Drawable drawable) {
+//            super(drawable);
+//        }
+//
+//        /* access modifiers changed from: protected */
+//        public void onBoundsChange(Rect rect) {
+//            super.onBoundsChange(new Rect(0, 0, getWrappedDrawable().getIntrinsicWidth(), getWrappedDrawable().getIntrinsicHeight()));
+//        }
+//
+//        public int getMinimumWidth() {
+//            return aa.a();
+//        }
+//
+//        public void draw(Canvas canvas) {
+//            float f2;
+//            float f3;
+//            float f4 = 0.0f;
+//            Drawable wrappedDrawable = getWrappedDrawable();
+//            if (wrappedDrawable instanceof ColorDrawable) {
+//                super.draw(canvas);
+//                return;
+//            }
+//            int intrinsicWidth = wrappedDrawable.getIntrinsicWidth();
+//            int intrinsicHeight = wrappedDrawable.getIntrinsicHeight();
+//            int width = getBounds().width();
+//            int height = getBounds().height();
+//            if (intrinsicWidth * height > width * intrinsicHeight) {
+//                f2 = ((float) height) / ((float) intrinsicHeight);
+//                f3 = (((float) width) - (((float) intrinsicWidth) * f2)) * 0.5f;
+//            } else {
+//                f2 = ((float) width) / ((float) intrinsicWidth);
+//                f3 = 0.0f;
+//                f4 = (((float) height) - (((float) intrinsicHeight) * f2)) * 0.5f;
+//            }
+//            Matrix matrix = new Matrix();
+//            matrix.setScale(f2, f2);
+//            matrix.postTranslate(f3, f4);
+//            int save = canvas.save();
+//            canvas.concat(matrix);
+//            wrappedDrawable.draw(canvas);
+//            canvas.restoreToCount(save);
+//        }
+//    }
+//
+//    /* compiled from: ProGuard */
+//    class ResourceIdentifier {
+//        String resName;
+//        String resType;
+//
+//        public ResourceIdentifier(String str, String str2) {
+//            this.resName = str;
+//            this.resType = str2;
+//        }
+//    }
+//
+//    /* compiled from: ProGuard */
+//    class SizeExplicitDrawable extends DrawableWrapper {
+//        /* access modifiers changed from: private */
+//        public int mHeight;
+//        private MyConstantState mMyConstantState;
+//        /* access modifiers changed from: private */
+//        public int mWidth;
+//
+//        /* compiled from: ProGuard */
+//        class MyConstantState extends ConstantState {
+//            MyConstantState() {
+//            }
+//
+//            @NonNull
+//            public Drawable newDrawable() {
+//                return new SizeExplicitDrawable(SizeExplicitDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), SizeExplicitDrawable.this.mWidth, SizeExplicitDrawable.this.mHeight);
+//            }
+//
+//            public int getChangingConfigurations() {
+//                return 0;
+//            }
+//        }
+//
+//        public SizeExplicitDrawable(Drawable drawable, int i, int i2) {
+//            super(drawable);
+//            this.mWidth = i;
+//            this.mHeight = i2;
+//        }
+//
+//        public int getIntrinsicWidth() {
+//            return this.mWidth;
+//        }
+//
+//        public int getIntrinsicHeight() {
+//            return this.mHeight;
+//        }
+//
+//        @Nullable
+//        public ConstantState getConstantState() {
+//            if (this.mMyConstantState == null) {
+//                this.mMyConstantState = new MyConstantState();
+//            }
+//            return this.mMyConstantState;
+//        }
+//    }
+//
+//    /* compiled from: ProGuard */
+//    class WithLineDrawable extends DrawableWrapper {
+//        /* access modifiers changed from: private */
+//        public boolean mForTop;
+//        private Paint mLinePaint = new Paint();
+//        private MyConstantState mMyConstantState;
+//
+//        /* compiled from: ProGuard */
+//        class MyConstantState extends ConstantState {
+//            MyConstantState() {
+//            }
+//
+//            @NonNull
+//            public Drawable newDrawable() {
+//                return new WithLineDrawable(WithLineDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), WithLineDrawable.this.mForTop);
+//            }
+//
+//            public int getChangingConfigurations() {
+//                return 0;
+//            }
+//        }
+//
+//        public WithLineDrawable(Drawable drawable, boolean z) {
+//            super(drawable);
+//            this.mLinePaint.setColor(ResourceRouter.this.getLineColor());
+//            this.mForTop = z;
+//        }
+//
+//        public void draw(Canvas canvas) {
+//            super.draw(canvas);
+//            if (this.mForTop) {
+//                canvas.drawLine(0.0f, 0.0f, (float) getBounds().width(), 0.0f, this.mLinePaint);
+//                return;
+//            }
+//            canvas.drawLine(0.0f, (float) getBounds().height(), (float) getBounds().width(), (float) getBounds().height(), this.mLinePaint);
+//        }
+//
+//        @Nullable
+//        public ConstantState getConstantState() {
+//            if (this.mMyConstantState == null) {
+//                this.mMyConstantState = new MyConstantState();
+//            }
+//            return this.mMyConstantState;
+//        }
+//    }
+//
 
 }

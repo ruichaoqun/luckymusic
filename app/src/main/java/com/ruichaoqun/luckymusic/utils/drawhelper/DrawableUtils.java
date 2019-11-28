@@ -19,7 +19,7 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.core.graphics.ColorUtils;
 
-import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.theme.drawable.ThemeStateDrawable;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
@@ -139,7 +139,7 @@ public class DrawableUtils {
         Drawable focusDrawable;
         Drawable notEnableDrawable;
         Drawable selectDrawable = null;
-        App instance = App.sInstance;
+        LuckyMusicApp instance = LuckyMusicApp.sInstance;
         Drawable normalDrawable = normalRes <= 0 ? null : instance.getResources().getDrawable(normalRes);
         if (pressRes <= 0) {
             pressDrawable = null;
@@ -203,7 +203,7 @@ public class DrawableUtils {
     }
 
     public static StateListDrawable getPressdrawableWithAlpha(int drawableRes, int pressAlpha, int notEnableAlpha) {
-        return getPressdrawableWithAlpha((BitmapDrawable) App.sInstance.getResources().getDrawable(drawableRes), pressAlpha, notEnableAlpha);
+        return getPressdrawableWithAlpha((BitmapDrawable) LuckyMusicApp.sInstance.getResources().getDrawable(drawableRes), pressAlpha, notEnableAlpha);
     }
 
     public static StateListDrawable getPressdrawableWithAlpha(Drawable drawable, int pressAlpha, int notEnableAlpha) {
@@ -222,7 +222,7 @@ public class DrawableUtils {
         } else {
             drawable3 = null;
         }
-        return getPressedDrawable((Context) App.sInstance, drawable, drawable2, (Drawable) null, drawable3);
+        return getPressedDrawable((Context) LuckyMusicApp.sInstance, drawable, drawable2, (Drawable) null, drawable3);
     }
 
     public static StateListDrawable getPressdrawableWithAlpha(BitmapDrawable bitmapDrawable, int pressAlpha, int notEnableAlpha) {
@@ -230,13 +230,13 @@ public class DrawableUtils {
         Drawable drawable2;
         Drawable drawable3;
         if (pressAlpha != -1) {
-            drawable = new BitmapDrawable(App.sInstance.getResources(), bitmapDrawable.getBitmap());
+            drawable = new BitmapDrawable(LuckyMusicApp.sInstance.getResources(), bitmapDrawable.getBitmap());
             drawable.setAlpha(pressAlpha);
         } else {
             drawable = null;
         }
         if (notEnableAlpha != -1) {
-            drawable2 = new BitmapDrawable(App.sInstance.getResources(), bitmapDrawable.getBitmap());
+            drawable2 = new BitmapDrawable(LuckyMusicApp.sInstance.getResources(), bitmapDrawable.getBitmap());
             drawable2.setAlpha(notEnableAlpha);
         } else {
             drawable2 = null;
@@ -254,7 +254,7 @@ public class DrawableUtils {
                 drawable = drawable3;
             }
         }
-        return getPressedDrawable((Context) App.sInstance, (Drawable) bitmapDrawable, drawable, (Drawable) null, drawable2);
+        return getPressedDrawable((Context) LuckyMusicApp.sInstance, (Drawable) bitmapDrawable, drawable, (Drawable) null, drawable2);
     }
 
     public static StateListDrawable getPressdrawableWithAlpha(int drawableRes, int alpha, int i3, int right, int bottom) {
@@ -262,7 +262,7 @@ public class DrawableUtils {
         Drawable drawable2;
         Drawable drawable3;
         Drawable drawable4;
-        App instance = App.sInstance;
+        LuckyMusicApp instance = LuckyMusicApp.sInstance;
         Bitmap decodeResource = BitmapFactory.decodeResource(instance.getResources(), drawableRes);
         byte[] ninePatchChunk = decodeResource.getNinePatchChunk();
         Drawable drawable5 = instance.getResources().getDrawable(drawableRes);
@@ -296,17 +296,17 @@ public class DrawableUtils {
         } else {
             drawable3 = drawable;
         }
-        return getPressedDrawable((Context) App.sInstance, drawable5, drawable3, (Drawable) null, drawable2);
+        return getPressedDrawable((Context) LuckyMusicApp.sInstance, drawable5, drawable3, (Drawable) null, drawable2);
     }
 
     public static StateListDrawable getPressedDrawable(int i, int i2) {
-        return getPressedDrawable((BitmapDrawable) App.sInstance.getResources().getDrawable(i), (BitmapDrawable) App.sInstance.getResources().getDrawable(i2), 76);
+        return getPressedDrawable((BitmapDrawable) LuckyMusicApp.sInstance.getResources().getDrawable(i), (BitmapDrawable) LuckyMusicApp.sInstance.getResources().getDrawable(i2), 76);
     }
 
     public static StateListDrawable getPressedDrawable(BitmapDrawable bitmapDrawable, BitmapDrawable bitmapDrawable2, int i) {
         Drawable drawable;
         if (i != -1) {
-            drawable = new BitmapDrawable(App.sInstance.getResources(), bitmapDrawable.getBitmap());
+            drawable = new BitmapDrawable(LuckyMusicApp.sInstance.getResources(), bitmapDrawable.getBitmap());
             drawable.setAlpha(i);
         } else {
             drawable = null;
@@ -314,7 +314,7 @@ public class DrawableUtils {
         if (!CommonUtils.versionAbove21() && drawable != null) {
             drawable = new SupportV21AlphaDrawable(drawable);
         }
-        return getPressedDrawable((Context) App.sInstance, (Drawable) bitmapDrawable, (Drawable) bitmapDrawable2, (Drawable) null, drawable);
+        return getPressedDrawable((Context) LuckyMusicApp.sInstance, (Drawable) bitmapDrawable, (Drawable) bitmapDrawable2, (Drawable) null, drawable);
     }
 
     public static StateListDrawable b(Context context, @DimenRes int dimen, int i2, int i3, int i4) {

@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
 
 import java.util.List;
 
@@ -81,7 +81,7 @@ public class BaseFragmentStateAdapter extends FragmentStatePagerAdapter {
         }
 
         if (titleInts != null && titleInts.length > position) {
-            return App.sInstance.getResources().getString(titleInts[position]);
+            return LuckyMusicApp.sInstance.getResources().getString(titleInts[position]);
         }
         return super.getPageTitle(position);
     }

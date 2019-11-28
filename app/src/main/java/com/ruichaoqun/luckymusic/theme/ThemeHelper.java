@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ruichaoqun.luckymusic.App;
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
@@ -126,9 +126,9 @@ public class ThemeHelper {
 
     public static void configSearchViewTheme(Toolbar toolbar, SearchView searchView, int toolbarIconColor, boolean z) {
         ImageView imageView = searchView.findViewById(R.id.search_close_btn);
-        imageView.setImageDrawable(App.sInstance.getResources().getDrawable(R.drawable.abc_ic_clear_material));
+        imageView.setImageDrawable(LuckyMusicApp.sInstance.getResources().getDrawable(R.drawable.abc_ic_clear_material));
         LinearLayout linearLayout =  searchView.findViewById(R.id.search_plate);
-        linearLayout.setBackgroundDrawable(App.sInstance.getResources().getDrawable(R.drawable.abc_textfield_search_material));
+        linearLayout.setBackgroundDrawable(LuckyMusicApp.sInstance.getResources().getDrawable(R.drawable.abc_textfield_search_material));
         configDrawableTheme(linearLayout.getBackground(), toolbarIconColor);
         View searchText = searchView.findViewById(R.id.search_src_text);
         searchText.setPadding(0, searchText.getPaddingTop(), searchText.getPaddingRight(), searchText.getPaddingBottom());
@@ -156,7 +156,7 @@ public class ThemeHelper {
 //            }
             Field declaredField = TextView.class.getDeclaredField("mCursorDrawableRes");
             declaredField.setAccessible(true);
-            declaredField.set(autoCompleteTextView, App.sInstance.getResources().getDrawable(R.drawable.shape_cusor));
+            declaredField.set(autoCompleteTextView, LuckyMusicApp.sInstance.getResources().getDrawable(R.drawable.shape_cusor));
         } catch (Exception e2) {
             e2.printStackTrace();
         }

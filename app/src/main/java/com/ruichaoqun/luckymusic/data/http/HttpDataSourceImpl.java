@@ -9,9 +9,10 @@ import javax.inject.Singleton;
  * description:
  */
 @Singleton
-public class HttpDataSourceImpl implements HttpDataSource{
+public class HttpDataSourceImpl implements HttpDataSource {
+    private ApiService mApiService;
 
     @Inject
-    public HttpDataSourceImpl() {
+    public HttpDataSourceImpl(ApiService mApiService) {
     }
 }

@@ -1,12 +1,18 @@
 package com.ruichaoqun.luckymusic.data;
 
 
+import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
+import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
 import com.ruichaoqun.luckymusic.data.db.DbDataSource;
 import com.ruichaoqun.luckymusic.data.http.HttpDataSource;
 import com.ruichaoqun.luckymusic.data.preference.PreferenceDataSource;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
 
 /**
  * @author Rui Chaoqun
@@ -34,5 +40,10 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, DbD
     @Override
     public void setFirstUse() {
         mPreferenceDataSource.setFirstUse();
+    }
+
+    @Override
+    public Observable<BaseResponse<List<BannerItemBean>>> getBannerList() {
+        return mHttpDataSource.getBannerList();
     }
 }

@@ -23,4 +23,6 @@
 
     <color name="themeColor">@color/color_ff3a3a</color>
     <color name="color_ff3a3a">#ffff3a3a</color>
+
+
 </resources>

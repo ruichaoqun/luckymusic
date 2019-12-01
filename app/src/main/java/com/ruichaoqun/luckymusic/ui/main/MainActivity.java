@@ -24,7 +24,6 @@ import com.ruichaoqun.luckymusic.ui.main.fragment.discover.DiscoverFragment;
 import com.ruichaoqun.luckymusic.ui.main.fragment.mine.MineFragment;
 import com.ruichaoqun.luckymusic.ui.main.fragment.video.VideoFragment;
 import com.ruichaoqun.luckymusic.ui.search.SearchActivity;
-import com.ruichaoqun.luckymusic.utils.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,6 @@ public class MainActivity extends BaseToolBarActivity {
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.view_pager);
         initViewPager();
-        RxUtils.testRetryWhen();
     }
 
 

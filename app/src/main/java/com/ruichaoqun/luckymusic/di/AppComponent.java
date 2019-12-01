@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.data.DataRepositoryModule;
+import com.ruichaoqun.luckymusic.data.http.HttpModule;
 
 import javax.inject.Singleton;
 
@@ -20,6 +21,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
  */
 @Singleton
 @Component(modules = {
+        HttpModule.class,
         DataRepositoryModule.class,
         ApplicationModule.class,
         AndroidSupportInjectionModule.class})

@@ -1,7 +1,14 @@
 package com.ruichaoqun.luckymusic.data.http;
 
+import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
+import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
 
 /**
  * @author Rui Chaoqun
@@ -14,5 +21,11 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     @Inject
     public HttpDataSourceImpl(ApiService mApiService) {
+        this.mApiService = mApiService;
+    }
+
+    @Override
+    public Observable<BaseResponse<List<BannerItemBean>>> getBannerList() {
+        return mApiService.getBannerList();
     }
 }

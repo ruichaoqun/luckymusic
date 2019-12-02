@@ -1,7 +1,6 @@
 package com.ruichaoqun.luckymusic.base.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -152,9 +152,9 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, S> 
         return context;
     }
 
-    public Activity getActivity(){
-        if (context instanceof Activity){
-            return (Activity)context;
+    public AppCompatActivity getActivity(){
+        if (context instanceof AppCompatActivity){
+            return (AppCompatActivity)context;
         }
 
         return null;

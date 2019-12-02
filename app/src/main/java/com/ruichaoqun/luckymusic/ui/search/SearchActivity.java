@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
@@ -46,8 +46,8 @@ public class SearchActivity extends BaseToolBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         mSearchView = new SearchView(this);
         MenuItem searchItem = menu.add(1, 10, 10, R.string.global_search);
-        searchItem.setActionView(this.mSearchView);
-        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        MenuItemCompat.setActionView(searchItem, this.mSearchView);
+        MenuItemCompat.setShowAsAction(searchItem, MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         MenuItem add2 = menu.add(0, 2, 0, "");
         this.mImageView = new ImageView(this);
@@ -93,7 +93,7 @@ public class SearchActivity extends BaseToolBarActivity {
                 return false;
             }
         });
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 return true;
@@ -105,7 +105,7 @@ public class SearchActivity extends BaseToolBarActivity {
                 return false;
             }
         });
-        searchItem.expandActionView();
+        MenuItemCompat.expandActionView(searchItem);
         ThemeHelper.configSearchViewTheme(toolbar,mSearchView);
         return true;
     }

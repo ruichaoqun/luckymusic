@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
 import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
@@ -32,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseToolBarActivity {
+public class MainActivity extends BaseMVPActivity<MainPresenter> {
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
@@ -52,7 +53,6 @@ public class MainActivity extends BaseToolBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         initToolBar();
         transparentStatusBar(true);
         initDraw();

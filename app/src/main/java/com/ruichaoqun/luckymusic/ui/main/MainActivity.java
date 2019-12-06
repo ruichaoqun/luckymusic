@@ -18,19 +18,17 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
-import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
 import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
-import com.ruichaoqun.luckymusic.ui.main.fragment.discover.DiscoverFragment;
-import com.ruichaoqun.luckymusic.ui.main.fragment.mine.MineFragment;
-import com.ruichaoqun.luckymusic.ui.main.fragment.video.VideoFragment;
+import com.ruichaoqun.luckymusic.ui.main.discover.DiscoverFragment;
+import com.ruichaoqun.luckymusic.ui.main.mine.MineFragment;
+import com.ruichaoqun.luckymusic.ui.main.video.VideoFragment;
 import com.ruichaoqun.luckymusic.ui.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseMVPActivity<MainPresenter> {

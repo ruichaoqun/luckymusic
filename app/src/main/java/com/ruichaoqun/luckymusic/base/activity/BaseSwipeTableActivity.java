@@ -1,9 +1,10 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
@@ -38,7 +39,7 @@ public abstract class BaseSwipeTableActivity<R,T extends IBasePresenter> extends
      * @param adapter adapter
      */
     protected void bindSwipeRecycler(int recyclerId, RecyclerView.LayoutManager lm, RecyclerView.Adapter adapter){
-        recyclerView = findViewById(recyclerId);
+        recyclerView = (RecyclerView) findViewById(recyclerId);
 
         this.adapter = adapter;
         if (adapter instanceof BaseQuickAdapter) {

@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui.main.fragment.discover;
+package com.ruichaoqun.luckymusic.ui.main.discover;
 
 
 import android.os.Bundle;

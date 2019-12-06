@@ -2,9 +2,9 @@ package com.ruichaoqun.luckymusic.base.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBaseView;

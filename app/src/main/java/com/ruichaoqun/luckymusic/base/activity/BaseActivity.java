@@ -1,7 +1,8 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
+import android.support.annotation.Nullable;
+
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

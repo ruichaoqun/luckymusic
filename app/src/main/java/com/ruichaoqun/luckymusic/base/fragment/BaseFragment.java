@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 
@@ -21,7 +22,7 @@ import dagger.android.support.DaggerFragment;
  * @date :2019/12/2 9:26
  * description:
  */
-public abstract class BaseFragment extends DaggerFragment{
+public abstract class BaseFragment extends DaggerFragment {
     private Unbinder mUnbinder;
 
 

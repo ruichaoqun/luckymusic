@@ -1,8 +1,7 @@
-package com.ruichaoqun.luckymusic.ui.main.fragment.mine;
+package com.ruichaoqun.luckymusic.ui.main.mine;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

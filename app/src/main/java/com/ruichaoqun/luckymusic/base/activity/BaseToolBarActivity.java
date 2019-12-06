@@ -8,8 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.annotation.LayoutRes;
 import androidx.core.graphics.ColorUtils;
-import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.widget.Toolbar;
+
+import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -96,7 +97,7 @@ public class BaseToolBarActivity extends BaseActivity {
      * 初始化toolbar
      */
     public void initToolBar() {
-        this.toolbar = findViewById(R.id.toolbar);
+        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (this.toolbar == null) {
             this.toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.layour_toolbar, null);
         }

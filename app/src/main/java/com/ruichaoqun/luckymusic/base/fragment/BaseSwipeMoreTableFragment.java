@@ -1,10 +1,10 @@
 package com.ruichaoqun.luckymusic.base.fragment;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui.main.fragment.video;
+package com.ruichaoqun.luckymusic.ui.main.video;
 
 
 import android.os.Bundle;

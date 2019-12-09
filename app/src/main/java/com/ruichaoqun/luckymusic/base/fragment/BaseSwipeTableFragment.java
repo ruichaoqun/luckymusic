@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
+import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  * @date :2019/6/26 10:15
  * description:SwipeTable基类去除上拉加载功能，作为普通的列表展示框体使用
  */
-public abstract class BaseSwipeTableFragment<R,T extends BasePresenter> extends BaseSwipeFragment<T> implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener {
+public abstract class BaseSwipeTableFragment<R,T extends IBasePresenter> extends BaseSwipeFragment<T> implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     protected RecyclerView recyclerView;
     protected List<R> arrayList = new ArrayList<>();

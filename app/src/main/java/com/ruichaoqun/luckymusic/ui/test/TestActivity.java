@@ -1,7 +1,7 @@
 package com.ruichaoqun.luckymusic.ui.test;
 
-import androidx.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

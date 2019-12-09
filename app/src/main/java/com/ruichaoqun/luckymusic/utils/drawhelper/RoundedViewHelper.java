@@ -8,11 +8,11 @@ import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
-import androidx.annotation.RequiresApi;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;

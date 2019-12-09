@@ -1,7 +1,8 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
 
-import androidx.annotation.NonNull;
+
+import android.support.annotation.NonNull;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;

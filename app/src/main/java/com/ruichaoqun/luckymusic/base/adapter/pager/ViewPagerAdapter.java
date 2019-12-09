@@ -1,11 +1,11 @@
 package com.ruichaoqun.luckymusic.base.adapter.pager;
 
+import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package com.ruichaoqun.luckymusic.theme;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 
-import androidx.annotation.ColorInt;
 
 import com.ruichaoqun.luckymusic.common.ServiceFacade;
 import com.ruichaoqun.luckymusic.service.ServiceConst;

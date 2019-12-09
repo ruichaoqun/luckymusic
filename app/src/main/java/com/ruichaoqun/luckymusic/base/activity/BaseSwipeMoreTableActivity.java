@@ -1,12 +1,13 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
+import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -17,7 +18,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
  * @date :2019/6/26 10:21
  * description:下拉刷新及上拉刷新需求
  */
-public abstract class BaseSwipeMoreTableActivity<R,T extends BasePresenter> extends BaseSwipeTableActivity<R,T> {
+public abstract class BaseSwipeMoreTableActivity<R,T extends IBasePresenter> extends BaseSwipeTableActivity<R,T> {
     //页数，已经自动处理了，直接使用就可以了
     protected int page = 1;
     //每页数据量

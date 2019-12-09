@@ -1,12 +1,13 @@
 package com.ruichaoqun.luckymusic.base.fragment;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
+import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -19,7 +20,7 @@ import java.util.Objects;
  * @date :2019/6/26 10:21
  * description:下拉刷新及上拉刷新需求fragment
  */
-public abstract class BaseSwipeMoreTableFragment<R,T extends BasePresenter> extends BaseSwipeTableFragment<R,T> {
+public abstract class BaseSwipeMoreTableFragment<R,T extends IBasePresenter> extends BaseSwipeTableFragment<R,T> {
     //页数
     protected int page = 1;
     //每页数据量

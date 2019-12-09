@@ -2,15 +2,15 @@ package com.ruichaoqun.luckymusic.base.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +32,8 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, S> 
     protected OnItemLongClickListener mOnItemLongClickListener;
     protected OnItemChildClickListener mOnItemChildClickListener;
     //数据为空时的展示View id
-    protected @LayoutRes int mEmptyLayoutRes;
+    protected @LayoutRes
+    int mEmptyLayoutRes;
 
     public BaseRecyclerAdapter(Context context, S[] arrays){
         this.context = context;

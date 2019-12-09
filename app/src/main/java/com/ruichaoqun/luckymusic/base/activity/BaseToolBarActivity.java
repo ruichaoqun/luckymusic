@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.LayoutRes;
-import androidx.core.graphics.ColorUtils;
 
+import android.support.annotation.LayoutRes;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
@@ -35,7 +35,7 @@ import java.util.Iterator;
 /**
  *
  */
-public class BaseToolBarActivity extends BaseActivity {
+public abstract class BaseToolBarActivity extends BaseActivity {
     public StatusBarHolderView statusBarView;
     protected Toolbar toolbar;
     private Menu menu;

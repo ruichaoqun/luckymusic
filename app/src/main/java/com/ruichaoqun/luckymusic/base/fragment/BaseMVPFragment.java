@@ -18,6 +18,7 @@ public abstract class BaseMVPFragment<T extends IBasePresenter> extends BaseFrag
 
     @Inject
     protected T mPresenter;
+
     private ProgressDialog mProgressDialog;
 
     @Override

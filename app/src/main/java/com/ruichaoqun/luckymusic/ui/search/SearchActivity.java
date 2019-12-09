@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
@@ -31,9 +31,13 @@ public class SearchActivity extends BaseToolBarActivity {
 
 
     @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_search;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
     }
 
     private static Intent bringActivityToFrontIntent(Context context) {

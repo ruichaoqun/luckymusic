@@ -1,10 +1,12 @@
 package com.ruichaoqun.luckymusic.base.fragment;
 
 
-import androidx.annotation.NonNull;
+
+import android.support.annotation.NonNull;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
+import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -14,7 +16,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
  * @date :2019/6/26 10:00
  * description:下拉刷新BaseFragment
  */
-public abstract class BaseSwipeFragment<T extends BasePresenter> extends BaseLazyFragment<T> {
+public abstract class BaseSwipeFragment<T extends IBasePresenter> extends BaseLazyFragment<T> {
 
     protected RefreshLayout refreshLayout;
 

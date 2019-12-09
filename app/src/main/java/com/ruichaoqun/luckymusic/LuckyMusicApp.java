@@ -1,6 +1,8 @@
 package com.ruichaoqun.luckymusic;
 
 
+import com.ruichaoqun.luckymusic.di.DaggerAppComponent;
+
 import dagger.android.AndroidInjector;
 import dagger.android.support.DaggerApplication;
 

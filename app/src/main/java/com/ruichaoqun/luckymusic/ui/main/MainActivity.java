@@ -1,6 +1,13 @@
 package com.ruichaoqun.luckymusic.ui.main;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -8,19 +15,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
+import com.ruichaoqun.luckymusic.base.activity.BaseSwipeMoreTableActivity;
 import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
+import com.ruichaoqun.luckymusic.base.fragment.BaseSwipeMoreTableFragment;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
-import com.ruichaoqun.luckymusic.ui.main.discover.DiscoverFragment;
+import com.ruichaoqun.luckymusic.ui.main.discover.WanAndroidFragment;
 import com.ruichaoqun.luckymusic.ui.main.mine.MineFragment;
 import com.ruichaoqun.luckymusic.ui.main.video.VideoFragment;
 import com.ruichaoqun.luckymusic.ui.search.SearchActivity;
@@ -31,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseMVPActivity<MainPresenter> {
+public class MainActivity extends BaseMVPActivity<MainContact.Presenter> {
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
@@ -48,9 +50,13 @@ public class MainActivity extends BaseMVPActivity<MainPresenter> {
 
 
     @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         initToolBar();
         transparentStatusBar(true);
         initDraw();
@@ -94,7 +100,7 @@ public class MainActivity extends BaseMVPActivity<MainPresenter> {
     private void initViewPager() {
         mFragments = new ArrayList<>();
         mFragments.add(new MineFragment());
-        mFragments.add(new DiscoverFragment());
+        mFragments.add(new WanAndroidFragment());
         mFragments.add(new VideoFragment());
         mViewPager.setAdapter(new BaseFragmentStateAdapter(getSupportFragmentManager(),mFragments,getResources().getStringArray(R.array.main_titles)));
         mTabLayout.setupWithViewPager(mViewPager);
@@ -172,6 +178,5 @@ public class MainActivity extends BaseMVPActivity<MainPresenter> {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }

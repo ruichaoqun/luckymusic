@@ -2,8 +2,10 @@ package com.ruichaoqun.luckymusic.ui.main.discover;
 
 
 import android.support.v4.app.Fragment;
+import android.widget.TextView;
 
 
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.fragment.BaseSwipeMoreTableFragment;
 

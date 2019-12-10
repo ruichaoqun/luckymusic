@@ -1,6 +1,8 @@
 package com.ruichaoqun.luckymusic.data.bean;
 
-public class BannerItemBean {
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
+public class BannerItemBean implements MultiItemEntity {
     private String desc;
     private String id;
     private String imagePath;
@@ -63,5 +65,10 @@ public class BannerItemBean {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    @Override
+    public int getItemType() {
+        return HomePageItemType.BANNER;
     }
 }

@@ -2,6 +2,8 @@ package com.ruichaoqun.luckymusic.data.http;
 
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
+import com.ruichaoqun.luckymusic.data.bean.HomePageBean;
+import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 
 import java.util.List;
 
@@ -14,4 +16,8 @@ import io.reactivex.Observable;
  */
 public interface HttpDataSource {
     Observable<BaseResponse<List<BannerItemBean>>> getBannerList();
+
+    Observable<BaseResponse<HomePageBean>> getHomeList(int page);
+
+    Observable<BaseResponse<List<HomePageItemBean>>> getTopList();
 }

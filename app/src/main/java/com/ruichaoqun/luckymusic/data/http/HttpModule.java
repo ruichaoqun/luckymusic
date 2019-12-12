@@ -49,10 +49,12 @@ public class HttpModule {
     @Provides
     @Singleton
     public OkHttpClient.Builder provideOkHttpClientBuilder(){
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.level(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
                 .callTimeout(10_000, TimeUnit.MILLISECONDS)
                 .connectTimeout(10_000, TimeUnit.MILLISECONDS)
-                .addInterceptor(new HttpLoggingInterceptor());
+                .addInterceptor(logging);
     }
 
 

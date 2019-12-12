@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 
+import com.bumptech.glide.Glide;
 import com.ruichaoqun.luckymusic.R;
 
 import butterknife.BindView;
@@ -41,6 +43,8 @@ public class MineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImageView view1 = view.findViewById(R.id.iv_test);
+        Glide.with(this).load("https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png").into(view1);
     }
 
     @OnClick(R.id.layout_loacal)

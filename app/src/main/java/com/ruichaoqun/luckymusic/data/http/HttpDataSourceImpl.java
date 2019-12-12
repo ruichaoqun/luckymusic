@@ -2,6 +2,8 @@ package com.ruichaoqun.luckymusic.data.http;
 
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
+import com.ruichaoqun.luckymusic.data.bean.HomePageBean;
+import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 
 import java.util.List;
 
@@ -27,5 +29,15 @@ public class HttpDataSourceImpl implements HttpDataSource {
     @Override
     public Observable<BaseResponse<List<BannerItemBean>>> getBannerList() {
         return mApiService.getBannerList();
+    }
+
+    @Override
+    public Observable<BaseResponse<HomePageBean>> getHomeList(int page) {
+        return mApiService.getHomeList(page);
+    }
+
+    @Override
+    public Observable<BaseResponse<List<HomePageItemBean>>> getTopList() {
+        return mApiService.getTopList();
     }
 }

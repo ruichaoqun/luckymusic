@@ -70,6 +70,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     //广告轮播图
     implementation ('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
+        exclude group: 'com.android.support'
         transitive = true
     }
 

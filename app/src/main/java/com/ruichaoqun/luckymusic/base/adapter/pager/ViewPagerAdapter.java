@@ -42,7 +42,6 @@ public class ViewPagerAdapter<T extends View> extends PagerAdapter {
         container.addView(view);
         //add listeners here if necessary
         return view;
-
     }
 
     // PagerAdapter只缓存三张要显示的图片，如果滑动的图片超出了缓存的范围，就会调用这个方法，将图片销毁

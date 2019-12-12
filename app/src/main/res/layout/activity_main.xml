@@ -38,7 +38,8 @@
                     app:tabUnboundedRipple="true"
                     app:tabSelectedTextColor="@android:color/white"
                     app:tabTextColor="@color/color_66FFFFFF"
-                    app:tabMinWidth="100dp" />
+                    app:tabMinWidth="100dp"
+                    app:tabIndicatorHeight="0dp"/>
             </android.support.v7.widget.Toolbar>
 
             <FrameLayout

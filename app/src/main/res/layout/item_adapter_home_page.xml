@@ -5,14 +5,78 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_author"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="14sp"
+        android:textColor="@color/text_color_middle"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:text="测试"/>
+    <TextView
+        android:id="@+id/tag_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="置顶"
+        android:textSize="12sp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="@+id/tv_author"
+        app:layout_constraintLeft_toRightOf="@+id/tv_author"
+        android:layout_marginLeft="@dimen/dp_10"/>
+    <TextView
         android:id="@+id/tag_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:text="新"
         android:textSize="12sp"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="@+id/tv_author"
+        app:layout_constraintLeft_toRightOf="@+id/tag_top"
+        android:layout_marginLeft="@dimen/dp_10"/>
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_author"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:text="2019-12-12"
+        android:textSize="12sp"
+        android:textColor="@color/text_color_gray"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"
+        android:maxLines="2"
+        android:minLines="2"
+        android:text="测试测测试测试测试测试测试测试测试测试测试测试测试测试测试测试试"
+        app:layout_constraintTop_toBottomOf="@+id/tv_author"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textColor="@color/text_color_black"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_vertical_margin"/>
+    <TextView
+        android:id="@+id/tv_classify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/text_color_gray"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:text="是的"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+    <ImageView
+        android:id="@+id/iv_collect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_collect"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 </android.support.constraint.ConstraintLayout>

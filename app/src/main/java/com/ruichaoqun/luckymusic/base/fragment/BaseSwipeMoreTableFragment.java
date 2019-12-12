@@ -20,7 +20,7 @@ import java.util.Objects;
  * @date :2019/6/26 10:21
  * description:下拉刷新及上拉刷新需求fragment
  */
-public abstract class BaseSwipeMoreTableFragment<R,T extends IBasePresenter> extends BaseSwipeTableFragment<R,T> {
+public abstract class BaseSwipeMoreTableFragment<R,T extends IBasePresenter> extends BaseSwipeTableFragment<R,T>{
     //页数
     protected int page = 1;
     //每页数据量

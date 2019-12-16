@@ -2,15 +2,18 @@ package com.ruichaoqun.luckymusic.ui.main.discover;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.common.GlideApp;
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class BannerAdapter extends PagerAdapter {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_banner,null);
         ImageView imageView = view.findViewById(R.id.iv_banner);
         BannerItemBean itemBean = list.get(position);
-        Glide.with(imageView.getContext()).load(itemBean.getImagePath()).into(imageView);
+        GlideApp.with(imageView.getContext()).load(itemBean.getImagePath()).transform(new MultiTransformation<>(new CenterCrop(),new RoundedCorners(UiUtils.dp2px(10)))).into(imageView);
         container.addView(view);
         return view;
     }

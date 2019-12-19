@@ -1,13 +1,15 @@
 package com.ruichaoqun.luckymusic.ui.main;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+
+import com.google.android.material.internal.ScrimInsetsFrameLayout;
+import com.google.android.material.tabs.TabLayout;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +20,7 @@ import android.widget.ScrollView;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
-import com.ruichaoqun.luckymusic.base.activity.BaseSwipeMoreTableActivity;
 import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
-import com.ruichaoqun.luckymusic.base.fragment.BaseSwipeMoreTableFragment;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.ui.main.discover.WanAndroidFragment;
 import com.ruichaoqun.luckymusic.ui.main.mine.MineFragment;

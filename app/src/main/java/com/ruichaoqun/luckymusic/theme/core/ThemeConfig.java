@@ -1,7 +1,7 @@
 package com.ruichaoqun.luckymusic.theme.core;
 
 import android.graphics.Color;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;

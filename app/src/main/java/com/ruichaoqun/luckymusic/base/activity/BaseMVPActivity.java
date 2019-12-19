@@ -2,7 +2,7 @@ package com.ruichaoqun.luckymusic.base.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.Toast;
 
 

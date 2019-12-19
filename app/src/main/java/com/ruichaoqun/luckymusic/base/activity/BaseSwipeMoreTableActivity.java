@@ -1,12 +1,11 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 
 
-import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;

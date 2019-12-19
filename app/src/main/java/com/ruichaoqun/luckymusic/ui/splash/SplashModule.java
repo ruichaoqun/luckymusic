@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui.search;
+package com.ruichaoqun.luckymusic.ui.splash;
 
 import dagger.Module;
 

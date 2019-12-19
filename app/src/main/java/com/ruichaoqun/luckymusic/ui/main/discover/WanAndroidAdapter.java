@@ -1,9 +1,7 @@
 package com.ruichaoqun.luckymusic.ui.main.discover;
 
-import android.graphics.Color;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.Gravity;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -12,8 +10,6 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.data.bean.BannerListBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
-import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
-import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.tmall.ultraviewpager.UltraViewPager;
 
 import java.util.List;

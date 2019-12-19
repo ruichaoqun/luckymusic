@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ruichaoqun.luckymusic">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.REORDER_TASKS" />
-
     <application
         android:name=".LuckyMusicApp"
         android:allowBackup="true"
@@ -24,14 +21,12 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-
         <!--
          Main music service, provides media browsing and media playback services to
          consumers through MediaBrowserService and MediaSession. Consumers connect to it through
          MediaBrowser (for browsing) and MediaController (for playback control)
         -->
         <activity android:name=".ui.profile.ProfileActivity" />
-
         <activity android:name=".ui.search.SearchActivity" />
         <activity
             android:name=".ui.main.MainActivity"
@@ -49,10 +44,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
 
 </manifest>

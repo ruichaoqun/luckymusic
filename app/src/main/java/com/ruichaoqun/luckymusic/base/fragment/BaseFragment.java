@@ -1,20 +1,17 @@
 package com.ruichaoqun.luckymusic.base.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
-
-import javax.inject.Inject;
+import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import dagger.android.support.DaggerFragment;
 
 /**
  * @author Rui Chaoqun

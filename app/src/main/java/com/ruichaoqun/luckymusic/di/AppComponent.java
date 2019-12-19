@@ -6,13 +6,13 @@ import android.app.Application;
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.data.DataRepositoryModule;
 import com.ruichaoqun.luckymusic.data.http.HttpModule;
+import com.ruichaoqun.luckymusic.di.daggerandroidx.AndroidSupportInjectionModule;
 
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjector;
-import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
  * @author Rui Chaoqun

@@ -2,14 +2,11 @@ package com.ruichaoqun.luckymusic.base.fragment;
 
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 

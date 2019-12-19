@@ -1,10 +1,11 @@
 package com.ruichaoqun.luckymusic;
 
 
+
 import com.ruichaoqun.luckymusic.di.DaggerAppComponent;
+import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerApplication;
 
 import dagger.android.AndroidInjector;
-import dagger.android.support.DaggerApplication;
 
 /**
  * @author Rui Chaoqun

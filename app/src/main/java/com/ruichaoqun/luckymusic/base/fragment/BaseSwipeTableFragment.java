@@ -1,12 +1,11 @@
 package com.ruichaoqun.luckymusic.base.fragment;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 
 import java.util.ArrayList;

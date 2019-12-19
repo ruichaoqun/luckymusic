@@ -1,13 +1,14 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 
+
+import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerAppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {

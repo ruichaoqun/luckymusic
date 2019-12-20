@@ -38,4 +38,8 @@
     <string name="custom_color">自选颜色</string>
     <string name="night_mode">夜间模式</string>
     <string name="custom_skin">自定义皮肤</string>
+    <string name="notification_channel">当前播放</string>
+    <string name="notification_channel_description">显示当前在播放音乐</string>
+
+    <string name="word">词</string>
 </resources>

@@ -25,7 +25,7 @@ import java.util.List;
 public class MusicService extends MediaBrowserServiceCompat {
     private MediaSessionCompat mMediaSession;
     private MediaControllerCompat mMediaController;
-    NotificationBuilder  notificationBuilder:
+    NotificationBuilder  notificationBuilder;
 
 
 
@@ -41,7 +41,6 @@ public class MusicService extends MediaBrowserServiceCompat {
         setSessionToken(mMediaSession.getSessionToken());
 
         mMediaController = new MediaControllerCompat(this,mMediaSession);
-        mMediaController.registerCallback();
     }
 
     @Nullable
@@ -73,7 +72,6 @@ public class MusicService extends MediaBrowserServiceCompat {
             Notification notification = null;
             if (mMediaController.getMetadata() != null
                     && updatedState != PlaybackStateCompat.STATE_NONE) {
-                notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
             }
         }
 

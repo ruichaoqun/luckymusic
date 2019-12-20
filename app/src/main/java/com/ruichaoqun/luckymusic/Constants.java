@@ -15,4 +15,7 @@ public class Constants {
     public static final String SHARE_PREFERENCE = "wanandroid_preference";
 
     public static final String IS_FIRST_USE = "first_use";
+
+
+    public static final String INTENT_EXTRA_LIKE = "like";
 }

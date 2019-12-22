@@ -13,7 +13,15 @@ import android.support.v4.media.session.PlaybackStateCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
+
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.audio.AudioAttributes;
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 
 import java.util.List;
 
@@ -25,7 +33,16 @@ import java.util.List;
 public class MusicService extends MediaBrowserServiceCompat {
     private MediaSessionCompat mMediaSession;
     private MediaControllerCompat mMediaController;
-    NotificationBuilder  notificationBuilder;
+    private NotificationBuilder  mNotificationBuilder;
+    private NotificationManagerCompat mNotificationManager;
+
+
+    private SimpleExoPlayer mExoPlayer;
+    private MediaSessionConnector mMediaSessionConnector;
+    private AudioAttributes uAmpAudioAttributes = new AudioAttributes.Builder()
+            .setContentType(C.CONTENT_TYPE_MUSIC)
+            .setUsage(C.USAGE_MEDIA)
+            .build();
 
 
 
@@ -41,12 +58,20 @@ public class MusicService extends MediaBrowserServiceCompat {
         setSessionToken(mMediaSession.getSessionToken());
 
         mMediaController = new MediaControllerCompat(this,mMediaSession);
+        mNotificationBuilder = new NotificationBuilder(this);
+        mNotificationManager = NotificationManagerCompat.from(this);
+
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
+        mExoPlayer.setAudioAttributes(uAmpAudioAttributes,true);
+
+        mMediaSessionConnector = new MediaSessionConnector(mMediaSession);
+        mMediaSessionConnector.setPlayer(mExoPlayer);
     }
 
     @Nullable
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
-        return null;
+        return new BrowserRoot("MusicService",new Bundle());
     }
 
     @Override
@@ -54,6 +79,10 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     }
 
+    @Override
+    public void onSearch(@NonNull String query, Bundle extras, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
+        super.onSearch(query, extras, result);
+    }
 
     private class MediaControllerCallback extends MediaControllerCompat.Callback {
 
@@ -74,7 +103,5 @@ public class MusicService extends MediaBrowserServiceCompat {
                     && updatedState != PlaybackStateCompat.STATE_NONE) {
             }
         }
-
-
     }
 }

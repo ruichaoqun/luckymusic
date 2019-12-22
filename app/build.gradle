@@ -56,6 +56,11 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
 
+    api "androidx.media:media:$rootProject.androidx_media_version"
+    api "com.google.android.exoplayer:exoplayer-core:$rootProject.exoplayer_version"
+    api "com.google.android.exoplayer:exoplayer-ui:$rootProject.exoplayer_version"
+    api "com.google.android.exoplayer:extension-mediasession:$rootProject.exoplayer_version"
+
     //http
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'

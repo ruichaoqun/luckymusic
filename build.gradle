@@ -35,6 +35,8 @@ ext {
     buildToolsVersion = '26.0.2'
 
     // App dependencies
+    androidx_media_version = '1.0.1'
+    exoplayer_version = '2.10.0'
     supportLibraryVersion = '26.1.0'
     guavaVersion = '18.0'
     junitVersion = '4.12'

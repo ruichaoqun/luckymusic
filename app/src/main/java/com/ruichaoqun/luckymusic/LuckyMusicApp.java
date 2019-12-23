@@ -2,6 +2,8 @@ package com.ruichaoqun.luckymusic;
 
 
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.ruichaoqun.luckymusic.di.DaggerAppComponent;
 import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerApplication;
 
@@ -23,6 +25,7 @@ public class LuckyMusicApp extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     @Override

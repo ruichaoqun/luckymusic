@@ -22,8 +22,15 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.ruichaoqun.luckymusic.utils.LogUtils;
+import com.ruichaoqun.luckymusic.utils.RxUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author Rui Chaoqun
@@ -31,6 +38,8 @@ import java.util.List;
  * description:
  */
 public class MusicService extends MediaBrowserServiceCompat {
+    public String TAG = this.getClass().getSimpleName();
+
     private MediaSessionCompat mMediaSession;
     private MediaControllerCompat mMediaController;
     private NotificationBuilder  mNotificationBuilder;
@@ -76,7 +85,21 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     @Override
     public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
+        LogUtils.w(TAG,parentId);
+        List<MediaBrowserCompat.MediaItem> list = new ArrayList<>();
 
+        MediaMetadataCompat mediaMetadataCompat = new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, "545456").build();
+        list.add(new MediaBrowserCompat.MediaItem(mediaMetadataCompat.getDescription(),MediaBrowserCompat.MediaItem.FLAG_PLAYABLE));
+        result.detach();
+        Observable.timer(5*1000, TimeUnit.MILLISECONDS)
+                .compose(RxUtils.transformerThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        result.sendResult(list);
+                    }
+                });
     }
 
     @Override

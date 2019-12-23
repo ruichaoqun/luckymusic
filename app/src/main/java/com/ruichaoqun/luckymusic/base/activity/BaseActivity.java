@@ -12,6 +12,9 @@ import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {
+    protected String TAG = this.getClass().getSimpleName();
+
+
     protected CompositeDisposable mCompositeDisposable;
     private Unbinder mUnbinder;
 

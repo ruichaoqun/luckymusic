@@ -35,7 +35,7 @@ import java.util.Iterator;
 /**
  *
  */
-public abstract class BaseToolBarActivity extends BaseActivity {
+public abstract class BaseToolBarActivity extends BaseMediaBrowserActivity {
     public StatusBarHolderView statusBarView;
     protected Toolbar toolbar;
     private Menu menu;

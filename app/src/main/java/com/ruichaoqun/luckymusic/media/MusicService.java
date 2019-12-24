@@ -22,12 +22,17 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.ruichaoqun.luckymusic.data.DataRepository;
+import com.ruichaoqun.luckymusic.data.bean.SongBean;
+import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerMediaBrowserServiceCompat;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.utils.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -37,7 +42,7 @@ import io.reactivex.functions.Consumer;
  * @date :2019/12/19 19:14
  * description:
  */
-public class MusicService extends MediaBrowserServiceCompat {
+public class MusicService extends DaggerMediaBrowserServiceCompat {
     public String TAG = this.getClass().getSimpleName();
 
     private MediaSessionCompat mMediaSession;
@@ -52,6 +57,9 @@ public class MusicService extends MediaBrowserServiceCompat {
             .setContentType(C.CONTENT_TYPE_MUSIC)
             .setUsage(C.USAGE_MEDIA)
             .build();
+
+    @Inject
+    protected DataRepository dataRepository;
 
 
 
@@ -92,12 +100,12 @@ public class MusicService extends MediaBrowserServiceCompat {
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, "545456").build();
         list.add(new MediaBrowserCompat.MediaItem(mediaMetadataCompat.getDescription(),MediaBrowserCompat.MediaItem.FLAG_PLAYABLE));
         result.detach();
-        Observable.timer(5*1000, TimeUnit.MILLISECONDS)
+        dataRepository.getAllSongs()
                 .compose(RxUtils.transformerThread())
-                .subscribe(new Consumer<Long>() {
+                .subscribe(new Consumer<List<SongBean>>() {
                     @Override
-                    public void accept(Long aLong) throws Exception {
-                        result.sendResult(list);
+                    public void accept(List<SongBean> songBeans) throws Exception {
+                        result.sendResult();
                     }
                 });
     }

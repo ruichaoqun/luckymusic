@@ -4,12 +4,16 @@ import android.app.Application;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.support.v4.media.MediaBrowserCompat;
 import android.text.TextUtils;
+
+import androidx.collection.ArrayMap;
 
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,6 +36,17 @@ import static android.provider.MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
 @Singleton
 public class MediaDataSourceImpl implements MediaDataSource {
     private ContentResolver mContentResolver;
+    private List<MediaBrowserCompat.MediaItem> localSongs;
+    private List<MediaBrowserCompat.MediaItem> searchSongs;
+    private List<MediaBrowserCompat.MediaItem> artists;
+
+    private Map<Long,List<MediaBrowserCompat.MediaItem>> songsByArtist;
+
+
+
+
+
+
 
     @Inject
     public MediaDataSourceImpl(Application context) {

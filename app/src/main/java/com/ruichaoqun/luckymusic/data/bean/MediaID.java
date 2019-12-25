@@ -15,18 +15,18 @@ public class MediaID {
 
 
     private String type;
-    private String mediaId;
+    private long mediaId;
     private String caller = CALLER_SELF;
 
     public MediaID() {
     }
 
-    public MediaID(String type, String mediaId) {
+    public MediaID(String type, long mediaId) {
         this.type = type;
         this.mediaId = mediaId;
     }
 
-    public MediaID(String type, String mediaId, String caller) {
+    public MediaID(String type, long mediaId, String caller) {
         this.type = type;
         this.mediaId = mediaId;
         this.caller = caller;
@@ -36,10 +36,34 @@ public class MediaID {
         return TYPE + type + SEPARATOR + MEDIA_ID + mediaId + SEPARATOR + CALLER + caller;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(long mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getCaller() {
+        return caller;
+    }
+
+    public void setCaller(String caller) {
+        this.caller = caller;
+    }
+
     public static MediaID fromString(String s){
         MediaID mediaID = new MediaID();
         mediaID.type = s.substring(6, s.indexOf(SEPARATOR));
-        mediaID.mediaId = s.substring(s.indexOf(SEPARATOR) + 3 + 10, s.lastIndexOf(SEPARATOR));
+        mediaID.mediaId = Long.valueOf(s.substring(s.indexOf(SEPARATOR) + 3 + 10, s.lastIndexOf(SEPARATOR)));
         mediaID.caller = s.substring(s.lastIndexOf(SEPARATOR) + 3 + 8, s.length());
         return mediaID;
     }

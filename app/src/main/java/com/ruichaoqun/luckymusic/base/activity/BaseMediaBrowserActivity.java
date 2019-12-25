@@ -39,12 +39,33 @@ public abstract class BaseMediaBrowserActivity extends BaseActivity {
         }
     }
 
+
+
     public boolean isNeedMediaBrowser(){
         return false;
     }
 
+    public void onPlaybackStateChanged(PlaybackStateCompat state) {
 
-    public class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback{
+    }
+
+    public void onMetadataChanged(MediaMetadataCompat metadata) {
+
+    }
+
+    public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+
+    }
+
+    public void onSessionEvent(String event, Bundle extras) {
+
+    }
+
+    public void onSessionDestroyed() {
+
+    }
+
+    class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback{
         @Override
         public void onConnected() {
             try {
@@ -55,8 +76,6 @@ public abstract class BaseMediaBrowserActivity extends BaseActivity {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            mBrowserCompat.subscribe("123",mSubscriptionCallback);
-            mBrowserCompat.subscribe("456",mSubscriptionCallback);
         }
 
         @Override
@@ -73,28 +92,27 @@ public abstract class BaseMediaBrowserActivity extends BaseActivity {
     private class MediaControllerCallback extends MediaControllerCompat.Callback{
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
-            LogUtils.w(TAG,state.getState()+"");
+            BaseMediaBrowserActivity.this.onPlaybackStateChanged(state);
         }
 
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
-            LogUtils.w(TAG,metadata.getDescription().getDescription().toString());
+            BaseMediaBrowserActivity.this.onMetadataChanged(metadata);
         }
 
         @Override
         public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
-            super.onQueueChanged(queue);
+            BaseMediaBrowserActivity.this.onQueueChanged(queue);
         }
 
         @Override
         public void onSessionEvent(String event, Bundle extras) {
-            super.onSessionEvent(event, extras);
+            BaseMediaBrowserActivity.this.onSessionEvent(event,extras);
         }
 
         @Override
         public void onSessionDestroyed() {
-            super.onSessionDestroyed();
+            BaseMediaBrowserActivity.this.onSessionDestroyed();
         }
-
     }
 }

@@ -15,12 +15,12 @@ public class LogUtils {
         Logger.d(tag,object);
     }
 
-    public static void e(@Nullable String message){
-        Logger.e(message);
+    public static void e(String tag,@Nullable String message){
+        Log.e(tag,message);
     }
 
     public static void w(@Nullable String message){
-        Logger.w(message);
+//        Log.w(message);
     }
 
     public static void w(String tag,@Nullable String message){
@@ -31,8 +31,8 @@ public class LogUtils {
         Logger.v(message);
     }
 
-    public static void i(@Nullable String message){
-        Logger.i(message);
+    public static void i(String tag,@Nullable String message){
+        Log.i(tag,message);
     }
 
 

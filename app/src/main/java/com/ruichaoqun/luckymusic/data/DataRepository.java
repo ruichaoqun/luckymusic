@@ -1,6 +1,8 @@
 package com.ruichaoqun.luckymusic.data;
 
 
+import android.support.v4.media.MediaMetadataCompat;
+
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
 import com.ruichaoqun.luckymusic.data.bean.HomePageBean;
@@ -38,6 +40,10 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, DbD
         mMediaDataSource = mediaDataSource;
     }
 
+    public MediaDataSource getMediaDataSource() {
+        return mMediaDataSource;
+    }
+
     @Override
     public void isFirstUse() {
         mPreferenceDataSource.isFirstUse();
@@ -63,23 +69,24 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, DbD
         return mHttpDataSource.getTopList();
     }
 
+
     @Override
-    public Observable<List<SongBean>> getAllSongs() {
+    public List<MediaMetadataCompat> getAllSongsData() {
+        return mMediaDataSource.getAllSongsData();
+    }
+
+    @Override
+    public List<MediaMetadataCompat> getSearchSongsData() {
+        return mMediaDataSource.getSearchSongsData();
+    }
+
+    @Override
+    public Observable<List<MediaMetadataCompat>> getAllSongs() {
         return mMediaDataSource.getAllSongs();
     }
 
     @Override
-    public Observable<SongBean> getSongFromId(long id) {
-        return mMediaDataSource.getSongFromId(id);
-    }
-
-    @Override
-    public Observable<List<SongBean>> getSongsFromIds(List<Long> ids) {
-        return mMediaDataSource.getSongsFromIds(ids);
-    }
-
-    @Override
-    public Observable<List<SongBean>> searchSongs(String searchKey) {
+    public Observable<List<MediaMetadataCompat>> searchSongs(String searchKey) {
         return mMediaDataSource.searchSongs(searchKey);
     }
 }

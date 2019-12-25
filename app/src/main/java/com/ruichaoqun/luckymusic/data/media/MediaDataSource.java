@@ -1,5 +1,7 @@
 package com.ruichaoqun.luckymusic.data.media;
 
+import android.support.v4.media.MediaMetadataCompat;
+
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 
 import java.util.List;
@@ -7,11 +9,14 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public interface MediaDataSource {
-    Observable<List<SongBean>> getAllSongs();
+    List<MediaMetadataCompat> getAllSongsData();
 
-    Observable<SongBean> getSongFromId(long id);
+    List<MediaMetadataCompat> getSearchSongsData();
 
-    Observable<List<SongBean>> getSongsFromIds(List<Long> ids);
 
-    Observable<List<SongBean>> searchSongs(String searchKey);
+    Observable<List<MediaMetadataCompat>> getAllSongs();
+
+    Observable<List<MediaMetadataCompat>> searchSongs(String searchKey);
+
+
 }

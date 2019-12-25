@@ -5,6 +5,8 @@ import com.ruichaoqun.luckymusic.data.db.DbDataSource;
 import com.ruichaoqun.luckymusic.data.db.DbDataSourceImpl;
 import com.ruichaoqun.luckymusic.data.http.HttpDataSource;
 import com.ruichaoqun.luckymusic.data.http.HttpDataSourceImpl;
+import com.ruichaoqun.luckymusic.data.media.MediaDataSource;
+import com.ruichaoqun.luckymusic.data.media.MediaDataSourceImpl;
 import com.ruichaoqun.luckymusic.data.preference.PreferenceDataSource;
 import com.ruichaoqun.luckymusic.data.preference.PreferenceDataSourceImpl;
 
@@ -32,4 +34,8 @@ public abstract class DataRepositoryModule {
     @Singleton
     @Binds
     abstract DbDataSource bindDbDataSource(DbDataSourceImpl dataSource);
+
+    @Singleton
+    @Binds
+    abstract MediaDataSource bindMediaDataSource(MediaDataSourceImpl dataSource);
 }

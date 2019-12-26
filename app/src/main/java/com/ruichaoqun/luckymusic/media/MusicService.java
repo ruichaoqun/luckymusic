@@ -121,6 +121,7 @@ public class MusicService extends DaggerMediaBrowserServiceCompat {
                         })
                         .subscribe(mediaItems -> result.sendResult(mediaItems)));
                 break;
+                default:
         }
     }
 

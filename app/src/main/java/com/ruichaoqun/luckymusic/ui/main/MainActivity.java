@@ -137,6 +137,11 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> {
     }
 
     @Override
+    public boolean isNeedMediaBrowser() {
+        return true;
+    }
+
+    @Override
     public void initToolBar() {
         super.initToolBar();
         getSupportActionBar().setDisplayShowTitleEnabled(false);

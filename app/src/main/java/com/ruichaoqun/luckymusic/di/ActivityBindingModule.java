@@ -21,4 +21,7 @@ public abstract class ActivityBindingModule {
     @ContributesAndroidInjector(modules = TestModule.class)
     abstract TestActivity mTestActivity();
 
+    @ContributesAndroidInjector(modules = LocalMediaModule.class)
+    abstract LocalMediaActivity mLocalMediaActivity();
+
 }

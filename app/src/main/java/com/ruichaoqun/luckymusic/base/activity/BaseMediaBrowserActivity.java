@@ -18,8 +18,8 @@ import com.ruichaoqun.luckymusic.utils.LogUtils;
 import java.util.List;
 
 public abstract class BaseMediaBrowserActivity extends BaseActivity {
-    private MediaBrowserCompat mBrowserCompat;
-    private MediaControllerCompat mControllerCompat;
+    protected MediaBrowserCompat mBrowserCompat;
+    protected MediaControllerCompat mControllerCompat;
 
     private MediaBrowserCompat.SubscriptionCallback mSubscriptionCallback = new MediaBrowserCompat.SubscriptionCallback() {
         @Override
@@ -39,7 +39,11 @@ public abstract class BaseMediaBrowserActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
 
+    }
 
     public boolean isNeedMediaBrowser(){
         return false;

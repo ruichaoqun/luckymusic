@@ -8,18 +8,27 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
+import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
 import java.util.List;
 
-public abstract class BaseMediaBrowserActivity extends BaseActivity {
+public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity {
     protected MediaBrowserCompat mBrowserCompat;
     protected MediaControllerCompat mControllerCompat;
+
+
 
     private MediaBrowserCompat.SubscriptionCallback mSubscriptionCallback = new MediaBrowserCompat.SubscriptionCallback() {
         @Override
@@ -39,11 +48,7 @@ public abstract class BaseMediaBrowserActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
 
-    }
 
     public boolean isNeedMediaBrowser(){
         return false;

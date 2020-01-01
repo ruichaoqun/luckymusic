@@ -29,9 +29,5 @@
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
         <include layout="@layout/divider_match"/>
-        <ImageView
-            android:id="@+id/iv_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

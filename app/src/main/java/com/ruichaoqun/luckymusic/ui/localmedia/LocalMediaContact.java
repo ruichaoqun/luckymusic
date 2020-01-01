@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui;
+package com.ruichaoqun.luckymusic.ui.localmedia;
 
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBaseView;

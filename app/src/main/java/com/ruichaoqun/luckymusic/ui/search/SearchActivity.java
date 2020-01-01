@@ -35,9 +35,20 @@ public class SearchActivity extends BaseToolBarActivity {
         return R.layout.activity_search;
     }
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initParams() {
+
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     private static Intent bringActivityToFrontIntent(Context context) {

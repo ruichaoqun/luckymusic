@@ -27,7 +27,7 @@ public class MineFragment extends Fragment {
     LinearLayout layoutLoacal;
 
     public MineFragment() {
-        // Required empty public constructor
+
     }
 
 
@@ -43,8 +43,6 @@ public class MineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView view1 = view.findViewById(R.id.iv_test);
-        Glide.with(this).load("https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png").into(view1);
     }
 
     @OnClick(R.id.layout_loacal)

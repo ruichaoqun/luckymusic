@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -100,7 +101,9 @@ public class MediaDataSourceImpl implements MediaDataSource {
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, cursor.getString(cursor.getColumnIndex(TITLE)))
                     .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, cursor.getString(cursor.getColumnIndex(ALBUM)))
                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, cursor.getString(cursor.getColumnIndex(ARTIST)))
+                    .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, cursor.getString(cursor.getColumnIndex(ARTIST)))
                     .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, cursor.getLong(cursor.getColumnIndex(DURATION)))
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI,ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),cursor.getLong(cursor.getColumnIndex(ALBUM_ID))).toString())
                     .putLong(METADATA_KEY_LUCKY_FLAGS,  MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
             metadataCompatList.add(builder.build());
         }

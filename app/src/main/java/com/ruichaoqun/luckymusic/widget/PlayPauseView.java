@@ -29,8 +29,8 @@ public class PlayPauseView extends View {
     private Path path,path1,path2;//里面三角路径
     private int radius;//半径
     private int color = ContextCompat.getColor(getContext(), R.color.colorPrimary);
-    private int max;//最大播放进度
-    private int progress = 0;//播放进度
+    private long max;//最大播放进度
+    private long progress = 0;//播放进度
 
     public PlayPauseView(Context context) {
         this(context,null);
@@ -99,11 +99,11 @@ public class PlayPauseView extends View {
         }
     }
 
-    public void setMax(int max){
+    public void setMax(long max){
         this.max = max;
     }
 
-    public void setProgress(int progress){
+    public void setProgress(long progress){
         this.progress = progress;
         postInvalidate();
     }

@@ -1,5 +1,7 @@
 package com.ruichaoqun.luckymusic.di;
 
+import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaActivity;
+import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaModule;
 import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 import com.ruichaoqun.luckymusic.ui.main.MainModule;
 import com.ruichaoqun.luckymusic.ui.splash.SplashModule;

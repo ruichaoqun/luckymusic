@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.LocalMediaActivity" />
+        <activity android:name=".ui.localmedia.LocalMediaActivity" />
         <activity android:name=".ui.test.TestActivity"></activity>
         <!--
          Main music service, provides media browsing and media playback services to

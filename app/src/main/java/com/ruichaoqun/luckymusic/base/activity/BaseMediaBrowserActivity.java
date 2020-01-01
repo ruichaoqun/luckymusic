@@ -43,15 +43,13 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(isNeedMediaBrowser()){
-            mBrowserCompat = new MediaBrowserCompat(getApplicationContext(),new ComponentName(this, MusicService.class),new ConnectionCallback(),null);
+            mBrowserCompat = new MediaBrowserCompat(this,new ComponentName(this, MusicService.class),new ConnectionCallback(),null);
             mBrowserCompat.connect();
         }
     }
 
-
-
     public boolean isNeedMediaBrowser(){
-        return false;
+        return true;
     }
 
     public void onPlaybackStateChanged(PlaybackStateCompat state) {
@@ -74,6 +72,20 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity {
 
     }
 
+    public void onMediaServiceConnected(){
+
+    }
+
+    public void onMediaServiceFailed(){
+
+    }
+
+    public void onMediaServiceSuspended(){
+
+    }
+
+
+
     class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback{
         @Override
         public void onConnected() {
@@ -81,7 +93,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity {
                 mControllerCompat = new MediaControllerCompat(getApplicationContext(),mBrowserCompat.getSessionToken());
                 mControllerCompat.registerCallback(new MediaControllerCallback());
                 MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this,mControllerCompat);
-                LogUtils.w(TAG,"连接成功");
+                BaseMediaBrowserActivity.this.onMediaServiceConnected();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -89,12 +101,12 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity {
 
         @Override
         public void onConnectionFailed() {
-            super.onConnectionFailed();
+            BaseMediaBrowserActivity.this.onMediaServiceFailed();
         }
 
         @Override
         public void onConnectionSuspended() {
-            super.onConnectionSuspended();
+            BaseMediaBrowserActivity.this.onMediaServiceSuspended();
         }
     }
 

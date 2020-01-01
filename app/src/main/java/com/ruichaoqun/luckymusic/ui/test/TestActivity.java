@@ -17,7 +17,18 @@ public class TestActivity extends BaseMVPActivity<TestContact.Presenter> {
     }
 
     @Override
-    public boolean isNeedMediaBrowser() {
-        return true;
+    protected void initParams() {
+
     }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
 }

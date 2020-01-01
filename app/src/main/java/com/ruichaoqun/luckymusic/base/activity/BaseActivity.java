@@ -27,7 +27,25 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         setContentView(getLayoutResId());
         mUnbinder = ButterKnife.bind(this);
         mCompositeDisposable = new CompositeDisposable();
+        initParams();
+        initView();
+        initData();
     }
+
+    /**
+     * 传递参数解析
+     */
+    protected abstract void initParams();
+
+    /**
+     * 初始化布局
+     */
+    protected abstract void initView();
+
+    /**
+     * 加载以及初始化数据
+     */
+    protected abstract void initData();
 
     @Override
     protected void onDestroy() {

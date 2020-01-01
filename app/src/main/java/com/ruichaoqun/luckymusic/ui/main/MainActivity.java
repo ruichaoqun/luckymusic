@@ -55,19 +55,23 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initParams() {
+
+    }
+
+    @Override
+    protected void initView() {
         initToolBar();
         transparentStatusBar(true);
         initDraw();
         applyStatusBarCurrentTheme();
         applyToolbarCurrentTheme();
-        mTabLayout = findViewById(R.id.tab_layout);
-        mViewPager = findViewById(R.id.view_pager);
-        initViewPager();
     }
 
-
+    @Override
+    protected void initData() {
+        initViewPager();
+    }
 
     private void initDraw() {
         this.mDrawerIconDrawable = VectorDrawableCompat.create(getResources(), R.drawable.icon_menu, null);
@@ -136,10 +140,6 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> {
         return false;
     }
 
-    @Override
-    public boolean isNeedMediaBrowser() {
-        return true;
-    }
 
     @Override
     public void initToolBar() {

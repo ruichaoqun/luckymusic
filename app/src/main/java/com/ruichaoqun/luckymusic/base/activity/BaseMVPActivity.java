@@ -16,7 +16,7 @@ import javax.inject.Inject;
  * @date :2019/12/2 10:17
  * description:
  */
-public abstract class BaseMVPActivity<T extends IBasePresenter> extends BaseToolBarActivity implements IBaseView {
+public abstract class BaseMVPActivity<T extends IBasePresenter> extends BaseMiniPlayerBarActivity implements IBaseView {
     @Inject
     protected T mPresenter;
     private ProgressDialog mProgressDialog;

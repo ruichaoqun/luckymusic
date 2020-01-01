@@ -3,7 +3,6 @@ package com.ruichaoqun.luckymusic.media;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -14,6 +13,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.media.MediaBrowserServiceCompat;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -24,7 +24,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.ruichaoqun.luckymusic.data.DataRepository;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
-import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerMediaBrowserServiceCompat;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.utils.RxUtils;
 
@@ -40,7 +39,7 @@ import io.reactivex.disposables.CompositeDisposable;
  * @date :2019/12/19 19:14
  * description:
  */
-public class MusicService extends DaggerMediaBrowserServiceCompat {
+public class MusicService extends MediaBrowserServiceCompat {
     public static final String METADATA_KEY_LUCKY_FLAGS = "com.ruichaoqun.luckymusic.media.METADATA_KEY_UAMP_FLAGS";
 
     public String TAG = this.getClass().getSimpleName();

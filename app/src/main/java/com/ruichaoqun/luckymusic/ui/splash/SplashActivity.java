@@ -43,6 +43,21 @@ public class SplashActivity extends BaseActivity {
         mCompositeDisposable.add(subscribe);
     }
 
+    @Override
+    protected void initParams() {
+
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
     private void startAnimation() {
         startActivity(new Intent(SplashActivity.this, MainActivity.class));
         finish();

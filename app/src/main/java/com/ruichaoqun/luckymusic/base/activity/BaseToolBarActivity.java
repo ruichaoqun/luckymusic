@@ -99,7 +99,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     public void initToolBar() {
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (this.toolbar == null) {
-            this.toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.layour_toolbar, null);
+            this.toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.layout_toolbar, null);
         }
         setSupportActionBar(this.toolbar);
         //是否需要设置返回按钮

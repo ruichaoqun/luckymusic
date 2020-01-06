@@ -18,13 +18,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.media.MediaBrowserProvider;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
 import java.util.List;
 
-public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity {
+public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity implements MediaBrowserProvider {
     protected MediaBrowserCompat mBrowserCompat;
     protected MediaControllerCompat mControllerCompat;
 
@@ -84,7 +85,10 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity {
 
     }
 
-
+    @Override
+    public MediaBrowserCompat getMediaBrowser(){
+        return mBrowserCompat;
+    }
 
     class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback{
         @Override

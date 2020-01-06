@@ -1,8 +1,11 @@
 package com.ruichaoqun.luckymusic.ui.localmedia.fragment;
 
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaMetadataCompat;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -15,44 +18,38 @@ import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
 import com.ruichaoqun.luckymusic.ui.main.discover.BannerAdapter;
 import com.tmall.ultraviewpager.UltraViewPager;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class LocalMediaAdapter extends BaseQuickAdapter<MultiItemEntity, BaseViewHolder> {
-    /**
-     * Same as QuickAdapter#QuickAdapter(Context,int) but with
-     * some initialization data.
-     *
-     * @param data A new list is created out of this one to avoid mutable list
-     */
-    public LocalMediaAdapter(List data) {
-        super(data);
+public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.MediaItem, BaseViewHolder> {
+    private MediaBrowserCompat.MediaItem mMediaItem;
+
+    public LocalMediaAdapter(int layoutResId, @Nullable List<MediaBrowserCompat.MediaItem> data) {
+        super(layoutResId, data);
     }
 
-    @Override
-    protected void convert(@NonNull BaseViewHolder helper, MultiItemEntity item) {
-        switch (item.getItemType()) {
-            case HomePageItemType.BANNER:
-                BannerListBean bannerListBean = (BannerListBean) item;
-                helper.getView(R.id.iv_bac).setBackgroundColor(0xFFDB3F35);
 
-                UltraViewPager ultraViewPager = helper.getView(R.id.ultra_viewpager);
-                ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
-//                设定页面循环播放
-                ultraViewPager.setInfiniteLoop(true);
-                //设定页面自动切换  间隔2秒
-                ultraViewPager.setAutoScroll(2000);
-                BannerAdapter adapter = new BannerAdapter(bannerListBean.getList());
-                ultraViewPager.setAdapter(adapter);
-                ultraViewPager.refresh();
-                break;
-            case HomePageItemType.DATA:
-                HomePageItemBean itemBean = (HomePageItemBean) item;
-                helper.setText(R.id.tv_author, TextUtils.isEmpty(itemBean.getAuthor())?itemBean.getShareUser():itemBean.getAuthor());
-                helper.setText(R.id.tv_title,itemBean.getTitle());
-                helper.setText(R.id.tv_classify,itemBean.getSuperChapterName()+"·"+itemBean.getChapterName());
-                helper.setImageResource(R.id.iv_collect,itemBean.isCollect()?R.mipmap.ic_collect:R.mipmap.ic_uncollect);
-                break;
-            default:
+    @Override
+    protected void convert(@NonNull BaseViewHolder helper, MediaBrowserCompat.MediaItem item) {
+        helper.setText(R.id.tv_title,item.getDescription().getTitle());
+        helper.setText(R.id.tv_subTitle,item.getDescription().getSubtitle()+"-"+item.getDescription().getDescription());
+        helper.setVisible(R.id.iv_playing,mMediaItem == item);
+    }
+
+    public void setMediaItem(MediaBrowserCompat.MediaItem mediaItem) {
+        int position = -1;
+        int currentPosition = -1;
+        for (int i = 0; i < getData().size(); i++) {
+            if(mMediaItem == getData().get(i)){
+                position = i;
+            }
+            if(mediaItem == getData().get(i)){
+                currentPosition = i;
+            }
         }
+        if(position != -1){
+            notifyItemChanged(position);
+        }
+        notifyItemChanged(currentPosition);
     }
 }

@@ -15,6 +15,7 @@ import java.lang.annotation.RetentionPolicy;
         MediaDataType.TYPE_SEARCH})
 @Retention(RetentionPolicy.SOURCE)
 public @interface MediaDataType {
+
     String TYPE_SONG = "0";
 
     String TYPE_SEARCH = "1";

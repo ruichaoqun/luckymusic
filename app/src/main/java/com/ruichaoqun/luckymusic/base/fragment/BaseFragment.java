@@ -3,11 +3,14 @@ package com.ruichaoqun.luckymusic.base.fragment;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.support.v4.media.MediaBrowserCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.ruichaoqun.luckymusic.base.activity.BaseMediaBrowserActivity;
 import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerFragment;
 
 import butterknife.ButterKnife;
@@ -19,6 +22,7 @@ import butterknife.Unbinder;
  * description:
  */
 public abstract class BaseFragment extends DaggerFragment {
+    public static String TAG = BaseFragment.class.getSimpleName();
     private Unbinder mUnbinder;
 
 
@@ -42,6 +46,13 @@ public abstract class BaseFragment extends DaggerFragment {
     protected abstract void initView();
 
     protected abstract void initData();
+
+    public MediaBrowserCompat getMediaBrowser(){
+        if(isAdded() && getActivity() instanceof BaseMediaBrowserActivity){
+            return ((BaseMediaBrowserActivity)getActivity()).getMediaBrowser();
+        }
+        return null;
+    }
 
     @Override
     public void onDestroy() {

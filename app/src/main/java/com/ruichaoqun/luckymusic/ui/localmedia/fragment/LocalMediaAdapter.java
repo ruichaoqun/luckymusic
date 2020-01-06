@@ -1,0 +1,58 @@
+package com.ruichaoqun.luckymusic.ui.localmedia.fragment;
+
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.data.bean.BannerListBean;
+import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
+import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
+import com.ruichaoqun.luckymusic.ui.main.discover.BannerAdapter;
+import com.tmall.ultraviewpager.UltraViewPager;
+
+import java.util.List;
+
+public class LocalMediaAdapter extends BaseQuickAdapter<MultiItemEntity, BaseViewHolder> {
+    /**
+     * Same as QuickAdapter#QuickAdapter(Context,int) but with
+     * some initialization data.
+     *
+     * @param data A new list is created out of this one to avoid mutable list
+     */
+    public LocalMediaAdapter(List data) {
+        super(data);
+    }
+
+    @Override
+    protected void convert(@NonNull BaseViewHolder helper, MultiItemEntity item) {
+        switch (item.getItemType()) {
+            case HomePageItemType.BANNER:
+                BannerListBean bannerListBean = (BannerListBean) item;
+                helper.getView(R.id.iv_bac).setBackgroundColor(0xFFDB3F35);
+
+                UltraViewPager ultraViewPager = helper.getView(R.id.ultra_viewpager);
+                ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
+//                设定页面循环播放
+                ultraViewPager.setInfiniteLoop(true);
+                //设定页面自动切换  间隔2秒
+                ultraViewPager.setAutoScroll(2000);
+                BannerAdapter adapter = new BannerAdapter(bannerListBean.getList());
+                ultraViewPager.setAdapter(adapter);
+                ultraViewPager.refresh();
+                break;
+            case HomePageItemType.DATA:
+                HomePageItemBean itemBean = (HomePageItemBean) item;
+                helper.setText(R.id.tv_author, TextUtils.isEmpty(itemBean.getAuthor())?itemBean.getShareUser():itemBean.getAuthor());
+                helper.setText(R.id.tv_title,itemBean.getTitle());
+                helper.setText(R.id.tv_classify,itemBean.getSuperChapterName()+"·"+itemBean.getChapterName());
+                helper.setImageResource(R.id.iv_collect,itemBean.isCollect()?R.mipmap.ic_collect:R.mipmap.ic_uncollect);
+                break;
+            default:
+        }
+    }
+}

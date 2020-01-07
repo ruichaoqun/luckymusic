@@ -97,7 +97,7 @@ public class MediaDataSourceImpl implements MediaDataSource {
         List<MediaMetadataCompat> metadataCompatList = new ArrayList<>();
         while (cursor.moveToNext()) {
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder()
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, new MediaID(MediaDataType.TYPE_SONG + "", cursor.getLong(cursor.getColumnIndex(_ID))).asString())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, new MediaID(MediaDataType.TYPE_SONG , cursor.getLong(cursor.getColumnIndex(_ID))).asString())
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, cursor.getString(cursor.getColumnIndex(TITLE)))
                     .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, cursor.getString(cursor.getColumnIndex(TITLE)))
                     .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, cursor.getString(cursor.getColumnIndex(ALBUM)))

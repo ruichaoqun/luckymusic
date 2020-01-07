@@ -16,9 +16,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.media.MediaBrowserProvider;
+import com.ruichaoqun.luckymusic.media.MediaControllerInterface;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
@@ -28,17 +31,6 @@ import java.util.List;
 public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity implements MediaBrowserProvider {
     protected MediaBrowserCompat mBrowserCompat;
     protected MediaControllerCompat mControllerCompat;
-
-
-
-    private MediaBrowserCompat.SubscriptionCallback mSubscriptionCallback = new MediaBrowserCompat.SubscriptionCallback() {
-        @Override
-        public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowserCompat.MediaItem> children) {
-            LogUtils.w(TAG,parentId);
-            LogUtils.w(TAG,children.size()+"");
-        }
-    };
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,23 +46,25 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     }
 
     public void onPlaybackStateChanged(PlaybackStateCompat state) {
-
+        LogUtils.w(TAG,"onPlaybackStateChanged"+state.getState()+"");
+        FragmentManager manager = getSupportFragmentManager();
+        List<Fragment> fragments = manager.getFragments();
+        for (int i = 0; i < fragments.size(); i++) {
+            if(fragments.get(i) instanceof MediaControllerInterface){
+                ((MediaControllerInterface)fragments.get(i)).onPlaybackStateChanged(state);
+            }
+        }
     }
 
     public void onMetadataChanged(MediaMetadataCompat metadata) {
-
-    }
-
-    public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
-
-    }
-
-    public void onSessionEvent(String event, Bundle extras) {
-
-    }
-
-    public void onSessionDestroyed() {
-
+        LogUtils.w(TAG,"onMetadataChanged"+metadata.getDescription().getMediaId());
+        FragmentManager manager = getSupportFragmentManager();
+        List<Fragment> fragments = manager.getFragments();
+        for (int i = 0; i < fragments.size(); i++) {
+            if(fragments.get(i) instanceof MediaControllerInterface){
+                ((MediaControllerInterface)fragments.get(i)).onMetadataChanged(metadata);
+            }
+        }
     }
 
     public void onMediaServiceConnected(){
@@ -123,21 +117,6 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             BaseMediaBrowserActivity.this.onMetadataChanged(metadata);
-        }
-
-        @Override
-        public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
-            BaseMediaBrowserActivity.this.onQueueChanged(queue);
-        }
-
-        @Override
-        public void onSessionEvent(String event, Bundle extras) {
-            BaseMediaBrowserActivity.this.onSessionEvent(event,extras);
-        }
-
-        @Override
-        public void onSessionDestroyed() {
-            BaseMediaBrowserActivity.this.onSessionDestroyed();
         }
     }
 }

@@ -26,6 +26,7 @@ import dagger.android.AndroidInjector;
         ApplicationModule.class,
         ActivityBindingModule.class,
         FragmentBindingModule.class,
+        ServiceBindingModule.class,
         AndroidSupportInjectionModule.class})
 public interface AppComponent extends AndroidInjector<LuckyMusicApp> {
     @Component.Builder

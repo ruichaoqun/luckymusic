@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +48,6 @@ public class MineFragment extends Fragment {
 
     @OnClick(R.id.layout_loacal)
     public void onViewClicked() {
-
+        LocalMediaActivity.launchFrom(getActivity());
     }
 }

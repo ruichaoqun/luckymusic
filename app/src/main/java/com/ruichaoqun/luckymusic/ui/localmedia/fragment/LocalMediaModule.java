@@ -7,5 +7,5 @@ import dagger.Module;
 public abstract class LocalMediaModule {
 
     @Binds
-    abstract LocalMediaContact.Presenter WanAndroidPresenter(LocalMediaPresenter presenter);
+    abstract LocalMediaContact.Presenter localMediaPresenter(LocalMediaPresenter presenter);
 }

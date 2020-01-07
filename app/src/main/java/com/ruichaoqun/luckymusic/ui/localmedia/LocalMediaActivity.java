@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
+import com.ruichaoqun.luckymusic.ui.localmedia.fragment.LocalMediaFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,6 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
     @Override
     protected void initView() {
         setTitle(R.string.local_music);
-        mFragments = new ArrayList<>();
         mStrings = getResources().getStringArray(R.array.local_music_tab);
     }
 
@@ -57,7 +57,12 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
 
     }
 
-
+    @Override
+    public void onMediaServiceConnected() {
+        LocalMediaPagerAdapter adapter = new LocalMediaPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
     class LocalMediaPagerAdapter extends FragmentPagerAdapter {
         public LocalMediaPagerAdapter(FragmentManager fragmentManager) {
@@ -68,13 +73,9 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean(a.f28640a, true);
-                    bundle.putSerializable(a.f28641b, (Serializable) ScanMusicActivity.this.P);
-                    return Fragment.instantiate(ScanMusicActivity.this, br.class.getName(), bundle);
+                    return Fragment.instantiate(LocalMediaActivity.this, LocalMediaFragment.class.getName(), null);
                 default:
-                    Fragment instantiate = Fragment.instantiate(ScanMusicActivity.this, bs.class.getName(), null);
-                    ((bs) instantiate).b(i);
+                    Fragment instantiate = Fragment.instantiate(LocalMediaActivity.this, LocalMediaFragment.class.getName(), null);
                     return instantiate;
             }
         }

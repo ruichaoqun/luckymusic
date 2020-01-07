@@ -1,5 +1,8 @@
 package com.ruichaoqun.luckymusic.data.bean;
 
+import android.support.v4.media.MediaMetadataCompat;
+import android.text.TextUtils;
+
 /**
  * @author Rui Chaoqun
  * @date :2019/12/25 11:44
@@ -66,5 +69,16 @@ public class MediaID {
         mediaID.mediaId = Long.valueOf(s.substring(s.indexOf(SEPARATOR) + 3 + 10, s.lastIndexOf(SEPARATOR)));
         mediaID.caller = s.substring(s.lastIndexOf(SEPARATOR) + 3 + 8, s.length());
         return mediaID;
+    }
+
+    public static MediaID  fromMediaMetaData(MediaMetadataCompat metadataCompat){
+        if(metadataCompat == null){
+            return null;
+        }
+        String id = metadataCompat.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
+        if(TextUtils.isEmpty(id)){
+            return null;
+        }
+        return MediaID.fromString(id);
     }
 }

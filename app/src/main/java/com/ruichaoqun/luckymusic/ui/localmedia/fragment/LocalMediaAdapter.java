@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.MediaItem, BaseViewHolder> {
-    private MediaBrowserCompat.MediaItem mMediaItem;
+    private int currentPosition = -1;
 
     public LocalMediaAdapter(int layoutResId, @Nullable List<MediaBrowserCompat.MediaItem> data) {
         super(layoutResId, data);
@@ -33,23 +33,26 @@ public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.Media
     protected void convert(@NonNull BaseViewHolder helper, MediaBrowserCompat.MediaItem item) {
         helper.setText(R.id.tv_title,item.getDescription().getTitle());
         helper.setText(R.id.tv_subTitle,item.getDescription().getSubtitle()+"-"+item.getDescription().getDescription());
-        helper.setVisible(R.id.iv_playing,mMediaItem == item);
+        if(currentPosition != -1){
+            helper.setVisible(R.id.iv_playing,getData().get(currentPosition) == item);
+        }
     }
 
-    public void setMediaItem(MediaBrowserCompat.MediaItem mediaItem) {
-        int position = -1;
-        int currentPosition = -1;
-        for (int i = 0; i < getData().size(); i++) {
-            if(mMediaItem == getData().get(i)){
-                position = i;
-            }
-            if(mediaItem == getData().get(i)){
-                currentPosition = i;
-            }
-        }
-        if(position != -1){
-            notifyItemChanged(position);
+    public void setMediaItem(int position) {
+        int temp = currentPosition;
+        currentPosition = position;
+        if(temp != -1){
+            notifyItemChanged(temp);
         }
         notifyItemChanged(currentPosition);
+    }
+
+    public void setMediaWithId(String id){
+        for (int i = 0; i < getData().size(); i++) {
+            if(TextUtils.equals(getData().get(i).getMediaId(),id)){
+                setMediaItem(i);
+                break;
+            }
+        }
     }
 }

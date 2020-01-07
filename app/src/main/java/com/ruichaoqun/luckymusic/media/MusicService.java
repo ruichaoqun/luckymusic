@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
+import dagger.android.DaggerService;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
@@ -64,6 +66,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     @Override
     public void onCreate() {
+        AndroidInjection.inject(this);
         super.onCreate();
         Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);

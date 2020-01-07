@@ -7,5 +7,5 @@ import dagger.Module;
 public abstract class WanAndroidModule {
 
     @Binds
-    abstract WanAndroidContact.Presenter WanAndroidPresenter(WanAndroidPresenter presenter);
+    abstract WanAndroidContact.Presenter wanAndroidPresenter(WanAndroidPresenter presenter);
 }

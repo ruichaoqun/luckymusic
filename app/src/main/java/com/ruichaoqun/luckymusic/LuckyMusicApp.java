@@ -2,10 +2,15 @@ package com.ruichaoqun.luckymusic;
 
 
 
+import android.content.Context;
+
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.ruichaoqun.luckymusic.common.ServiceFacade;
 import com.ruichaoqun.luckymusic.di.DaggerAppComponent;
 import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerApplication;
+import com.ruichaoqun.luckymusic.service.ServiceConst;
+import com.ruichaoqun.luckymusic.service.impl.ThemeServiceImpl;
 
 import dagger.android.AndroidInjector;
 
@@ -19,6 +24,12 @@ public class LuckyMusicApp extends DaggerApplication {
 
     public static LuckyMusicApp getInstance() {
         return sInstance;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        ServiceFacade.put(ServiceConst.THEME_SERVICE,new ThemeServiceImpl());
     }
 
     @Override

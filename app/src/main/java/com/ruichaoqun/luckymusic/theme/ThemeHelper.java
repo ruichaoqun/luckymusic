@@ -1,18 +1,26 @@
 package com.ruichaoqun.luckymusic.theme;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.graphics.drawable.DrawableWrapper;
 import androidx.core.graphics.ColorUtils;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +32,7 @@ import android.widget.TextView;
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.service.impl.ThemeServiceImpl;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
 import com.ruichaoqun.luckymusic.utils.ReflectUtils;
@@ -162,6 +171,54 @@ public class ThemeHelper {
         }
     }
 
+    public static Drawable getBgSelectorWithDrawalbe(Context context, Drawable drawable) {
+        return getRippleDrawable(context, DrawableUtils.getStateListDrawable(drawable, (Drawable) new LayerDrawable(new Drawable[]{drawable, new PaddingLeftBackgroundDrawable(-1, false, true)}), (Drawable) null, (Drawable) null, (Drawable) null));
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    public static Drawable wrapTopOrBottomLineBackground(final Drawable drawable, final boolean z) {
+        return ThemeService.getInstance().isGeneralRuleTheme() ? new DrawableWrapper(drawable) {
+            private MyConstantState mMyConstantState;
+            private Paint mPaint = new Paint();
+
+            public void draw(@NonNull Canvas canvas) {
+                drawable.draw(canvas);
+                if (this.mPaint.getStrokeWidth() == 0.0f) {
+                    this.mPaint.setColor(0x19000000);
+                    this.mPaint.setStrokeWidth((float) LuckyMusicApp.getInstance().getResources().getDimensionPixelOffset(R.dimen.line_width));
+                }
+                float height = z ? 0.0f : ((float) getBounds().height()) - this.mPaint.getStrokeWidth();
+                canvas.drawLine(0.0f, height, (float) getBounds().width(), height, this.mPaint);
+            }
+
+            @Nullable
+            public Drawable.ConstantState getConstantState() {
+                if (this.mMyConstantState == null) {
+                    this.mMyConstantState = new MyConstantState();
+                }
+                return this.mMyConstantState;
+            }
+
+            /* renamed from: com.netease.cloudmusic.theme.core.ThemeHelper$1$MyConstantState */
+            /* compiled from: ProGuard */
+            class MyConstantState extends Drawable.ConstantState {
+                MyConstantState() {
+                }
+
+                @NonNull
+                public Drawable newDrawable() {
+                    return ThemeHelper.wrapTopOrBottomLineBackground(drawable, z);
+                }
+
+                public int getChangingConfigurations() {
+                    return 0;
+                }
+            }
+        } : drawable;
+    }
+
+
 
     public static void expandSearchView(SearchView searchView) {
         if (searchView != null) {
@@ -178,9 +235,11 @@ public class ThemeHelper {
         view.setBackgroundDrawable(getBgSelector(view.getContext(), padding, forCard));
     }
 
-    @TargetApi(21)
     public static Drawable getRippleDrawable(Context context, Drawable drawable) {
         boolean isNightTheme = ThemeService.getInstance().isNightTheme();
+        if(!CommonUtils.versionAbove21()){
+            return drawable;
+        }
         return new RippleDrawable(ColorStateList.valueOf(context.getResources().getColor(isNightTheme ? R.color.theme_ripple_dark : R.color.theme_ripple_light)), drawable, new ColorDrawable(context.getResources().getColor(isNightTheme ? R.color.theme_ripple_mask_dark : R.color.theme_ripple_mask_light)));
     }
 

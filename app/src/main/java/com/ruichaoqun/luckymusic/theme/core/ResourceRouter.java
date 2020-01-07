@@ -1,23 +1,26 @@
 package com.ruichaoqun.luckymusic.theme.core;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableWrapper;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.graphics.drawable.DrawableWrapper;
+
 import android.util.SparseIntArray;
 
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.ThemeInfo;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
@@ -132,6 +135,8 @@ public class ResourceRouter {
         this.mCacheStatusBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"), Color.parseColor("#D33A31")});
         this.mCacheToolBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"),Color.parseColor("#DB3F35")});
         this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.t_dialogBackground));
+        this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(0XF9FFFFFF));
+        this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.mini_player_bar_height)));
     }
 
     @MainThread
@@ -322,7 +327,7 @@ public class ResourceRouter {
     }
 
     public boolean isGeneralRuleTheme() {
-        return false;
+        return isWhiteTheme() || isRedTheme() || isCustomColorTheme();
     }
 
     public int getThemeId() {
@@ -391,7 +396,10 @@ public class ResourceRouter {
     }
 
     public Drawable getCachePlayerDrawable() {
-        return null;
+        if (this.mCachePlayerDrawable == null) {
+            buildCache();
+        }
+        return ThemeHelper.wrapTopOrBottomLineBackground(this.mCachePlayerDrawable.getConstantState().newDrawable(), true);
     }
 
     public Drawable getCacheBgBlurDrawable() {
@@ -532,7 +540,7 @@ public class ResourceRouter {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("RestrictedApi")
     class BannerBgDrawable extends DrawableWrapper {
         private MyConstantState mMyConstantState;
 
@@ -782,5 +790,51 @@ public class ResourceRouter {
 //        }
 //    }
 //
+
+    @SuppressLint("RestrictedApi")
+    class SizeExplicitDrawable extends DrawableWrapper {
+        /* access modifiers changed from: private */
+        public int mHeight;
+        private MyConstantState mMyConstantState;
+        /* access modifiers changed from: private */
+        public int mWidth;
+
+        public SizeExplicitDrawable(Drawable drawable, int i, int i2) {
+            super(drawable);
+            this.mWidth = i;
+            this.mHeight = i2;
+        }
+
+        public int getIntrinsicWidth() {
+            return this.mWidth;
+        }
+
+        public int getIntrinsicHeight() {
+            return this.mHeight;
+        }
+
+        @Nullable
+        public Drawable.ConstantState getConstantState() {
+            if (this.mMyConstantState == null) {
+                this.mMyConstantState = new MyConstantState();
+            }
+            return this.mMyConstantState;
+        }
+
+        /* compiled from: ProGuard */
+        class MyConstantState extends Drawable.ConstantState {
+            MyConstantState() {
+            }
+
+            @NonNull
+            public Drawable newDrawable() {
+                return new SizeExplicitDrawable(getWrappedDrawable().getConstantState().newDrawable(), SizeExplicitDrawable.this.mWidth, SizeExplicitDrawable.this.mHeight);
+            }
+
+            public int getChangingConfigurations() {
+                return 0;
+            }
+        }
+    }
 
 }

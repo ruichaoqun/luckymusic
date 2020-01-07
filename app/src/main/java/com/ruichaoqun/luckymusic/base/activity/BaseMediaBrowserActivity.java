@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.common.WatchMiniPlayBarListener;
 import com.ruichaoqun.luckymusic.media.MediaBrowserProvider;
 import com.ruichaoqun.luckymusic.media.MediaControllerInterface;
 import com.ruichaoqun.luckymusic.media.MusicService;

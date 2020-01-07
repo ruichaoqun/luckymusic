@@ -206,6 +206,25 @@ public class DrawableUtils {
         return getPressdrawableWithAlpha((BitmapDrawable) LuckyMusicApp.sInstance.getResources().getDrawable(drawableRes), pressAlpha, notEnableAlpha);
     }
 
+    public static StateListDrawable getStateListDrawable(Drawable drawable, Drawable pressDrawable, Drawable selectDrawable, Drawable pressAndSelectDrawable, Drawable enableDrawable) {
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        if (pressAndSelectDrawable != null) {
+            stateListDrawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_selected, android.R.attr.state_pressed}, pressAndSelectDrawable);
+        }
+        if (selectDrawable != null) {
+            stateListDrawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_selected}, selectDrawable);
+        }
+        if (pressDrawable != null) {
+            stateListDrawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_pressed}, pressDrawable);
+        }
+        if (enableDrawable != null) {
+            stateListDrawable.addState(new int[]{-android.R.attr.state_enabled,}, enableDrawable);
+        }
+        stateListDrawable.addState(new int[0], drawable);
+        return stateListDrawable;
+    }
+
+
     public static StateListDrawable getPressdrawableWithAlpha(Drawable drawable, int pressAlpha, int notEnableAlpha) {
         Drawable drawable2;
         Drawable drawable3;

@@ -1,8 +1,12 @@
 package com.ruichaoqun.luckymusic.ui.localmedia.fragment;
 
+import android.content.Context;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +20,7 @@ import com.ruichaoqun.luckymusic.data.bean.BannerListBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
 import com.ruichaoqun.luckymusic.ui.main.discover.BannerAdapter;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.tmall.ultraviewpager.UltraViewPager;
 
 import java.util.ArrayList;
@@ -23,6 +28,7 @@ import java.util.List;
 
 public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.MediaItem, BaseViewHolder> {
     private int currentPosition = -1;
+    private View miniPlayerBarStub;
 
     public LocalMediaAdapter(int layoutResId, @Nullable List<MediaBrowserCompat.MediaItem> data) {
         super(layoutResId, data);
@@ -53,6 +59,21 @@ public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.Media
                 setMediaItem(i);
                 break;
             }
+        }
+    }
+
+    public void showMiniPlayerBarStub(Context context,boolean show){
+        if(miniPlayerBarStub == null){
+            miniPlayerBarStub = new View(context);
+            addFooterView(miniPlayerBarStub);
+        }
+        int height = UiUtils.dp2px(49);
+        if(!show){
+            miniPlayerBarStub.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+            return;
+        }
+        if(show && (this.miniPlayerBarStub.getLayoutParams() == null || this.miniPlayerBarStub.getLayoutParams().height != height)){
+            miniPlayerBarStub.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height));
         }
     }
 }

@@ -90,6 +90,7 @@ public class LocalMediaFragment extends BaseLazyFragment<LocalMediaPresenter> im
             MediaID id = MediaID.fromMediaMetaData(metadata);
             if (id != null && TextUtils.equals(id.getType(),MediaDataType.TYPE_SONG)) {
                 mLocalMediaAdapter.setMediaWithId(id.asString());
+                mLocalMediaAdapter.showMiniPlayerBarStub(getActivity(),true);
             }
         }
     }

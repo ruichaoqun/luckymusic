@@ -9,6 +9,7 @@ import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.GlideApp;
+import com.ruichaoqun.luckymusic.common.WatchMiniPlayBarListener;
+import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
 import java.util.List;
@@ -37,7 +40,7 @@ import static com.ruichaoqun.luckymusic.media.MusicService.METADATA_KEY_LUCKY_FL
  * @date :2019/12/30 19:43
  * description:
  */
-public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity {
+public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity implements WatchMiniPlayBarListener {
     private static final long POSITION_UPDATE_INTERVAL_MILLIS = 100L;
 
     private ViewGroup mMusicContainer;
@@ -114,9 +117,14 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
                 }
             }
         });
+        applyMiniPlaybarCurrentTheme();
     }
 
-    private void addChildContentView(int layoutResID, int index) {
+    public void applyMiniPlaybarCurrentTheme() {
+        this.mPlayBarContainer.setBackgroundDrawable(ResourceRouter.getInstance().getCachePlayerDrawable());
+    }
+
+        private void addChildContentView(int layoutResID, int index) {
         addChildContentView(getLayoutInflater().inflate(layoutResID, null), index);
 
     }
@@ -136,6 +144,15 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     }
 
     /**
+     * 显示或隐藏底部音乐栏
+     * @param show
+     */
+    @Override
+    public void showMiniPlayerBarStub(boolean show){
+        mPlayBarContainer.setVisibility(show?View.VISIBLE:View.GONE);
+    }
+
+    /**
      * 当前资源改变
      *
      * @param metadata
@@ -143,12 +160,13 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     @Override
     public void onMetadataChanged(MediaMetadataCompat metadata) {
         super.onMetadataChanged(metadata);
-        if (metadata.getLong(METADATA_KEY_LUCKY_FLAGS) == MediaBrowserCompat.MediaItem.FLAG_PLAYABLE) {
+        if (!TextUtils.isEmpty(metadata.getDescription().getMediaId())) {
             this.mPlayBarTitle.setText(metadata.getDescription().getTitle());
             this.mPlayBarArtist.setText(metadata.getDescription().getSubtitle());
-            GlideApp.with(this).load(Uri.parse(metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI))).transform(new CenterCrop()).transition(DrawableTransitionOptions.withCrossFade()).into(this.mPlayBarCover);
+            GlideApp.with(this).load(Uri.parse(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI))).transform(new CircleCrop()).transition(DrawableTransitionOptions.withCrossFade()).into(this.mPlayBarCover);
             this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
             this.mPlayPauseView.setMax(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
+            showMiniPlayerBarStub(true);
         }
     }
 

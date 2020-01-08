@@ -57,11 +57,11 @@
             android:scaleType="center"
             android:layout_alignParentRight="true" />
 
-        <View
+        <ImageView
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="#AAA"
+            android:background="#AAAAAA"
             android:layout_below="@+id/tv_hint"
             android:layout_marginTop="20dp"/>
 

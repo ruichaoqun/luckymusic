@@ -56,7 +56,6 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
 
     @Override
     public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
         if (isNeedMediaBrowser() && isNeedMiniPlayerBar()) {
             if (needToolBar()) {
                 super.setContentView(layoutResID);
@@ -65,6 +64,8 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
                 addChildContentView(layoutResID, 0);
             }
             findViews();
+        }else{
+            super.setContentView(layoutResID);
         }
     }
 
@@ -79,9 +80,9 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
             super.setContentView(getLayoutInflater().inflate(R.layout.activity_mini_playerbar, (ViewGroup) null));
             this.toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             if (this.toolbar == null) {
-                this.toolbar = (Toolbar) ((ViewStub) findViewById(R.id.view_stub)).inflate();
+                ((ViewStub) findViewById(R.id.view_stub)).inflate();
             }
-            setSupportActionBar(this.toolbar);
+            initToolBar();
             addChildContentView(view, 1);
         } else {
             super.doSetContentViewWithToolBar(view);

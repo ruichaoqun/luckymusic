@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/mini_player_bar_height"
     android:layout_gravity="bottom"
-    android:visibility="visible">
+    android:visibility="gone">
     <ImageView
         android:id="@+id/cover"
         android:layout_width="40dp"

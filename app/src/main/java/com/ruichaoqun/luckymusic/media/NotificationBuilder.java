@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -39,7 +40,7 @@ public class NotificationBuilder {
         mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    private Notification buildNotification(MediaSessionCompat.Token token) throws RemoteException {
+    public Notification buildNotification(MediaSessionCompat.Token token) throws RemoteException {
         if (shouldCreateNowPlayingChannel()) {
             createNowPlayingChannel();
         }
@@ -52,7 +53,7 @@ public class NotificationBuilder {
         RemoteViews contentView = new RemoteViews(mContext.getPackageName(), R.layout.layout_notification_content_view);
         contentView.setTextViewText(R.id.tv_title, description.getTitle());
         contentView.setTextViewText(R.id.tv_hint, description.getSubtitle());
-        contentView.setImageViewBitmap(R.id.iv_cover, description.getIconBitmap());
+        contentView.setImageViewUri(R.id.iv_cover, description.getIconUri());
         contentView.setOnClickPendingIntent(R.id.iv_next, MediaButtonReceiver.buildMediaButtonPendingIntent(mContext, ACTION_SKIP_TO_NEXT));
         contentView.setOnClickPendingIntent(R.id.tv_lyric, MediaButtonReceiver.buildMediaButtonPendingIntent(mContext, ACTION_REWIND));
         contentView.setOnClickPendingIntent(R.id.iv_close, MediaButtonReceiver.buildMediaButtonPendingIntent(mContext, ACTION_STOP));
@@ -74,7 +75,7 @@ public class NotificationBuilder {
         RemoteViews largeContentView = new RemoteViews(mContext.getPackageName(), R.layout.layout_notification_large_content_view);
         largeContentView.setTextViewText(R.id.tv_title, description.getTitle());
         largeContentView.setTextViewText(R.id.tv_hint, description.getSubtitle());
-        largeContentView.setImageViewBitmap(R.id.iv_cover, description.getIconBitmap());
+        largeContentView.setImageViewUri(R.id.iv_cover, description.getIconUri());
         Bundle bundle = description.getExtras();
         if(bundle != null && bundle.getBoolean(Constants.INTENT_EXTRA_LIKE,false)){
             largeContentView.setImageViewResource(R.id.iv_like,R.mipmap.ic_collect);
@@ -102,6 +103,7 @@ public class NotificationBuilder {
 
         return builder.setCustomContentView(contentView)
                 .setCustomBigContentView(largeContentView)
+                .setSmallIcon(R.mipmap.icon_media)
                 .setDeleteIntent(MediaButtonReceiver.buildMediaButtonPendingIntent(mContext, ACTION_STOP))
                 .setOnlyAlertOnce(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

@@ -217,8 +217,8 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     public void applyCurrentTheme() {
         if (getSupportActionBar() != null) {
             if (needApplyCurrentTheme()) {
-                applyToolbarCurrentTheme();
                 applyStatusBarCurrentTheme();
+                applyToolbarCurrentTheme();
             }
         }
     }

@@ -62,6 +62,7 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
         LocalMediaPagerAdapter adapter = new LocalMediaPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(mStrings.length);
     }
 
     class LocalMediaPagerAdapter extends FragmentPagerAdapter {

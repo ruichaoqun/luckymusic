@@ -46,12 +46,12 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
     }
 
     @Override
-    public void onPrepare() {
+    public void onPrepare(boolean playWhenReady) {
 
     }
 
     @Override
-    public void onPrepareFromMediaId(String mediaId, Bundle extras) {
+    public void onPrepareFromMediaId(String mediaId, boolean playWhenReady, Bundle extras) {
         MediaID mediaID = MediaID.fromString(mediaId);
         List<MediaMetadataCompat> list;
         switch (mediaID.getType()){
@@ -74,14 +74,13 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
         }
     }
 
-
     @Override
-    public void onPrepareFromSearch(String query, Bundle extras) {
+    public void onPrepareFromSearch(String query, boolean playWhenReady, Bundle extras) {
 
     }
 
     @Override
-    public void onPrepareFromUri(Uri uri, Bundle extras) {
+    public void onPrepareFromUri(Uri uri, boolean playWhenReady, Bundle extras) {
 
     }
 

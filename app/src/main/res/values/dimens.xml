@@ -29,4 +29,8 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
 
     <dimen name="mini_player_bar_height">49.0dp</dimen>
     <dimen name="line_width">0.5dp</dimen>
+
+
+    <!-- notification -->
+    <dimen name="notify_large_image_width">113dp</dimen>
 </resources>

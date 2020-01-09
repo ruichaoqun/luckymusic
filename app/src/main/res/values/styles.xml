@@ -27,4 +27,22 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="NotificationText" parent="@android:style/TextAppearance.StatusBar.EventContent" />
+    <style name="NotificationTitle" parent="@android:style/TextAppearance.StatusBar.EventContent.Title" />
+
+    <style name="notificationButton">
+        <item name="android:background">@drawable/common_selector</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">46.69998dip</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <style name="largeNotificationButton">
+        <item name="android:background">@drawable/common_selector</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_margin">1.3299866dip</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
 </resources>

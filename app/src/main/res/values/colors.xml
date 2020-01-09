@@ -24,5 +24,7 @@
     <color name="themeColor">@color/color_ff3a3a</color>
     <color name="color_ff3a3a">#ffff3a3a</color>
 
-
+    <color name="color_click_gray">#19ffffff</color>
+    <color name="listItemPressedColor">#19000000</color>
+    <color name="lineColor">#19000000</color>
 </resources>

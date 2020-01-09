@@ -40,7 +40,7 @@ public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.Media
         helper.setText(R.id.tv_title,item.getDescription().getTitle());
         helper.setText(R.id.tv_subTitle,item.getDescription().getSubtitle()+"-"+item.getDescription().getDescription());
         if(currentPosition != -1){
-            helper.setVisible(R.id.iv_playing,getData().get(currentPosition) == item);
+            helper.setGone(R.id.iv_playing,getData().get(currentPosition) == item);
         }
     }
 

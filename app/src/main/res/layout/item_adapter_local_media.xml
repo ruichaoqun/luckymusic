@@ -5,8 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/iv_playing"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:src="@mipmap/icon_media"
         android:layout_centerVertical="true"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -15,8 +15,7 @@
         app:layout_constraintRight_toLeftOf="@+id/layout_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="5dp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
     <LinearLayout
         android:id="@+id/layout_content"
         android:layout_width="0dp"
@@ -26,6 +25,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_playing"
         app:layout_constraintEnd_toStartOf="@+id/iv_profile"
+        app:layout_goneMarginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_centerVertical="true">
         <TextView
             android:id="@+id/tv_title"

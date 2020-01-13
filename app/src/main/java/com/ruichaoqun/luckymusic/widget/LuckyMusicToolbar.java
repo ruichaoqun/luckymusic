@@ -2,6 +2,8 @@ package com.ruichaoqun.luckymusic.widget;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -21,8 +23,18 @@ public class LuckyMusicToolbar extends Toolbar {
     private boolean reflected = false;
     private TextView title;
 
+    public LuckyMusicToolbar(Context context) {
+        super(context);
+        setContentInsetStartWithNavigation(UiUtils.dp2px(56.0f));
+    }
+
     public LuckyMusicToolbar(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        setContentInsetStartWithNavigation(UiUtils.dp2px(56.0f));
+    }
+
+    public LuckyMusicToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         setContentInsetStartWithNavigation(UiUtils.dp2px(56.0f));
     }
 

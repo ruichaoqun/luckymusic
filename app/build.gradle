@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.arr'])
     testImplementation 'junit:junit:4.12'
 
     //noinspection GradleCompatible
@@ -61,8 +61,6 @@ dependencies {
     api "com.google.android.exoplayer:exoplayer-core:$rootProject.exoplayer_version"
     api "com.google.android.exoplayer:exoplayer-ui:$rootProject.exoplayer_version"
     api "com.google.android.exoplayer:extension-mediasession:$rootProject.exoplayer_version"
-    api "com.google.android.exoplayer:extension-flac:$rootProject.exoplayer_version"
-
 
     //http
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'

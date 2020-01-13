@@ -32,6 +32,7 @@ import java.util.List;
 public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity implements MediaBrowserProvider {
     protected MediaBrowserCompat mBrowserCompat;
     protected MediaControllerCompat mControllerCompat;
+    private MediaControllerCallback mMediaControllerCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,12 +86,22 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         return mBrowserCompat;
     }
 
+    @Override
+    protected void onDestroy() {
+        if(mBrowserCompat != null && mBrowserCompat.isConnected()){
+            mControllerCompat.unregisterCallback(mMediaControllerCallback);
+            mBrowserCompat.disconnect();
+        }
+        super.onDestroy();
+    }
+
     class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback{
         @Override
         public void onConnected() {
             try {
                 mControllerCompat = new MediaControllerCompat(getApplicationContext(),mBrowserCompat.getSessionToken());
-                mControllerCompat.registerCallback(new MediaControllerCallback());
+                mMediaControllerCallback = new  MediaControllerCallback();
+                mControllerCompat.registerCallback(mMediaControllerCallback);
                 MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this,mControllerCompat);
                 BaseMediaBrowserActivity.this.onMediaServiceConnected();
             } catch (RemoteException e) {

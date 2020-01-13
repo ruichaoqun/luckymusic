@@ -7,6 +7,7 @@ import android.os.ResultReceiver;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -28,22 +29,6 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
     public static final String TAG = LuckyPlaybackPreparer.class.getSimpleName();
 
     private DataRepository dataRepository;
-    private ExoPlayer exoPlayer;
-    private DataSource.Factory dataSourceFactory;
-
-    public LuckyPlaybackPreparer(DataRepository dataRepository, ExoPlayer exoPlayer, DataSource.Factory dataSourceFactory) {
-        this.dataRepository = dataRepository;
-        this.exoPlayer = exoPlayer;
-        this.dataSourceFactory = dataSourceFactory;
-    }
-
-    @Override
-    public long getSupportedPrepareActions() {
-        return PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID |
-        PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID |
-        PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH |
-        PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
-    }
 
     @Override
     public void onPrepare(boolean playWhenReady) {
@@ -53,6 +38,7 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
     @Override
     public void onPrepareFromMediaId(String mediaId, boolean playWhenReady, Bundle extras) {
         MediaID mediaID = MediaID.fromString(mediaId);
+        Log.w("AAAAAAA",ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, mediaID.getMediaId()).toString());
         List<MediaMetadataCompat> list;
         switch (mediaID.getType()){
             case MediaDataType.TYPE_SONG:
@@ -82,6 +68,23 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
     @Override
     public void onPrepareFromUri(Uri uri, boolean playWhenReady, Bundle extras) {
 
+    }
+
+    private ExoPlayer exoPlayer;
+    private DataSource.Factory dataSourceFactory;
+
+    public LuckyPlaybackPreparer(DataRepository dataRepository, ExoPlayer exoPlayer, DataSource.Factory dataSourceFactory) {
+        this.dataRepository = dataRepository;
+        this.exoPlayer = exoPlayer;
+        this.dataSourceFactory = dataSourceFactory;
+    }
+
+    @Override
+    public long getSupportedPrepareActions() {
+        return PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID |
+        PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID |
+        PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH |
+        PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
     }
 
     @Override

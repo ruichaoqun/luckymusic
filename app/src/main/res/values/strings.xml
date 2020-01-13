@@ -42,4 +42,6 @@
     <string name="notification_channel_description">显示当前在播放音乐</string>
 
     <string name="word">词</string>
+
+    <string name="is_playing">正在播放</string>
 </resources>

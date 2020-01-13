@@ -29,6 +29,7 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.GlideApp;
 import com.ruichaoqun.luckymusic.common.WatchMiniPlayBarListener;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
 import java.util.List;
@@ -94,7 +95,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
         this.mPlayBarContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PlayerActivity.launchFrom(BaseMiniPlayerBarActivity.this);
             }
         });
         this.mPlayBarCover = findViewById(R.id.cover);

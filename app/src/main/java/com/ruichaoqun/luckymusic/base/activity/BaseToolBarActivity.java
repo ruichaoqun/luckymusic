@@ -243,6 +243,10 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         return ResourceRouter.getInstance().getCacheToolBarDrawable();
     }
 
+    public void applyToolbarCurrentThemeWithViewColor(Toolbar toolbar){
+        applyToolbarCurrentThemeWithViewColor(toolbar,isToolbarOnImage());
+    }
+
     public void applyToolbarCurrentThemeWithViewColor(Toolbar toolbar2, boolean isToolbarOnImage) {
         Drawable navigationIcon = toolbar2.getNavigationIcon();
         if (navigationIcon != null) {
@@ -303,7 +307,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
     //设置statusbarview背景色
-    public void setStyleForStatusBarView(StatusBarHolderView statusBarHolderView, boolean z) {
+    public void setStyleForStatusBarView(StatusBarHolderView statusBarHolderView, boolean isToolbarOnImage) {
         boolean z2 = true;
         boolean z3 = false;
         if (Build.VERSION.SDK_INT >= 23) {

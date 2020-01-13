@@ -1,5 +1,7 @@
 package com.ruichaoqun.luckymusic.di;
 
+import com.ruichaoqun.luckymusic.ui.PlayerActivity;
+import com.ruichaoqun.luckymusic.ui.PlayerModule;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaActivity;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaModule;
 import com.ruichaoqun.luckymusic.ui.main.MainActivity;
@@ -25,5 +27,8 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = LocalMediaModule.class)
     abstract LocalMediaActivity mLocalMediaActivity();
+
+    @ContributesAndroidInjector(modules = PlayerModule.class)
+    abstract PlayerActivity mPlayerActivity();
 
 }

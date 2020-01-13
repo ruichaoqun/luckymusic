@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
+import com.ruichaoqun.luckymusic.R;
 
 import java.lang.reflect.Method;
 
@@ -110,6 +111,10 @@ public class UiUtils {
         }
         return hasNavigationBar;
 
+    }
+
+    public static int getToolbarHeight(){
+        return LuckyMusicApp.getInstance().getResources().getDimensionPixelOffset(R.dimen.toolbar_height);
     }
 
 

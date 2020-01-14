@@ -18,19 +18,49 @@
 
         <ImageView
             android:id="@+id/iv_player_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="270dp"
+            android:layout_height="270dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="69dp"
+            android:layout_marginTop="92dp"
             android:src="@mipmap/bg_player" />
+        <com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="94dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_disc_bg_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bg_disc"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="#f00"/>
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_disc_bg_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bg_disc"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="#0f0"/>
+            </RelativeLayout>
+
+        </com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper>
         <ImageView
             android:id="@+id/iv_stylus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="122dp"
+            android:layout_height="190dp"
             android:layout_alignRight="@id/iv_player_bg"
             android:layout_marginTop="-16dp"
-            android:layout_marginRight="58.0dip"
+            android:layout_marginRight="42.0dip"
             android:src="@mipmap/image_stylus" />
 
     </RelativeLayout>

@@ -73,5 +73,12 @@ public class CommonUtils {
         return VERSION.SDK_INT >= 28;
     }
 
+    public static int getScrollAngle(float f, float f2, float f3, float f4) {
+        float abs = Math.abs(f - f3);
+        float abs2 = Math.abs(f2 - f4);
+        return Math.round((float) ((Math.asin(((double) abs2) / Math.sqrt((double) ((abs * abs) + (abs2 * abs2)))) / 3.141592653589793d) * 180.0d));
+    }
+
+
 
 }

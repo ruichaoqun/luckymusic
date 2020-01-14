@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseActivity;
@@ -59,7 +60,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startAnimation() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        startActivity(new Intent(SplashActivity.this, PlayerActivity.class));
         finish();
     }
 

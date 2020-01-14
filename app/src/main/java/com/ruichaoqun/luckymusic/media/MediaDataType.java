@@ -16,7 +16,18 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.SOURCE)
 public @interface MediaDataType {
 
+    /**
+     * 本地音乐
+     */
     String TYPE_SONG = "0";
 
+    /**
+     * 搜索音乐
+     */
     String TYPE_SEARCH = "1";
+
+    /**
+     * 当前播放列表
+     */
+    String CURRENT_PLAY_LIST = "2";
 }

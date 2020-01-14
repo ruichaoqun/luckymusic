@@ -69,6 +69,10 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         }
     }
 
+    public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue){
+
+    }
+
     public void onMediaServiceConnected(){
 
     }
@@ -129,6 +133,11 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             BaseMediaBrowserActivity.this.onMetadataChanged(metadata);
+        }
+
+        @Override
+        public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+            BaseMediaBrowserActivity.this.onQueueChanged(queue);
         }
     }
 }

@@ -162,7 +162,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     @Override
     public void onMetadataChanged(MediaMetadataCompat metadata) {
         super.onMetadataChanged(metadata);
-        if (!TextUtils.isEmpty(metadata.getDescription().getMediaId())) {
+        if (!TextUtils.isEmpty(metadata.getDescription().getMediaId()) && isNeedMiniPlayerBar()) {
             this.mPlayBarTitle.setText(metadata.getDescription().getTitle());
             this.mPlayBarArtist.setText(metadata.getDescription().getSubtitle());
             GlideApp.with(this).load(Uri.parse(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI))).transform(new CircleCrop()).transition(DrawableTransitionOptions.withCrossFade()).into(this.mPlayBarCover);
@@ -179,25 +179,27 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     @Override
     public void onPlaybackStateChanged(PlaybackStateCompat state) {
         super.onPlaybackStateChanged(state);
-        switch (state.getState()) {
-            case PlaybackStateCompat.STATE_PAUSED:
-            case PlaybackStateCompat.STATE_BUFFERING:
-                this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
-                this.mPlayPauseView.setProgress(state.getPosition());
-                updatePosition = false;
-                break;
-            case PlaybackStateCompat.STATE_PLAYING:
-                this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PLAYING);
-                updatePosition = true;
-                this.mPlayPauseView.setProgress(state.getPosition());
-                checkPlaybackPosition();
-                break;
-            case PlaybackStateCompat.STATE_STOPPED:
-                this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
-                this.mPlayPauseView.setProgress(0);
-                updatePosition = false;
-                break;
+        if(isNeedMiniPlayerBar()){
+            switch (state.getState()) {
+                case PlaybackStateCompat.STATE_PAUSED:
+                case PlaybackStateCompat.STATE_BUFFERING:
+                    this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
+                    this.mPlayPauseView.setProgress(state.getPosition());
+                    updatePosition = false;
+                    break;
+                case PlaybackStateCompat.STATE_PLAYING:
+                    this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PLAYING);
+                    updatePosition = true;
+                    this.mPlayPauseView.setProgress(state.getPosition());
+                    checkPlaybackPosition();
+                    break;
+                case PlaybackStateCompat.STATE_STOPPED:
+                    this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
+                    this.mPlayPauseView.setProgress(0);
+                    updatePosition = false;
+                    break;
                 default:
+            }
         }
     }
 

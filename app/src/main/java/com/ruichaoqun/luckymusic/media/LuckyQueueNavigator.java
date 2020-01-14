@@ -10,7 +10,7 @@ import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator;
 public class LuckyQueueNavigator extends TimelineQueueNavigator {
 
     public LuckyQueueNavigator(MediaSessionCompat mediaSession) {
-        super(mediaSession);
+        super(mediaSession,Integer.MAX_VALUE);
     }
 
     @Override

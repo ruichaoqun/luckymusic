@@ -60,7 +60,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startAnimation() {
-        startActivity(new Intent(SplashActivity.this, PlayerActivity.class));
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
         finish();
     }
 

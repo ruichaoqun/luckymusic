@@ -24,25 +24,35 @@
             android:layout_marginTop="92dp"
             android:src="@mipmap/bg_player" />
         <com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper
+            android:id="@+id/view_flipper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="94dp">
-            <RelativeLayout
+            <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_disc_playhoder"
+                    android:layout_centerInParent="true"/>
                 <ImageView
                     android:id="@+id/iv_disc_bg_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/bg_disc"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="#f00"/>
-            </RelativeLayout>
+                    android:layout_centerHorizontal="true" />
+            </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
 
-            <RelativeLayout
+            <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_disc_playhoder"
+                    android:layout_centerInParent="true"/>
                 <ImageView
                     android:id="@+id/iv_disc_bg_2"
                     android:layout_width="wrap_content"
@@ -51,7 +61,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:background="#0f0"/>
-            </RelativeLayout>
+            </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
 
         </com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper>
         <ImageView

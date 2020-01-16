@@ -112,50 +112,51 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_container_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+        <include layout="@layout/layout_player_seekbar" />
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:layout_width="360.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
+                    <ImageView
+                        android:id="@+id/iv_play_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25.0dip"
+                        android:src="@drawable/selector_player_mode_list_circulation" />
+                    <ImageView
+                        android:id="@+id/iv_play_previous"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/selector_player_previous" />
+                    <ImageView
+                        android:id="@+id/iv_play_pause"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12.0dip"
+                        android:layout_marginRight="12.0dip"
+                        android:src="@drawable/selector_player_play" />
+                    <ImageView
+                        android:id="@+id/iv_play_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25.0dip"
+                        android:src="@drawable/selector_player_next" />
+                    <ImageView
+                        android:id="@+id/iv_play_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/selector_player_play_list" />
+                </LinearLayout>
+    </LinearLayout>
 
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/ll_container_bottom"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center_horizontal"-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_alignParentBottom="true">-->
-<!--        <LinearLayout-->
-<!--            android:gravity="center"-->
-<!--            android:id="@+id/ll_container_function"-->
-<!--            android:layout_width="fill_parent"-->
-<!--            android:layout_height="wrap_content">-->
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_love"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="fill_parent"-->
-<!--                android:src="@mipmap/ic_playing_unlove"-->
-<!--                android:scaleType="center" />-->
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_download"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginRight="@dimen/ve"-->
-<!--                android:src="@drawable/b7b"-->
-<!--                android:scaleType="center"-->
-<!--                android:contentDescription="@string/bgv" />-->
-<!--            <ImageView android:id="@id/u6" android:layout_width="@dimen/vd" android:layout_height="fill_parent" android:layout_marginRight="@dimen/ve" android:src="@drawable/b73" android:scaleType="center" android:contentDescription="@string/bgt" />-->
-<!--            <RelativeLayout android:id="@id/u7" android:layout_width="@dimen/vd" android:layout_height="fill_parent" android:layout_marginRight="@dimen/ve">-->
-<!--                <ImageView android:id="@id/u8" android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/b78" android:scaleType="center" android:importantForAccessibility="noHideDescendants" />-->
-<!--                <TextView android:textSize="9.0sp" android:id="@id/u9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/vf" android:layout_marginRight="15.0dip" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:contentDescription="@null" android:importantForAccessibility="noHideDescendants" />-->
-<!--            </RelativeLayout>-->
-<!--            <ImageView android:id="@id/u_" android:layout_width="@dimen/vd" android:layout_height="fill_parent" android:src="@drawable/b7r" android:scaleType="center" android:contentDescription="@string/bh2" />-->
-<!--        </LinearLayout>-->
-
-<!--        <include layout="@layout/a6n" />-->
-<!--        <LinearLayout android:gravity="center" android:orientation="horizontal" android:clickable="true" android:layout_width="360.0dip" android:layout_height="@dimen/vg" android:layout_marginBottom="@dimen/vh">-->
-<!--            <ImageView android:id="@id/ua" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="25.0dip" android:src="@drawable/b7l" android:contentDescription="@string/bh6" />-->
-<!--            <ImageView android:id="@id/ub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/b6a" android:contentDescription="@string/bh8" />-->
-<!--            <ImageView android:id="@id/uc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="12.0dip" android:layout_marginRight="12.0dip" android:src="@drawable/b69" android:contentDescription="@string/bh5" />-->
-<!--            <ImageView android:id="@id/ud" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="25.0dip" android:src="@drawable/b65" android:contentDescription="@string/bh3" />-->
-<!--            <ImageView android:id="@id/ue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/b8_" android:contentDescription="@string/bh4" />-->
-<!--        </LinearLayout>-->
-
-<!--    </LinearLayout>-->
 </RelativeLayout>

@@ -198,6 +198,7 @@ public class RotationRelativeLayout extends RelativeLayout{
         public AnimationHolder() {
         }
 
+        @Override
         public void onAnimationUpdate(ValueAnimator valueAnimator) {
             float animatedFraction = ((valueAnimator.getAnimatedFraction() * 360.0f) + this.mRotationOffset) % 360.0f;
             RotationRelativeLayout.this.setRotation(animatedFraction);
@@ -228,12 +229,14 @@ public class RotationRelativeLayout extends RelativeLayout{
             RotationRelativeLayout.this.setRotation(f2);
         }
 
+        @Override
         public void reset() {
             resetRotation(0.0f);
             this.mPrevRotation = 0.0f;
             this.mRotationOffset = 0.0f;
         }
 
+        @Override
         public void prepareAnimation() {
             if (!RotationRelativeLayout.this.mActivityPaused) {
                 this.mPrepared = true;
@@ -243,6 +246,7 @@ public class RotationRelativeLayout extends RelativeLayout{
             }
         }
 
+        @Override
         public void stop() {
             this.mStartCalled = false;
             if (this.mRunning) {
@@ -252,6 +256,7 @@ public class RotationRelativeLayout extends RelativeLayout{
             this.mPrepared = false;
         }
 
+        @Override
         public void start() {
             this.mStartCalled = true;
             if (this.mPrepared && !this.mRunning) {
@@ -259,6 +264,7 @@ public class RotationRelativeLayout extends RelativeLayout{
             }
         }
 
+        @Override
         public void pause() {
             this.mStartCalled = false;
             if (this.mRunning && this.mPrepared) {
@@ -267,10 +273,12 @@ public class RotationRelativeLayout extends RelativeLayout{
             }
         }
 
+        @Override
         public boolean isPrepared() {
             return this.mPrepared;
         }
 
+        @Override
         public boolean isRunning() {
             return this.mRunning;
         }

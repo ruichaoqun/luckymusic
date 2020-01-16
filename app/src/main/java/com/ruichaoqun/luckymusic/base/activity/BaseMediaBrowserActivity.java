@@ -8,6 +8,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,6 +34,11 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     protected MediaBrowserCompat mBrowserCompat;
     protected MediaControllerCompat mControllerCompat;
     private MediaControllerCallback mMediaControllerCallback;
+
+    protected List<MediaSessionCompat.QueueItem> queueItems;
+    protected MediaMetadataCompat mCurrentMetadata;
+    protected PlaybackStateCompat mPlaybackState;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,6 +113,9 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
                 mMediaControllerCallback = new  MediaControllerCallback();
                 mControllerCompat.registerCallback(mMediaControllerCallback);
                 MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this,mControllerCompat);
+                BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
+                BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
+                BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
                 BaseMediaBrowserActivity.this.onMediaServiceConnected();
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -137,6 +146,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
 
         @Override
         public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+            BaseMediaBrowserActivity.this.queueItems = queue;
             BaseMediaBrowserActivity.this.onQueueChanged(queue);
         }
     }

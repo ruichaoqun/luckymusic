@@ -35,4 +35,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="notify_large_image_width">113dp</dimen>
 
     <dimen name="dp_5">5dp</dimen>
+    <dimen name="player_seekbar_height">22.67dp</dimen>
 </resources>

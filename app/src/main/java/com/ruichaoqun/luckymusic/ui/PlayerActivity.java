@@ -3,12 +3,14 @@ package com.ruichaoqun.luckymusic.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.animation.Animation;
@@ -17,9 +19,12 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.common.GlideApp;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.media.MediaDataType;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
@@ -44,7 +49,6 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @BindView(R.id.iv_stylus)
     ImageView mStylus;
     private RotationRelativeLayout mCurrentDiscLayout;
-    private List<MediaBrowserCompat.MediaItem> mCurrentPlayList;
 
     private Handler clientHandler = new Handler();
 
@@ -53,15 +57,24 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     //唱针返回唱片动画
     public StylusAnimation mStylusReturnAnimation;
 
-    public int mStylusAnimationType = 2;
+    public int mStylusAnimationType = STYLUS_ON;
+
+    public static final int STYLUS_ON = 2;
+    public static final int STYLUS_OFF = 4;
+    public static final int STYLUS_ON_TO_OFF = 3;
+    public static final int STYLUS_OFF_TO_ON = 1;
+
+
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
         @Override
         public void run() {
-            if (PlayerActivity.this.mStylusAnimationType == 1 || PlayerActivity.this.mStylusAnimationType == 3) {
+            if (PlayerActivity.this.mStylusAnimationType == STYLUS_OFF_TO_ON || PlayerActivity.this.mStylusAnimationType == STYLUS_ON_TO_OFF) {
+                //当前动画正在进行中，持续回调
                 PlayerActivity.this.clientHandler.postDelayed(this, 50);
-            } else if (PlayerActivity.this.mStylusAnimationType != 4) {
+            } else if (PlayerActivity.this.mStylusAnimationType == STYLUS_ON) {
+                //此时唱针ON状态，开启动画
                 PlayerActivity.this.mStylus.clearAnimation();
                 PlayerActivity.this.mStylus.startAnimation(PlayerActivity.this.mStylusRemoveAnimation);
             }
@@ -71,9 +84,11 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private Runnable mStylusReturnRunnable = new Runnable() {
         @Override
         public void run() {
-            if (PlayerActivity.this.mStylusAnimationType == 1 || PlayerActivity.this.mStylusAnimationType == 3) {
+            if (PlayerActivity.this.mStylusAnimationType == STYLUS_OFF_TO_ON || PlayerActivity.this.mStylusAnimationType == STYLUS_ON_TO_OFF) {
+                //当前动画正在进行中，持续回调
                 PlayerActivity.this.clientHandler.postDelayed(this, 50);
-            } else if (PlayerActivity.this.mStylusAnimationType != 2) {
+            } else if (PlayerActivity.this.mStylusAnimationType == STYLUS_OFF) {
+                //此时唱针OFF状态，开启动画
                 PlayerActivity.this.mStylus.clearAnimation();
                 PlayerActivity.this.mStylus.startAnimation(PlayerActivity.this.mStylusReturnAnimation);
             }
@@ -81,14 +96,18 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     };
 
     public void startStylusRemove(){
+        //清空消息中执行的动画
         this.clientHandler.removeCallbacks(this.mStylusRemoveRunnable);
         this.clientHandler.removeCallbacks(this.mStylusReturnRunnable);
+        //开始OFF动画
         this.clientHandler.post(this.mStylusRemoveRunnable);
     }
 
     public void startStylusReturn(){
+        //清空消息中执行的动画
         this.clientHandler.removeCallbacks(this.mStylusRemoveRunnable);
         this.clientHandler.removeCallbacks(this.mStylusReturnRunnable);
+        //开始ON动画
         this.clientHandler.post(this.mStylusReturnRunnable);
     }
 
@@ -112,6 +131,8 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @Override
     protected void initView() {
         this.mCurrentDiscLayout = (RotationRelativeLayout) this.mViewFlipper.getCurrentView();
+        this.mCurrentDiscLayout.prepareAnimation();
+        this.mCurrentDiscLayout.start();
     }
 
     @Override
@@ -128,13 +149,13 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mStylusRemoveAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                PlayerActivity.this.mStylusAnimationType = 3;
+                PlayerActivity.this.mStylusAnimationType = STYLUS_ON_TO_OFF;
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (PlayerActivity.this.mStylusRemoveAnimation.getInterpolatedTime() >= 1.0f) {
-                    PlayerActivity.this.mStylusAnimationType = 4;
+                    PlayerActivity.this.mStylusAnimationType = STYLUS_OFF;
                     PlayerActivity.this.mCurrentDiscLayout.pause();
                     PlayerActivity.this.mStylusReturnAnimation.setDegrees(Integer.MIN_VALUE);
                 }
@@ -154,15 +175,14 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mStylusReturnAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                PlayerActivity.this.mStylusAnimationType = STYLUS_OFF_TO_ON;
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                PlayerActivity.this.mStylusAnimationType = 2;
-                PlayerActivity.this.a(PlayerActivity.this.ak.getAnimationHolder());
+                PlayerActivity.this.mStylusAnimationType = STYLUS_ON;
                 PlayerActivity.this.mStylusRemoveAnimation.setDegrees(Integer.MIN_VALUE);
-
+                PlayerActivity.this.mCurrentDiscLayout.start();
             }
 
             @Override
@@ -188,6 +208,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             @Override
             public void onDiscSwitchComplete(boolean z, boolean z2, boolean z3) {
                 Log.w(TAG,"onDiscSwitchComplete-->"+z+"  "+z2+"   "+z3);
+                PlayerActivity.this.mCurrentDiscLayout = (RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getCurrentView();
+                ((RotationRelativeLayout)PlayerActivity.this.mViewFlipper.getNextView()).stopAndRest();
+                PlayerActivity.this.mCurrentDiscLayout.prepareAnimation();
                 PlayerActivity.this.startStylusReturn();
             }
 
@@ -202,35 +225,32 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
     @Override
     public void onMediaServiceConnected() {
-        getCurrentPlayList();
-    }
-
-    /**
-     *  获取当前播放音乐列表
-     */
-    private void getCurrentPlayList() {
-        List<MediaSessionCompat.QueueItem> queueItems= this.mControllerCompat.getQueue();
-        if(queueItems != null){
-            Log.w(TAG,"queueItems-->"+queueItems.size());
-            for (int i = 0; i < queueItems.size(); i++) {
-                Log.w(TAG,"queueItem-->"+queueItems.get(i).getDescription().getMediaId());
-            }
-        }else{
-            Log.w(TAG,"queueItems-->"+null);
+        //当前指定的音乐资源
+        if(this.mCurrentMetadata != null && !TextUtils.isEmpty(this.mCurrentMetadata.getDescription().getMediaId())){
+            this.setTitle(this.mCurrentMetadata.getDescription().getTitle());
+            this.setSubTitle(this.mCurrentMetadata.getDescription().getSubtitle());
+            GlideApp.with(this).load(Uri.parse(mCurrentMetadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI))).transform(new CircleCrop()).transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
         }
-
-        MediaMetadataCompat mediaMetadataCompat = this.mControllerCompat.getMetadata();
-        if(mediaMetadataCompat != null){
-            Log.w(TAG,"mediaMetadataCompat-->"+mediaMetadataCompat.getDescription().getMediaId());
-        }else{
-            Log.w(TAG,"mediaMetadataCompat-->"+"空");
+        if(this.mPlaybackState == null){
+            return;
         }
-
-        PlaybackStateCompat playbackStateCompat = this.mControllerCompat.getPlaybackState();
-        if(playbackStateCompat != null){
-            Log.w(TAG,"playbackStateCompat-->"+playbackStateCompat.getState());
-        }else{
-            Log.w(TAG,"playbackStateCompat-->"+null);
+        switch (this.mPlaybackState.getState()){
+            case PlaybackStateCompat.STATE_PLAYING:
+                if(!this.mCurrentDiscLayout.isRunning()){
+                    this.mCurrentDiscLayout.start();
+                }
+                if(this.mStylusAnimationType != STYLUS_ON){
+                    this.mStylusReturnAnimation.setDegrees(0);
+                    this.startStylusReturn();
+                }
+                break;
+            case PlaybackStateCompat.STATE_NONE:
+            case PlaybackStateCompat.STATE_STOPPED:
+            case PlaybackStateCompat.STATE_PAUSED:
+                this.mStylusReturnAnimation.setDegrees(-25);
+                this.startStylusRemove();
+            break;
+            default:
         }
     }
 

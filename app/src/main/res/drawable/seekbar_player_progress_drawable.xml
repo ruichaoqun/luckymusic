@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <nine-patch android:src="@drawable/ic_player_bar_bacground" />
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+        <scale android:scaleWidth="100%">
+            <nine-patch android:src="@drawable/ic_player_bar_secondary_progress" />
+        </scale>
+    </item>
+    <item android:id="@android:id/progress">
+        <scale android:scaleWidth="100%">
+            <nine-patch android:src="@drawable/ic_player_bar_progress" />
+        </scale>
+    </item>
+</layer-list>

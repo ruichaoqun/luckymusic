@@ -38,7 +38,6 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
     @Override
     public void onPrepareFromMediaId(String mediaId, Bundle extras) {
         MediaID mediaID = MediaID.fromString(mediaId);
-        Log.w("AAAAAAA",ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, mediaID.getMediaId()).toString());
         List<MediaMetadataCompat> list;
         switch (mediaID.getType()){
             case MediaDataType.TYPE_SONG:

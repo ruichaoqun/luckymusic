@@ -36,6 +36,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     private MediaControllerCallback mMediaControllerCallback;
 
     protected List<MediaSessionCompat.QueueItem> queueItems;
+    protected long activeQueueItemId = MediaSessionCompat.QueueItem.UNKNOWN_ID;
     protected MediaMetadataCompat mCurrentMetadata;
     protected PlaybackStateCompat mPlaybackState;
 
@@ -54,7 +55,6 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     }
 
     public void onPlaybackStateChanged(PlaybackStateCompat state) {
-        LogUtils.w(TAG,"onPlaybackStateChanged"+state.getState()+"");
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
         for (int i = 0; i < fragments.size(); i++) {
@@ -65,7 +65,6 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     }
 
     public void onMetadataChanged(MediaMetadataCompat metadata) {
-        LogUtils.w(TAG,"onMetadataChanged"+metadata.getDescription().getMediaId());
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
         for (int i = 0; i < fragments.size(); i++) {
@@ -116,6 +115,9 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
                 BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
                 BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
                 BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
+                if(BaseMediaBrowserActivity.this.mPlaybackState != null){
+                    BaseMediaBrowserActivity.this.activeQueueItemId = mControllerCompat.getPlaybackState().getActiveQueueItemId();
+                }
                 BaseMediaBrowserActivity.this.onMediaServiceConnected();
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -136,11 +138,13 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     private class MediaControllerCallback extends MediaControllerCompat.Callback{
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
+            BaseMediaBrowserActivity.this.mPlaybackState = state;
             BaseMediaBrowserActivity.this.onPlaybackStateChanged(state);
         }
 
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
+            BaseMediaBrowserActivity.this.mCurrentMetadata = metadata;
             BaseMediaBrowserActivity.this.onMetadataChanged(metadata);
         }
 

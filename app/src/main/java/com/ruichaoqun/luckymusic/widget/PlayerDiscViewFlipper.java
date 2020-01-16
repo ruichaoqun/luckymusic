@@ -164,7 +164,13 @@ public class PlayerDiscViewFlipper extends ViewFlipper{
     public interface OnPlayerDiscListener {
         void onDiscDirectionChange(Boolean bool);
 
-        void onDiscSwitchComplete(boolean z, boolean z2, boolean z3);
+        /**
+         *
+         * @param z 是否已切换disc
+         * @param justSwitchDisc 是否直接调用切换disc
+         * @param isScrollingLeft  是否是向左滑动
+         */
+        void onDiscSwitchComplete(boolean z, boolean justSwitchDisc, boolean isScrollingLeft);
 
         void onDiscSwitchHalf(Boolean bool);
 

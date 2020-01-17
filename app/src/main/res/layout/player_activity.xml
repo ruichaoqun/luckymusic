@@ -59,8 +59,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/bg_disc"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="#0f0"/>
+                    android:layout_centerHorizontal="true" />
             </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
 
         </com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper>

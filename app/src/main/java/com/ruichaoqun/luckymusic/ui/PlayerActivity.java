@@ -70,6 +70,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     public static final int STYLUS_ON_TO_OFF = 3;
     public static final int STYLUS_OFF_TO_ON = 1;
 
+    private long currentDiscQueueId = -1;
     private MediaSessionCompat.QueueItem nextQueueItem;
 
 
@@ -212,48 +213,42 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             @Override
             public void onDiscDirectionChange(Boolean bool) {
                 if (PlayerActivity.this.mPlaybackState != null && PlayerActivity.this.queueItems != null) {
-                    long activeQueueItemId = PlayerActivity.this.mPlaybackState.getActiveQueueItemId();
-                    if (activeQueueItemId != MediaSessionCompat.QueueItem.UNKNOWN_ID && activeQueueItemId < queueItems.size()) {
-                        if (bool) {
-                            PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(activeQueueItemId == 0 ? PlayerActivity.this.queueItems.size() - 1 : (int) (activeQueueItemId - 1));
-                        } else {
-                            PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(activeQueueItemId == PlayerActivity.this.queueItems.size() - 1 ? 0 : (int) (activeQueueItemId + 1));
-                        }
-                        GlideApp.with(PlayerActivity.this)
-                                .load(nextQueueItem.getDescription().getIconUri())
-                                .transform(new CircleCrop())
-                                .transition(DrawableTransitionOptions.withCrossFade())
-                                .placeholder(R.drawable.ic_disc_playhoder)
-                                .into((ImageView) ((ViewGroup) PlayerActivity.this.mViewFlipper.getNextView()).getChildAt(0));
+                    if (bool) {
+                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDiscQueueId == 0 ? PlayerActivity.this.queueItems.size() - 1 : (int) (currentDiscQueueId - 1));
+                    } else {
+                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDiscQueueId == PlayerActivity.this.queueItems.size() - 1 ? 0 : (int) (currentDiscQueueId + 1));
                     }
+                    Log.w("sssss", nextQueueItem.getDescription().getMediaId() + nextQueueItem.getDescription().getTitle());
+                    GlideApp.with(PlayerActivity.this)
+                            .load(nextQueueItem.getDescription().getIconUri())
+                            .transform(new CircleCrop())
+                            .centerCrop()
+                            .error(R.drawable.ic_disc_playhoder)
+                            .into((ImageView) ((ViewGroup) PlayerActivity.this.mViewFlipper.getNextView()).getChildAt(0));
                 }
             }
 
             @Override
             public void onDiscSwitchComplete(boolean z, boolean justSwitchDisc, boolean isScrollingLeft) {
-                Log.w(TAG, "onDiscSwitchComplete-->" + z + "    " + justSwitchDisc + "    " + isScrollingLeft);
+                Log.w("sssss", "onDiscSwitchComplete-->" + z + "    " + justSwitchDisc + "    " + isScrollingLeft);
                 //如果是外部直接调用切换歌曲，在回调时要设置title和subtitle，还有是否已收藏歌曲
-                if (justSwitchDisc) {
-                    PlayerActivity.this.setTitle(PlayerActivity.this.mCurrentMetadata.getDescription().getTitle());
-                    PlayerActivity.this.setSubTitle(PlayerActivity.this.mCurrentMetadata.getDescription().getSubtitle());
-                    //TODO 添加是否收藏
-                } else {
-                    //如果是滑动的
-                    if (!z) {
-                        //如果音乐切换成功，开始播放下一首
-                        if (isScrollingLeft) {
-                            //播放下一首
-                            PlayerActivity.this.mControllerCompat.getTransportControls().skipToNext();
-                        } else {
-                            //播放上一首
-                            PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
-                        }
+
+                //如果是滑动的
+                if (!z) {
+                    //如果音乐切换成功，开始播放下一首
+                    if (isScrollingLeft) {
+                        //播放下一首
+                        PlayerActivity.this.mControllerCompat.getTransportControls().skipToNext();
                     } else {
-                        //未滑动到下一首，不改变
-                        PlayerActivity.this.startStylusReturn();
+                        //播放上一首
+                        PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
                     }
+                } else {
+                    //未滑动到下一首，不改变
+                    PlayerActivity.this.startStylusReturn();
                 }
                 PlayerActivity.this.mCurrentDiscLayout = (RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getCurrentView();
+                PlayerActivity.this.currentDiscQueueId = nextQueueItem.getQueueId();
                 ((RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getNextView()).stopAndRest();
                 PlayerActivity.this.mCurrentDiscLayout.prepareAnimation();
             }
@@ -277,14 +272,16 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mPlayMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(m)
             }
         });
 
         this.mPlayPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
+//                PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
+                //滑动回调，此处可以处理唱针的切换以及当前封面动画的暂停
+                PlayerActivity.this.mViewFlipper.switchDisc(false);
             }
         });
 
@@ -306,7 +303,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mPlayNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayerActivity.this.mControllerCompat.getTransportControls().skipToNext();
+                PlayerActivity.this.mViewFlipper.switchDisc(true);
             }
         });
 
@@ -324,8 +321,12 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         if (this.mCurrentMetadata != null && !TextUtils.isEmpty(this.mCurrentMetadata.getDescription().getMediaId())) {
             this.setTitle(this.mCurrentMetadata.getDescription().getTitle());
             this.setSubTitle(this.mCurrentMetadata.getDescription().getSubtitle());
-            GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
+            this.currentDiscQueueId = mPlaybackState.getActiveQueueItemId();
+            GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
             //TODO 设置是否收藏
+        }
+        for (int i = 0; i < queueItems.size(); i++) {
+            Log.w("BBBBB", queueItems.get(i).getDescription().getTitle().toString());
         }
         if (this.mPlaybackState == null) {
             return;
@@ -360,7 +361,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @Override
     public void onMetadataChanged(MediaMetadataCompat metadata) {
         super.onMetadataChanged(metadata);
-
+        PlayerActivity.this.setTitle(PlayerActivity.this.mCurrentMetadata.getDescription().getTitle());
+        PlayerActivity.this.setSubTitle(PlayerActivity.this.mCurrentMetadata.getDescription().getSubtitle());
+        //TODO 添加是否收藏
     }
 
     /**
@@ -376,6 +379,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             case PlaybackStateCompat.STATE_BUFFERING:
             case PlaybackStateCompat.STATE_CONNECTING:
                 this.startStylusReturn();
+                if (!this.mCurrentDiscLayout.isRunning()) {
+                    this.mCurrentDiscLayout.start();
+                }
                 this.mPlayPause.setImageResource(R.drawable.selector_player_pause);
                 break;
             case PlaybackStateCompat.STATE_STOPPED:

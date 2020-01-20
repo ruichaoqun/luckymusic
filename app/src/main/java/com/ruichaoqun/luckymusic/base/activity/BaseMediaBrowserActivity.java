@@ -36,7 +36,6 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     private MediaControllerCallback mMediaControllerCallback;
 
     protected List<MediaSessionCompat.QueueItem> queueItems;
-    protected long activeQueueItemId = MediaSessionCompat.QueueItem.UNKNOWN_ID;
     protected MediaMetadataCompat mCurrentMetadata;
     protected PlaybackStateCompat mPlaybackState;
 
@@ -115,9 +114,6 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
                 BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
                 BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
                 BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
-                if(BaseMediaBrowserActivity.this.mPlaybackState != null){
-                    BaseMediaBrowserActivity.this.activeQueueItemId = mControllerCompat.getPlaybackState().getActiveQueueItemId();
-                }
                 BaseMediaBrowserActivity.this.onMediaServiceConnected();
             } catch (RemoteException e) {
                 e.printStackTrace();

@@ -95,7 +95,6 @@ public class MusicService extends MediaBrowserServiceCompat {
 
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
         mExoPlayer.setAudioAttributes(uAmpAudioAttributes, true);
-
         MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession);
         mediaSessionConnector.setPlayer(mExoPlayer);
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, getApplication().getPackageName()), null);

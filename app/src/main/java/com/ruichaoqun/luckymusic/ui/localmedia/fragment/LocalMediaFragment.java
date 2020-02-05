@@ -41,7 +41,6 @@ public class LocalMediaFragment extends BaseLazyFragment<LocalMediaPresenter> im
         return R.layout.fragment_local_media;
     }
 
-
     @Override
     protected void initView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

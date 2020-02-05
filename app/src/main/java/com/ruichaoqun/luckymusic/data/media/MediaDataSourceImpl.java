@@ -96,10 +96,10 @@ public class MediaDataSourceImpl implements MediaDataSource {
         Cursor cursor = mContentResolver.query(EXTERNAL_CONTENT_URI, projection, selectionBuilder.toString(), paramArrayOfString, DEFAULT_SORT_ORDER);
         List<MediaMetadataCompat> metadataCompatList = new ArrayList<>();
         while (cursor.moveToNext()) {
-            String path = cursor.getString(cursor.getColumnIndex(DATA));
-            if(!TextUtils.isEmpty(path) && path.endsWith("flac")){
-                continue;
-            }
+//            String path = cursor.getString(cursor.getColumnIndex(DATA));
+//            if(!TextUtils.isEmpty(path) && path.endsWith("flac")){
+//                continue;
+//            }
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder()
                     .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, new MediaID(MediaDataType.TYPE_SONG , cursor.getLong(cursor.getColumnIndex(_ID))).asString())
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, cursor.getString(cursor.getColumnIndex(TITLE)))

@@ -5,10 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.PlayerActivity">
 
-    <View
-        android:background="@drawable/bg_playing"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+
+    <ViewSwitcher
+        android:id="@+id/vs_bacground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:background="@drawable/bg_playing"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"/>
+        <ImageView
+            android:background="@drawable/bg_playing"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"/>
+    </ViewSwitcher>
 
     <RelativeLayout
         android:id="@+id/rl_display_container"

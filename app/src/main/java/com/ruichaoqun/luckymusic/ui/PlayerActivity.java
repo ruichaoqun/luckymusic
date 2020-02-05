@@ -3,7 +3,9 @@ package com.ruichaoqun.luckymusic.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -14,6 +16,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -21,10 +26,14 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.common.GlideApp;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
+import com.ruichaoqun.luckymusic.utils.RenderScriptTransformation;
 import com.ruichaoqun.luckymusic.utils.StylusAnimation;
+import com.ruichaoqun.luckymusic.utils.TimeUtils;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
+import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.PlaylistBottomSheet;
 import com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper;
 import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
+import com.ruichaoqun.luckymusic.utils.ViewSwitcherTarget;
 
 import java.util.List;
 
@@ -52,7 +61,16 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     ImageView mPlayNext;
     @BindView(R.id.iv_play_list)
     ImageView mPlayList;
+    @BindView(R.id.tv_current_time)
+    TextView mCurrentPosition;
+    @BindView(R.id.tv_total_time)
+    TextView mTotalPosition;
+    @BindView(R.id.player_seek_bar)
+    SeekBar mPlayerSeekBar;
+    @BindView(R.id.vs_bacground)
+    ViewSwitcher mVsBacground;
 
+    private ViewSwitcherTarget mViewSwitcherTarget;
 
     private RotationRelativeLayout mCurrentDiscLayout;
 
@@ -70,8 +88,13 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     public static final int STYLUS_ON_TO_OFF = 3;
     public static final int STYLUS_OFF_TO_ON = 1;
 
-    private long currentDiscQueueId = -1;
+    //当前的播放音乐在播放队列中的index，注意不是QueueItem的queueId，在顺序播放但单曲循环中这两个值是相等的，但是在随机播放中这两个值是不相等的
+    private int currentDataPosition = -1;
     private MediaSessionCompat.QueueItem nextQueueItem;
+    private boolean updatePosition = true;
+    private boolean mSeekbarInTouch = false;
+    //是否是后台自动切换下一首
+    private boolean isBacgroundAutoNext = false;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
@@ -98,6 +121,26 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 //此时唱针OFF状态，开启动画
                 PlayerActivity.this.mStylus.clearAnimation();
                 PlayerActivity.this.mStylus.startAnimation(PlayerActivity.this.mStylusReturnAnimation);
+            }
+        }
+    };
+
+    private Runnable mCheckPlaybackPositionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long currentPosition;
+            if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING){
+                long timeDelta = SystemClock.elapsedRealtime() - mPlaybackState.getLastPositionUpdateTime();
+                currentPosition = (long) (mPlaybackState.getPosition()+(timeDelta * mPlaybackState.getPlaybackSpeed()));
+            }else{
+                currentPosition = mPlaybackState.getPosition();
+            }
+            if(updatePosition ){
+                if(!mSeekbarInTouch){
+                    mCurrentPosition.setText(TimeUtils.getCurrentPosition(currentPosition));
+                    mPlayerSeekBar.setProgress(TimeUtils.formateToSeconds(currentPosition));
+                }
+                checkPlaybackPosition();
             }
         }
     };
@@ -139,6 +182,34 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mCurrentDiscLayout = (RotationRelativeLayout) this.mViewFlipper.getCurrentView();
         this.mCurrentDiscLayout.prepareAnimation();
         this.mCurrentDiscLayout.start();
+        mPlayerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    mCurrentPosition.setText(TimeUtils.getCurrentPositionFromSeekbar(progress));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mSeekbarInTouch = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mSeekbarInTouch = false;
+                startSeekPlayer(seekBar);
+            }
+        });
+        mVsBacground.setInAnimation(this,android.R.anim.fade_in);
+        mVsBacground.setOutAnimation(this,android.R.anim.fade_out);
+        mViewSwitcherTarget = new ViewSwitcherTarget(mVsBacground);
+    }
+
+    private void startSeekPlayer(SeekBar seekBar) {
+        int duration = seekBar.getProgress();
+        mCurrentPosition.setText(TimeUtils.getCurrentPositionFromSeekbar(duration));
+        this.mControllerCompat.getTransportControls().seekTo((long) (duration*1E3));
     }
 
     @Override
@@ -201,6 +272,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             @Override
             public void onScrolled(boolean z) {
                 //滑动回调，此处可以处理唱针的切换以及当前封面动画的暂停
+                Log.w(TAG, "onScrolled-->" );
                 PlayerActivity.this.startStylusRemove();
                 PlayerActivity.this.mCurrentDiscLayout.pause();
             }
@@ -214,11 +286,10 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             public void onDiscDirectionChange(Boolean bool) {
                 if (PlayerActivity.this.mPlaybackState != null && PlayerActivity.this.queueItems != null) {
                     if (bool) {
-                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDiscQueueId == 0 ? PlayerActivity.this.queueItems.size() - 1 : (int) (currentDiscQueueId - 1));
+                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDataPosition == 0 ? PlayerActivity.this.queueItems.size() - 1 : (int) (currentDataPosition - 1));
                     } else {
-                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDiscQueueId == PlayerActivity.this.queueItems.size() - 1 ? 0 : (int) (currentDiscQueueId + 1));
+                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDataPosition == PlayerActivity.this.queueItems.size() - 1 ? 0 : (int) (currentDataPosition + 1));
                     }
-                    Log.w("sssss", nextQueueItem.getDescription().getMediaId() + nextQueueItem.getDescription().getTitle());
                     GlideApp.with(PlayerActivity.this)
                             .load(nextQueueItem.getDescription().getIconUri())
                             .transform(new CircleCrop())
@@ -228,13 +299,20 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 }
             }
 
+
+            /**
+             *
+             * @param z 是否已切换disc
+             * @param justSwitchDisc 是否直接调用切换disc
+             * @param isScrollingLeft  是否是向左滑动
+             */
             @Override
             public void onDiscSwitchComplete(boolean z, boolean justSwitchDisc, boolean isScrollingLeft) {
-                Log.w("sssss", "onDiscSwitchComplete-->" + z + "    " + justSwitchDisc + "    " + isScrollingLeft);
+                Log.w(TAG, "onDiscSwitchComplete-->" + z + "    " + justSwitchDisc + "    " + isScrollingLeft);
                 //如果是外部直接调用切换歌曲，在回调时要设置title和subtitle，还有是否已收藏歌曲
 
                 //如果是滑动的
-                if (!z) {
+                if (!z && !isBacgroundAutoNext) {
                     //如果音乐切换成功，开始播放下一首
                     if (isScrollingLeft) {
                         //播放下一首
@@ -243,12 +321,19 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                         //播放上一首
                         PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
                     }
+                    switchBacground(nextQueueItem.getDescription().getIconUri());
                 } else {
                     //未滑动到下一首，不改变
                     PlayerActivity.this.startStylusReturn();
                 }
+                isBacgroundAutoNext = false;
                 PlayerActivity.this.mCurrentDiscLayout = (RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getCurrentView();
-                PlayerActivity.this.currentDiscQueueId = nextQueueItem.getQueueId();
+                for (int i = 0; i < queueItems.size(); i++) {
+                    if(nextQueueItem.getQueueId() == queueItems.get(i).getQueueId()){
+                        PlayerActivity.this.currentDataPosition = i;
+                        break;
+                    }
+                }
                 ((RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getNextView()).stopAndRest();
                 PlayerActivity.this.mCurrentDiscLayout.prepareAnimation();
             }
@@ -268,11 +353,19 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
         });
 
-
         this.mPlayMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(m)
+                //只支持3中循环模式，列表循环模式，单曲模式，随机播放模式
+                //首先判断是否是随机模式
+                if(PlayerActivity.this.mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+                    PlayerActivity.this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
+                    PlayerActivity.this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
+                }else if(PlayerActivity.this.mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE){
+                    PlayerActivity.this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
+                }else {
+                    PlayerActivity.this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_ALL);
+                }
             }
         });
 
@@ -310,9 +403,17 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showPlayListDialog();
             }
         });
+    }
+
+    private void switchBacground(Uri iconUri) {
+        GlideApp.with(PlayerActivity.this)
+                .load(iconUri)
+                .transform(new RenderScriptTransformation())
+                .error(R.drawable.bg_playing)
+                .into(this.mViewSwitcherTarget);
     }
 
     @Override
@@ -321,15 +422,12 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         if (this.mCurrentMetadata != null && !TextUtils.isEmpty(this.mCurrentMetadata.getDescription().getMediaId())) {
             this.setTitle(this.mCurrentMetadata.getDescription().getTitle());
             this.setSubTitle(this.mCurrentMetadata.getDescription().getSubtitle());
-            this.currentDiscQueueId = mPlaybackState.getActiveQueueItemId();
+            getCurrentMusicPosition();
+            this.mTotalPosition.setText(TimeUtils.getCurrentPosition(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+            this.mPlayerSeekBar.setMax(TimeUtils.formateToSeconds(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
             //TODO 设置是否收藏
-        }
-        for (int i = 0; i < queueItems.size(); i++) {
-            Log.w("BBBBB", queueItems.get(i).getDescription().getTitle().toString());
-        }
-        if (this.mPlaybackState == null) {
-            return;
+            switchBacground(mCurrentMetadata.getDescription().getIconUri());
         }
         switch (this.mPlaybackState.getState()) {
             case PlaybackStateCompat.STATE_PLAYING:
@@ -351,6 +449,26 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 break;
             default:
         }
+        checkPlaybackPosition();
+    }
+
+    private void getCurrentMusicPosition() {
+        long currentDiscQueueId = mPlaybackState.getActiveQueueItemId();
+        //如果不是随机播放，播放列表index和每个item的queueId是一致的
+        if(mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_NONE){
+            this.currentDataPosition = (int) currentDiscQueueId;
+        }else{
+            for (int i = 0; i < queueItems.size(); i++) {
+                if(currentDiscQueueId == queueItems.get(i).getQueueId()){
+                    this.currentDataPosition = i;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void checkPlaybackPosition(){
+        this.clientHandler.postDelayed(mCheckPlaybackPositionRunnable,100l);
     }
 
     /**
@@ -361,9 +479,15 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @Override
     public void onMetadataChanged(MediaMetadataCompat metadata) {
         super.onMetadataChanged(metadata);
-        PlayerActivity.this.setTitle(PlayerActivity.this.mCurrentMetadata.getDescription().getTitle());
-        PlayerActivity.this.setSubTitle(PlayerActivity.this.mCurrentMetadata.getDescription().getSubtitle());
-        //TODO 添加是否收藏
+        PlayerActivity.this.setTitle(metadata.getDescription().getTitle());
+        PlayerActivity.this.setSubTitle(metadata.getDescription().getSubtitle());
+        this.mTotalPosition.setText(TimeUtils.getCurrentPosition(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+        this.mPlayerSeekBar.setMax(TimeUtils.formateToSeconds(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+        //判断是否是后台自动切换的
+        if(!TextUtils.equals(queueItems.get(currentDataPosition).getDescription().getMediaId(),metadata.getDescription().getMediaId()) && !isBacgroundAutoNext){
+            isBacgroundAutoNext = true;
+            PlayerActivity.this.mViewFlipper.switchDisc(true);
+        }
     }
 
     /**
@@ -392,12 +516,33 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 this.mPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;
         }
+    }
 
+    @Override
+    public void onRepeatModeChanged(int repeatMode) {
+        if(repeatMode == PlaybackStateCompat.REPEAT_MODE_ONE){
+            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_single);
+        }else if(repeatMode == PlaybackStateCompat.REPEAT_MODE_ALL){
+            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_list_circulation);
+        }
+    }
+
+    @Override
+    public void onShuffleModeChanged(int shuffleMode) {
+        if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_shuffer);
+        }
     }
 
     @Override
     public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
         super.onQueueChanged(queue);
+        for (int i = 0; i < queue.size(); i++) {
+            if(TextUtils.equals(queue.get(i).getDescription().getMediaId(),mCurrentMetadata.getDescription().getMediaId())){
+                currentDataPosition = i;
+                break;
+            }
+        }
     }
 
     @Override
@@ -434,5 +579,11 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @Override
     public boolean isNeedMiniPlayerBar() {
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        updatePosition = false;
+        super.onDestroy();
     }
 }

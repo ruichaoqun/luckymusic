@@ -45,4 +45,35 @@
         <item name="android:scaleType">center</item>
         <item name="android:layout_weight">1.0</item>
     </style>
+
+
+    <style name="f1" />
+    <style name="f2" parent="@style/f1">
+        <item name="android:windowEnterAnimation">@anim/anim_show_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/anim_hide_to_bottom</item>
+    </style>
+
+    <style name="f3" >
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:textColorPrimary">#dd000000</item>
+        <item name="android:textColorSecondary">#dd000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textColor">@null</item>
+        <item name="android:textColorHint">#42000000</item>
+        <item name="android:windowAnimationStyle">@style/f2</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+<!--        <item name="gt">@android:color/background_light</item>-->
+<!--        <item name="gu">@style/f_</item>-->
+<!--        <item name="gv">@color/b9</item>-->
+<!--        <item name="gw">@style/gk</item>-->
+<!--        <item name="gx">@style/gj</item>-->
+<!--        <item name="gy">@style/gn</item>-->
+<!--        <item name="gz">@style/gl</item>-->
+    </style>
 </resources>

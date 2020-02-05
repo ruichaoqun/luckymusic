@@ -8,6 +8,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,10 @@ import com.ruichaoqun.luckymusic.media.MediaBrowserProvider;
 import com.ruichaoqun.luckymusic.media.MediaControllerInterface;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
+import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.PlaylistBottomSheet;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity implements MediaBrowserProvider {
@@ -37,19 +40,23 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
 
     protected List<MediaSessionCompat.QueueItem> queueItems;
     protected MediaMetadataCompat mCurrentMetadata;
-    protected PlaybackStateCompat mPlaybackState;
+    protected PlaybackStateCompat mPlaybackState = new PlaybackStateCompat.Builder()
+            .setState(PlaybackStateCompat.STATE_NONE, 0, 0f)
+            .build();
+
+    private PlaylistBottomSheet playListDialog;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(isNeedMediaBrowser()){
-            mBrowserCompat = new MediaBrowserCompat(this,new ComponentName(this, MusicService.class),new ConnectionCallback(),null);
+        if (isNeedMediaBrowser()) {
+            mBrowserCompat = new MediaBrowserCompat(this, new ComponentName(this, MusicService.class), new ConnectionCallback(), null);
             mBrowserCompat.connect();
         }
     }
 
-    public boolean isNeedMediaBrowser(){
+    public boolean isNeedMediaBrowser() {
         return true;
     }
 
@@ -57,8 +64,8 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
         for (int i = 0; i < fragments.size(); i++) {
-            if(fragments.get(i) instanceof MediaControllerInterface){
-                ((MediaControllerInterface)fragments.get(i)).onPlaybackStateChanged(state);
+            if (fragments.get(i) instanceof MediaControllerInterface) {
+                ((MediaControllerInterface) fragments.get(i)).onPlaybackStateChanged(state);
             }
         }
     }
@@ -67,50 +74,60 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
         for (int i = 0; i < fragments.size(); i++) {
-            if(fragments.get(i) instanceof MediaControllerInterface){
-                ((MediaControllerInterface)fragments.get(i)).onMetadataChanged(metadata);
+            if (fragments.get(i) instanceof MediaControllerInterface) {
+                ((MediaControllerInterface) fragments.get(i)).onMetadataChanged(metadata);
             }
         }
     }
 
-    public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue){
+
+    public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+    }
+
+    public void onRepeatModeChanged(@PlaybackStateCompat.RepeatMode int repeatMode) {
+    }
+
+    public void onShuffleModeChanged(@PlaybackStateCompat.ShuffleMode int shuffleMode) {
+    }
+
+    public void onMediaServiceConnected() {
 
     }
 
-    public void onMediaServiceConnected(){
+    public void onMediaServiceFailed() {
 
     }
 
-    public void onMediaServiceFailed(){
-
-    }
-
-    public void onMediaServiceSuspended(){
+    public void onMediaServiceSuspended() {
 
     }
 
     @Override
-    public MediaBrowserCompat getMediaBrowser(){
+    public MediaBrowserCompat getMediaBrowser() {
         return mBrowserCompat;
+    }
+
+    public void showPlayListDialog(){
+        this.playListDialog = PlaylistBottomSheet.showMusicPlayList(this, null);
     }
 
     @Override
     protected void onDestroy() {
-        if(mBrowserCompat != null && mBrowserCompat.isConnected()){
+        if (mBrowserCompat != null && mBrowserCompat.isConnected()) {
             mControllerCompat.unregisterCallback(mMediaControllerCallback);
             mBrowserCompat.disconnect();
         }
         super.onDestroy();
     }
 
-    class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback{
+    class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback {
         @Override
         public void onConnected() {
             try {
-                mControllerCompat = new MediaControllerCompat(getApplicationContext(),mBrowserCompat.getSessionToken());
-                mMediaControllerCallback = new  MediaControllerCallback();
+                mControllerCompat = new MediaControllerCompat(getApplicationContext(), mBrowserCompat.getSessionToken());
+                mMediaControllerCallback = new MediaControllerCallback();
                 mControllerCompat.registerCallback(mMediaControllerCallback);
-                MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this,mControllerCompat);
+                MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this, mControllerCompat);
                 BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
                 BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
                 BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
@@ -131,7 +148,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         }
     }
 
-    private class MediaControllerCallback extends MediaControllerCompat.Callback{
+    private class MediaControllerCallback extends MediaControllerCompat.Callback {
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             BaseMediaBrowserActivity.this.mPlaybackState = state;
@@ -148,6 +165,16 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
             BaseMediaBrowserActivity.this.queueItems = queue;
             BaseMediaBrowserActivity.this.onQueueChanged(queue);
+        }
+
+        @Override
+        public void onRepeatModeChanged(int repeatMode) {
+            BaseMediaBrowserActivity.this.onRepeatModeChanged(repeatMode);
+        }
+
+        @Override
+        public void onShuffleModeChanged(int shuffleMode) {
+            BaseMediaBrowserActivity.this.onShuffleModeChanged(shuffleMode);
         }
     }
 }

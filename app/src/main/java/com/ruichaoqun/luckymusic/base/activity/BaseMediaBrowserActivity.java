@@ -38,13 +38,14 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     protected MediaControllerCompat mControllerCompat;
     private MediaControllerCallback mMediaControllerCallback;
 
-    protected List<MediaSessionCompat.QueueItem> queueItems;
-    protected MediaMetadataCompat mCurrentMetadata;
+    protected List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
+    protected MediaMetadataCompat mCurrentMetadata = new MediaMetadataCompat.Builder().build();
     protected PlaybackStateCompat mPlaybackState = new PlaybackStateCompat.Builder()
             .setState(PlaybackStateCompat.STATE_NONE, 0, 0f)
             .build();
 
     private PlaylistBottomSheet playListDialog;
+    private int playMode = PlaybackStateCompat.REPEAT_MODE_ALL;
 
 
     @Override
@@ -87,9 +88,6 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     public void onRepeatModeChanged(@PlaybackStateCompat.RepeatMode int repeatMode) {
     }
 
-    public void onShuffleModeChanged(@PlaybackStateCompat.ShuffleMode int shuffleMode) {
-    }
-
     public void onMediaServiceConnected() {
 
     }
@@ -108,8 +106,33 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     }
 
     public void showPlayListDialog(){
-        this.playListDialog = PlaylistBottomSheet.showMusicPlayList(this, null);
+        this.playListDialog = PlaylistBottomSheet.showMusicPlayList(this, queueItems,mCurrentMetadata,playMode);
     }
+
+    /**
+     * 删除指定音乐
+     * @param position 在播放列表中的index
+     */
+    public void deletePlayItem(int position){
+        this.mControllerCompat.removeQueueItem(queueItems.get(position).getDescription());
+    }
+
+    /**
+     * 播放列表中的指定音乐
+     * @param position 指定的音乐在播放列表中的位置
+     */
+    public void playFromQueueIndex(int position){
+        this.mControllerCompat.getTransportControls().skipToQueueItem(position);
+    }
+
+    /**
+     * 移除整个播放列表
+     */
+    public void deleteAllPlaylist(){
+//        this.mControllerCompat.removeQueueItemAt();
+    }
+
+
 
     @Override
     protected void onDestroy() {
@@ -131,6 +154,11 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
                 BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
                 BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
                 BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
+                if(mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+                    BaseMediaBrowserActivity.this.playMode = PlaybackStateCompat.SHUFFLE_MODE_ALL;
+                }else{
+                    BaseMediaBrowserActivity.this.playMode = mControllerCompat.getRepeatMode();
+                }
                 BaseMediaBrowserActivity.this.onMediaServiceConnected();
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -151,30 +179,51 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     private class MediaControllerCallback extends MediaControllerCompat.Callback {
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
+            Log.w("SSSSS","onPlaybackStateChanged");
             BaseMediaBrowserActivity.this.mPlaybackState = state;
             BaseMediaBrowserActivity.this.onPlaybackStateChanged(state);
         }
 
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
+            Log.w("SSSSS","onMetadataChanged");
+            if(!TextUtils.equals(BaseMediaBrowserActivity.this.mCurrentMetadata.getDescription().getMediaId(),metadata.getDescription().getMediaId())){
+                if(BaseMediaBrowserActivity.this.playListDialog != null && BaseMediaBrowserActivity.this.playListDialog.isShowing()){
+                    BaseMediaBrowserActivity.this.playListDialog.setCurrentMetadata(metadata);
+                }
+            }
             BaseMediaBrowserActivity.this.mCurrentMetadata = metadata;
             BaseMediaBrowserActivity.this.onMetadataChanged(metadata);
         }
 
         @Override
         public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+            Log.w("SSSSS","onQueueChanged");
             BaseMediaBrowserActivity.this.queueItems = queue;
             BaseMediaBrowserActivity.this.onQueueChanged(queue);
+            if(BaseMediaBrowserActivity.this.playListDialog != null && BaseMediaBrowserActivity.this.playListDialog.isShowing()){
+                BaseMediaBrowserActivity.this.playListDialog.setQueueItems(queueItems);
+            }
         }
 
         @Override
         public void onRepeatModeChanged(int repeatMode) {
+            BaseMediaBrowserActivity.this.playMode = repeatMode;
             BaseMediaBrowserActivity.this.onRepeatModeChanged(repeatMode);
+            if(BaseMediaBrowserActivity.this.playListDialog != null && BaseMediaBrowserActivity.this.playListDialog.isShowing()){
+                BaseMediaBrowserActivity.this.playListDialog.setPlayMode(playMode);
+            }
         }
 
         @Override
         public void onShuffleModeChanged(int shuffleMode) {
-            BaseMediaBrowserActivity.this.onShuffleModeChanged(shuffleMode);
+            if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+                BaseMediaBrowserActivity.this.playMode = shuffleMode;
+                BaseMediaBrowserActivity.this.onRepeatModeChanged(shuffleMode);
+                if(BaseMediaBrowserActivity.this.playListDialog != null && BaseMediaBrowserActivity.this.playListDialog.isShowing()){
+                    BaseMediaBrowserActivity.this.playListDialog.setPlayMode(playMode);
+                }
+            }
         }
     }
 }

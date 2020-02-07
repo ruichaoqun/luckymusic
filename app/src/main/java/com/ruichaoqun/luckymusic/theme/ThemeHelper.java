@@ -1,7 +1,6 @@
 package com.ruichaoqun.luckymusic.theme;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
@@ -32,11 +31,10 @@ import android.widget.TextView;
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.service.impl.ThemeServiceImpl;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
 import com.ruichaoqun.luckymusic.utils.ReflectUtils;
-import com.ruichaoqun.luckymusic.utils.drawhelper.DrawableUtils;
+import com.ruichaoqun.luckymusic.utils.drawhelper.StateListDrawableUtils;
 import com.ruichaoqun.luckymusic.widget.drawable.PaddingLeftBackgroundDrawable;
 
 import java.lang.reflect.Field;
@@ -60,7 +58,7 @@ public class ThemeHelper {
         } else {
             drawable = paddingLeftBackgroundDrawable2;
         }
-        return getRippleDrawable(context, DrawableUtils.getPressedDrawable(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
+        return getRippleDrawable(context, StateListDrawableUtils.getPressedDrawable(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
     }
 
     public static int getColor700from500(int i) {
@@ -172,7 +170,7 @@ public class ThemeHelper {
     }
 
     public static Drawable getBgSelectorWithDrawalbe(Context context, Drawable drawable) {
-        return getRippleDrawable(context, DrawableUtils.getStateListDrawable(drawable, (Drawable) new LayerDrawable(new Drawable[]{drawable, new PaddingLeftBackgroundDrawable(-1, false, true)}), (Drawable) null, (Drawable) null, (Drawable) null));
+        return getRippleDrawable(context, StateListDrawableUtils.getStateListDrawable(drawable, (Drawable) new LayerDrawable(new Drawable[]{drawable, new PaddingLeftBackgroundDrawable(-1, false, true)}), (Drawable) null, (Drawable) null, (Drawable) null));
     }
 
 

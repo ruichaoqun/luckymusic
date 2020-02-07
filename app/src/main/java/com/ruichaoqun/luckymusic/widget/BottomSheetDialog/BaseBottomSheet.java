@@ -12,8 +12,11 @@ import android.widget.BaseAdapter;
 import androidx.annotation.StyleRes;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
+import com.ruichaoqun.luckymusic.utils.drawhelper.ColorDrawableUtils;
 
 import java.util.ArrayList;
 
@@ -34,7 +37,7 @@ public abstract class BaseBottomSheet extends Dialog implements DialogInterface 
     }
 
     public void setContentView(View view) {
-//        ((ViewGroup) view).getChildAt(0).setBackgroundDrawable(ad.b(getBackgroundColor(), NeteaseMusicUtils.a((int) R.dimen.f9if)));
+        ((ViewGroup) view).getChildAt(0).setBackgroundDrawable(ColorDrawableUtils.getTopCornerColorDrawable(getBackgroundColor(), UiUtils.dp2px(15)));
         super.setContentView(view);
     }
 
@@ -77,59 +80,6 @@ public abstract class BaseBottomSheet extends Dialog implements DialogInterface 
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.gravity = 80;
         attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
-        attributes.height = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(attributes);
-    }
-
-    /* compiled from: ProGuard */
-    public abstract class BaseBottomSheetListViewAdapter<T> extends BaseAdapter {
-        protected Context context;
-        protected ArrayList<T> mList = new ArrayList<>();
-
-        public boolean areAllItemsEnabled() {
-            return false;
-        }
-
-        public BaseBottomSheetListViewAdapter(Context context2) {
-            this.context = context2;
-        }
-
-        public int getCount() {
-            if (this.mList != null) {
-                return this.mList.size();
-            }
-            return 0;
-        }
-
-        public T getItem(int i) {
-            if (this.mList == null || i >= this.mList.size()) {
-                return null;
-            }
-            return this.mList.get(i);
-        }
-
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        public ArrayList<T> getList() {
-            return this.mList;
-        }
-
-        public void setList(ArrayList<T> arrayList) {
-            if (arrayList == null) {
-                arrayList = new ArrayList<>();
-            }
-            if (this.mList.size() != 0) {
-                this.mList.clear();
-            }
-            this.mList.addAll(arrayList);
-            notifyDataSetChanged();
-        }
-
-        public void clear() {
-            this.mList.clear();
-            notifyDataSetChanged();
-        }
     }
 }

@@ -4,7 +4,9 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,7 +15,9 @@ import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
+import com.google.android.exoplayer2.source.DynamicConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.ruichaoqun.luckymusic.data.DataRepository;
@@ -29,6 +33,19 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
     public static final String TAG = LuckyPlaybackPreparer.class.getSimpleName();
 
     private DataRepository dataRepository;
+
+    private ExoPlayer exoPlayer;
+    private DataSource.Factory dataSourceFactory;
+    private MediaSessionConnector mediaSessionConnector;
+    private MediaControllerCompat mControllerCompat;
+
+    public LuckyPlaybackPreparer(MediaControllerCompat mControllerCompat,MediaSessionConnector mediaSessionConnector,DataRepository dataRepository, ExoPlayer exoPlayer, DataSource.Factory dataSourceFactory) {
+        this.dataRepository = dataRepository;
+        this.exoPlayer = exoPlayer;
+        this.dataSourceFactory = dataSourceFactory;
+        this.mediaSessionConnector = mediaSessionConnector;
+        this.mControllerCompat = mControllerCompat;
+    }
 
     @Override
     public void onPrepare() {
@@ -56,6 +73,8 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
             ConcatenatingMediaSource mediaSource = toMediaSource(list);
             exoPlayer.prepare(mediaSource);
             exoPlayer.seekTo(index, 0);
+            mediaSessionConnector.setQueueEditor(new TimelineQueueEditor(mControllerCompat,mediaSource,
+                    new DefaultQueueDataAdapter(),new DefaultMediaSourceFactory(dataSourceFactory)));
         }
     }
 
@@ -69,14 +88,7 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
 
     }
 
-    private ExoPlayer exoPlayer;
-    private DataSource.Factory dataSourceFactory;
 
-    public LuckyPlaybackPreparer(DataRepository dataRepository, ExoPlayer exoPlayer, DataSource.Factory dataSourceFactory) {
-        this.dataRepository = dataRepository;
-        this.exoPlayer = exoPlayer;
-        this.dataSourceFactory = dataSourceFactory;
-    }
 
     @Override
     public long getSupportedPrepareActions() {
@@ -110,5 +122,22 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
                     .createMediaSource(ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, mediaID.getMediaId())));
         }
         return mediaSource;
+    }
+
+    private class DefaultQueueDataAdapter implements TimelineQueueEditor.QueueDataAdapter {
+        @Override
+        public void add(int position, MediaDescriptionCompat description) {
+
+        }
+
+        @Override
+        public void remove(int position) {
+
+        }
+
+        @Override
+        public void move(int from, int to) {
+
+        }
     }
 }

@@ -32,7 +32,7 @@ import java.lang.reflect.Array;
  * @date :2019/10/12 17:55
  * description:
  */
-public class DrawableUtils {
+public class StateListDrawableUtils {
     public static ColorStateList createColorStateList(Context context, @ColorInt int color, int alpha) {
         int alphaComponent = ColorUtils.setAlphaComponent(color, (int) (255.0f / (100.0f / ((float) alpha))));
         return createColorStateList(context, Integer.valueOf(color), Integer.valueOf(alphaComponent), Integer.valueOf(alphaComponent));

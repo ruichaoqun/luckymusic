@@ -30,6 +30,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor;
+import com.google.android.exoplayer2.source.DynamicConcatenatingMediaSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoFrameMetadataListener;
@@ -102,7 +104,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession);
         mediaSessionConnector.setPlayer(mExoPlayer);
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, getApplication().getPackageName()), null);
-        mPlaybackPreparer = new LuckyPlaybackPreparer(dataRepository, mExoPlayer, dataSourceFactory);
+        mPlaybackPreparer = new LuckyPlaybackPreparer(mMediaController,mediaSessionConnector,dataRepository, mExoPlayer, dataSourceFactory);
         mediaSessionConnector.setPlaybackPreparer(mPlaybackPreparer);
         mediaSessionConnector.setQueueNavigator(new LuckyQueueNavigator(mMediaSession));
         mCompositeDisposable = new CompositeDisposable();

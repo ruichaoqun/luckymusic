@@ -19,6 +19,16 @@
     <dimen name="textsize_large">16sp</dimen>
     <dimen name="textsize_middle">14sp</dimen>
     <dimen name="textsize_small">12sp</dimen>
+    <dimen name="textsize_11sp">11.0sp</dimen>
+    <dimen name="textsize_17sp">17.0sp</dimen>
+    <dimen name="textsize_21sp">21.0sp</dimen>
+    <dimen name="textsize_16sp">16.0sp</dimen>
+    <dimen name="textsize_30sp">30.0sp</dimen>
+    <dimen name="textsize_15sp">15.0sp</dimen>
+    <dimen name="textsize_14sp">14.0sp</dimen>
+    <dimen name="textsize_13sp">13.0sp</dimen>
+    <dimen name="textsize_12sp">12.0sp</dimen>
+    <dimen name="textsize_10sp">10.0sp</dimen>
 
     <!--
 Refer to LuckyMusicApp Widget Documentation for margin information

@@ -1,48 +1,191 @@
 package com.ruichaoqun.luckymusic.widget.BottomSheetDialog;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.base.activity.BaseMediaBrowserActivity;
+import com.ruichaoqun.luckymusic.utils.UiUtils;
+
+import java.util.List;
 
 public class PlaylistBottomSheet extends BaseBottomSheet {
-    private MediaSessionCompat.QueueItem mCurrentQueueItem;
+    private static final float rate = 0.521f;
 
-    public PlaylistBottomSheet(Context context,  @StyleRes int themeResId,MediaSessionCompat.QueueItem queueItem) {
+    private PlaylistAdapter mPlaylistAdapter;
+    private TextView mTvheaderCount;
+    private TextView mTvPlayMode;
+    private TextView mTvCollect;
+    private ImageView mIvDeleteAll;
+    private BottomSheetRecyclerView mRvPlayList;
+
+    private List<MediaSessionCompat.QueueItem> mQueueItems;
+    private MediaMetadataCompat mCurrentMetadata;
+    private int mPlayMode;
+
+    public PlaylistBottomSheet(Context context,  @StyleRes int themeResId,List<MediaSessionCompat.QueueItem> mQueueItems,MediaMetadataCompat mCurrentMetadata,int playMode) {
         super(context, themeResId);
-        this.mCurrentQueueItem = queueItem;
+        this.mCurrentMetadata = mCurrentMetadata;
+        this.mQueueItems = mQueueItems;
+        this.mPlayMode = playMode;
     }
 
     @Override
     public void initCustomView() {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.dialog_play_list,  null);
         this.mDialogView.addView(inflate);
-//        this.mDialogView.mTarget = this.listView;
-//        this.mDialogView.addIgnoreScrollView(inflate.findViewById(R.id.bwr));
+        this.mTvheaderCount = inflate.findViewById(R.id.tv_header_count);
+        this.mTvPlayMode = inflate.findViewById(R.id.tv_play_mode);
+        this.mTvCollect = inflate.findViewById(R.id.tv_collect);
+        this.mIvDeleteAll = inflate.findViewById(R.id.iv_delete_all);
+        this.mRvPlayList = inflate.findViewById(R.id.rv_play_list);
+        this.mRvPlayList.setLayoutManager(new LinearLayoutManager(getContext()));
+        this.mRvPlayList.setScreenHeigtRate(rate);
+        this.mDialogView.mTarget = this.mRvPlayList;
+        this.mDialogView.addIgnoreScrollView(inflate.findViewById(R.id.tv_header_title));
         setContentView(this.mDialogView);
+        this.mPlaylistAdapter = new PlaylistAdapter(R.layout.item_adapter_play_list,mQueueItems);
+        this.mRvPlayList.setAdapter(this.mPlaylistAdapter);
+        this.mTvheaderCount.setText("("+this.mQueueItems.size()+")");
+        this.setPlayMode(mPlayMode);
+        this.mPlaylistAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Activity activity = getActivity();
+                if(activity != null && activity instanceof BaseMediaBrowserActivity && !activity.isFinishing()){
+                    ((BaseMediaBrowserActivity)activity).deletePlayItem(position);
+                }
+            }
+        });
+        this.mPlaylistAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Activity activity = getActivity();
+                if(activity != null && activity instanceof BaseMediaBrowserActivity && !activity.isFinishing()){
+                    ((BaseMediaBrowserActivity)activity).playFromQueueIndex(position);
+                }
+            }
+        });
 
+        this.mTvPlayMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        this.mTvCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        this.mIvDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    public void setPlayMode(int playMode) {
+        if(playMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+            this.mTvPlayMode.setText("随机播放");
+        }else if(playMode == PlaybackStateCompat.REPEAT_MODE_ALL){
+            this.mTvPlayMode.setText("列表循环");
+        }else{
+            this.mTvPlayMode.setText("单曲循环");
+        }
+    }
+
+    public void setCurrentMetadata(MediaMetadataCompat currentMetadata) {
+        this.mCurrentMetadata = currentMetadata;
+        this.mPlaylistAdapter.notifyDataSetChanged();
+        scrollToTargetMusic(false);
+    }
+
+    public void setQueueItems(List<MediaSessionCompat.QueueItem> queueItems) {
+        this.mTvheaderCount.setText("("+this.mQueueItems.size()+")");
+        this.mQueueItems = queueItems;
+        this.mPlaylistAdapter.setNewData(queueItems);
+        scrollToTargetMusic(false);
     }
 
     @Override
     public void onBottomSheetDismiss() {
-//        cancelCalcuPlayListCacheTask();
     }
 
     @Override
     public void onBottomSheetShow() {
-//        scrollToTargetMusic(false);
-//        calcuPlayListCacheTask();
+        scrollToTargetMusic(false);
     }
 
-    public static PlaylistBottomSheet showMusicPlayList(Context context, MediaSessionCompat.QueueItem queueItem) {
-        PlaylistBottomSheet playlistBottomSheet = new PlaylistBottomSheet(context, R.style.f3, queueItem);
+    private void scrollToTargetMusic(boolean b) {
+
+    }
+
+    public static PlaylistBottomSheet showMusicPlayList(Context context, List<MediaSessionCompat.QueueItem> mQueueItems,MediaMetadataCompat metadataCompat,int playMode) {
+        PlaylistBottomSheet playlistBottomSheet = new PlaylistBottomSheet(context, R.style.f3, mQueueItems,metadataCompat,playMode);
         playlistBottomSheet.show();
         return playlistBottomSheet;
     }
 
+
+    public Activity getActivity() {
+        Context context = getContext();
+        int i2 = 20;
+        while (context instanceof ContextWrapper) {
+            int i3 = i2 - 1;
+            if (i2 <= 0) {
+                return null;
+            }
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+            i2 = i3;
+        }
+        return null;
+    }
+
+
+
+    private class PlaylistAdapter extends BaseQuickAdapter<MediaSessionCompat.QueueItem, BaseViewHolder>{
+        private int color;
+
+        public PlaylistAdapter(int layoutResId, @Nullable List<MediaSessionCompat.QueueItem> data) {
+            super(layoutResId, data);
+        }
+
+        @Override
+        protected void convert(@NonNull BaseViewHolder helper, MediaSessionCompat.QueueItem item) {
+            helper.setText(R.id.tv_name,item.getDescription().getTitle());
+            helper.setText(R.id.tv_author," - "+item.getDescription().getSubtitle());
+            helper.setGone(R.id.iv_currentView, TextUtils.equals(item.getDescription().getMediaId(),mCurrentMetadata.getDescription().getMediaId()));
+            helper.addOnClickListener(R.id.iv_delete);
+        }
+    }
 }

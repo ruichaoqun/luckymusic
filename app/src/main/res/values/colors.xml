@@ -27,4 +27,6 @@
     <color name="color_click_gray">#19ffffff</color>
     <color name="listItemPressedColor">#19000000</color>
     <color name="lineColor">#19000000</color>
+
+    <color name="color_cc000000">#cc000000</color>
 </resources>

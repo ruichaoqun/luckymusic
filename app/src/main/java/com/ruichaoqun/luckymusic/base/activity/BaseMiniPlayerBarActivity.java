@@ -119,6 +119,12 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
                 }
             }
         });
+        this.mPlayBarList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPlayListDialog();
+            }
+        });
         applyMiniPlaybarCurrentTheme();
     }
 

@@ -129,14 +129,14 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         @Override
         public void run() {
             long currentPosition;
-            if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING){
+            if (mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING) {
                 long timeDelta = SystemClock.elapsedRealtime() - mPlaybackState.getLastPositionUpdateTime();
-                currentPosition = (long) (mPlaybackState.getPosition()+(timeDelta * mPlaybackState.getPlaybackSpeed()));
-            }else{
+                currentPosition = (long) (mPlaybackState.getPosition() + (timeDelta * mPlaybackState.getPlaybackSpeed()));
+            } else {
                 currentPosition = mPlaybackState.getPosition();
             }
-            if(updatePosition ){
-                if(!mSeekbarInTouch){
+            if (updatePosition) {
+                if (!mSeekbarInTouch) {
                     mCurrentPosition.setText(TimeUtils.getCurrentPosition(currentPosition));
                     mPlayerSeekBar.setProgress(TimeUtils.formateToSeconds(currentPosition));
                 }
@@ -185,7 +185,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         mPlayerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(fromUser){
+                if (fromUser) {
                     mCurrentPosition.setText(TimeUtils.getCurrentPositionFromSeekbar(progress));
                 }
             }
@@ -201,15 +201,15 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 startSeekPlayer(seekBar);
             }
         });
-        mVsBacground.setInAnimation(this,android.R.anim.fade_in);
-        mVsBacground.setOutAnimation(this,android.R.anim.fade_out);
+        mVsBacground.setInAnimation(this, android.R.anim.fade_in);
+        mVsBacground.setOutAnimation(this, android.R.anim.fade_out);
         mViewSwitcherTarget = new ViewSwitcherTarget(mVsBacground);
     }
 
     private void startSeekPlayer(SeekBar seekBar) {
         int duration = seekBar.getProgress();
         mCurrentPosition.setText(TimeUtils.getCurrentPositionFromSeekbar(duration));
-        this.mControllerCompat.getTransportControls().seekTo((long) (duration*1E3));
+        this.mControllerCompat.getTransportControls().seekTo((long) (duration * 1E3));
     }
 
     @Override
@@ -272,7 +272,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             @Override
             public void onScrolled(boolean z) {
                 //滑动回调，此处可以处理唱针的切换以及当前封面动画的暂停
-                Log.w(TAG, "onScrolled-->" );
+                Log.w(TAG, "onScrolled-->");
                 PlayerActivity.this.startStylusRemove();
                 PlayerActivity.this.mCurrentDiscLayout.pause();
             }
@@ -329,7 +329,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 isBacgroundAutoNext = false;
                 PlayerActivity.this.mCurrentDiscLayout = (RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getCurrentView();
                 for (int i = 0; i < queueItems.size(); i++) {
-                    if(nextQueueItem.getQueueId() == queueItems.get(i).getQueueId()){
+                    if (nextQueueItem.getQueueId() == queueItems.get(i).getQueueId()) {
                         PlayerActivity.this.currentDataPosition = i;
                         break;
                     }
@@ -358,12 +358,12 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             public void onClick(View v) {
                 //只支持3中循环模式，列表循环模式，单曲模式，随机播放模式
                 //首先判断是否是随机模式
-                if(PlayerActivity.this.mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+                if (PlayerActivity.this.mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL) {
                     PlayerActivity.this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
                     PlayerActivity.this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
-                }else if(PlayerActivity.this.mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE){
+                } else if (PlayerActivity.this.mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
                     PlayerActivity.this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
-                }else {
+                } else {
                     PlayerActivity.this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_ALL);
                 }
             }
@@ -422,7 +422,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         if (this.mCurrentMetadata != null && !TextUtils.isEmpty(this.mCurrentMetadata.getDescription().getMediaId())) {
             this.setTitle(this.mCurrentMetadata.getDescription().getTitle());
             this.setSubTitle(this.mCurrentMetadata.getDescription().getSubtitle());
-            getCurrentMusicPosition();
+            currentDataPosition = getCurrentMusicPosition();
             this.mTotalPosition.setText(TimeUtils.getCurrentPosition(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
             this.mPlayerSeekBar.setMax(TimeUtils.formateToSeconds(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
@@ -452,23 +452,18 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         checkPlaybackPosition();
     }
 
-    private void getCurrentMusicPosition() {
-        long currentDiscQueueId = mPlaybackState.getActiveQueueItemId();
+    private int getCurrentMusicPosition() {
         //如果不是随机播放，播放列表index和每个item的queueId是一致的
-        if(mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_NONE){
-            this.currentDataPosition = (int) currentDiscQueueId;
-        }else{
-            for (int i = 0; i < queueItems.size(); i++) {
-                if(currentDiscQueueId == queueItems.get(i).getQueueId()){
-                    this.currentDataPosition = i;
-                    break;
-                }
+        for (int i = 0; i < queueItems.size(); i++) {
+            if (TextUtils.equals(mCurrentMetadata.getDescription().getMediaId(),queueItems.get(i).getDescription().getMediaId())) {
+                return i;
             }
         }
+        return -1;
     }
 
-    private void checkPlaybackPosition(){
-        this.clientHandler.postDelayed(mCheckPlaybackPositionRunnable,100l);
+    private void checkPlaybackPosition() {
+        this.clientHandler.postDelayed(mCheckPlaybackPositionRunnable, 100l);
     }
 
     /**
@@ -484,9 +479,25 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mTotalPosition.setText(TimeUtils.getCurrentPosition(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
         this.mPlayerSeekBar.setMax(TimeUtils.formateToSeconds(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
         //判断是否是后台自动切换的
-        if(!TextUtils.equals(queueItems.get(currentDataPosition).getDescription().getMediaId(),metadata.getDescription().getMediaId()) && !isBacgroundAutoNext){
-            isBacgroundAutoNext = true;
-            PlayerActivity.this.mViewFlipper.switchDisc(true);
+        if (currentDataPosition == -1) {
+            GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
+            //TODO 设置是否收藏
+            switchBacground(mCurrentMetadata.getDescription().getIconUri());
+            currentDataPosition = getCurrentMusicPosition();
+             return;
+        }
+
+        int position = getCurrentMusicPosition();
+        if(((currentDataPosition == queueItems.size()-1 && position == 0)||position == currentDataPosition+1)&& !isBacgroundAutoNext ){
+            if (!TextUtils.equals(queueItems.get(currentDataPosition).getDescription().getMediaId(), metadata.getDescription().getMediaId()) && !isBacgroundAutoNext) {
+                isBacgroundAutoNext = true;
+                PlayerActivity.this.mViewFlipper.switchDisc(true);
+            }
+        }else{
+            GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
+            //TODO 设置是否收藏
+            switchBacground(mCurrentMetadata.getDescription().getIconUri());
+            currentDataPosition = position;
         }
     }
 
@@ -520,29 +531,19 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
     @Override
     public void onRepeatModeChanged(int repeatMode) {
-        if(repeatMode == PlaybackStateCompat.REPEAT_MODE_ONE){
-            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_single);
-        }else if(repeatMode == PlaybackStateCompat.REPEAT_MODE_ALL){
-            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_list_circulation);
-        }
-    }
-
-    @Override
-    public void onShuffleModeChanged(int shuffleMode) {
-        if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+        if (repeatMode == PlaybackStateCompat.SHUFFLE_MODE_ALL) {
             this.mPlayMode.setImageResource(R.drawable.selector_player_mode_shuffer);
+        } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
+            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_single);
+        } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ALL) {
+            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_list_circulation);
         }
     }
 
     @Override
     public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
         super.onQueueChanged(queue);
-        for (int i = 0; i < queue.size(); i++) {
-            if(TextUtils.equals(queue.get(i).getDescription().getMediaId(),mCurrentMetadata.getDescription().getMediaId())){
-                currentDataPosition = i;
-                break;
-            }
-        }
+        currentDataPosition = getCurrentMusicPosition();
     }
 
     @Override

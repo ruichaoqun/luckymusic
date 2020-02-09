@@ -174,7 +174,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
             GlideApp.with(this).load(Uri.parse(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI))).transform(new CircleCrop()).transition(DrawableTransitionOptions.withCrossFade()).into(this.mPlayBarCover);
             this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
             this.mPlayPauseView.setMax(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
-            showMiniPlayerBarStub(true);
+
         }
     }
 
@@ -209,6 +209,11 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
         }
     }
 
+    @Override
+    public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+        super.onQueueChanged(queue);
+        showMiniPlayerBarStub(queue.size() > 0);
+    }
 
     private void checkPlaybackPosition() {
         mHandler.postDelayed(new Runnable() {

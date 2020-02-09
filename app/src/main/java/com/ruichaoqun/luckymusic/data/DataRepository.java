@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.data;
 
 import android.support.v4.media.MediaMetadataCompat;
 
+import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
 import com.ruichaoqun.luckymusic.data.bean.HomePageBean;
@@ -88,5 +89,10 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, DbD
     @Override
     public Observable<List<MediaMetadataCompat>> searchSongs(String searchKey) {
         return mMediaDataSource.searchSongs(searchKey);
+    }
+
+    @Override
+    public Observable<List<ArtistBean>> getAllArtist() {
+        return mMediaDataSource.getAllArtist();
     }
 }

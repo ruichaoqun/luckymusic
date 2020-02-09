@@ -1,9 +1,13 @@
 package com.ruichaoqun.luckymusic.ui.main;
 
+import android.support.v4.media.MediaMetadataCompat;
+
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.data.DataRepository;
+import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
+import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.utils.RxUtils;
 
 import java.util.List;
@@ -23,14 +27,5 @@ public class MainPresenter extends BasePresenter<MainContact.View> implements Ma
 
     @Override
     public void getBannerList() {
-        this.dataRepository.getBannerList()
-                .compose(RxUtils.transformerThread())
-                .flatMap(RxUtils.transformerResult())
-                .subscribe(new Consumer<List<BannerItemBean>>() {
-                    @Override
-                    public void accept(List<BannerItemBean> bannerItemBeans) throws Exception {
-
-                    }
-                });
     }
 }

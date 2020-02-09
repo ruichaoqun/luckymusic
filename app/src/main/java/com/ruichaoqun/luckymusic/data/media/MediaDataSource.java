@@ -2,6 +2,7 @@ package com.ruichaoqun.luckymusic.data.media;
 
 import android.support.v4.media.MediaMetadataCompat;
 
+import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 
 import java.util.List;
@@ -18,5 +19,6 @@ public interface MediaDataSource {
 
     Observable<List<MediaMetadataCompat>> searchSongs(String searchKey);
 
+    Observable<List<ArtistBean>> getAllArtist();
 
 }

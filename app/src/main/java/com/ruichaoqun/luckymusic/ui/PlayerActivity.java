@@ -356,16 +356,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         this.mPlayMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //只支持3中循环模式，列表循环模式，单曲模式，随机播放模式
-                //首先判断是否是随机模式
-                if (PlayerActivity.this.mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL) {
-                    PlayerActivity.this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
-                    PlayerActivity.this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
-                } else if (PlayerActivity.this.mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
-                    PlayerActivity.this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
-                } else {
-                    PlayerActivity.this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_ALL);
-                }
+                switchPlayMode();
             }
         });
 
@@ -544,6 +535,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
         super.onQueueChanged(queue);
         currentDataPosition = getCurrentMusicPosition();
+        if(queue.size() == 0){
+            finish();
+        }
     }
 
     @Override

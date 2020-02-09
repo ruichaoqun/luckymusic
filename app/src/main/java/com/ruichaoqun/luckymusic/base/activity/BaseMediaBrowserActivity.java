@@ -24,8 +24,10 @@ import androidx.fragment.app.FragmentManager;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.WatchMiniPlayBarListener;
 import com.ruichaoqun.luckymusic.media.MediaBrowserProvider;
+import com.ruichaoqun.luckymusic.media.MediaCommonConstant;
 import com.ruichaoqun.luckymusic.media.MediaControllerInterface;
 import com.ruichaoqun.luckymusic.media.MusicService;
+import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.PlaylistBottomSheet;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
@@ -126,10 +128,27 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     }
 
     /**
+     * 切换播放模式
+     */
+    public void switchPlayMode(){
+        //只支持3中循环模式，列表循环模式，单曲模式，随机播放模式
+        //首先判断是否是随机模式
+        if (this.mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL) {
+            this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
+            this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
+        } else if (this.mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
+            this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
+        } else {
+            this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_ALL);
+        }
+    }
+
+    /**
      * 移除整个播放列表
      */
     public void deleteAllPlaylist(){
-//        this.mControllerCompat.removeQueueItemAt();
+//        this.mControllerCompat.getTransportControls().sendCustomAction(MediaCommonConstant.RELEASE_PLAYER,new Bundle());
+        this.mControllerCompat.getTransportControls().stop();
     }
 
 
@@ -147,9 +166,9 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         @Override
         public void onConnected() {
             try {
-                mControllerCompat = new MediaControllerCompat(getApplicationContext(), mBrowserCompat.getSessionToken());
-                mMediaControllerCallback = new MediaControllerCallback();
-                mControllerCompat.registerCallback(mMediaControllerCallback);
+                BaseMediaBrowserActivity.this.mControllerCompat = new MediaControllerCompat(getApplicationContext(), mBrowserCompat.getSessionToken());
+                BaseMediaBrowserActivity.this.mMediaControllerCallback = new MediaControllerCallback();
+                BaseMediaBrowserActivity.this.mControllerCompat.registerCallback(mMediaControllerCallback);
                 MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this, mControllerCompat);
                 BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
                 BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
@@ -179,14 +198,12 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     private class MediaControllerCallback extends MediaControllerCompat.Callback {
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
-            Log.w("SSSSS","onPlaybackStateChanged");
             BaseMediaBrowserActivity.this.mPlaybackState = state;
             BaseMediaBrowserActivity.this.onPlaybackStateChanged(state);
         }
 
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
-            Log.w("SSSSS","onMetadataChanged");
             if(!TextUtils.equals(BaseMediaBrowserActivity.this.mCurrentMetadata.getDescription().getMediaId(),metadata.getDescription().getMediaId())){
                 if(BaseMediaBrowserActivity.this.playListDialog != null && BaseMediaBrowserActivity.this.playListDialog.isShowing()){
                     BaseMediaBrowserActivity.this.playListDialog.setCurrentMetadata(metadata);
@@ -198,7 +215,6 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
 
         @Override
         public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
-            Log.w("SSSSS","onQueueChanged");
             BaseMediaBrowserActivity.this.queueItems = queue;
             BaseMediaBrowserActivity.this.onQueueChanged(queue);
             if(BaseMediaBrowserActivity.this.playListDialog != null && BaseMediaBrowserActivity.this.playListDialog.isShowing()){

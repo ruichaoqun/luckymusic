@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 28
@@ -84,6 +85,8 @@ dependencies {
     }
 
     implementation 'com.orhanobut:logger:2.2.0'
+
+    implementation 'org.greenrobot:greendao:3.2.2'
     implementation project(path: ':flac')
 
 

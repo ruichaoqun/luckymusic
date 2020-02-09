@@ -92,7 +92,10 @@ public class PlaylistBottomSheet extends BaseBottomSheet {
         this.mTvPlayMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Activity activity = getActivity();
+                if(activity != null && activity instanceof BaseMediaBrowserActivity && !activity.isFinishing()){
+                    ((BaseMediaBrowserActivity)activity).switchPlayMode();
+                }
             }
         });
 
@@ -106,18 +109,21 @@ public class PlaylistBottomSheet extends BaseBottomSheet {
         this.mIvDeleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Activity activity = getActivity();
+                if(activity != null && activity instanceof BaseMediaBrowserActivity && !activity.isFinishing()){
+                    ((BaseMediaBrowserActivity)activity).deleteAllPlaylist();
+                }
             }
         });
     }
 
     public void setPlayMode(int playMode) {
         if(playMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
-            this.mTvPlayMode.setText("随机播放");
+            this.mTvPlayMode.setText(getContext().getString(R.string.play_mode_shuffle_play));
         }else if(playMode == PlaybackStateCompat.REPEAT_MODE_ALL){
-            this.mTvPlayMode.setText("列表循环");
+            this.mTvPlayMode.setText(getContext().getString(R.string.play_mode_list_circulation));
         }else{
-            this.mTvPlayMode.setText("单曲循环");
+            this.mTvPlayMode.setText(getContext().getString(R.string.play_mode_single_cycle));
         }
     }
 
@@ -144,7 +150,12 @@ public class PlaylistBottomSheet extends BaseBottomSheet {
     }
 
     private void scrollToTargetMusic(boolean b) {
-
+        for (int i = 0; i < mQueueItems.size(); i++) {
+            if(TextUtils.equals(mCurrentMetadata.getDescription().getMediaId(),mQueueItems.get(i).getDescription().getMediaId())){
+                mRvPlayList.scrollToPosition(i);
+                return;
+            }
+        }
     }
 
     public static PlaylistBottomSheet showMusicPlayList(Context context, List<MediaSessionCompat.QueueItem> mQueueItems,MediaMetadataCompat metadataCompat,int playMode) {

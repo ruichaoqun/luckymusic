@@ -107,6 +107,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         mPlaybackPreparer = new LuckyPlaybackPreparer(mMediaController,mediaSessionConnector,dataRepository, mExoPlayer, dataSourceFactory);
         mediaSessionConnector.setPlaybackPreparer(mPlaybackPreparer);
         mediaSessionConnector.setQueueNavigator(new LuckyQueueNavigator(mMediaSession));
+//        mediaSessionConnector.setCustomActionProviders();
         mCompositeDisposable = new CompositeDisposable();
         mMediaController.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
     }

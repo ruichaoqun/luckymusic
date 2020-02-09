@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import androidx.collection.ArrayMap;
 
+import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.media.MediaDataType;
@@ -24,6 +25,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 
 
 import static android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -86,7 +89,19 @@ public class MediaDataSourceImpl implements MediaDataSource {
         });
     }
 
-    public synchronized List<MediaMetadataCompat> makeSongCursor(String selection, String[] paramArrayOfString) {
+    @Override
+    public Observable<List<ArtistBean>> getAllArtist() {
+        return Observable.create(new ObservableOnSubscribe<List<ArtistBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<ArtistBean>> emitter) throws Exception {
+                List<ArtistBean> artistBeans = getAllArtistFromResolver(null,null);
+                emitter.onNext(artistBeans);
+                emitter.onComplete();
+            }
+        });
+    }
+
+    private synchronized List<MediaMetadataCompat> makeSongCursor(String selection, String[] paramArrayOfString) {
         StringBuilder selectionBuilder = new StringBuilder("is_music=1 AND title != ''");
         if (!TextUtils.isEmpty(selection)) {
             selectionBuilder.append(" AND ");
@@ -111,5 +126,17 @@ public class MediaDataSourceImpl implements MediaDataSource {
         }
         cursor.close();
         return metadataCompatList;
+    }
+
+    private synchronized List<ArtistBean> getAllArtistFromResolver(String selection, String[] paramArrayOfString){
+        String artistSortOrder = MediaStore.Audio.Artists.DEFAULT_SORT_ORDER;
+        String[] projection = new String[]{"_id", "artist", "number_of_albums", "number_of_tracks"};
+        Cursor cursor = mContentResolver.query(MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI, projection, selection, paramArrayOfString, artistSortOrder);
+        List<ArtistBean> artistBeans = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            artistBeans.add(ArtistBean.fromCursor(cursor));
+        }
+        cursor.close();
+        return artistBeans;
     }
 }

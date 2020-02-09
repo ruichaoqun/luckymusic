@@ -46,4 +46,8 @@
     <string name="is_playing">正在播放</string>
     <string name="duration_unknown">--:--</string>
     <string name="duration_format">%d:%02d</string>
+    
+    <string name="play_mode_shuffle_play">随机播放</string>
+    <string name="play_mode_list_circulation">列表循环</string>
+    <string name="play_mode_single_cycle">单曲循环</string>
 </resources>

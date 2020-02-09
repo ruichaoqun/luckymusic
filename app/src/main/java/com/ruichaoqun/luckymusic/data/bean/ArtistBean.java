@@ -3,7 +3,12 @@ package com.ruichaoqun.luckymusic.data.bean;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
+@Entity
 public class ArtistBean {
+    @Id
     private Long _ID;                         //数据库主键
     private long id;                       //歌手id
     private String artistName;              //歌手名称

@@ -2,6 +2,9 @@ package com.ruichaoqun.luckymusic.ui.localmedia.fragment;
 
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.data.DataRepository;
+import com.ruichaoqun.luckymusic.data.bean.SongBean;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -13,17 +16,8 @@ public class LocalMediaPresenter extends BasePresenter<LocalMediaContact.View> i
     }
 
     @Override
-    public void initData() {
+    public List<SongBean> getLocalSongs() {
 
-    }
-
-    @Override
-    public void refreshData() {
-
-    }
-
-    @Override
-    public void loadMoreData() {
-
+        return null;
     }
 }

@@ -2,6 +2,8 @@ package com.ruichaoqun.luckymusic.data.db;
 
 import android.support.v4.media.MediaMetadataCompat;
 
+import com.ruichaoqun.luckymusic.data.bean.DaoMaster;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,10 +18,13 @@ import io.reactivex.Observable;
  */
 @Singleton
 public class DbDataSourceImpl implements DbDataSource{
+    private DaoMaster mDaoMaster;
 
     @Inject
-    public DbDataSourceImpl() {
-
+    public DbDataSourceImpl(DaoMaster mDaoMaster) {
+        this.mDaoMaster = mDaoMaster;
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, DB_NAME, null);
+        mDaoMaster = new DaoMaster(helper)
     }
 
     @Override

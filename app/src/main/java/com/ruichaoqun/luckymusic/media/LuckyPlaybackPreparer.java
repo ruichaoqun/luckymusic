@@ -65,7 +65,7 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + mediaID.getType());
-        }7
+        }
         int index = getCurrentIndex(list,mediaId);
         if(index == -1){
             LogUtils.e(TAG,"当前音乐列表为匹配到指定音乐id-->"+mediaId);

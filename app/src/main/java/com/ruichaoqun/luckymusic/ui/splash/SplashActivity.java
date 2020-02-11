@@ -1,5 +1,6 @@
 package com.ruichaoqun.luckymusic.ui.splash;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseActivity;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +22,7 @@ import io.reactivex.functions.Consumer;
 
 public class SplashActivity extends BaseActivity {
     private ImageView mSplash;
+    final RxPermissions rxPermissions = new RxPermissions(this);
 
     @Override
     protected int getLayoutResId() {
@@ -60,8 +63,18 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startAnimation() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-        finish();
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if(aBoolean){
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                            finish();
+                        }else{
+                            finish();
+                        }
+                    }
+                });
     }
 
     @Override

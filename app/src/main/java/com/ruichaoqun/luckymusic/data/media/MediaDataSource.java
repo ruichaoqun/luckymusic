@@ -2,6 +2,7 @@ package com.ruichaoqun.luckymusic.data.media;
 
 import android.support.v4.media.MediaMetadataCompat;
 
+import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 
@@ -10,15 +11,31 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public interface MediaDataSource {
-    List<MediaMetadataCompat> getAllSongsData();
+    Observable<List<SongBean>> rxGetAllSongs();
 
-    List<MediaMetadataCompat> getSearchSongsData();
+    Observable<List<SongBean>> rxSearchSongs(String searchKey);
 
+    Observable<List<ArtistBean>> rxGetAllArtist();
 
-    Observable<List<MediaMetadataCompat>> getAllSongs();
+    Observable<List<AlbumBean>> rxGetAllAlbum();
 
-    Observable<List<MediaMetadataCompat>> searchSongs(String searchKey);
+    Observable<List<SongBean>> rxGetSongsFromArtist(long id);
 
-    Observable<List<ArtistBean>> getAllArtist();
+    Observable<List<SongBean>> rxGetSongsFromAlbum(long id);
 
+    Observable<List<SongBean>> rxGetSongsFromType(String type ,String id);
+
+    List<ArtistBean> getAllArtist();
+
+    List<SongBean> getAllSongs();
+
+    List<SongBean> searchSongs(String searchKey);
+
+    List<SongBean> getSongsFromArtist(long id);
+
+    List<SongBean> getSongsFromAlbum(long id);
+
+    List<SongBean> getSongsFromType(String type,String id);
+
+    List<AlbumBean> getAllAlbum();
 }

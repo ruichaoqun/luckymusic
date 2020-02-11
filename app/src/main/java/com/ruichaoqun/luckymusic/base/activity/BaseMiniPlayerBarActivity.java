@@ -41,7 +41,7 @@ import static com.ruichaoqun.luckymusic.media.MusicService.METADATA_KEY_LUCKY_FL
  * @date :2019/12/30 19:43
  * description:
  */
-public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity implements WatchMiniPlayBarListener {
+public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity  {
     private static final long POSITION_UPDATE_INTERVAL_MILLIS = 100L;
 
     private ViewGroup mMusicContainer;
@@ -65,7 +65,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
                 addChildContentView(layoutResID, 0);
             }
             findViews();
-        }else{
+        } else {
             super.setContentView(layoutResID);
         }
     }
@@ -106,7 +106,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
         this.mPlayPauseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (mControllerCompat.getPlaybackState().getState()){
+                switch (mControllerCompat.getPlaybackState().getState()) {
                     case PlaybackStateCompat.STATE_PAUSED:
                     case PlaybackStateCompat.STATE_STOPPED:
                         mControllerCompat.getTransportControls().play();
@@ -115,7 +115,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
                     case PlaybackStateCompat.STATE_BUFFERING:
                         mControllerCompat.getTransportControls().pause();
                         break;
-                        default:
+                    default:
                 }
             }
         });
@@ -132,7 +132,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
         this.mPlayBarContainer.setBackgroundDrawable(ResourceRouter.getInstance().getCachePlayerDrawable());
     }
 
-        private void addChildContentView(int layoutResID, int index) {
+    private void addChildContentView(int layoutResID, int index) {
         addChildContentView(getLayoutInflater().inflate(layoutResID, null), index);
 
     }
@@ -140,6 +140,29 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     private void addChildContentView(View view, int index) {
         this.mMusicContainer = findViewById(R.id.layout_container);
         this.mMusicContainer.addView(view, index, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    @Override
+    public void onMediaServiceConnected() {
+        super.onMediaServiceConnected();
+        if(isNeedMiniPlayerBar()){
+            showMiniPlayerBarStub(mControllerCompat.getQueue()!= null  && mControllerCompat.getQueue().size() > 0);
+            setCurrentMedia(mCurrentMetadata);
+        }
+    }
+
+    private void setCurrentMedia(MediaMetadataCompat metadata) {
+        if (metadata != null && !TextUtils.isEmpty(metadata.getDescription().getMediaId()) && isNeedMiniPlayerBar()) {
+            this.mPlayBarTitle.setText(metadata.getDescription().getTitle());
+            this.mPlayBarArtist.setText(metadata.getDescription().getSubtitle());
+            GlideApp.with(this)
+                    .load(Uri.parse(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI)))
+                    .centerCrop()
+                    .transform(new CircleCrop())
+                    .into(this.mPlayBarCover);
+            this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
+            this.mPlayPauseView.setMax(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
+        }
     }
 
     /**
@@ -153,11 +176,13 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
 
     /**
      * 显示或隐藏底部音乐栏
+     *
      * @param show
      */
-    @Override
-    public void showMiniPlayerBarStub(boolean show){
-        mPlayBarContainer.setVisibility(show?View.VISIBLE:View.GONE);
+    protected void showMiniPlayerBarStub(boolean show) {
+        if (isNeedMiniPlayerBar()) {
+            mPlayBarContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 
     /**
@@ -168,24 +193,19 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     @Override
     public void onMetadataChanged(MediaMetadataCompat metadata) {
         super.onMetadataChanged(metadata);
-        if (!TextUtils.isEmpty(metadata.getDescription().getMediaId()) && isNeedMiniPlayerBar()) {
-            this.mPlayBarTitle.setText(metadata.getDescription().getTitle());
-            this.mPlayBarArtist.setText(metadata.getDescription().getSubtitle());
-            GlideApp.with(this).load(Uri.parse(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI))).transform(new CircleCrop()).transition(DrawableTransitionOptions.withCrossFade()).into(this.mPlayBarCover);
-            this.mPlayPauseView.setState(PlayPauseView.PLAY_STATE_PAUSE);
-            this.mPlayPauseView.setMax(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
+        setCurrentMedia(metadata);
 
-        }
     }
 
     /**
      * 当前播放状态改变
+     *
      * @param state
      */
     @Override
     public void onPlaybackStateChanged(PlaybackStateCompat state) {
         super.onPlaybackStateChanged(state);
-        if(isNeedMiniPlayerBar()){
+        if (isNeedMiniPlayerBar()) {
             switch (state.getState()) {
                 case PlaybackStateCompat.STATE_PAUSED:
                 case PlaybackStateCompat.STATE_BUFFERING:

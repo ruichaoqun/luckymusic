@@ -41,6 +41,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/textsize_small"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:text="测试"
             android:layout_marginTop="5dp"/>
     </LinearLayout>

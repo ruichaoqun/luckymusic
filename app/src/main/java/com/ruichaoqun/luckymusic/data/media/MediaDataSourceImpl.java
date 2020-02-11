@@ -1,23 +1,15 @@
 package com.ruichaoqun.luckymusic.data.media;
 
-import android.app.Application;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
-import android.text.TextUtils;
 
-import androidx.collection.ArrayMap;
-
+import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
-import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
+import com.ruichaoqun.luckymusic.data.db.DbDataSource;
 import com.ruichaoqun.luckymusic.media.MediaDataType;
+import com.ruichaoqun.luckymusic.utils.RxUtils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,116 +19,209 @@ import javax.inject.Singleton;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-
-
-import static android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-import static android.provider.MediaStore.Audio.Media._ID;
-import static android.provider.MediaStore.Audio.Media.ALBUM_ID;
-import static android.provider.MediaStore.Audio.Media.ALBUM;
-import static android.provider.MediaStore.Audio.Media.ARTIST;
-import static android.provider.MediaStore.Audio.Media.ARTIST_ID;
-import static android.provider.MediaStore.Audio.Media.TITLE;
-import static android.provider.MediaStore.Audio.Media.DURATION;
-import static android.provider.MediaStore.Audio.Media.TRACK;
-import static android.provider.MediaStore.Audio.Media.DATA;
-import static android.provider.MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
-import static com.ruichaoqun.luckymusic.media.MusicService.METADATA_KEY_LUCKY_FLAGS;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 @Singleton
 public class MediaDataSourceImpl implements MediaDataSource {
-    private ContentResolver mContentResolver;
-    protected List<MediaMetadataCompat> localSongs;          //本地音乐
-    protected List<MediaMetadataCompat> searchSongs;         //搜索音乐
-    protected List<MediaMetadataCompat> artists;             //歌手列表
-    protected List<MediaMetadataCompat> albumList;           //专辑列表
+    private final DbDataSource mDbDataSource;
+    private final ContentProviderSource mContentProviderSource;
 
-    private Map<Long, List<MediaMetadataCompat>> songsByArtist;
+    protected List<SongBean> localSongs;          //本地音乐
+    protected List<SongBean> searchSongs;         //搜索音乐
+    protected List<ArtistBean> artists;             //歌手列表
+    protected List<AlbumBean> albumList;           //专辑列表
+    protected List<SongBean> artistSongs;           //每个歌手对应歌曲列表
+    protected List<SongBean> albumSongs;           //每个专辑对应歌曲列表
 
 
     @Inject
-    public MediaDataSourceImpl(Application context) {
-        mContentResolver = context.getContentResolver();
-    }
-
-    @Override
-    public List<MediaMetadataCompat> getAllSongsData() {
-        return localSongs;
-    }
-
-    @Override
-    public List<MediaMetadataCompat> getSearchSongsData() {
-        return searchSongs;
-    }
-
-    @Override
-    public Observable<List<MediaMetadataCompat>> getAllSongs() {
-        return Observable.create(emitter -> {
-            List<MediaMetadataCompat> metadataCompatList = makeSongCursor(null, null);
-            localSongs = metadataCompatList;
-            emitter.onNext(metadataCompatList);
-            emitter.onComplete();
-        });
+    public MediaDataSourceImpl(DbDataSource dbDataSource, ContentProviderSource contentProviderSource) {
+        mDbDataSource = dbDataSource;
+        mContentProviderSource = contentProviderSource;
     }
 
 
     @Override
-    public Observable<List<MediaMetadataCompat>> searchSongs(String searchKey) {
-        return Observable.create(emitter -> {
-            List<MediaMetadataCompat> metadataCompatList = makeSongCursor("title LIKE ?", new String[]{searchKey});
-            searchSongs = metadataCompatList;
-            emitter.onNext(metadataCompatList);
-            emitter.onComplete();
-        });
+    public Observable<List<SongBean>> rxGetAllSongs() {
+        return Observable.create(new ObservableOnSubscribe<List<SongBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<SongBean>> emitter) throws Exception {
+                if(localSongs != null){
+                    emitter.onNext(localSongs);
+                    emitter.onComplete();
+                }else{
+                    List<SongBean> list = mDbDataSource.getAllSongsFromDb();
+                    if(list != null && list.size() != 0){
+                        localSongs = list;
+                        emitter.onNext(list);
+                        emitter.onComplete();
+                    }else{
+                        list = mContentProviderSource.getAllSongs();
+                        mDbDataSource.insertSongs(list);
+                        localSongs = list;
+                        emitter.onNext(list);
+                        emitter.onComplete();
+                    }
+                }
+            }
+        }).compose(RxUtils.transformerThread());
     }
 
     @Override
-    public Observable<List<ArtistBean>> getAllArtist() {
+    public Observable<List<SongBean>> rxSearchSongs(String searchKey) {
+        return Observable.create(new ObservableOnSubscribe<List<SongBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<SongBean>> emitter) throws Exception {
+                List<SongBean> list = mDbDataSource.searchSongs(searchKey);
+                searchSongs = list;
+                emitter.onNext(list);
+                emitter.onComplete();
+            }
+        }).compose(RxUtils.transformerThread());
+    }
+
+    @Override
+    public Observable<List<ArtistBean>> rxGetAllArtist() {
         return Observable.create(new ObservableOnSubscribe<List<ArtistBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<ArtistBean>> emitter) throws Exception {
-                List<ArtistBean> artistBeans = getAllArtistFromResolver(null,null);
-                emitter.onNext(artistBeans);
+                if(artists != null){
+                    emitter.onNext(artists);
+                    emitter.onComplete();
+                }else{
+                    List<ArtistBean> list = mDbDataSource.getAllArtist();
+                    if(list != null && list.size() != 0){
+                        artists = list;
+                        emitter.onNext(list);
+                        emitter.onComplete();
+                    }else{
+                        list = mContentProviderSource.getAllArtist();
+                        mDbDataSource.insertArtist(list);
+                        artists = list;
+                        emitter.onNext(list);
+                        emitter.onComplete();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<AlbumBean>> rxGetAllAlbum() {
+        return Observable.create(new ObservableOnSubscribe<List<AlbumBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<AlbumBean>> emitter) throws Exception {
+                if(albumList != null){
+                    emitter.onNext(albumList);
+                    emitter.onComplete();
+                }else{
+                    List<AlbumBean> list = mDbDataSource.getAllAlbum();
+                    if(list != null && list.size() != 0){
+                        albumList = list;
+                        emitter.onNext(list);
+                        emitter.onComplete();
+                    }else{
+                        list = mContentProviderSource.getAllAlbum();
+                        mDbDataSource.insertAlbum(list);
+                        albumList = list;
+                        emitter.onNext(list);
+                        emitter.onComplete();
+                    }
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public Observable<List<SongBean>> rxGetSongsFromArtist(long id) {
+
+        return Observable.create(new ObservableOnSubscribe<List<SongBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<SongBean>> emitter) throws Exception {
+                List<SongBean> list = mDbDataSource.getAllSongsByArtistFromDb(id);
+                artistSongs = list;
+                emitter.onNext(list);
                 emitter.onComplete();
             }
         });
     }
 
-    private synchronized List<MediaMetadataCompat> makeSongCursor(String selection, String[] paramArrayOfString) {
-        StringBuilder selectionBuilder = new StringBuilder("is_music=1 AND title != ''");
-        if (!TextUtils.isEmpty(selection)) {
-            selectionBuilder.append(" AND ");
-            selectionBuilder.append(selection);
-        }
-        String[] projection = new String[]{_ID, TITLE, ARTIST, ARTIST_ID, ALBUM, ALBUM_ID, DURATION, TRACK, DATA};
-        Cursor cursor = mContentResolver.query(EXTERNAL_CONTENT_URI, projection, selectionBuilder.toString(), paramArrayOfString, DEFAULT_SORT_ORDER);
-        List<MediaMetadataCompat> metadataCompatList = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder()
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, new MediaID(MediaDataType.TYPE_SONG , cursor.getLong(cursor.getColumnIndex(_ID))).asString())
-                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, cursor.getString(cursor.getColumnIndex(TITLE)))
-                    .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, cursor.getString(cursor.getColumnIndex(TITLE)))
-                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, cursor.getString(cursor.getColumnIndex(ALBUM)))
-                    .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, cursor.getString(cursor.getColumnIndex(ALBUM)))
-                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, cursor.getString(cursor.getColumnIndex(ARTIST)))
-                    .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, cursor.getString(cursor.getColumnIndex(ARTIST)))
-                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, cursor.getLong(cursor.getColumnIndex(DURATION)))
-                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI,ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),cursor.getLong(cursor.getColumnIndex(ALBUM_ID))).toString())
-                    .putLong(METADATA_KEY_LUCKY_FLAGS,  MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
-            metadataCompatList.add(builder.build());
-        }
-        cursor.close();
-        return metadataCompatList;
+    @Override
+    public Observable<List<SongBean>> rxGetSongsFromAlbum(long id) {
+        return Observable.create(new ObservableOnSubscribe<List<SongBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<SongBean>> emitter) throws Exception {
+                List<SongBean> list = mDbDataSource.getAllSongsByAlbumFromDb(id);
+                albumSongs = list;
+                emitter.onNext(list);
+                emitter.onComplete();
+            }
+        });
     }
 
-    private synchronized List<ArtistBean> getAllArtistFromResolver(String selection, String[] paramArrayOfString){
-        String artistSortOrder = MediaStore.Audio.Artists.DEFAULT_SORT_ORDER;
-        String[] projection = new String[]{"_id", "artist", "number_of_albums", "number_of_tracks"};
-        Cursor cursor = mContentResolver.query(MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI, projection, selection, paramArrayOfString, artistSortOrder);
-        List<ArtistBean> artistBeans = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            artistBeans.add(ArtistBean.fromCursor(cursor));
+    @Override
+    public Observable<List<SongBean>> rxGetSongsFromType(String type, String id) {
+        switch (type){
+            case MediaDataType.TYPE_SONG:
+                return rxGetAllSongs();
+            case MediaDataType.TYPE_SEARCH:
+                return  rxSearchSongs(id);
+            case MediaDataType.TYPE_ARTIST:
+                return rxGetSongsFromArtist(Long.valueOf(id));
+            case MediaDataType.TYPE_ALBUM:
+                return rxGetSongsFromAlbum(Long.valueOf(id));
+            case MediaDataType.CURRENT_PLAY_LIST:
+                break;
         }
-        cursor.close();
-        return artistBeans;
+        return null;
+    }
+
+    @Override
+    public List<ArtistBean> getAllArtist() {
+        return null;
+    }
+
+    @Override
+    public List<SongBean> getAllSongs() {
+        return localSongs;
+    }
+
+    @Override
+    public List<SongBean> searchSongs(String searchKey) {
+        return searchSongs;
+    }
+
+    @Override
+    public List<SongBean> getSongsFromArtist(long id) {
+        return artistSongs;
+    }
+
+    @Override
+    public List<SongBean> getSongsFromAlbum(long id) {
+        return albumSongs;
+    }
+
+    @Override
+    public List<SongBean> getSongsFromType(String type, String id) {
+        switch (type){
+            case MediaDataType.TYPE_SONG:
+                return localSongs;
+            case MediaDataType.TYPE_SEARCH:
+                return  searchSongs;
+            case MediaDataType.TYPE_ARTIST:
+                return artistSongs;
+            case MediaDataType.TYPE_ALBUM:
+                return albumSongs;
+            case MediaDataType.CURRENT_PLAY_LIST:
+                break;
+        }
+        return null;
+    }
+
+    @Override
+    public List<AlbumBean> getAllAlbum() {
+        return albumList;
     }
 }

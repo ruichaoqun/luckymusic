@@ -1,7 +1,10 @@
 package com.ruichaoqun.luckymusic.media;
 
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+
+import java.util.List;
 
 /**
  * @author Rui Chaoqun
@@ -14,4 +17,5 @@ public interface MediaControllerInterface {
 
     void onPlaybackStateChanged(PlaybackStateCompat state) ;
 
+    void onQueueChanged(List<MediaSessionCompat.QueueItem> queue);
 }

@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui.localmedia.fragment;
+package com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs;
 
 import android.content.Context;
 import android.support.v4.media.MediaBrowserCompat;
@@ -19,6 +19,7 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.data.bean.BannerListBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
+import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.ui.main.discover.BannerAdapter;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.tmall.ultraviewpager.UltraViewPager;
@@ -26,19 +27,19 @@ import com.tmall.ultraviewpager.UltraViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.MediaItem, BaseViewHolder> {
+public class LocalMediaAdapter extends BaseQuickAdapter<SongBean, BaseViewHolder> {
     private int currentPosition = -1;
     private View miniPlayerBarStub;
 
-    public LocalMediaAdapter(int layoutResId, @Nullable List<MediaBrowserCompat.MediaItem> data) {
+    public LocalMediaAdapter(int layoutResId, @Nullable List<SongBean> data) {
         super(layoutResId, data);
     }
 
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, MediaBrowserCompat.MediaItem item) {
-        helper.setText(R.id.tv_title,item.getDescription().getTitle());
-        helper.setText(R.id.tv_subTitle,item.getDescription().getSubtitle()+"-"+item.getDescription().getDescription());
+    protected void convert(@NonNull BaseViewHolder helper,SongBean item) {
+        helper.setText(R.id.tv_title,item.getTitle());
+        helper.setText(R.id.tv_subTitle,item.getArtist()+"-"+item.getAlbum());
         if(currentPosition != -1){
             helper.setGone(R.id.iv_playing,getData().get(currentPosition) == item);
         }
@@ -54,10 +55,13 @@ public class LocalMediaAdapter extends BaseQuickAdapter<MediaBrowserCompat.Media
     }
 
     public void setMediaWithId(String id){
-        for (int i = 0; i < getData().size(); i++) {
-            if(TextUtils.equals(getData().get(i).getMediaId(),id)){
-                setMediaItem(i);
-                break;
+        if(!TextUtils.isEmpty(id)){
+            long _id = Long.valueOf(id);
+            for (int i = 0; i < getData().size(); i++) {
+                if(getData().get(i).getId() == _id){
+                    setMediaItem(i);
+                    break;
+                }
             }
         }
     }

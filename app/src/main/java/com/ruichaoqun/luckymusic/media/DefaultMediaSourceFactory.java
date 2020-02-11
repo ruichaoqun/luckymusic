@@ -24,9 +24,8 @@ public class DefaultMediaSourceFactory implements TimelineQueueEditor.MediaSourc
     @Nullable
     @Override
     public MediaSource createMediaSource(MediaDescriptionCompat description) {
-        MediaID mediaID = MediaID.fromString(description.getMediaId());
         return new ProgressiveMediaSource.Factory(dataSourceFactory)
                 .setTag(description)
-                .createMediaSource(ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, mediaID.getMediaId()));
+                .createMediaSource(ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, Long.valueOf(description.getMediaId())));
     }
 }

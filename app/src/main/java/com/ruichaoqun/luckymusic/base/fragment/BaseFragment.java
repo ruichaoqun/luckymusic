@@ -5,13 +5,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
 import com.ruichaoqun.luckymusic.base.activity.BaseMediaBrowserActivity;
+import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerFragment;
+import com.ruichaoqun.luckymusic.media.MediaDataType;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -41,6 +44,12 @@ public abstract class BaseFragment extends DaggerFragment {
         super.onViewCreated(view, savedInstanceState);
         initView();
         initData();
+        if (isAdded()) {
+            MediaControllerCompat controller = MediaControllerCompat.getMediaController(getActivity());
+            if (controller != null) {
+                updateMiniPlayerBarState(controller.getQueue() != null && controller.getQueue().size() > 0);
+            }
+        }
     }
 
     protected abstract void initView();
@@ -52,6 +61,9 @@ public abstract class BaseFragment extends DaggerFragment {
             return ((BaseMediaBrowserActivity)getActivity()).getMediaBrowser();
         }
         return null;
+    }
+
+    public void updateMiniPlayerBarState(boolean isShow){
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.ruichaoqun.luckymusic.ui.localmedia;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,20 +11,18 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
-import com.ruichaoqun.luckymusic.ui.localmedia.fragment.LocalMediaFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ruichaoqun.luckymusic.ui.localmedia.fragment.album.AlbumListFragment;
+import com.ruichaoqun.luckymusic.ui.localmedia.fragment.artist.ArtistListFragment;
+import com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs.LocalMediaFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author Rui Chaoqun
  * @date :2019-12-26 9:42:11
  * description:LocalMediaActivity
  */
-public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presenter> {
+public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presenter> implements LocalMediaContact.View{
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.view_pager)
@@ -59,6 +56,7 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
 
     @Override
     public void onMediaServiceConnected() {
+        super.onMediaServiceConnected();
         LocalMediaPagerAdapter adapter = new LocalMediaPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -75,6 +73,10 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
             switch (i) {
                 case 0:
                     return Fragment.instantiate(LocalMediaActivity.this, LocalMediaFragment.class.getName(), null);
+                case 1:
+                    return Fragment.instantiate(LocalMediaActivity.this, ArtistListFragment.class.getName(), null);
+                case 2:
+                    return Fragment.instantiate(LocalMediaActivity.this, AlbumListFragment.class.getName(), null);
                 default:
                     Fragment instantiate = Fragment.instantiate(LocalMediaActivity.this, LocalMediaFragment.class.getName(), null);
                     return instantiate;

@@ -114,6 +114,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private Runnable mStylusReturnRunnable = new Runnable() {
         @Override
         public void run() {
+            mVsBacground.reset();
             if (PlayerActivity.this.mStylusAnimationType == STYLUS_OFF_TO_ON || PlayerActivity.this.mStylusAnimationType == STYLUS_ON_TO_OFF) {
                 //当前动画正在进行中，持续回调
                 PlayerActivity.this.clientHandler.postDelayed(this, 50);
@@ -409,6 +410,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
     @Override
     public void onMediaServiceConnected() {
+        super.onMediaServiceConnected();
         //当前指定的音乐资源
         if (this.mCurrentMetadata != null && !TextUtils.isEmpty(this.mCurrentMetadata.getDescription().getMediaId())) {
             this.setTitle(this.mCurrentMetadata.getDescription().getTitle());

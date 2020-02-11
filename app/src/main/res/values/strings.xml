@@ -50,4 +50,10 @@
     <string name="play_mode_shuffle_play">随机播放</string>
     <string name="play_mode_list_circulation">列表循环</string>
     <string name="play_mode_single_cycle">单曲循环</string>
+
+
+    <string name="artist_track_number">%d首</string>
+    <string name="play_all">播放全部</string>
+    <string name="total_count">(共%1$d首)</string>
+    <string name="multiple_choice">多选</string>
 </resources>

@@ -24,6 +24,10 @@ public abstract class BaseMVPActivity<T extends IBasePresenter> extends BaseMini
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void initPresenter() {
         mPresenter.takeView(this);
     }
 

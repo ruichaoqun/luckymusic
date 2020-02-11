@@ -134,8 +134,12 @@ public class PlaylistBottomSheet extends BaseBottomSheet {
     }
 
     public void setQueueItems(List<MediaSessionCompat.QueueItem> queueItems) {
-        this.mTvheaderCount.setText("("+this.mQueueItems.size()+")");
+        if(queueItems.size() == 0){
+            dismiss();
+            return;
+        }
         this.mQueueItems = queueItems;
+        this.mTvheaderCount.setText("("+queueItems.size()+")");
         this.mPlaylistAdapter.setNewData(queueItems);
         scrollToTargetMusic(false);
     }

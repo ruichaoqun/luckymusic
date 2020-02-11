@@ -89,10 +89,8 @@ public class NotificationBuilder {
         largeContentView.setTextViewText(R.id.tv_hint,description.getSubtitle()+"-"+description.getDescription());
         largeContentView.setImageViewUri(R.id.iv_cover, description.getIconUri());
         Bundle bundle = description.getExtras();
-        if(bundle != null && bundle.getBoolean(Constants.INTENT_EXTRA_LIKE,false)){
-            largeContentView.setImageViewResource(R.id.iv_like,R.drawable.note_btn_loved);
-        }else{
-            largeContentView.setImageViewResource(R.id.iv_like,R.drawable.note_btn_love);
+        if(bundle != null ){
+            largeContentView.setImageViewResource(R.id.iv_like,bundle.getLong(Constants.INTENT_EXTRA_LIKE,0) == 1? R.drawable.note_btn_loved:R.drawable.note_btn_love);
         }
         largeContentView.setOnClickPendingIntent(R.id.iv_pre, skipToPre);
         largeContentView.setOnClickPendingIntent(R.id.iv_next, skipToNext);

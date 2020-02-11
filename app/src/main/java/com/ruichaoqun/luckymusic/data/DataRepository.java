@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.data;
 
 import android.support.v4.media.MediaMetadataCompat;
 
+import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
@@ -11,8 +12,10 @@ import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.data.db.DbDataSource;
 import com.ruichaoqun.luckymusic.data.http.HttpDataSource;
+import com.ruichaoqun.luckymusic.data.media.ContentProviderSource;
 import com.ruichaoqun.luckymusic.data.media.MediaDataSource;
 import com.ruichaoqun.luckymusic.data.preference.PreferenceDataSource;
+import com.ruichaoqun.luckymusic.utils.RxUtils;
 
 import java.util.List;
 
@@ -27,22 +30,17 @@ import io.reactivex.Observable;
  * description:数据仓库
  */
 @Singleton
-public class DataRepository implements HttpDataSource, PreferenceDataSource, DbDataSource,MediaDataSource {
+public class DataRepository implements HttpDataSource, PreferenceDataSource, MediaDataSource {
     private final HttpDataSource mHttpDataSource;
     private final PreferenceDataSource mPreferenceDataSource;
-    private final DbDataSource mDbDataSource;
     private final MediaDataSource mMediaDataSource;
 
+
     @Inject
-    public DataRepository(HttpDataSource httpDataSource, PreferenceDataSource preferenceDataSource, DbDataSource dbDataSource,MediaDataSource mediaDataSource) {
+    public DataRepository(HttpDataSource httpDataSource, PreferenceDataSource preferenceDataSource,MediaDataSource mediaDataSource ) {
         mHttpDataSource = httpDataSource;
         mPreferenceDataSource = preferenceDataSource;
-        mDbDataSource = dbDataSource;
         mMediaDataSource = mediaDataSource;
-    }
-
-    public MediaDataSource getMediaDataSource() {
-        return mMediaDataSource;
     }
 
     @Override
@@ -70,29 +68,73 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, DbD
         return mHttpDataSource.getTopList();
     }
 
-
     @Override
-    public List<MediaMetadataCompat> getAllSongsData() {
-        return mMediaDataSource.getAllSongsData();
+    public Observable<List<SongBean>> rxGetAllSongs() {
+        return mMediaDataSource.rxGetAllSongs();
     }
 
     @Override
-    public List<MediaMetadataCompat> getSearchSongsData() {
-        return mMediaDataSource.getSearchSongsData();
+    public Observable<List<SongBean>> rxSearchSongs(String searchKey) {
+        return mMediaDataSource.rxSearchSongs(searchKey);
     }
 
     @Override
-    public Observable<List<MediaMetadataCompat>> getAllSongs() {
+    public Observable<List<ArtistBean>> rxGetAllArtist() {
+        return mMediaDataSource.rxGetAllArtist();
+    }
+
+    @Override
+    public Observable<List<AlbumBean>> rxGetAllAlbum() {
+        return mMediaDataSource.rxGetAllAlbum();
+    }
+
+    @Override
+    public Observable<List<SongBean>> rxGetSongsFromArtist(long id) {
+        return mMediaDataSource.rxGetSongsFromArtist(id);
+    }
+
+    @Override
+    public Observable<List<SongBean>> rxGetSongsFromAlbum(long id) {
+        return mMediaDataSource.rxGetSongsFromAlbum(id);
+    }
+
+    @Override
+    public Observable<List<SongBean>> rxGetSongsFromType(String type, String id) {
+        return mMediaDataSource.rxGetSongsFromType(type,id);
+    }
+
+    @Override
+    public List<ArtistBean> getAllArtist() {
+        return mMediaDataSource.getAllArtist();
+    }
+
+    @Override
+    public List<SongBean> getAllSongs() {
         return mMediaDataSource.getAllSongs();
     }
 
     @Override
-    public Observable<List<MediaMetadataCompat>> searchSongs(String searchKey) {
+    public List<SongBean> searchSongs(String searchKey) {
         return mMediaDataSource.searchSongs(searchKey);
     }
 
     @Override
-    public Observable<List<ArtistBean>> getAllArtist() {
-        return mMediaDataSource.getAllArtist();
+    public List<SongBean> getSongsFromArtist(long id) {
+        return mMediaDataSource.getSongsFromArtist(id);
+    }
+
+    @Override
+    public List<SongBean> getSongsFromAlbum(long id) {
+        return mMediaDataSource.getSongsFromAlbum(id);
+    }
+
+    @Override
+    public List<SongBean> getSongsFromType(String type, String id) {
+        return mMediaDataSource.getSongsFromType(type,id);
+    }
+
+    @Override
+    public List<AlbumBean> getAllAlbum() {
+        return mMediaDataSource.getAllAlbum();
     }
 }

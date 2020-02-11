@@ -1,10 +1,5 @@
 package com.ruichaoqun.luckymusic.media;
 
-import com.ruichaoqun.luckymusic.data.DataRepository;
-import com.ruichaoqun.luckymusic.ui.localmedia.fragment.LocalMediaContact;
-import com.ruichaoqun.luckymusic.ui.localmedia.fragment.LocalMediaPresenter;
-
-import dagger.Binds;
 import dagger.Module;
 
 /**

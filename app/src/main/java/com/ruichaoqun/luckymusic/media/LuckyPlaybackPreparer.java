@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.ruichaoqun.luckymusic.data.DataRepository;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
+import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 
 import java.util.List;
@@ -55,18 +56,9 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
     @Override
     public void onPrepareFromMediaId(String mediaId, Bundle extras) {
         MediaID mediaID = MediaID.fromString(mediaId);
-        List<MediaMetadataCompat> list;
-        switch (mediaID.getType()){
-            case MediaDataType.TYPE_SONG:
-                list = dataRepository.getMediaDataSource().getAllSongsData();
-                break;
-            case MediaDataType.TYPE_SEARCH:
-                list = dataRepository.getMediaDataSource().getSearchSongsData();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + mediaID.getType());
-        }
-        int index = getCurrentIndex(list,mediaId);
+        List<SongBean> list = null;
+        list = dataRepository.getSongsFromType(mediaID.getType(),null);
+        int index = getCurrentIndex(list,mediaID.getMediaId());
         if(index == -1){
             LogUtils.e(TAG,"当前音乐列表为匹配到指定音乐id-->"+mediaId);
         }{
@@ -103,23 +95,21 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
         return false;
     }
 
-    private int getCurrentIndex(List<MediaMetadataCompat> list, String mediaId) {
+    private int getCurrentIndex(List<SongBean> list, long mediaId) {
         for (int i = 0; i < list.size(); i++) {
-            String id = list.get(i).getString(METADATA_KEY_MEDIA_ID);
-            if(TextUtils.equals(id,mediaId)){
+            if(list.get(i).getId() == mediaId){
                 return i;
             }
         }
         return -1;
     }
 
-    public ConcatenatingMediaSource toMediaSource(List<MediaMetadataCompat> list){
+    public ConcatenatingMediaSource toMediaSource(List<SongBean> list){
         ConcatenatingMediaSource mediaSource = new ConcatenatingMediaSource();
-        for (MediaMetadataCompat mediaMetadataCompat:list) {
-            MediaID mediaID = MediaID.fromString(mediaMetadataCompat.getString(METADATA_KEY_MEDIA_ID));
+        for (SongBean songBean:list) {
             mediaSource.addMediaSource(new ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .setTag(mediaMetadataCompat.getDescription())
-                    .createMediaSource(ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, mediaID.getMediaId())));
+                    .setTag(songBean.getDescription())
+                    .createMediaSource(ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, songBean.getId())));
         }
         return mediaSource;
     }

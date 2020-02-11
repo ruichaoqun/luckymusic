@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="?attr/selectableItemBackground">
+    <ImageView
+        android:id="@+id/iv_ablum"
+        android:layout_width="66dp"
+        android:layout_height="54dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bn3"
+        android:paddingRight="12dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_ablum"
+        android:layout_toLeftOf="@+id/iv_profile"
+        android:layout_marginLeft="5dp">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/textsize_middle"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="测试" />
+        <TextView
+            android:id="@+id/tv_subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/textsize_small"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="测试"
+            android:layout_marginTop="5dp"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/icon_profile"
+        android:scaleType="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="?attr/selectableItemBackground"/>
+    <ImageView
+        android:id="@+id/iv_playing"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_voice"
+        android:layout_centerVertical="true"
+        android:scaleType="center"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
+</RelativeLayout>

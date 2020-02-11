@@ -85,6 +85,13 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
 
 
     public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+        FragmentManager manager = getSupportFragmentManager();
+        List<Fragment> fragments = manager.getFragments();
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i) instanceof MediaControllerInterface) {
+                ((MediaControllerInterface) fragments.get(i)).onQueueChanged(queue);
+            }
+        }
     }
 
     public void onRepeatModeChanged(@PlaybackStateCompat.RepeatMode int repeatMode) {

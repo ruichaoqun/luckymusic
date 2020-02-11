@@ -27,7 +27,17 @@ public @interface MediaDataType {
     String TYPE_SEARCH = "1";
 
     /**
+     * 通过歌手搜索
+     */
+    String TYPE_ARTIST = "2";
+
+    /**
+     * 搜索专辑搜索
+     */
+    String TYPE_ALBUM = "3";
+
+    /**
      * 当前播放列表
      */
-    String CURRENT_PLAY_LIST = "2";
+    String CURRENT_PLAY_LIST = "4";
 }

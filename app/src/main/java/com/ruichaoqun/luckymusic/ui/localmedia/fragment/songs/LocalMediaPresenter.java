@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui.localmedia.fragment;
+package com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs;
 
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.data.DataRepository;
@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.functions.Consumer;
+
 public class LocalMediaPresenter extends BasePresenter<LocalMediaContact.View> implements LocalMediaContact.Presenter {
 
     @Inject
@@ -16,8 +18,13 @@ public class LocalMediaPresenter extends BasePresenter<LocalMediaContact.View> i
     }
 
     @Override
-    public List<SongBean> getLocalSongs() {
-
-        return null;
+    public void getLocalSongs() {
+        compositeDisposable.add(dataRepository.rxGetAllSongs()
+                .subscribe(new Consumer<List<SongBean>>() {
+                    @Override
+                    public void accept(List<SongBean> list) throws Exception {
+                        mView.onLoadSongsSuccess(list);
+                    }
+                }));
     }
 }

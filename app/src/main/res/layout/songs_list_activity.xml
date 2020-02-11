@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.localmedia.SongsListActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_play_all"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?attr/selectableItemBackground">
+        <TextView
+            android:id="@+id/tv_play_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/ic_ember_play_all"
+            android:drawablePadding="9.0dip"
+            android:gravity="center_vertical"
+            android:paddingLeft="16.0dip"
+            android:text="@string/play_all"
+            android:textColor="@color/color_cc000000"
+            android:textSize="16.0sp" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_play_all"
+            android:text="@string/total_count"
+            android:textColor="@color/color_66000000"
+            android:textSize="14.0sp" />
+        <TextView
+            android:id="@+id/tv_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="13sp"
+            android:drawableLeft="@drawable/a02"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="16dp"
+            android:text="@string/multiple_choice"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground"/>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_song_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.ruichaoqun.luckymusic.ui.localmedia.fragment;
+package com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs;
 
 import dagger.Binds;
 import dagger.Module;

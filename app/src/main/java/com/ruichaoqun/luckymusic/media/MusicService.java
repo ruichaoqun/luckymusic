@@ -37,6 +37,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoFrameMetadataListener;
 import com.ruichaoqun.luckymusic.data.DataRepository;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
+import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.utils.RxUtils;
 
@@ -48,6 +49,8 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.DaggerService;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * @author Rui Chaoqun
@@ -124,26 +127,10 @@ public class MusicService extends MediaBrowserServiceCompat {
         return new BrowserRoot("MusicService", new Bundle());
     }
 
+    //不通过service订阅数据
     @Override
     public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
-        LogUtils.w(TAG, "parentId-->" + parentId);
-        result.detach();
-        MediaID mediaID = MediaID.fromString(parentId);
-        switch (mediaID.getType()) {
-            case MediaDataType.TYPE_SONG:
-                mCompositeDisposable.add(dataRepository.getAllSongs()
-                        .compose(RxUtils.transformerThread())
-                        .map(mediaMetadataCompat -> {
-                            List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
-                            for (MediaMetadataCompat data : mediaMetadataCompat) {
-                                mediaItems.add(new MediaBrowserCompat.MediaItem(data.getDescription(), (int) data.getLong(METADATA_KEY_LUCKY_FLAGS)));
-                            }
-                            return mediaItems;
-                        })
-                        .subscribe(mediaItems -> result.sendResult(mediaItems)));
-                break;
-            default:
-        }
+
     }
 
     @Override

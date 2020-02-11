@@ -4,6 +4,8 @@ import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.ui.PlayerModule;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaActivity;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaModule;
+import com.ruichaoqun.luckymusic.ui.localmedia.SongsListActivity;
+import com.ruichaoqun.luckymusic.ui.localmedia.SongsListModule;
 import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 import com.ruichaoqun.luckymusic.ui.main.MainModule;
 import com.ruichaoqun.luckymusic.ui.splash.SplashModule;
@@ -30,5 +32,8 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = PlayerModule.class)
     abstract PlayerActivity mPlayerActivity();
+
+    @ContributesAndroidInjector(modules = SongsListModule.class)
+    abstract SongsListActivity mSongsListActivity();
 
 }

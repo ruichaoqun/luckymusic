@@ -33,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseMVPActivity<MainContact.Presenter> {
+public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View{
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)

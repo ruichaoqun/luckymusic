@@ -4,6 +4,7 @@ import android.support.v4.media.MediaMetadataCompat;
 
 import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
+import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 
 import java.util.List;
@@ -29,6 +30,14 @@ public interface DbDataSource {
     List<ArtistBean> getAllArtist();
 
     List<AlbumBean> getAllAlbum();
+
+    /**
+     * 获取所有歌单，包含我创建的歌单以及  我喜欢的 和 播放列表
+     * @return
+     */
+    List<PlayListBean> getAllPlayList();
+
+    PlayListBean getPlayList(long id);
 
     void insertSongs(List<SongBean> list);
 

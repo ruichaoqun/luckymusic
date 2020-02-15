@@ -33,6 +33,7 @@ import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor;
 import com.google.android.exoplayer2.source.DynamicConcatenatingMediaSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoFrameMetadataListener;
 import com.ruichaoqun.luckymusic.data.DataRepository;
@@ -179,8 +180,13 @@ public class MusicService extends MediaBrowserServiceCompat {
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             updateNotification(state);
-            if(state.getState() == PlaybackStateCompat.STATE_PAUSED){
-                dataRepository.updatePlayLastSong(Long.valueOf(mMediaController.getMetadata().getDescription().getMediaId()),state.getPosition());
+            switch (state.getState()){
+                case PlaybackStateCompat.STATE_PAUSED:
+                    dataRepository.updatePlayLastSong(Long.valueOf(mMediaController.getMetadata().getDescription().getMediaId()),state.getPosition());
+                    break;
+                case PlaybackStateCompat.STATE_STOPPED:
+                    dataRepository.updatePlayList(null,-1,0);
+                        break;
             }
         }
 
@@ -236,13 +242,6 @@ public class MusicService extends MediaBrowserServiceCompat {
         public void onShuffleModeChanged(int shuffleMode) {
             if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
                 dataRepository.setPlayMode(3);
-            }
-        }
-
-        @Override
-        public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
-            if(queue == null || queue.size() == 0){
-                dataRepository.updatePlayList(null,0,0);
             }
         }
     }

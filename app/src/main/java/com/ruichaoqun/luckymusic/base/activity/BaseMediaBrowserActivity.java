@@ -127,6 +127,14 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     }
 
     /**
+     * 移除整个播放列表
+     */
+    public void deleteAllPlaylist(){
+//        this.mControllerCompat.getTransportControls().sendCustomAction(MediaCommonConstant.RELEASE_PLAYER,new Bundle());
+        this.mControllerCompat.getTransportControls().stop();
+    }
+
+    /**
      * 播放列表中的指定音乐
      * @param position 指定的音乐在播放列表中的位置
      */
@@ -150,13 +158,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         }
     }
 
-    /**
-     * 移除整个播放列表
-     */
-    public void deleteAllPlaylist(){
-//        this.mControllerCompat.getTransportControls().sendCustomAction(MediaCommonConstant.RELEASE_PLAYER,new Bundle());
-        this.mControllerCompat.getTransportControls().stop();
-    }
+
 
 
 

@@ -58,16 +58,18 @@ public class LuckyPlaybackPreparer implements MediaSessionConnector.PlaybackPrep
         MediaID mediaID = MediaID.fromString(mediaId);
         List<SongBean> list = null;
         list = dataRepository.getSongsFromType(mediaID.getType(),null);
+        long position = dataRepository.getLastPosition(mediaID.getType());
         int index = getCurrentIndex(list,mediaID.getMediaId());
         if(index == -1){
             LogUtils.e(TAG,"当前音乐列表为匹配到指定音乐id-->"+mediaId);
         }{
             ConcatenatingMediaSource mediaSource = toMediaSource(list);
             exoPlayer.prepare(mediaSource);
-            exoPlayer.seekTo(index, 0);
+            exoPlayer.seekTo(index, position);
             mediaSessionConnector.setQueueEditor(new TimelineQueueEditor(mControllerCompat,mediaSource,
                     new DefaultQueueDataAdapter(),new DefaultMediaSourceFactory(dataSourceFactory)));
         }
+        dataRepository.updatePlayList(list, mediaID.getMediaId(),position);
     }
 
     @Override

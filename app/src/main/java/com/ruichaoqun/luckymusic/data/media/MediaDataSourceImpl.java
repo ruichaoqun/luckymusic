@@ -1,14 +1,19 @@
 package com.ruichaoqun.luckymusic.data.media;
 
 import android.support.v4.media.MediaMetadataCompat;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
+import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
+import com.ruichaoqun.luckymusic.data.bean.PlayListSongBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.data.db.DbDataSource;
 import com.ruichaoqun.luckymusic.media.MediaDataType;
 import com.ruichaoqun.luckymusic.utils.RxUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +38,9 @@ public class MediaDataSourceImpl implements MediaDataSource {
     protected List<AlbumBean> albumList;           //专辑列表
     protected List<SongBean> artistSongs;           //每个歌手对应歌曲列表
     protected List<SongBean> albumSongs;           //每个专辑对应歌曲列表
+
+    protected PlayListBean mPlayListBean;         //从数据库获取的上次播放详情
+    protected List<SongBean> mPlayListSongs;        ////从数据库获取的上次播放歌曲列表
 
 
     @Inject
@@ -179,6 +187,28 @@ public class MediaDataSourceImpl implements MediaDataSource {
     }
 
     @Override
+    public Observable<PlayListBean> rxGetCurrentPlayList() {
+        return Observable.create(new ObservableOnSubscribe<PlayListBean>() {
+            @Override
+            public void subscribe(ObservableEmitter<PlayListBean> emitter) throws Exception {
+                PlayListBean playListBean = mDbDataSource.getCurrentPlayListBean();
+                if(playListBean != null){
+                    mPlayListBean = playListBean;
+                    List<PlayListSongBean> songBeanList = playListBean.getMPlayListSongBeans();
+                    if(songBeanList != null){
+                        mPlayListSongs = new ArrayList<>();
+                        for (int i = 0; i < songBeanList.size(); i++) {
+                            mPlayListSongs.add(songBeanList.get(i).getMSongBean());
+                        }
+                    }
+                }
+                emitter.onNext(playListBean);
+                emitter.onComplete();
+            }
+        });
+    }
+
+    @Override
     public List<ArtistBean> getAllArtist() {
         return null;
     }
@@ -215,7 +245,7 @@ public class MediaDataSourceImpl implements MediaDataSource {
             case MediaDataType.TYPE_ALBUM:
                 return albumSongs;
             case MediaDataType.CURRENT_PLAY_LIST:
-                break;
+                return mPlayListSongs;
         }
         return null;
     }
@@ -224,4 +254,44 @@ public class MediaDataSourceImpl implements MediaDataSource {
     public List<AlbumBean> getAllAlbum() {
         return albumList;
     }
+
+    @Override
+    public long getLastPosition(String type) {
+        if(TextUtils.equals(type,MediaDataType.CURRENT_PLAY_LIST ) && mPlayListBean != null){
+            return mPlayListBean.getLastPlaySongPosition();
+        }
+        return 0;
+    }
+
+    @Override
+    public void updatePlayList(List<SongBean> list, long lastPlaySongId, long lastPlaySongPosition) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                mDbDataSource.updatePlayList(list,lastPlaySongId,lastPlaySongPosition);
+            }
+        }).subscribe();
+    }
+
+    @Override
+    public void updatePlayLastSong(long lastPlaySongId, long lastPlaySongPosition) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                mDbDataSource.updatePlayLastSong(lastPlaySongId,lastPlaySongPosition);
+            }
+        }).subscribe();
+    }
+
+    @Override
+    public void removePlayListItem(long id) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                mDbDataSource.removePlayListItem(id);
+            }
+        }).subscribe();
+    }
+
+
 }

@@ -10,4 +10,16 @@ public interface PreferenceDataSource {
     void isFirstUse();
 
     void setFirstUse();
+
+    /**
+     * 设置播放模式
+     * @param mode
+     */
+    void setPlayMode(int mode);
+
+    /**
+     * 获取播放模式
+     * @return
+     */
+    int getPlayMode();
 }

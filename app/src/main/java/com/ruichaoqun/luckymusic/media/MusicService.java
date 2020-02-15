@@ -37,6 +37,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoFrameMetadataListener;
 import com.ruichaoqun.luckymusic.data.DataRepository;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
+import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.utils.RxUtils;
@@ -101,6 +102,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         mNotificationBuilder = new NotificationBuilder(this);
         mNotificationManager = NotificationManagerCompat.from(this);
         mBecomingNoisyReceiver = new BecomingNoisyReceiver(this, mMediaSession.getSessionToken());
+        mBecomingNoisyReceiver.register();
 
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
         mExoPlayer.setAudioAttributes(uAmpAudioAttributes, true);
@@ -111,7 +113,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         mediaSessionConnector.setPlaybackPreparer(mPlaybackPreparer);
         mediaSessionConnector.setQueueNavigator(new LuckyQueueNavigator(mMediaSession));
         mCompositeDisposable = new CompositeDisposable();
-        mMediaController.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
+        mMediaController.getTransportControls().setRepeatMode(dataRepository.getPlayMode());
         initPlayListData();
     }
 
@@ -119,7 +121,15 @@ public class MusicService extends MediaBrowserServiceCompat {
      * 初始化播放列表
      */
     private void initPlayListData() {
-//        dataRepository.rxGetAllSongs()
+        dataRepository.rxGetCurrentPlayList()
+                .subscribe(new Consumer<PlayListBean>() {
+                    @Override
+                    public void accept(PlayListBean listBean) throws Exception {
+                        if(listBean != null && listBean.getMPlayListSongBeans() != null && listBean.getMPlayListSongBeans().size() > 0){
+                            mMediaController.getTransportControls().prepareFromMediaId(new MediaID(MediaDataType.CURRENT_PLAY_LIST , listBean.getLastPlaySongId()).asString(), null);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -146,6 +156,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         mMediaSession.setActive(false);
         mMediaSession.release();
         mCompositeDisposable.dispose();
+        mBecomingNoisyReceiver.unregister();
     }
 
     private void removeNowPlayingNotification() {
@@ -158,12 +169,19 @@ public class MusicService extends MediaBrowserServiceCompat {
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             if (mMediaController.getPlaybackState() != null) {
                 updateNotification(mMediaController.getPlaybackState());
+                String id = metadata.getDescription().getMediaId();
+                if(!TextUtils.isEmpty(id)){
+                    dataRepository.updatePlayLastSong(Long.valueOf(id),0);
+                }
             }
         }
 
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             updateNotification(state);
+            if(state.getState() == PlaybackStateCompat.STATE_PAUSED){
+                dataRepository.updatePlayLastSong(Long.valueOf(mMediaController.getMetadata().getDescription().getMediaId()),state.getPosition());
+            }
         }
 
         private void updateNotification(PlaybackStateCompat state) {
@@ -208,8 +226,30 @@ public class MusicService extends MediaBrowserServiceCompat {
                     }
             }
         }
+
+        @Override
+        public void onRepeatModeChanged(int repeatMode) {
+            dataRepository.setPlayMode(repeatMode);
+        }
+
+        @Override
+        public void onShuffleModeChanged(int shuffleMode) {
+            if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+                dataRepository.setPlayMode(3);
+            }
+        }
+
+        @Override
+        public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+            if(queue == null || queue.size() == 0){
+                dataRepository.updatePlayList(null,0,0);
+            }
+        }
     }
 
+    /**
+     * 监听耳机拔出事件
+     */
     private class BecomingNoisyReceiver extends BroadcastReceiver {
         private Context context;
         private MediaSessionCompat.Token sessionToken;

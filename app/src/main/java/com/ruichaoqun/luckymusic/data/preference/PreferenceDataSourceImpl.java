@@ -26,11 +26,21 @@ public class PreferenceDataSourceImpl implements PreferenceDataSource{
 
     @Override
     public void isFirstUse() {
-        mSharedPreferences.getBoolean(Constants.SHARE_PREFERENCE,false);
+        mSharedPreferences.getBoolean(Constants.SHARE_PREFERENCE_IS_FIRST_USE,false);
     }
 
     @Override
     public void setFirstUse() {
-        mSharedPreferences.edit().putBoolean(Constants.SHARE_PREFERENCE,true).apply();
+        mSharedPreferences.edit().putBoolean(Constants.SHARE_PREFERENCE_IS_FIRST_USE,true).apply();
+    }
+
+    @Override
+    public void setPlayMode(int mode) {
+        mSharedPreferences.edit().putInt(Constants.SHARE_PREFERENCE_PALY_MODE,mode).apply();
+    }
+
+    @Override
+    public int getPlayMode() {
+        return mSharedPreferences.getInt(Constants.SHARE_PREFERENCE_PALY_MODE,2);
     }
 }

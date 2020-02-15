@@ -20,7 +20,7 @@ public class PlayListBean {
     private int songsCount;             //歌单歌曲数量
     private Date createTime;            //创建日期
     private Date lastUpdateTime;        //最近更新歌单时间
-    private int lastPlaySongId;         //上次本歌单最后播放音乐id
+    private long lastPlaySongId;         //上次本歌单最后播放音乐id
     private long lastPlaySongPosition;  //上次本歌单最后播放音乐的播放位置
 
     @ToMany(referencedJoinProperty = "playListid")
@@ -32,9 +32,9 @@ public class PlayListBean {
     @Generated(hash = 908959112)
     private transient PlayListBeanDao myDao;
 
-    @Generated(hash = 1045872174)
+    @Generated(hash = 852860174)
     public PlayListBean(Long id, String name, int songsCount, Date createTime,
-            Date lastUpdateTime, int lastPlaySongId, long lastPlaySongPosition) {
+            Date lastUpdateTime, long lastPlaySongId, long lastPlaySongPosition) {
         this.id = id;
         this.name = name;
         this.songsCount = songsCount;
@@ -88,11 +88,11 @@ public class PlayListBean {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public int getLastPlaySongId() {
+    public long getLastPlaySongId() {
         return this.lastPlaySongId;
     }
 
-    public void setLastPlaySongId(int lastPlaySongId) {
+    public void setLastPlaySongId(long lastPlaySongId) {
         this.lastPlaySongId = lastPlaySongId;
     }
 

@@ -1,6 +1,7 @@
 package com.ruichaoqun.luckymusic.data.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
@@ -11,7 +12,8 @@ import org.greenrobot.greendao.annotation.NotNull;
  */
 @Entity
 public class PlayListSongBean {
-    private long _id;                    //主键
+    @Id
+    private Long _id;                    //主键
     private long playListid;                    //歌单id
     private long playListSongId;            //歌单音乐id
 
@@ -24,8 +26,8 @@ public class PlayListSongBean {
     @Generated(hash = 1395073789)
     private transient PlayListSongBeanDao myDao;
 
-    @Generated(hash = 1520802576)
-    public PlayListSongBean(long _id, long playListid, long playListSongId) {
+    @Generated(hash = 1266152894)
+    public PlayListSongBean(Long _id, long playListid, long playListSongId) {
         this._id = _id;
         this.playListid = playListid;
         this.playListSongId = playListSongId;
@@ -35,11 +37,11 @@ public class PlayListSongBean {
     public PlayListSongBean() {
     }
 
-    public long get_id() {
+    public Long get_id() {
         return this._id;
     }
 
-    public void set_id(long _id) {
+    public void set_id(Long _id) {
         this._id = _id;
     }
 

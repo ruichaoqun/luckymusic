@@ -88,11 +88,18 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     public static final int STYLUS_ON_TO_OFF = 3;
     public static final int STYLUS_OFF_TO_ON = 1;
 
-    //当前的播放音乐在播放队列中的index，注意不是QueueItem的queueId，在顺序播放但单曲循环中这两个值是相等的，但是在随机播放中这两个值是不相等的
+    //当前的播放音乐在播放队列中的index，注意不是QueueItem的queueId，
+    // 在顺序播放但单曲循环中这两个值是相等的，但是在随机播放中这两个值是不相等的
     private int currentDataPosition = -1;
     private MediaSessionCompat.QueueItem nextQueueItem;
     private boolean updatePosition = true;
+
+    //seekbar是否自动更新标志位，当移动seekbar位置但没有放开时，是不需要自动更新seekbar的
     private boolean mSeekbarInTouch = false;
+
+    //seekbar是否自动更新标志位，当移动seekbar位置且放开手后，state还没有从服务更新成功，会导致自动更新时瞬间回到原来的位置，之后服务更新后又瞬间回到正确的位置
+    //设置此标志位，当移动seekbar位置后，停止更新seekbar位置，当state改变后再自动更新
+    private boolean mAwaitPlaySeekChanged = false;
     //是否是后台自动切换下一首
     private boolean isBacgroundAutoNext = false;
 
@@ -114,7 +121,6 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private Runnable mStylusReturnRunnable = new Runnable() {
         @Override
         public void run() {
-            mVsBacground.reset();
             if (PlayerActivity.this.mStylusAnimationType == STYLUS_OFF_TO_ON || PlayerActivity.this.mStylusAnimationType == STYLUS_ON_TO_OFF) {
                 //当前动画正在进行中，持续回调
                 PlayerActivity.this.clientHandler.postDelayed(this, 50);
@@ -137,7 +143,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 currentPosition = mPlaybackState.getPosition();
             }
             if (updatePosition) {
-                if (!mSeekbarInTouch) {
+                if (!mSeekbarInTouch && !mAwaitPlaySeekChanged) {
                     mCurrentPosition.setText(TimeUtils.getCurrentPosition(currentPosition));
                     mPlayerSeekBar.setProgress(TimeUtils.formateToSeconds(currentPosition));
                 }
@@ -208,6 +214,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     }
 
     private void startSeekPlayer(SeekBar seekBar) {
+        mAwaitPlaySeekChanged = true;
         int duration = seekBar.getProgress();
         mCurrentPosition.setText(TimeUtils.getCurrentPositionFromSeekbar(duration));
         this.mControllerCompat.getTransportControls().seekTo((long) (duration * 1E3));
@@ -418,6 +425,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             currentDataPosition = getCurrentMusicPosition();
             this.mTotalPosition.setText(TimeUtils.getCurrentPosition(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
             this.mPlayerSeekBar.setMax(TimeUtils.formateToSeconds(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+            this.mPlayerSeekBar.setProgress(TimeUtils.formateToSeconds(mPlaybackState.getPosition()));
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
             //TODO 设置是否收藏
             switchBacground(mCurrentMetadata.getDescription().getIconUri());
@@ -436,13 +444,14 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_STOPPED:
             case PlaybackStateCompat.STATE_PAUSED:
-                this.mStylusReturnAnimation.setDegrees(-25);
+                this.mStylusRemoveAnimation.setDegrees(-25);
                 this.startStylusRemove();
                 this.mPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;
             default:
         }
         checkPlaybackPosition();
+        onRepeatModeChanged(playMode);
     }
 
     private int getCurrentMusicPosition() {
@@ -506,6 +515,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             case PlaybackStateCompat.STATE_PLAYING:
             case PlaybackStateCompat.STATE_BUFFERING:
             case PlaybackStateCompat.STATE_CONNECTING:
+                this.mAwaitPlaySeekChanged = false;
                 this.startStylusReturn();
                 if (!this.mCurrentDiscLayout.isRunning()) {
                     this.mCurrentDiscLayout.start();
@@ -524,7 +534,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
     @Override
     public void onRepeatModeChanged(int repeatMode) {
-        if (repeatMode == PlaybackStateCompat.SHUFFLE_MODE_ALL) {
+        if (repeatMode == 3) {
             this.mPlayMode.setImageResource(R.drawable.selector_player_mode_shuffer);
         } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
             this.mPlayMode.setImageResource(R.drawable.selector_player_mode_single);

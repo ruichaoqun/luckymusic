@@ -47,7 +47,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
             .build();
 
     private PlaylistBottomSheet playListDialog;
-    private int playMode = PlaybackStateCompat.REPEAT_MODE_ALL;
+    protected int playMode = PlaybackStateCompat.REPEAT_MODE_ALL;
 
 
     @Override
@@ -140,7 +140,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     public void switchPlayMode(){
         //只支持3中循环模式，列表循环模式，单曲模式，随机播放模式
         //首先判断是否是随机模式
-        if (this.mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL) {
+        if (this.mControllerCompat.getShuffleMode() == 3) {
             this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
             this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
         } else if (this.mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
@@ -241,8 +241,8 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
         @Override
         public void onShuffleModeChanged(int shuffleMode) {
             if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
-                BaseMediaBrowserActivity.this.playMode = shuffleMode;
-                BaseMediaBrowserActivity.this.onRepeatModeChanged(shuffleMode);
+                BaseMediaBrowserActivity.this.playMode = 3;
+                BaseMediaBrowserActivity.this.onRepeatModeChanged(playMode);
                 if(BaseMediaBrowserActivity.this.playListDialog != null && BaseMediaBrowserActivity.this.playListDialog.isShowing()){
                     BaseMediaBrowserActivity.this.playListDialog.setPlayMode(playMode);
                 }

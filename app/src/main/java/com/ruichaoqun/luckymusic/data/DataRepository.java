@@ -9,6 +9,7 @@ import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
 import com.ruichaoqun.luckymusic.data.bean.HomePageBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
+import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.data.db.DbDataSource;
 import com.ruichaoqun.luckymusic.data.http.HttpDataSource;
@@ -51,6 +52,16 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     @Override
     public void setFirstUse() {
         mPreferenceDataSource.setFirstUse();
+    }
+
+    @Override
+    public void setPlayMode(int mode) {
+        mPreferenceDataSource.setPlayMode(mode);
+    }
+
+    @Override
+    public int getPlayMode() {
+        return mPreferenceDataSource.getPlayMode();
     }
 
     @Override
@@ -104,6 +115,11 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     }
 
     @Override
+    public Observable<PlayListBean> rxGetCurrentPlayList() {
+        return mMediaDataSource.rxGetCurrentPlayList();
+    }
+
+    @Override
     public List<ArtistBean> getAllArtist() {
         return mMediaDataSource.getAllArtist();
     }
@@ -136,5 +152,25 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     @Override
     public List<AlbumBean> getAllAlbum() {
         return mMediaDataSource.getAllAlbum();
+    }
+
+    @Override
+    public long getLastPosition(String type) {
+        return mMediaDataSource.getLastPosition(type);
+    }
+
+    @Override
+    public void updatePlayList(List<SongBean> list, long lastPlaySongId, long lastPlaySongPosition) {
+        mMediaDataSource.updatePlayList(list,lastPlaySongId,lastPlaySongPosition);
+    }
+
+    @Override
+    public void updatePlayLastSong(long lastPlaySongId, long lastPlaySongPosition) {
+        mMediaDataSource.updatePlayLastSong(lastPlaySongId,lastPlaySongPosition);
+    }
+
+    @Override
+    public void removePlayListItem(long id) {
+        mMediaDataSource.removePlayListItem(id);
     }
 }

@@ -10,13 +10,13 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class ArtistBean {
     @Id
-    private long id;                       //歌手id
+    private Long id;                       //歌手id
     private String artistName;              //歌手名称
     private int tracksNumber;           //歌曲数量
     private int albumsNumber;           //专辑数量
 
-    @Generated(hash = 1678952717)
-    public ArtistBean(long id, String artistName, int tracksNumber, int albumsNumber) {
+    @Generated(hash = 334854927)
+    public ArtistBean(Long id, String artistName, int tracksNumber, int albumsNumber) {
         this.id = id;
         this.artistName = artistName;
         this.tracksNumber = tracksNumber;
@@ -36,11 +36,11 @@ public class ArtistBean {
         return artistBean;
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,4 +67,6 @@ public class ArtistBean {
     public void setAlbumsNumber(int albumsNumber) {
         this.albumsNumber = albumsNumber;
     }
+
+
 }

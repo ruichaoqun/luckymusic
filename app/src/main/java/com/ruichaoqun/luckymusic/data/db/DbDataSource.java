@@ -39,11 +39,21 @@ public interface DbDataSource {
 
     PlayListBean getPlayList(long id);
 
+    PlayListBean getCurrentPlayListBean();
+
     void insertSongs(List<SongBean> list);
 
     void insertArtist(List<ArtistBean> list);
 
     void insertAlbum(List<AlbumBean> list);
 
+    void insertOrReplacePlayList(PlayListBean playListBean);
 
+    void insertOrReplacePlayListSongBean();
+
+    void updatePlayList(List<SongBean> list,long lastPlaySongId,long lastPlaySongPosition);
+
+    void updatePlayLastSong(long lastPlaySongId,long lastPlaySongPosition);
+
+    void removePlayListItem(long id);
 }

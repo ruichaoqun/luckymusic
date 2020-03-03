@@ -86,4 +86,24 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
     </style>
+
+    <style name="tp">
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">0.5</item>
+    </style>
+
+    <style name="tu" parent="@style/tp">
+        <item name="android:shadowColor">#80ffffff</item>
+    </style>
+
+    <style name="ud" parent="@style/tu">
+        <item name="android:textSize">8.0sp</item>
+        <item name="android:textColor">#5cffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">66.0dip</item>
+    </style>
+
+
 </resources>

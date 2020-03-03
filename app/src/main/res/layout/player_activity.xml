@@ -26,7 +26,8 @@
         android:id="@+id/rl_display_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/ll_container_bottom">
 
         <ImageView
             android:id="@+id/iv_player_bg"
@@ -97,7 +98,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="23dip"
         android:paddingRight="23dip"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_below="@+id/toolbar">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -122,6 +124,13 @@
             android:thumbOffset="3.0dip" />
 
     </LinearLayout>
+
+
+    <include layout="@layout/layout_lyric"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_sound_controller"
+        android:layout_above="@+id/ll_container_bottom" />
 
     <LinearLayout
         android:id="@+id/ll_container_bottom"

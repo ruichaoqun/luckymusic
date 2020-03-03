@@ -251,7 +251,7 @@ public class PlayerDiscViewFlipper extends ViewFlipper{
             requestLayout();
         }
         boolean isFinished = this.mScroller.isFinished();
-        if (motionEvent.getAction() == 0) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             this.hadPassedDownToGesture = isFinished;
         }
         if (isFinished) {

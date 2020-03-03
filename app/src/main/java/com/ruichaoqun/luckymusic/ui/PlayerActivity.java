@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.ruichaoqun.luckymusic.utils.StylusAnimation;
 import com.ruichaoqun.luckymusic.utils.TimeUtils;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.PlaylistBottomSheet;
+import com.ruichaoqun.luckymusic.widget.LyricView;
 import com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper;
 import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
 import com.ruichaoqun.luckymusic.utils.ViewSwitcherTarget;
@@ -69,6 +71,19 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     SeekBar mPlayerSeekBar;
     @BindView(R.id.vs_bacground)
     ViewSwitcher mVsBacground;
+    @BindView(R.id.lv_lyric)
+    LyricView mLyricView;
+    @BindView(R.id.layout_lyric)
+    RelativeLayout mLayoutLyric;
+    @BindView(R.id.layout_sound_controller)
+    LinearLayout mLayoutSoundController;
+    @BindView(R.id.rl_display_container)
+    RelativeLayout mRlDisplayContainer;
+    @BindView(R.id.cur_lyric_container)
+    LinearLayout mCurLyricContainer;
+    @BindView(R.id.tv_lyric_container_time)
+    TextView mTvLyricContainerTime;
+
 
     private ViewSwitcherTarget mViewSwitcherTarget;
 
@@ -102,6 +117,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private boolean mAwaitPlaySeekChanged = false;
     //是否是后台自动切换下一首
     private boolean isBacgroundAutoNext = false;
+    long currentPosition;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
@@ -135,7 +151,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private Runnable mCheckPlaybackPositionRunnable = new Runnable() {
         @Override
         public void run() {
-            long currentPosition;
+
             if (mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING) {
                 long timeDelta = SystemClock.elapsedRealtime() - mPlaybackState.getLastPositionUpdateTime();
                 currentPosition = (long) (mPlaybackState.getPosition() + (timeDelta * mPlaybackState.getPlaybackSpeed()));
@@ -148,6 +164,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     mPlayerSeekBar.setProgress(TimeUtils.formateToSeconds(currentPosition));
                 }
                 checkPlaybackPosition();
+                if(mLayoutLyric.getVisibility() == View.VISIBLE){
+                    mLyricView.setPosition(currentPosition,mPlaybackState.getState());
+                }
             }
         }
     };
@@ -330,14 +349,17 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                         PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
                     }
                     switchBacground(nextQueueItem.getDescription().getIconUri());
+
                 } else {
                     //未滑动到下一首，不改变
-                    PlayerActivity.this.startStylusReturn();
+                    if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING){
+                        PlayerActivity.this.startStylusReturn();
+                    }
                 }
                 isBacgroundAutoNext = false;
                 PlayerActivity.this.mCurrentDiscLayout = (RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getCurrentView();
                 for (int i = 0; i < queueItems.size(); i++) {
-                    if (nextQueueItem.getQueueId() == queueItems.get(i).getQueueId()) {
+                    if (nextQueueItem != null && nextQueueItem.getQueueId() == queueItems.get(i).getQueueId()) {
                         PlayerActivity.this.currentDataPosition = i;
                         break;
                     }
@@ -403,6 +425,41 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             @Override
             public void onClick(View v) {
                 showPlayListDialog();
+            }
+        });
+
+        this.mRlDisplayContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRlDisplayContainer.setVisibility(View.INVISIBLE);
+                mLayoutLyric.setVisibility(View.VISIBLE);
+                mLayoutSoundController.setVisibility(View.VISIBLE);
+            }
+        });
+
+        this.mCurLyricContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long times = mLyricView.getCurrentTims();
+                if(times == -1){
+                    if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PAUSED){
+                        PlayerActivity.this.mControllerCompat.getTransportControls().play();
+                    }
+                }else{
+                    PlayerActivity.this.mControllerCompat.getTransportControls().seekTo(times);
+                    if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PAUSED){
+                        PlayerActivity.this.mControllerCompat.getTransportControls().play();
+                    }
+                }
+            }
+        });
+
+        this.mLyricView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRlDisplayContainer.setVisibility(View.VISIBLE);
+                mLayoutLyric.setVisibility(View.GONE);
+                mLayoutSoundController.setVisibility(View.GONE);
             }
         });
     }
@@ -592,5 +649,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     protected void onDestroy() {
         updatePosition = false;
         super.onDestroy();
+    }
+
+    public View getPlayCurLyricContainer() {
+        return this.mCurLyricContainer;
     }
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
@@ -27,6 +28,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
@@ -107,6 +109,12 @@ public class MusicService extends MediaBrowserServiceCompat {
 
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
         mExoPlayer.setAudioAttributes(uAmpAudioAttributes, true);
+        mExoPlayer.setAudioDebugListener(new AudioRendererEventListener() {
+            @Override
+            public void onAudioSessionId(int audioSessionId) {
+                Log.w("SSSSS","audioSessionId-->"+audioSessionId);
+            }
+        });
         MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession);
         mediaSessionConnector.setPlayer(mExoPlayer);
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, getApplication().getPackageName()), null);
@@ -131,6 +139,7 @@ public class MusicService extends MediaBrowserServiceCompat {
                         }
                     }
                 });
+
     }
 
     @Override

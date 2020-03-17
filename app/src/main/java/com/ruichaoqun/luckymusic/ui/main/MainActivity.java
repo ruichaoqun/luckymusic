@@ -32,6 +32,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View{
     @BindView(R.id.tab_layout)
@@ -66,6 +70,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         initDraw();
         applyStatusBarCurrentTheme();
         applyToolbarCurrentTheme();
+
     }
 
     @Override

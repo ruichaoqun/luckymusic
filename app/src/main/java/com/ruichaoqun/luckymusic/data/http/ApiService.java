@@ -8,6 +8,7 @@ import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -27,5 +28,7 @@ public interface ApiService {
 
     @GET(value = "article/top/json")
     Observable<BaseResponse<List<HomePageItemBean>>> getTopList();
+
+    Call<BaseResponse<List<HomePageItemBean>>> uploadError();
 
 }

@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function3;
+import okhttp3.Request;
+import retrofit2.Call;
 
 public class WanAndroidPresenter extends BasePresenter<WanAndroidContact.View> implements WanAndroidContact.Presenter {
 

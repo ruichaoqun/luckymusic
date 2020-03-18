@@ -362,9 +362,9 @@ public class StateListDrawableUtils {
         return shapeDrawable;
     }
 
-//    public static int a(Context context) {
+//    public static int onColorGet(Context context) {
 //        int i = 0;
-//        int identifier = context.getResources().getIdentifier(a.auu.a.c("PREVERQAOiwEBjoJFgwpDQA="), a.auu.a.c("KgwZAA8="), a.auu.a.c("LwsQFw4aAQ=="));
+//        int identifier = context.getResources().getIdentifier(onColorGet.auu.onColorGet.c("PREVERQAOiwEBjoJFgwpDQA="), onColorGet.auu.onColorGet.c("KgwZAA8="), onColorGet.auu.onColorGet.c("LwsQFw4aAQ=="));
 //        if (identifier > 0) {
 //            i = context.getResources().getDimensionPixelSize(identifier);
 //        }

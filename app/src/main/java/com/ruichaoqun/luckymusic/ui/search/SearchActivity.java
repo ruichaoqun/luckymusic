@@ -80,7 +80,7 @@ public class SearchActivity extends BaseToolBarActivity {
 
 
         this.mCompleteTextView =  this.mSearchView.findViewById(R.id.search_src_text);
-//        this.mCompleteTextView.setAdapter(new a(this));
+//        this.mCompleteTextView.setAdapter(new onColorGet(this));
         this.mCompleteTextView.setHint(getString(R.string.global_search_hint));
         this.mCompleteTextView.setDropDownBackgroundDrawable(new ColorDrawable(getResourceRouter().getPopupBackgroundColor()));
         this.mCompleteTextView.setDropDownVerticalOffset(UiUtils.dp2px(5.0f));

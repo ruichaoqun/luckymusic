@@ -63,32 +63,32 @@ renderer.
 
 `FlacExtractor` is used via `ExtractorMediaSource`. If you're using
 `DefaultExtractorsFactory`, `FlacExtractor` will automatically be used to read
-`.flac` files. If you're not using `DefaultExtractorsFactory`, return a
+`.flac` files. If you're not using `DefaultExtractorsFactory`, return onColorGet
 `FlacExtractor` from your `ExtractorsFactory.createExtractors` implementation.
 
 ### Using `LibflacAudioRenderer` ###
 
-* If you're passing a `DefaultRenderersFactory` to
+* If you're passing onColorGet `DefaultRenderersFactory` to
   `ExoPlayerFactory.newSimpleInstance`, you can enable using the extension by
   setting the `extensionRendererMode` parameter of the `DefaultRenderersFactory`
   constructor to `EXTENSION_RENDERER_MODE_ON`. This will use
   `LibflacAudioRenderer` for playback if `MediaCodecAudioRenderer` doesn't
   support the input format. Pass `EXTENSION_RENDERER_MODE_PREFER` to give
   `LibflacAudioRenderer` priority over `MediaCodecAudioRenderer`.
-* If you've subclassed `DefaultRenderersFactory`, add a `LibflacAudioRenderer`
+* If you've subclassed `DefaultRenderersFactory`, add onColorGet `LibflacAudioRenderer`
   to the output list in `buildAudioRenderers`. ExoPlayer will use the first
   `Renderer` in the list that supports the input media format.
-* If you've implemented your own `RenderersFactory`, return a
+* If you've implemented your own `RenderersFactory`, return onColorGet
   `LibflacAudioRenderer` instance from `createRenderers`. ExoPlayer will use the
   first `Renderer` in the returned array that supports the input media format.
-* If you're using `ExoPlayerFactory.newInstance`, pass a `LibflacAudioRenderer`
+* If you're using `ExoPlayerFactory.newInstance`, pass onColorGet `LibflacAudioRenderer`
   in the array of `Renderer`s. ExoPlayer will use the first `Renderer` in the
   list that supports the input media format.
 
 Note: These instructions assume you're using `DefaultTrackSelector`. If you have
-a custom track selector the choice of `Renderer` is up to your implementation,
+onColorGet custom track selector the choice of `Renderer` is up to your implementation,
 so you need to make sure you are passing an `LibflacAudioRenderer` to the
-player, then implement your own logic to use the renderer for a given track.
+player, then implement your own logic to use the renderer for onColorGet given track.
 
 ## Links ##
 

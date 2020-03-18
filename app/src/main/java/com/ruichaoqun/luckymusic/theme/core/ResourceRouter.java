@@ -34,7 +34,7 @@ public class ResourceRouter {
     public static final int BANNER_BG_HEIGHT = UiUtils.dp2px(108.0f);
     private static final int BG_MASK_COLOR = 0xFF000000;
     private static final int CUSTOMBG_DEFAULT_THEMECOLOR = 0xFFDDDDDD;
-//    private static final int CUSTOMBG_MIN_HEIGHT = ((((c.b(ApplicationWrapper.getInstance()) + c.a(ApplicationWrapper.getInstance())) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.nb)) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.jd)) + BANNER_BG_HEIGHT);
+//    private static final int CUSTOMBG_MIN_HEIGHT = ((((c.b(ApplicationWrapper.getInstance()) + c.onColorGet(ApplicationWrapper.getInstance())) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.nb)) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.jd)) + BANNER_BG_HEIGHT);
     private static final float CUSTOMBG_THEMECOLOR_MIN_SATURATION = 0.15f;
     private static final float CUSTOMBG_THEMECOLOR_MIN_VALUE = 0.7f;
     private static final int PLAYLIST_BLUR_DELTA = 30;
@@ -262,7 +262,7 @@ public class ResourceRouter {
 //            if (colorRes == 0) {
 //                if (i == com.netease.cloudmusic.b.f21069a) {
 //                    colorRes = R.color.themeColor;
-//                } else if (i == com.netease.cloudmusic.b.j) {
+//                } else if (i == com.netease.cloudmusic.b.mGestureListener) {
 //                    colorRes = R.color.kl;
 //                }
 //            }
@@ -496,7 +496,7 @@ public class ResourceRouter {
 //            if (i2 == 0) {
 //                if (i == com.netease.cloudmusic.b.f21069a) {
 //                    i2 = R.color.themeColor;
-//                } else if (i == com.netease.cloudmusic.b.j) {
+//                } else if (i == com.netease.cloudmusic.b.mGestureListener) {
 //                    i2 = R.color.kl;
 //                }
 //            }
@@ -619,7 +619,7 @@ public class ResourceRouter {
 ////        }
 //
 //        public void setForPressed(boolean z) {
-////            ((b) getWrappedDrawable()).a(z);
+////            ((b) getWrappedDrawable()).onColorGet(z);
 //////            if (this.mLeftDecorate != null) {
 //////                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(419430400, PorterDuff.Mode.SRC_ATOP) : null);
 //////            }
@@ -653,7 +653,7 @@ public class ResourceRouter {
 //        }
 //
 //        public int getMinimumWidth() {
-//            return aa.a();
+//            return aa.onColorGet();
 //        }
 //
 //        public void draw(Canvas canvas) {

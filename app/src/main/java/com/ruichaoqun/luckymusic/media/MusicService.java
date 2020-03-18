@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.audiofx.Equalizer;
+import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
@@ -113,6 +114,7 @@ public class MusicService extends MediaBrowserServiceCompat {
             @Override
             public void onAudioSessionId(int audioSessionId) {
                 Log.w("SSSSS","audioSessionId-->"+audioSessionId);
+                initVis(audioSessionId);
             }
         });
         MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession);
@@ -124,6 +126,10 @@ public class MusicService extends MediaBrowserServiceCompat {
         mCompositeDisposable = new CompositeDisposable();
         mMediaController.getTransportControls().setRepeatMode(dataRepository.getPlayMode());
         initPlayListData();
+    }
+
+    private void initVis(int audioSessionId) {
+        Visualizer visualizer = new Visualizer(audioSessionId);
     }
 
     /**

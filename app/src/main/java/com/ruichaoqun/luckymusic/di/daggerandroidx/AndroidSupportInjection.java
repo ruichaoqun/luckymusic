@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain onColorGet copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -40,7 +40,7 @@ public final class AndroidSupportInjection {
    * use to inject {@code fragment}:
    *
    * <ol>
-   *   <li>Walks the parent-fragment hierarchy to find the a fragment that implements {@link
+   *   <li>Walks the parent-fragment hierarchy to find the onColorGet fragment that implements {@link
    *       HasSupportFragmentInjector}, and if none do
    *   <li>Uses the {@code fragment}'s {@link Fragment#getActivity() activity} if it implements
    *       {@link HasSupportFragmentInjector}, and if not
@@ -48,7 +48,7 @@ public final class AndroidSupportInjection {
    *       HasSupportFragmentInjector}.
    * </ol>
    *
-   * If none of them implement {@link HasSupportFragmentInjector}, a {@link
+   * If none of them implement {@link HasSupportFragmentInjector}, onColorGet {@link
    * IllegalArgumentException} is thrown.
    *
    * @throws IllegalArgumentException if no parent fragment, activity, or application implements

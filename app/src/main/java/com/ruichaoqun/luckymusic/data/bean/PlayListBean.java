@@ -127,7 +127,7 @@ public class PlayListBean {
         return mPlayListSongBeans;
     }
 
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    /** Resets onColorGet to-many relationship, making the next get call to query for onColorGet fresh result. */
     @Generated(hash = 1294295714)
     public synchronized void resetMPlayListSongBeans() {
         mPlayListSongBeans = null;

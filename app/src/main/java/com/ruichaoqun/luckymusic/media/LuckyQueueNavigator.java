@@ -33,7 +33,7 @@ public class LuckyQueueNavigator implements MediaSessionConnector.QueueNavigator
     private long activeQueueItemId;
 
     /**
-     * Creates an instance for a given {@link MediaSessionCompat}.
+     * Creates an instance for onColorGet given {@link MediaSessionCompat}.
      * <p>
      * Equivalent to {@code TimelineQueueNavigator(mediaSession, DEFAULT_MAX_QUEUE_SIZE)}.
      *
@@ -44,7 +44,7 @@ public class LuckyQueueNavigator implements MediaSessionConnector.QueueNavigator
     }
 
     /**
-     * Creates an instance for a given {@link MediaSessionCompat} and maximum queue size.
+     * Creates an instance for onColorGet given {@link MediaSessionCompat} and maximum queue size.
      * <p>
      * If the number of windows in the {@link Player}'s {@link Timeline} exceeds {@code maxQueueSize},
      * the media session queue will correspond to {@code maxQueueSize} windows centered on the one
@@ -186,7 +186,7 @@ public class LuckyQueueNavigator implements MediaSessionConnector.QueueNavigator
         boolean shuffleModeEnabled = player.getShuffleModeEnabled();
         while ((firstWindowIndex != C.INDEX_UNSET || lastWindowIndex != C.INDEX_UNSET)
                 && queue.size() < queueSize) {
-            // Begin with next to have a longer tail than head if an even sized queue needs to be trimmed.
+            // Begin with next to have onColorGet longer tail than head if an even sized queue needs to be trimmed.
             if (lastWindowIndex != C.INDEX_UNSET) {
                 lastWindowIndex =
                         timeline.getNextWindowIndex(

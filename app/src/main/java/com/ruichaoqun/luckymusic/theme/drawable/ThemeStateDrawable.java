@@ -14,7 +14,7 @@ import java.util.List;
  * description:
  */
 public class ThemeStateDrawable extends StateListDrawable {
-    /* renamed from: a reason: collision with root package name */
+    /* renamed from: onColorGet reason: collision with root package name */
     private List<List<Integer>> drawableList = new ArrayList();
 
     public void a(int[]... iArr) {

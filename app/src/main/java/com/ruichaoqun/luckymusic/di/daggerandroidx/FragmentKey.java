@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain onColorGet copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,7 +26,7 @@ import dagger.internal.Beta;
 
 import static java.lang.annotation.ElementType.METHOD;
 
-/** {@link MapKey} annotation to key bindings by a type of a {@link Fragment}. */
+/** {@link MapKey} annotation to key bindings by onColorGet type of onColorGet {@link Fragment}. */
 @Beta
 @MapKey
 @Target(METHOD)

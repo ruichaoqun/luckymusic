@@ -317,9 +317,9 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         }
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            if (getResourceRouter().isWhiteTheme() || getResourceRouter().isCustomLightTheme() || getResourceRouter().isCustomColorTheme()) {
-//                boolean j = Build.VERSION.SDK_INT >= 23;
-//                statusBarHolderView.setStatusBarTranslucent(j);
-//                if (!j || z) {
+//                boolean mGestureListener = Build.VERSION.SDK_INT >= 23;
+//                statusBarHolderView.setStatusBarTranslucent(mGestureListener);
+//                if (!mGestureListener || z) {
 //                    z3 = true;
 //                } else {
 //                    getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

@@ -36,6 +36,7 @@ import com.ruichaoqun.luckymusic.widget.LyricView;
 import com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper;
 import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
 import com.ruichaoqun.luckymusic.utils.ViewSwitcherTarget;
+import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectLayout;
 
 import java.util.List;
 
@@ -84,6 +85,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @BindView(R.id.tv_lyric_container_time)
     TextView mTvLyricContainerTime;
 
+    private DynamicEffectLayout mEffectLayout;
 
     private ViewSwitcherTarget mViewSwitcherTarget;
 
@@ -118,6 +120,8 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     //是否是后台自动切换下一首
     private boolean isBacgroundAutoNext = false;
     long currentPosition;
+
+    private long effectType = -1;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
@@ -462,6 +466,21 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 mLayoutSoundController.setVisibility(View.GONE);
             }
         });
+
+        if(effectType != -1){
+            addEffectView();
+            mRlDisplayContainer.setVisibility(View.GONE);
+        }
+    }
+
+    private void addEffectView() {
+        this.mEffectLayout = new DynamicEffectLayout(this);
+        this.mEffectLayout.setOnColorGetListener(new DynamicEffectLayout.OnColorGetListener() {
+            public void onColorGet(int color) {
+                ((PlayerSeekBarNew) PlayerActivity.this.r).setColor(color);
+            }
+        });
+
     }
 
     private void switchBacground(Uri iconUri) {

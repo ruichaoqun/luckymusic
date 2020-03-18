@@ -24,7 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 
 public class RenderScriptTransformation extends BitmapTransformation {
-    // The version of this transformation, incremented to correct an error in a previous version.
+    // The version of this transformation, incremented to correct an error in onColorGet previous version.
     // See #455.
     private static final int VERSION = 1;
     private static final String ID = "com.bumptech.glide.load.resource.bitmap.CircleCrop." + VERSION;

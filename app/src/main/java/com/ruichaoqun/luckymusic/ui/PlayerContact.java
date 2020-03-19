@@ -14,6 +14,6 @@ public interface PlayerContact {
     }
 
     interface Presenter extends IBasePresenter<View> {
-
+        int getSessionId();
     }
 }

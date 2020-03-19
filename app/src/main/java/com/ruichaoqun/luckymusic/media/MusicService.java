@@ -130,6 +130,18 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     private void initVis(int audioSessionId) {
         Visualizer visualizer = new Visualizer(audioSessionId);
+        Log.w("SSSSS","    "+Visualizer.getMaxCaptureRate());
+        visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
+            @Override
+            public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
+
+            }
+
+            @Override
+            public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
+                Log.w("SSSSS",fft.length+"      "+samplingRate);
+            }
+        },Visualizer.getMaxCaptureRate(),false,true);
     }
 
     /**

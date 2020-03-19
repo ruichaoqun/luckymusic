@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -11,6 +12,8 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -37,6 +40,7 @@ import com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper;
 import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
 import com.ruichaoqun.luckymusic.utils.ViewSwitcherTarget;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectLayout;
+import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectView;
 
 import java.util.List;
 
@@ -84,6 +88,8 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     LinearLayout mCurLyricContainer;
     @BindView(R.id.tv_lyric_container_time)
     TextView mTvLyricContainerTime;
+    @BindView(R.id.artist_image_container)
+    RelativeLayout mArtistImageContainer;
 
     private DynamicEffectLayout mEffectLayout;
 
@@ -476,11 +482,51 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private void addEffectView() {
         this.mEffectLayout = new DynamicEffectLayout(this);
         this.mEffectLayout.setOnColorGetListener(new DynamicEffectLayout.OnColorGetListener() {
+            @Override
             public void onColorGet(int color) {
-                ((PlayerSeekBarNew) PlayerActivity.this.r).setColor(color);
+                //TODO 设置SeekBar的颜色
+//                ((PlayerSeekBarNew) PlayerActivity.this.r).setColor(color);
             }
         });
 
+        ImageView imageView = findViewById(R.id.iv_disc_bg_1);
+        int height = imageView.getLayoutParams().height;
+        if (height <= 0) {
+            Drawable drawable = imageView.getDrawable();
+            if (drawable == null) {
+                drawable = getResources().getDrawable(R.drawable.bg_disc);
+            }
+            height = drawable.getIntrinsicWidth();
+        }
+        this.mArtistImageContainer.addView(this.mEffectLayout, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height + (((RelativeLayout.LayoutParams) this.mViewFlipper.getLayoutParams()).topMargin * 2)));
+        this.mEffectLayout.setOnGestureListener(new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public void onLongPress(MotionEvent e) {
+                super.onLongPress(e);
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                return super.onFling(e1, e2, velocityX, velocityY);
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                return super.onDoubleTap(e);
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return super.onSingleTapConfirmed(e);
+            }
+        });
+
+        this.mEffectLayout.setVisualizer();
+        this.mEffectLayout.addDynamicEffectView(getEffectView(effectType));
+    }
+
+    private DynamicEffectView getEffectView(long type){
+        return null;
     }
 
     private void switchBacground(Uri iconUri) {

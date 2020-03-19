@@ -2,6 +2,8 @@ package com.ruichaoqun.luckymusic.widget.effect;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
@@ -11,11 +13,17 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.palette.graphics.Palette;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.GlideApp;
+import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 
 public class DynamicEffectLayout extends DynamicEffectCommonLayout {
 
@@ -49,14 +57,16 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
                 .transform(new CircleCrop())
                 .centerCrop()
                 .into(artView);
-        a(artView, ViewGroup.LayoutParams.WRAP_CONTENT,  ViewGroup.LayoutParams.WRAP_CONTENT);
+        addArtView(artView, ViewGroup.LayoutParams.WRAP_CONTENT,  ViewGroup.LayoutParams.WRAP_CONTENT);
 
         final int scaledMinimumFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
         this.mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
             public boolean onDown(MotionEvent motionEvent) {
                 return true;
             }
 
+            @Override
             public void onLongPress(MotionEvent motionEvent) {
                 if (DynamicEffectLayout.this.mGestureListener != null) {
                     DynamicEffectLayout.this.mGestureListener.onLongPress(motionEvent);
@@ -65,6 +75,7 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
                 }
             }
 
+            @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (DynamicEffectLayout.this.mGestureListener == null || Math.abs(velocityX) <= ((float) scaledMinimumFlingVelocity) || Math.abs(e2.getX() - e1.getX()) <= Math.abs(e2.getY() - e1.getY())) {
                     return super.onFling(e1, e2, velocityX, velocityY);
@@ -72,6 +83,7 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
                 return DynamicEffectLayout.this.mGestureListener.onFling(e1, e2, velocityX, velocityY);
             }
 
+            @Override
             public boolean onDoubleTap(MotionEvent motionEvent) {
                 if (DynamicEffectLayout.this.mGestureListener != null) {
                     return DynamicEffectLayout.this.mGestureListener.onDoubleTap(motionEvent);
@@ -79,6 +91,7 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
                 return super.onDoubleTap(motionEvent);
             }
 
+            @Override
             public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
                 if (DynamicEffectLayout.this.mGestureListener != null) {
                     return DynamicEffectLayout.this.mGestureListener.onSingleTapConfirmed(motionEvent);
@@ -86,55 +99,99 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
                 return super.onSingleTapConfirmed(motionEvent);
             }
         });
+
+        mPaletteAsyncListener = new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(@Nullable Palette palette) {
+                DynamicEffectLayout.this.mDominantColor = palette.getDominantColor(-1);
+                if (DynamicEffectLayout.this.mEffectView != null) {
+                    DynamicEffectLayout.this.mEffectView.setColor(DynamicEffectLayout.this.mDominantColor);
+                }
+                if (DynamicEffectLayout.this.mOnColorGetListener != null) {
+                    DynamicEffectLayout.this.mOnColorGetListener.onColorGet(DynamicEffectLayout.this.mDominantColor);
+                }
+            }
+        };
     }
 
     public void setOnColorGetListener(OnColorGetListener listener) {
         this.mOnColorGetListener = listener;
     }
 
-    public void a(String str, String str2) {
-        cf.a((DraweeView) this.f11717d, str, str2, (NovaControllerListener) new NovaControllerListener() {
-            public void onFinalBitmapSet(@h Bitmap bitmap, PlatformBitmapFactory platformBitmapFactory, ExecutorSupplier executorSupplier) {
-                if (bitmap != null) {
-                    if (DynamicEffectLayout.this.mAsyncTask != null) {
-                        DynamicEffectLayout.this.mAsyncTask.cancel(true);
+    public void a(String str) {
+        GlideApp.with(this)
+                .load(str)
+                .transform(new CircleCrop())
+                .centerCrop()
+                .error(R.drawable.ic_disc_playhoder)
+                .addListener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        asyncGetColor(null);
+                        return false;
                     }
-                    if (DynamicEffectLayout.this.mPaletteAsyncListener == null) {
-                        Palette.PaletteAsyncListener unused = DynamicEffectLayout.this.mPaletteAsyncListener = new Palette.PaletteAsyncListener() {
-                            public void onGenerated(Palette palette) {
-                                if (palette != null) {
-                                    DynamicEffectLayout.this.f11719f = palette.getDominantColor(-1);
-                                    if (DynamicEffectLayout.this.f11718e != null) {
-                                        DynamicEffectLayout.this.f11718e.setColor(DynamicEffectLayout.this.f11719f);
-                                    }
-                                    if (DynamicEffectLayout.this.mOnColorGetListener != null) {
-                                        DynamicEffectLayout.this.mOnColorGetListener.onColorGet(DynamicEffectLayout.this.f11719f);
-                                    }
-                                }
-                            }
-                        };
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        asyncGetColor(resource);
+                        return false;
                     }
-                    AsyncTask unused2 = DynamicEffectLayout.this.mAsyncTask = Palette.from(bitmap).clearFilters().generate(a.this.mPaletteAsyncListener);
-                }
+                })
+                .into(mArtView);
+    }
+
+    public void asyncGetColor(Drawable drawable){
+        if(drawable == null){
+            DynamicEffectLayout.this.mDominantColor = Color.WHITE;
+            if (DynamicEffectLayout.this.mEffectView != null) {
+                DynamicEffectLayout.this.mEffectView.setColor(DynamicEffectLayout.this.mDominantColor);
             }
-        });
+            if (DynamicEffectLayout.this.mOnColorGetListener != null) {
+                DynamicEffectLayout.this.mOnColorGetListener.onColorGet(DynamicEffectLayout.this.mDominantColor);
+            }
+            return;
+        }
+        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+        if (bitmap != null) {
+            if (DynamicEffectLayout.this.mAsyncTask != null) {
+                DynamicEffectLayout.this.mAsyncTask.cancel(true);
+            }
+            if (DynamicEffectLayout.this.mPaletteAsyncListener == null) {
+                DynamicEffectLayout.this.mPaletteAsyncListener = new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+                        if (palette != null) {
+                            DynamicEffectLayout.this.mDominantColor = palette.getDominantColor(Color.WHITE);
+                            if (DynamicEffectLayout.this.mEffectView != null) {
+                                DynamicEffectLayout.this.mEffectView.setColor(DynamicEffectLayout.this.mDominantColor);
+                            }
+                            if (DynamicEffectLayout.this.mOnColorGetListener != null) {
+                                DynamicEffectLayout.this.mOnColorGetListener.onColorGet(DynamicEffectLayout.this.mDominantColor);
+                            }
+                        }
+                    }
+                };
+            }
+            DynamicEffectLayout.this.mAsyncTask = Palette.from(bitmap).clearFilters().generate(mPaletteAsyncListener);
+        }
     }
 
     public void setOnGestureListener(GestureDetector.SimpleOnGestureListener simpleOnGestureListener) {
         this.mGestureListener = simpleOnGestureListener;
     }
 
-    public void a(int[] iArr) {
-        int[] iArr2 = new int[2];
-        getLocationOnScreen(iArr2);
-        int width = this.f11717d.getWidth();
-        int height = this.f11717d.getHeight();
-        iArr[0] = (int) (((float) iArr2[0]) + (((float) (getWidth() - width)) / 2.0f) + 0.5f);
-        iArr[1] = (int) (((float) iArr2[1]) + (((float) (getHeight() - height)) / 2.0f) + 0.5f);
-        iArr[2] = width;
-        iArr[3] = height;
-    }
+//    public void a(int[] iArr) {
+//        int[] iArr2 = new int[2];
+//        getLocationOnScreen(iArr2);
+//        int width = this.mArtView.getWidth();
+//        int height = this.mArtView.getHeight();
+//        iArr[0] = (int) (((float) iArr2[0]) + (((float) (getWidth() - width)) / 2.0f) + 0.5f);
+//        iArr[1] = (int) (((float) iArr2[1]) + (((float) (getHeight() - height)) / 2.0f) + 0.5f);
+//        iArr[2] = width;
+//        iArr[3] = height;
+//    }
 
+    @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         return this.mGestureDetector.onTouchEvent(motionEvent) || super.onTouchEvent(motionEvent);
     }

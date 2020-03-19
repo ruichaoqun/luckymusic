@@ -15,4 +15,9 @@ public class PlayerPresenter extends BasePresenter<PlayerContact.View> implement
     public PlayerPresenter(DataRepository dataRepository) {
         super(dataRepository);
     }
+
+    @Override
+    public int getSessionId() {
+        return dataRepository.;
+    }
 }

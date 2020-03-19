@@ -23,69 +23,75 @@
     </ViewSwitcher>
 
     <RelativeLayout
-        android:id="@+id/rl_display_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/ll_container_bottom">
-
-        <ImageView
-            android:id="@+id/iv_player_bg"
-            android:layout_width="270dp"
-            android:layout_height="270dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="92dp"
-            android:src="@mipmap/bg_player" />
-        <com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper
-            android:id="@+id/view_flipper"
+        android:layout_above="@+id/ll_container_bottom"
+        android:id="@+id/artist_image_container">
+        <RelativeLayout
+            android:id="@+id/rl_display_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="94dp">
-            <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_player_bg"
+                android:layout_width="270dp"
+                android:layout_height="270dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="92dp"
+                android:src="@mipmap/bg_player" />
+            <com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper
+                android:id="@+id/view_flipper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_disc_playhoder"
-                    android:layout_centerInParent="true"/>
-                <ImageView
-                    android:id="@+id/iv_disc_bg_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bg_disc"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
-            </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="94dp">
+                <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_disc_playhoder"
+                        android:layout_centerInParent="true"/>
+                    <ImageView
+                        android:id="@+id/iv_disc_bg_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/bg_disc"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+                </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
 
-            <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_disc_playhoder"
-                    android:layout_centerInParent="true"/>
-                <ImageView
-                    android:id="@+id/iv_disc_bg_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bg_disc"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
-            </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
+                <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_disc_playhoder"
+                        android:layout_centerInParent="true"/>
+                    <ImageView
+                        android:id="@+id/iv_disc_bg_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/bg_disc"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+                </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
 
-        </com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper>
-        <ImageView
-            android:id="@+id/iv_stylus"
-            android:layout_width="122dp"
-            android:layout_height="190dp"
-            android:layout_alignRight="@id/iv_player_bg"
-            android:layout_marginTop="-16dp"
-            android:layout_marginRight="42.0dip"
-            android:src="@mipmap/image_stylus" />
+            </com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper>
+            <ImageView
+                android:id="@+id/iv_stylus"
+                android:layout_width="122dp"
+                android:layout_height="190dp"
+                android:layout_alignRight="@id/iv_player_bg"
+                android:layout_marginTop="-16dp"
+                android:layout_marginRight="42.0dip"
+                android:src="@mipmap/image_stylus" />
 
+        </RelativeLayout>
     </RelativeLayout>
+
 
     <include layout="@layout/layout_toolbar" />
 

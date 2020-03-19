@@ -18,6 +18,6 @@ public class PlayerPresenter extends BasePresenter<PlayerContact.View> implement
 
     @Override
     public int getSessionId() {
-        return dataRepository.;
+        return dataRepository.getAudioSessionId();
     }
 }

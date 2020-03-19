@@ -51,4 +51,8 @@ public interface MediaDataSource {
 
     void removePlayListItem(long id);
 
+    int getAudioSessionId();
+
+    void setAudioSessionId(int audioSessionId);
+
 }

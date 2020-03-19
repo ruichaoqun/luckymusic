@@ -42,6 +42,8 @@ public class MediaDataSourceImpl implements MediaDataSource {
     protected PlayListBean mPlayListBean;         //从数据库获取的上次播放详情
     protected List<SongBean> mPlayListSongs;        ////从数据库获取的上次播放歌曲列表
 
+    private int mAudioSessionId;
+
 
     @Inject
     public MediaDataSourceImpl(DbDataSource dbDataSource, ContentProviderSource contentProviderSource) {
@@ -291,6 +293,16 @@ public class MediaDataSourceImpl implements MediaDataSource {
                 mDbDataSource.removePlayListItem(id);
             }
         }).subscribe();
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return mAudioSessionId;
+    }
+
+    @Override
+    public void setAudioSessionId(int audioSessionId) {
+        this.mAudioSessionId = audioSessionId;
     }
 
 

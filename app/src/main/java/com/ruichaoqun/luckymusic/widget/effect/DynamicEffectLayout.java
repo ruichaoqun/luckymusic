@@ -52,11 +52,11 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
         super(context, attributeSet, i2);
         ImageView artView = new ImageView(context);
         Drawable drawable = context.getDrawable(R.drawable.ic_disc_playhoder);
-        GlideApp.with(this)
-                .load(drawable)
-                .transform(new CircleCrop())
-                .centerCrop()
-                .into(artView);
+//        GlideApp.with(this)
+//                .load(drawable)
+//                .transform(new CircleCrop())
+//                .centerCrop()
+//                .into(artView);
         addArtView(artView, ViewGroup.LayoutParams.WRAP_CONTENT,  ViewGroup.LayoutParams.WRAP_CONTENT);
 
         final int scaledMinimumFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();

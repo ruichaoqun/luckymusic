@@ -41,6 +41,7 @@ import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
 import com.ruichaoqun.luckymusic.utils.ViewSwitcherTarget;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectLayout;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.LonglyEffecyView;
 
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private boolean isBacgroundAutoNext = false;
     long currentPosition;
 
-    private long effectType = -1;
+    private long effectType = 1;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
@@ -521,12 +522,12 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
         });
 
-        this.mEffectLayout.setVisualizer();
+        this.mEffectLayout.setVisualizer(mPresenter.getSessionId());
         this.mEffectLayout.addDynamicEffectView(getEffectView(effectType));
     }
 
     private DynamicEffectView getEffectView(long type){
-        return null;
+        return new LonglyEffecyView(this);
     }
 
     private void switchBacground(Uri iconUri) {

@@ -173,4 +173,14 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     public void removePlayListItem(long id) {
         mMediaDataSource.removePlayListItem(id);
     }
+
+    @Override
+    public int getAudioSessionId() {
+        return mMediaDataSource.getAudioSessionId();
+    }
+
+    @Override
+    public void setAudioSessionId(int audioSessionId) {
+        mMediaDataSource.setAudioSessionId(audioSessionId);
+    }
 }

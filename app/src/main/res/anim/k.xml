@@ -2,5 +2,5 @@
 <set android:shareInterpolator="false" android:zAdjustment="top"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <alpha android:interpolator="@android:interpolator/linear" android:duration="150" android:fillBefore="false" android:fillAfter="true" android:startOffset="100" android:fromAlpha="1.0" android:toAlpha="0.0" android:fillEnabled="true" />
-    <translate android:interpolator="@anim/onColorGet" android:duration="250" android:fillBefore="true" android:fillAfter="true" android:fromYDelta="0.0%" android:toYDelta="8.000004%" android:fillEnabled="true" />
+    <translate android:interpolator="@android:interpolator/linear" android:duration="250" android:fillBefore="true" android:fillAfter="true" android:fromYDelta="0.0%" android:toYDelta="8.000004%" android:fillEnabled="true" />
 </set>

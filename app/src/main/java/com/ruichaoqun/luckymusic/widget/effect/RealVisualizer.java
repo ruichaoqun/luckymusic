@@ -1,6 +1,7 @@
 package com.ruichaoqun.luckymusic.widget.effect;
 
 import android.media.audiofx.Visualizer;
+import android.util.Log;
 
 /**
  * @author Rui Chaoqun
@@ -56,6 +57,7 @@ public class RealVisualizer implements VisualizerEntity{
     @Override
     public int setDataCaptureListener(VisualizerEntity.DataCaptureListener listener, int rate, boolean waveform, boolean fft) {
         this.mDataCaptureListener = listener;
+        Log.w("AAAAAA",""+listener);
         if (listener == null) {
             return this.mVisualizer.setDataCaptureListener(null, rate, waveform, fft);
         }

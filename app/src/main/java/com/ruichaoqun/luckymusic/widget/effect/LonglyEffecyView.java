@@ -4,18 +4,21 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
-import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 
 import com.ruichaoqun.luckymusic.utils.ColorUtil;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 import java.util.Iterator;
+import java.util.Random;
+
 
 public class LonglyEffecyView extends View implements DynamicEffectView {
     static final int[] mPointRadis = {UiUtils.dp2px(2.0f), UiUtils.dp2px(3.0f),UiUtils.dp2px(4.0f),UiUtils.dp2px(5.0f)};
@@ -35,8 +38,14 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
     private int mArtRadius;
     private int mStrokeRadius;
 
+    private int r;
+    private long s;
+    private LonglyHandler mHandler = new LonglyHandler();
+    private Random mRandom = new Random();
 
-    private c<CircleRadius> v = new c<>();
+
+
+    private Node<CircleRadius> v = new Node<>();
     private a<CircleRadius> data = new a<>();
 
 
@@ -59,11 +68,28 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
 
     @Override
     public void onFftDataCapture(byte[] fft, int samplingRate) {
-
     }
 
     @Override
     public void onWaveFormDataCapture(byte[] waveform, int samplingRate) {
+        int length = waveform.length;
+        if (length > 0) {
+            float sum = 0.0f;
+            for (int i = 0; i < length; i++) {
+                sum += (float)(waveform[i]+Byte.MIN_VALUE);
+            }
+            this.r = (int) (((sum / ((float) length)) / 256.0f) * 4.0f);
+            Log.w("AAAAAAA","onWaveFormDataCapture-->"+r);
+            if (this.r > 0 && !this.mHandler.hasMessages(0)) {
+                long j2 = (long) (1000 / this.r);
+                long uptimeMillis = SystemClock.uptimeMillis();
+                long j3 = this.s;
+                if (uptimeMillis - s < j2) {
+                    uptimeMillis = j3 + j2;
+                }
+//                mHandler.sendEmptyMessageAtTime(0, uptimeMillis);
+            }
+        }
 
     }
 
@@ -73,7 +99,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
 //            boolean b2 = this.w.b();
 //            com.netease.cloudmusic.module.ag.a.a<a> aVar = this.w;
 //            int[] iArr = f11621b;
-//            aVar.a(a(iArr[this.t.nextInt(iArr.length)], this.t.nextInt(360), j2));
+//            aVar.a(a(iArr[this.priviousData.nextInt(iArr.length)], this.priviousData.nextInt(360), j2));
 //            this.s = j2;
 //            if (b2) {
 //                invalidate();
@@ -117,6 +143,22 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         return visualizerEntity.getCaptureSizeRange()[0];
     }
 
+    public void a(long uptimeMillis) {
+        if (this.maxWidth > 0) {
+            boolean b2 = this.data.b();
+            int[] arr = mPointRadis;
+            data.a(a(arr[this.mRandom.nextInt(arr.length)], this.mRandom.nextInt(360), uptimeMillis));
+            this.s = uptimeMillis;
+            if (b2) {
+                invalidate();
+            }
+        }
+        if (r > 0) {
+            this.mHandler.sendEmptyMessageAtTime(0, uptimeMillis + ((long) (1000 / r)));
+        }
+    }
+
+
     @Override
     protected void onDraw(Canvas canvas) {
         int width = getWidth() / 2;
@@ -138,7 +180,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
             Iterator<CircleRadius> it = this.data.iterator();
             while (it.hasNext()) {
                 CircleRadius next = it.next();
-                float uptimeMillis = (float) (SystemClock.uptimeMillis() - next.f11631d);
+                float uptimeMillis = (float) (SystemClock.uptimeMillis() - next.timeMillis);
                 if (uptimeMillis >= mCircleLiveTime) {
                     it.remove();
                     a(next);
@@ -147,7 +189,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
                     int i2 = this.maxWidth;
                     int i3 = this.mArtRadius;
                     int i4 = (int) (((double) ((((float) (i2 - i3)) * f2) + ((float) i3))) + 0.5d);
-                    int i5 = (int) (((double) ((((uptimeMillis * f11624f) / 1000.0f) + ((float) next.f11630c)) % 360.0f)) + 0.5d);
+                    int i5 = (int) (((double) ((((uptimeMillis * f11624f) / 1000.0f) + ((float) next.pointAngle)) % 360.0f)) + 0.5d);
                     float f3 = j;
                     float f4 = f11627i;
                     int alphaComponent = ColorUtils.setAlphaComponent(this.mEffectColor, (int) (((double) ((-102.0f * f2) + 102.0f)) + 0.5d));
@@ -157,7 +199,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
                     double radians = Math.toRadians((double) i5);
                     double d2 = (double) i4;
                     this.mPointPaint.setColor(alphaComponent);
-                    canvas.drawCircle((float) (Math.cos(radians) * d2), (float) (d2 * Math.sin(radians)), (float) next.f11629b, this.mPointPaint);
+                    canvas.drawCircle((float) (Math.cos(radians) * d2), (float) (d2 * Math.sin(radians)), (float) next.pointRadius, this.mPointPaint);
                 }
             }
             z2 = true;
@@ -174,22 +216,39 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         this.v.a(aVar);
     }
 
+    public CircleRadius a(int pointRadius, int pointAngle, long timeMillis) {
+        CircleRadius circleRadius = this.v.a();
+        if (circleRadius == null) {
+            return new CircleRadius(pointRadius, pointAngle, timeMillis);
+        }
+        circleRadius.pointRadius = pointRadius;
+        circleRadius.pointAngle = pointAngle;
+        circleRadius.timeMillis = timeMillis;
+        return circleRadius;
+    }
+
+
+    private class LonglyHandler extends Handler {
+        private LonglyHandler() {
+        }
+
+        @Override
+        public void handleMessage(Message message) {
+            a(message.getWhen());
+        }
+    }
+
+
 
     class CircleRadius extends b<CircleRadius> {
+        int pointRadius;
+        int pointAngle;
+        long timeMillis;
 
-        /* renamed from: b  reason: collision with root package name */
-        int f11629b;
-
-        /* renamed from: c  reason: collision with root package name */
-        int f11630c;
-
-        /* renamed from: d  reason: collision with root package name */
-        long f11631d;
-
-        CircleRadius(int i2, int i3, long j) {
-            this.f11629b = i2;
-            this.f11630c = i3;
-            this.f11631d = j;
+        CircleRadius(int pointRadius, int pointAngle, long timeMillis) {
+            this.pointRadius = pointRadius;
+            this.pointAngle = pointAngle;
+            this.timeMillis = timeMillis;
         }
     }
 

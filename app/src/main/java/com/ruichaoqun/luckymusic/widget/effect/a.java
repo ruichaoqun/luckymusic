@@ -1,55 +1,55 @@
 package com.ruichaoqun.luckymusic.widget.effect;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 
-public class a<T extends b<T>> extends c<T> implements Iterable<T>{
+public class a<T extends b<T>> extends Node<T> implements Iterable<T>{
+    @Override
+    @NotNull
     public Iterator<T> iterator() {
-        return new C0139a(this.f11586a);
+        return new C0139a(this.currentData);
     }
 
-    /* access modifiers changed from: package-private */
     public void a(T t, T t2, T t3) {
         if (t != null) {
-            t.f11585a = t3;
+            t.priviousData = t3;
         } else {
-            this.f11586a = t3;
+            this.currentData = t3;
         }
-        if (t2 == this.f11587b) {
-            this.f11587b = t;
+        if (t2 == this.firstData) {
+            this.firstData = t;
         }
-        t2.f11585a = null;
+        t2.priviousData = null;
     }
 
-    /* renamed from: com.netease.cloudmusic.module.ag.a.a$a  reason: collision with other inner class name */
-    /* compiled from: ProGuard */
     private class C0139a implements Iterator<T> {
 
-        /* renamed from: b  reason: collision with root package name */
         private T f11582b;
 
-        /* renamed from: c  reason: collision with root package name */
         private T f11583c;
 
-        /* renamed from: d  reason: collision with root package name */
         private T f11584d;
 
         C0139a(T t) {
             this.f11582b = t;
         }
 
+        @Override
         public boolean hasNext() {
             return this.f11582b != null;
         }
 
-        /* renamed from: a */
+        @Override
         public T next() {
             T t = this.f11582b;
             this.f11584d = this.f11583c;
             this.f11583c = t;
-            this.f11582b = t.f11585a;
+            this.f11582b = t.priviousData;
             return t;
         }
 
+        @Override
         public void remove() {
             a.this.a(this.f11584d, this.f11583c, this.f11582b);
             this.f11583c = this.f11584d;

@@ -19,7 +19,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
     /* renamed from: reset  reason: collision with root package name */
     public static final int f11715b = -1;
 
-    /* renamed from: c  reason: collision with root package name */
+    /* renamed from: Node  reason: collision with root package name */
     public static final int f11716c = -3;
 
     /* renamed from: initVisualizerListener  reason: collision with root package name */
@@ -121,7 +121,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
             }
             this.mEffectView = view;
             this.mEffectView.setColor(this.mDominantColor);
-            if (z) {
+            if(z){
                 prepare();
             }
         }

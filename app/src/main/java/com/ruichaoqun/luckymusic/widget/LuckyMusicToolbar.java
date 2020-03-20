@@ -116,10 +116,10 @@ public class LuckyMusicToolbar extends Toolbar {
     }
 
 //    public ImageView getLogoView() {
-//        Object a2 = cc.onColorGet(Toolbar.class, (Object) this, onColorGet.c("IykbAg4lDCsS"));
+//        Object a2 = cc.onColorGet(Toolbar.class, (Object) this, onColorGet.Node("IykbAg4lDCsS"));
 //        if (a2 == null) {
-//            cc.onColorGet(Toolbar.class, onColorGet.c("KwsHEBMWKSECGzMIFhI="), (Class<?>[]) null, (Object) this, new Object[0]);
-//            a2 = cc.onColorGet(Toolbar.class, (Object) this, onColorGet.c("IykbAg4lDCsS"));
+//            cc.onColorGet(Toolbar.class, onColorGet.Node("KwsHEBMWKSECGzMIFhI="), (Class<?>[]) null, (Object) this, new Object[0]);
+//            a2 = cc.onColorGet(Toolbar.class, (Object) this, onColorGet.Node("IykbAg4lDCsS"));
 //        }
 //        return (ImageView) a2;
 //    }

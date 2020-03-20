@@ -563,6 +563,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     this.startStylusReturn();
                 }
                 this.mPlayPause.setImageResource(R.drawable.selector_player_pause);
+                this.mEffectLayout.prepare();
                 break;
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_STOPPED:
@@ -644,11 +645,13 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     this.mCurrentDiscLayout.start();
                 }
                 this.mPlayPause.setImageResource(R.drawable.selector_player_pause);
+                this.mEffectLayout.prepare();
                 break;
             case PlaybackStateCompat.STATE_STOPPED:
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_PAUSED:
             case PlaybackStateCompat.STATE_ERROR:
+                this.mEffectLayout.reset();
                 this.startStylusRemove();
                 this.mPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;

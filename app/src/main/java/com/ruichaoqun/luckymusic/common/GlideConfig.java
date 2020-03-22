@@ -54,7 +54,7 @@ public class GlideConfig extends AppGlideModule {
         builder.setMemoryCache(new LruResourceCache(customMemoryCacheSize));
         builder.setBitmapPool(new LruBitmapPool(customBitmapPoolSize));
 
-        builder.setDefaultRequestOptions(new RequestOptions().placeholder(R.mipmap.ic_placeholder).error(R.mipmap.ic_load_error));
+//        builder.setDefaultRequestOptions(new RequestOptions().placeholder(R.mipmap.ic_placeholder).error(R.mipmap.ic_load_error));
     }
 
     @Override

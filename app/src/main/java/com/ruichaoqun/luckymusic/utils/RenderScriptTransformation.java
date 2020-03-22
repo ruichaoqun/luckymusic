@@ -4,7 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.Xfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.renderscript.Allocation;
@@ -60,7 +67,7 @@ public class RenderScriptTransformation extends BitmapTransformation {
         options.inSampleSize = inSampleSize;
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, stream);
         byte[] imageInByte = stream.toByteArray();
         ByteArrayInputStream bis = new ByteArrayInputStream(imageInByte);
         Bitmap blurTemplate = BitmapFactory.decodeStream(bis, null, options);
@@ -72,7 +79,18 @@ public class RenderScriptTransformation extends BitmapTransformation {
         script.setInput(input);
         script.forEach(output);
         output.copyTo(blurTemplate);
-
-        return blurTemplate;
+        Paint paint = new Paint();
+        Bitmap bitmap1 =  Bitmap.createBitmap(blurTemplate.getWidth(),blurTemplate.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap1);
+        ColorMatrix colorMatrix = new ColorMatrix(new float[]{
+                0.5F, 0, 0, 0, 0,
+                0, 0.5F, 0, 0, 0,
+                0, 0, 0.5F, 0, 0,
+                0, 0, 0, 1, 0,
+        });
+        paint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        canvas.drawBitmap(blurTemplate,0,0,paint);
+        blurTemplate.recycle();
+        return bitmap1;
     }
 }

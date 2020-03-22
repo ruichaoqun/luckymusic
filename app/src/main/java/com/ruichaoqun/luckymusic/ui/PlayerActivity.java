@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.DrawableTransformation;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
@@ -552,6 +553,8 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
             //TODO 设置是否收藏
             switchBacground(mCurrentMetadata.getDescription().getIconUri());
+            this.mEffectLayout.setArtViewResource(mCurrentMetadata.getDescription().getIconUri());
+
         }
         switch (this.mPlaybackState.getState()) {
             case PlaybackStateCompat.STATE_PLAYING:
@@ -625,6 +628,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             switchBacground(mCurrentMetadata.getDescription().getIconUri());
             currentDataPosition = position;
         }
+        this.mEffectLayout.setArtViewResource(mCurrentMetadata.getDescription().getIconUri());
     }
 
     /**

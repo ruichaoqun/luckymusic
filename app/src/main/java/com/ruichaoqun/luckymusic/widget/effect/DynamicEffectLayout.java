@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.widget.effect;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -16,9 +17,12 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.palette.graphics.Palette;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ruichaoqun.luckymusic.R;
@@ -118,12 +122,14 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
         this.mOnColorGetListener = listener;
     }
 
-    public void a(String str) {
+    public void setArtViewResource(Object str) {
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_disc_playhoder);
+        RequestBuilder<Drawable> requestBuilder = GlideApp.with(this).load(drawable).circleCrop();
         GlideApp.with(this)
                 .load(str)
-                .transform(new CircleCrop())
-                .centerCrop()
-                .error(R.drawable.ic_disc_playhoder)
+                .circleCrop()
+                .thumbnail(requestBuilder)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .addListener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -134,6 +140,7 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         asyncGetColor(resource);
+                        mArtView.setImageDrawable(resource);
                         return false;
                     }
                 })
@@ -180,7 +187,7 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
         this.mGestureListener = simpleOnGestureListener;
     }
 
-//    public void a(int[] iArr) {
+//    public void addData(int[] iArr) {
 //        int[] iArr2 = new int[2];
 //        getLocationOnScreen(iArr2);
 //        int width = this.mArtView.getWidth();

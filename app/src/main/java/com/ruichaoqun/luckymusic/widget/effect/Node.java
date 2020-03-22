@@ -6,15 +6,15 @@ public class Node<T extends b<T>> {
 
     T firstData;
 
-    public void a(T t) {
-        t.priviousData = this.currentData;
+    public void addData(T data) {
+        data.priviousData = this.currentData;
         if (this.currentData == null) {
-            this.firstData = t;
+            this.firstData = data;
         }
-        this.currentData = t;
+        this.currentData = data;
     }
 
-    public void a(Node<T> nodeVar) {
+    public void addData(Node<T> nodeVar) {
         if (!nodeVar.b()) {
             T t = nodeVar.firstData;
             T t2 = this.currentData;
@@ -26,7 +26,7 @@ public class Node<T extends b<T>> {
         }
     }
 
-    public T a() {
+    public T addData() {
         T t = this.currentData;
         if (t == null) {
             return null;

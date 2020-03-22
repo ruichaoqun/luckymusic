@@ -25,33 +25,33 @@ public class a<T extends b<T>> extends Node<T> implements Iterable<T>{
 
     private class C0139a implements Iterator<T> {
 
-        private T f11582b;
+        private T currentData;
 
         private T f11583c;
 
         private T f11584d;
 
         C0139a(T t) {
-            this.f11582b = t;
+            this.currentData = t;
         }
 
         @Override
         public boolean hasNext() {
-            return this.f11582b != null;
+            return this.currentData != null;
         }
 
         @Override
         public T next() {
-            T t = this.f11582b;
+            T t = this.currentData;
             this.f11584d = this.f11583c;
             this.f11583c = t;
-            this.f11582b = t.priviousData;
+            this.currentData = t.priviousData;
             return t;
         }
 
         @Override
         public void remove() {
-            a.this.a(this.f11584d, this.f11583c, this.f11582b);
+            a.this.a(this.f11584d, this.f11583c, this.currentData);
             this.f11583c = this.f11584d;
         }
     }

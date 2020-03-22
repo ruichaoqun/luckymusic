@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 
+
 public class LonglyEffecyView extends View implements DynamicEffectView {
     static final int[] mPointRadis = {UiUtils.dp2px(2.0f), UiUtils.dp2px(3.0f),UiUtils.dp2px(4.0f),UiUtils.dp2px(5.0f)};
     private static final float mCircleLiveTime = 2000.0f;
@@ -59,6 +60,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
 
     @Override
     public void setColor(int color) {
+        Log.w("bbbbbb","color-->"+color);
         if (this.mColor != color) {
             this.mColor = color;
             this.mEffectColor = ColorUtil.getEffectColor(mColor, this.outHsl);
@@ -74,32 +76,19 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
     public void onWaveFormDataCapture(byte[] waveform, int samplingRate) {
         int length = waveform.length;
         if (length > 0) {
-            float sum = 0.0f;
-            for (int i = 0; i < length; i++) {
-                sum += (float)(waveform[i]+Byte.MIN_VALUE);
-            }
-            this.r = (int) (((sum / ((float) length)) / 256.0f) * 4.0f);
-            Log.w("AAAAAAA","onWaveFormDataCapture-->"+r);
-            if (this.r > 0 && !this.mHandler.hasMessages(0)) {
-                long j2 = (long) (1000 / this.r);
+            if (!this.mHandler.hasMessages(0)) {
                 long uptimeMillis = SystemClock.uptimeMillis();
-                long j3 = this.s;
-                if (uptimeMillis - s < j2) {
-                    uptimeMillis = j3 + j2;
-                }
-//                mHandler.sendEmptyMessageAtTime(0, uptimeMillis);
+                mHandler.sendEmptyMessageAtTime(0, uptimeMillis);
             }
         }
-
     }
 
     @Override
     public void reset(boolean close) {
 //        if (this.f11628c > 0) {
-//            boolean b2 = this.w.b();
-//            com.netease.cloudmusic.module.ag.a.a<a> aVar = this.w;
-//            int[] iArr = f11621b;
-//            aVar.a(a(iArr[this.priviousData.nextInt(iArr.length)], this.priviousData.nextInt(360), j2));
+//            boolean b2 = this.data.b();
+//            addData<CircleRadius> aVar = this.data;
+//            aVar.addData(addData(mPointRadis[this.mRandom.nextInt(mPointRadis.length)], this.mRandom.nextInt(360), j2));
 //            this.s = j2;
 //            if (b2) {
 //                invalidate();
@@ -109,7 +98,6 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
 //        if (i2 > 0) {
 //            this.u.sendEmptyMessageAtTime(0, j2 + ((long) (1000 / i2)));
 //        }
-
     }
 
     @Override
@@ -147,15 +135,13 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         if (this.maxWidth > 0) {
             boolean b2 = this.data.b();
             int[] arr = mPointRadis;
-            data.a(a(arr[this.mRandom.nextInt(arr.length)], this.mRandom.nextInt(360), uptimeMillis));
+            data.addData(a(arr[this.mRandom.nextInt(arr.length)], this.mRandom.nextInt(360), uptimeMillis));
             this.s = uptimeMillis;
             if (b2) {
                 invalidate();
             }
         }
-        if (r > 0) {
-            this.mHandler.sendEmptyMessageAtTime(0, uptimeMillis + ((long) (1000 / r)));
-        }
+        this.mHandler.sendEmptyMessageAtTime(0, uptimeMillis + ((long) (1000 )));
     }
 
 
@@ -193,6 +179,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
                     float f3 = j;
                     float f4 = f11627i;
                     int alphaComponent = ColorUtils.setAlphaComponent(this.mEffectColor, (int) (((double) ((-102.0f * f2) + 102.0f)) + 0.5d));
+                    Log.w("AAAAAA","alphaComponent-->"+alphaComponent);
                     this.mPaint.setColor(alphaComponent);
                     this.mPaint.setStrokeWidth((f2 * (f3 - f4)) + f4);
                     canvas.drawCircle(0.0f, 0.0f, (float) i4, this.mPaint);
@@ -209,15 +196,14 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         if (z2) {
             postInvalidateOnAnimation();
         }
-
     }
 
     private void a(CircleRadius aVar) {
-        this.v.a(aVar);
+        this.v.addData(aVar);
     }
 
     public CircleRadius a(int pointRadius, int pointAngle, long timeMillis) {
-        CircleRadius circleRadius = this.v.a();
+        CircleRadius circleRadius = this.v.addData();
         if (circleRadius == null) {
             return new CircleRadius(pointRadius, pointAngle, timeMillis);
         }

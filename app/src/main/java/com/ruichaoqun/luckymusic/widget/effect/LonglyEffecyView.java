@@ -39,10 +39,10 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
     private int mArtRadius;
     private int mStrokeRadius;
 
-    private int r;
-    private long s;
     private LonglyHandler mHandler = new LonglyHandler();
     private Random mRandom = new Random();
+    private int mCurrentWave;
+    private long mLastMessageTime;
 
 
 
@@ -75,29 +75,46 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
     @Override
     public void onWaveFormDataCapture(byte[] waveform, int samplingRate) {
         int length = waveform.length;
-        if (length > 0) {
-            if (!this.mHandler.hasMessages(0)) {
-                long uptimeMillis = SystemClock.uptimeMillis();
-                mHandler.sendEmptyMessageAtTime(0, uptimeMillis);
+        int sum = 0;
+        for (int i = 0; i < length; i++) {
+            sum+=waveform[i]+128;
+        }
+//        this.mCurrentWave = (int) Math.ceil(((sum/length)/64)/2f);
+        this.mCurrentWave = (sum/length)/64;
+        if (mCurrentWave > 0 && !mHandler.hasMessages(0)) {
+            long time = 1000/mCurrentWave;  //250-1000
+            long uptimeMillis = SystemClock.uptimeMillis();
+            if(uptimeMillis - mLastMessageTime < time){
+                uptimeMillis = mLastMessageTime+time;
+            }
+            mHandler.sendEmptyMessageAtTime(0, uptimeMillis);
+        }
+    }
+
+    public void updateTime(long uptimeMillis) {
+        Log.w("AAAA",(uptimeMillis-mLastMessageTime)+"   ");
+        if (this.maxWidth > 0) {
+            boolean isEmpty = this.data.isEmpty();
+            int[] arr = mPointRadis;
+            data.addData(a(arr[this.mRandom.nextInt(arr.length)], this.mRandom.nextInt(360), uptimeMillis));
+            this.mLastMessageTime = uptimeMillis;
+            if (isEmpty) {
+                invalidate();
             }
         }
+        if(this.mCurrentWave > 0){
+            Log.w("AAAA",mCurrentWave+"   mCurrentWave   ");
+            this.mHandler.sendEmptyMessageAtTime(0, uptimeMillis + 1000/mCurrentWave);
+        }
+
     }
 
     @Override
     public void reset(boolean close) {
-//        if (this.f11628c > 0) {
-//            boolean b2 = this.data.b();
-//            addData<CircleRadius> aVar = this.data;
-//            aVar.addData(addData(mPointRadis[this.mRandom.nextInt(mPointRadis.length)], this.mRandom.nextInt(360), j2));
-//            this.s = j2;
-//            if (b2) {
-//                invalidate();
-//            }
-//        }
-//        int i2 = this.r;
-//        if (i2 > 0) {
-//            this.u.sendEmptyMessageAtTime(0, j2 + ((long) (1000 / i2)));
-//        }
+        this.mHandler.removeCallbacksAndMessages(null);
+        if (close) {
+            this.data.clear();
+        }
     }
 
     @Override
@@ -131,18 +148,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         return visualizerEntity.getCaptureSizeRange()[0];
     }
 
-    public void a(long uptimeMillis) {
-        if (this.maxWidth > 0) {
-            boolean b2 = this.data.b();
-            int[] arr = mPointRadis;
-            data.addData(a(arr[this.mRandom.nextInt(arr.length)], this.mRandom.nextInt(360), uptimeMillis));
-            this.s = uptimeMillis;
-            if (b2) {
-                invalidate();
-            }
-        }
-        this.mHandler.sendEmptyMessageAtTime(0, uptimeMillis + ((long) (1000 )));
-    }
+
 
 
     @Override
@@ -162,7 +168,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         boolean z2 = false;
         int save = canvas.save();
         canvas.translate((float) width, (float) height);
-        if (!this.data.b()) {
+        if (!this.data.isEmpty()) {
             Iterator<CircleRadius> it = this.data.iterator();
             while (it.hasNext()) {
                 CircleRadius next = it.next();
@@ -179,7 +185,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
                     float f3 = j;
                     float f4 = f11627i;
                     int alphaComponent = ColorUtils.setAlphaComponent(this.mEffectColor, (int) (((double) ((-102.0f * f2) + 102.0f)) + 0.5d));
-                    Log.w("AAAAAA","alphaComponent-->"+alphaComponent);
+//                    Log.w("AAAAAA","alphaComponent-->"+alphaComponent);
                     this.mPaint.setColor(alphaComponent);
                     this.mPaint.setStrokeWidth((f2 * (f3 - f4)) + f4);
                     canvas.drawCircle(0.0f, 0.0f, (float) i4, this.mPaint);
@@ -220,7 +226,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
 
         @Override
         public void handleMessage(Message message) {
-            a(message.getWhen());
+            updateTime(message.getWhen());
         }
     }
 

@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.load.resource.bitmap.DrawableTransformation;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
@@ -35,7 +34,6 @@ import com.ruichaoqun.luckymusic.utils.RenderScriptTransformation;
 import com.ruichaoqun.luckymusic.utils.StylusAnimation;
 import com.ruichaoqun.luckymusic.utils.TimeUtils;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
-import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.PlaylistBottomSheet;
 import com.ruichaoqun.luckymusic.widget.LyricView;
 import com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper;
 import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
@@ -655,7 +653,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_PAUSED:
             case PlaybackStateCompat.STATE_ERROR:
-                this.mEffectLayout.reset();
+                this.mEffectLayout.pause();
                 this.startStylusRemove();
                 this.mPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;

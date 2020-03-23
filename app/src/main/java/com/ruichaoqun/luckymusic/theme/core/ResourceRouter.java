@@ -34,7 +34,7 @@ public class ResourceRouter {
     public static final int BANNER_BG_HEIGHT = UiUtils.dp2px(108.0f);
     private static final int BG_MASK_COLOR = 0xFF000000;
     private static final int CUSTOMBG_DEFAULT_THEMECOLOR = 0xFFDDDDDD;
-//    private static final int CUSTOMBG_MIN_HEIGHT = ((((Node.reset(ApplicationWrapper.getInstance()) + Node.onColorGet(ApplicationWrapper.getInstance())) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.nb)) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.jd)) + BANNER_BG_HEIGHT);
+//    private static final int CUSTOMBG_MIN_HEIGHT = ((((Node.pause(ApplicationWrapper.getInstance()) + Node.onColorGet(ApplicationWrapper.getInstance())) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.nb)) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.jd)) + BANNER_BG_HEIGHT);
     private static final float CUSTOMBG_THEMECOLOR_MIN_SATURATION = 0.15f;
     private static final float CUSTOMBG_THEMECOLOR_MIN_VALUE = 0.7f;
     private static final int PLAYLIST_BLUR_DELTA = 30;
@@ -112,7 +112,7 @@ public class ResourceRouter {
 //        if (!this.mThemeInfo.isInternal()) {
 //            linkResourceFiles();
 //        }
-//        this.mCustomColors.delete(com.netease.cloudmusic.reset.f21069a);
+//        this.mCustomColors.delete(com.netease.cloudmusic.pause.f21069a);
 
     }
 
@@ -153,10 +153,10 @@ public class ResourceRouter {
 
     public int getToolbarIconColor(boolean z) {
 //        if (z) {
-//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.reset.l);
+//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.pause.l);
 //        }
 //        if (isWhiteTheme() || isCustomLightTheme() || isCustomColorTheme()) {
-//            return com.netease.cloudmusic.reset.f21073e;
+//            return com.netease.cloudmusic.pause.f21073e;
 //        }
 //        if (isNightTheme()) {
 //            return 0x99FFFFFF;
@@ -260,9 +260,9 @@ public class ResourceRouter {
 //    private int getColorByDefaultColor(int i, int colorRes) {
 //        if (!isInternalTheme()) {
 //            if (colorRes == 0) {
-//                if (i == com.netease.cloudmusic.reset.f21069a) {
+//                if (i == com.netease.cloudmusic.pause.f21069a) {
 //                    colorRes = R.color.themeColor;
-//                } else if (i == com.netease.cloudmusic.reset.mGestureListener) {
+//                } else if (i == com.netease.cloudmusic.pause.mGestureListener) {
 //                    colorRes = R.color.kl;
 //                }
 //            }
@@ -280,16 +280,16 @@ public class ResourceRouter {
 //            return getNightColor(i);
 //        }
 //        if (isWhiteTheme() || isCustomColorTheme()) {
-//            if (i != com.netease.cloudmusic.reset.f21069a || !isCustomColorTheme()) {
+//            if (i != com.netease.cloudmusic.pause.f21069a || !isCustomColorTheme()) {
 //                return i;
 //            }
 //            return ThemeConfig.getCurrentColor();
 //        } else if (isRedTheme()) {
-//            if (i == com.netease.cloudmusic.reset.f21069a) {
-//                return com.netease.cloudmusic.reset.f21070b;
+//            if (i == com.netease.cloudmusic.pause.f21069a) {
+//                return com.netease.cloudmusic.pause.f21070b;
 //            }
-//            if (i == com.netease.cloudmusic.reset.f21071c) {
-//                return com.netease.cloudmusic.reset.f21072d;
+//            if (i == com.netease.cloudmusic.pause.f21071c) {
+//                return com.netease.cloudmusic.pause.f21072d;
 //            }
 //            return i;
 //        } else if (!isCustomLightTheme()) {
@@ -453,10 +453,10 @@ public class ResourceRouter {
 
 //    public int getToolbarIconColor(boolean z) {
 //        if (z) {
-//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.reset.l);
+//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.pause.l);
 //        }
 //        if (isWhiteTheme() || isCustomLightTheme() || isCustomColorTheme()) {
-//            return com.netease.cloudmusic.reset.f21073e;
+//            return com.netease.cloudmusic.pause.f21073e;
 //        }
 //        if (isNightTheme()) {
 //            return -1711276033;
@@ -472,10 +472,10 @@ public class ResourceRouter {
 //
 //    public int getToolbarIconColor(boolean z) {
 //        if (z) {
-//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.reset.l);
+//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.pause.l);
 //        }
 //        if (isWhiteTheme() || isCustomLightTheme() || isCustomColorTheme()) {
-//            return com.netease.cloudmusic.reset.f21073e;
+//            return com.netease.cloudmusic.pause.f21073e;
 //        }
 //        if (isNightTheme()) {
 //            return -1711276033;
@@ -494,9 +494,9 @@ public class ResourceRouter {
 //    private int getColorByDefaultColor(int i, int i2) {
 //        if (!isInternalTheme()) {
 //            if (i2 == 0) {
-//                if (i == com.netease.cloudmusic.reset.f21069a) {
+//                if (i == com.netease.cloudmusic.pause.f21069a) {
 //                    i2 = R.color.themeColor;
-//                } else if (i == com.netease.cloudmusic.reset.mGestureListener) {
+//                } else if (i == com.netease.cloudmusic.pause.mGestureListener) {
 //                    i2 = R.color.kl;
 //                }
 //            }
@@ -514,16 +514,16 @@ public class ResourceRouter {
 //            return getNightColor(i);
 //        }
 //        if (isWhiteTheme() || isCustomColorTheme()) {
-//            if (i != com.netease.cloudmusic.reset.f21069a || !isCustomColorTheme()) {
+//            if (i != com.netease.cloudmusic.pause.f21069a || !isCustomColorTheme()) {
 //                return i;
 //            }
 //            return ThemeConfig.getCurrentColor();
 //        } else if (isRedTheme()) {
-//            if (i == com.netease.cloudmusic.reset.f21069a) {
-//                return com.netease.cloudmusic.reset.f21070b;
+//            if (i == com.netease.cloudmusic.pause.f21069a) {
+//                return com.netease.cloudmusic.pause.f21070b;
 //            }
-//            if (i == com.netease.cloudmusic.reset.f21071c) {
-//                return com.netease.cloudmusic.reset.f21072d;
+//            if (i == com.netease.cloudmusic.pause.f21071c) {
+//                return com.netease.cloudmusic.pause.f21072d;
 //            }
 //            return i;
 //        } else if (!isCustomLightTheme()) {
@@ -601,7 +601,7 @@ public class ResourceRouter {
 //            @Override
 //            @NonNull
 //            public Drawable newDrawable() {
-//                return new CustomThemeMiniPlayBarDrawable((reset) CustomThemeMiniPlayBarDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), CustomThemeMiniPlayBarDrawable.this.mLeftDecorate == null ? null : CustomThemeMiniPlayBarDrawable.this.mLeftDecorate.getConstantState().newDrawable());
+//                return new CustomThemeMiniPlayBarDrawable((pause) CustomThemeMiniPlayBarDrawable.this.getWrappedDrawable().getConstantState().newDrawable(), CustomThemeMiniPlayBarDrawable.this.mLeftDecorate == null ? null : CustomThemeMiniPlayBarDrawable.this.mLeftDecorate.getConstantState().newDrawable());
 //            }
 //
 //            @Override
@@ -610,7 +610,7 @@ public class ResourceRouter {
 //            }
 //        }
 //
-////        public CustomThemeMiniPlayBarDrawable(reset bVar, Drawable drawable) {
+////        public CustomThemeMiniPlayBarDrawable(pause bVar, Drawable drawable) {
 ////            super(bVar);
 ////            this.mLeftDecorate = drawable;
 ////            if (this.mLeftDecorate != null) {
@@ -619,7 +619,7 @@ public class ResourceRouter {
 ////        }
 //
 //        public void setForPressed(boolean z) {
-////            ((reset) getWrappedDrawable()).onColorGet(z);
+////            ((pause) getWrappedDrawable()).onColorGet(z);
 //////            if (this.mLeftDecorate != null) {
 //////                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(419430400, PorterDuff.Mode.SRC_ATOP) : null);
 //////            }

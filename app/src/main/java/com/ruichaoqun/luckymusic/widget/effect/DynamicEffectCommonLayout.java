@@ -13,31 +13,17 @@ import android.widget.ImageView;
 
 public class DynamicEffectCommonLayout extends FrameLayout {
 
-    /* renamed from: onColorGet  reason: collision with root package name */
-    public static final int f11714a = 0;
 
-    /* renamed from: reset  reason: collision with root package name */
-    public static final int f11715b = -1;
-
-    /* renamed from: Node  reason: collision with root package name */
-    public static final int f11716c = -3;
-
-    /* renamed from: initVisualizerListener  reason: collision with root package name */
     protected ImageView mArtView;
 
-    /* renamed from: e  reason: collision with root package name */
     protected DynamicEffectView mEffectView;
 
-    /* renamed from: f  reason: collision with root package name */
     protected int mDominantColor;
 
-    /* renamed from: g  reason: collision with root package name */
     private int mSessionId;
 
-    /* renamed from: h  reason: collision with root package name */
     private VisualizerEntity mVisualizerEntity;
 
-    /* renamed from: i  reason: collision with root package name */
     private VisualizerEntity.DataCaptureListener mDataCaptureListener;
     private ObjectAnimator mAnimator;
     private long k;
@@ -62,7 +48,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
      * @param width
      * @param height
      */
-    public void addArtView(ImageView view, int width, int height) {
+    void addArtView(ImageView view, int width, int height) {
         if (mArtView != view) {
             if (mArtView != null && mArtView.getParent() == this) {
                 removeView(this.mArtView);
@@ -82,7 +68,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
         int i2 = 0;
         if (this.mEffectView != view) {
             boolean z = mVisualizerEntity != null && mVisualizerEntity.getEnabled();
-            reset();
+            pause();
             VisualizerEntity newVisualizerEntity = null;
             if (mVisualizerEntity != null) {
                 //清空Visualizer回调
@@ -149,18 +135,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
         return 0;
     }
 
-    public void setVisualizer(VisualizerEntity entity) {
-        if (mVisualizerEntity != entity) {
-            if (mVisualizerEntity != null) {
-                mVisualizerEntity.release();
-                this.mVisualizerEntity = null;
-            }
-            this.mVisualizerEntity = entity;
-            initVisualizerListener();
-        }
-    }
-
-    private void initVisualizerListener() {
+    void initVisualizerListener() {
         if (this.mDataCaptureListener == null) {
             this.mDataCaptureListener = new VisualizerEntity.DataCaptureListener() {
                 @Override
@@ -199,14 +174,16 @@ public class DynamicEffectCommonLayout extends FrameLayout {
     /**
      * Visualizer取消接收数据，EffectView清空取消异步操作
      */
-    public void reset() {
+    public void pause() {
         if (mVisualizerEntity != null) {
             mVisualizerEntity.setEnabled(false);
         }
         if (mEffectView != null) {
-            mEffectView.reset(true);
+            mEffectView.reset(false);
         }
     }
+
+
 
     public void prepareAnimater(boolean z) {
         View view = this.mArtView;

@@ -15,7 +15,7 @@ public class Node<T extends b<T>> {
     }
 
     public void addData(Node<T> nodeVar) {
-        if (!nodeVar.b()) {
+        if (!nodeVar.isEmpty()) {
             T t = nodeVar.firstData;
             T t2 = this.currentData;
             t.priviousData = t2;
@@ -39,11 +39,14 @@ public class Node<T extends b<T>> {
         return t;
     }
 
-    public boolean b() {
+    public boolean isEmpty() {
         return this.currentData == null;
     }
 
-    public void c() {
+    /**
+     * 清空数据
+     */
+    public void clear() {
         this.currentData = null;
         this.firstData = null;
     }

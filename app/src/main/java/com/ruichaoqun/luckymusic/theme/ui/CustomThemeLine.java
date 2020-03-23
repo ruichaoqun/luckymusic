@@ -12,7 +12,7 @@ import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 public class CustomThemeLine extends View implements OnThemeResetListener {
 
 
-    /* renamed from: reset reason: collision with root package name */
+    /* renamed from: pause reason: collision with root package name */
     private ThemeResetter mThemeResetter = new ThemeResetter(this);
 
     /* access modifiers changed from: protected */

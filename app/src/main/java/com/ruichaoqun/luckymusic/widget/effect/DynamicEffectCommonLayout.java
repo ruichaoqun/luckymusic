@@ -169,6 +169,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
         if (mEffectView != null) {
             mEffectView.prepareToDynamic();
         }
+        prepareAnimater(false);
     }
 
     /**
@@ -181,6 +182,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
         if (mEffectView != null) {
             mEffectView.reset(false);
         }
+        stopAnimator(false);
     }
 
 

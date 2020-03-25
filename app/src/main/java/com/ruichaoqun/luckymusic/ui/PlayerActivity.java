@@ -38,6 +38,7 @@ import com.ruichaoqun.luckymusic.widget.LyricView;
 import com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper;
 import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
 import com.ruichaoqun.luckymusic.utils.ViewSwitcherTarget;
+import com.ruichaoqun.luckymusic.widget.effect.AbbrEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectLayout;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.LonglyEffecyView;
@@ -127,7 +128,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private boolean isBacgroundAutoNext = false;
     long currentPosition;
 
-    private long effectType = 1;
+    private long effectType = 2;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
@@ -252,10 +253,10 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @Override
     protected void initData() {
         //唱针旋转动画X轴焦点
-        int StylusPivotX = UiUtils.dp2px(24.888f);
+        int stylusPivotX = UiUtils.dp2px(24.888f);
         //唱针旋转动画Y轴焦点
-        int StylusPivotY = UiUtils.dp2px(42.222f);
-        this.mStylusRemoveAnimation = new StylusAnimation(0.0f, -25.0f, StylusPivotX, StylusPivotY);
+        int stylusPivotY = UiUtils.dp2px(42.222f);
+        this.mStylusRemoveAnimation = new StylusAnimation(0.0f, -25.0f, stylusPivotX, stylusPivotY);
         this.mStylusRemoveAnimation.setDuration(300);
         this.mStylusRemoveAnimation.setRepeatCount(0);
         this.mStylusRemoveAnimation.setFillAfter(true);
@@ -281,7 +282,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
         });
 
-        this.mStylusReturnAnimation = new StylusAnimation(-25.0f, 0.0f, StylusPivotX, StylusPivotY);
+        this.mStylusReturnAnimation = new StylusAnimation(-25.0f, 0.0f, stylusPivotX, stylusPivotY);
         this.mStylusReturnAnimation.setDuration(300);
         this.mStylusReturnAnimation.setRepeatCount(0);
         this.mStylusReturnAnimation.setFillAfter(true);
@@ -323,9 +324,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             public void onDiscDirectionChange(Boolean bool) {
                 if (PlayerActivity.this.mPlaybackState != null && PlayerActivity.this.queueItems != null) {
                     if (bool) {
-                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDataPosition == 0 ? PlayerActivity.this.queueItems.size() - 1 : (int) (currentDataPosition - 1));
+                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDataPosition == 0 ? PlayerActivity.this.queueItems.size() - 1 :  (currentDataPosition - 1));
                     } else {
-                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDataPosition == PlayerActivity.this.queueItems.size() - 1 ? 0 : (int) (currentDataPosition + 1));
+                        PlayerActivity.this.nextQueueItem = PlayerActivity.this.queueItems.get(currentDataPosition == PlayerActivity.this.queueItems.size() - 1 ? 0 : (currentDataPosition + 1));
                     }
                     GlideApp.with(PlayerActivity.this)
                             .load(nextQueueItem.getDescription().getIconUri())
@@ -393,84 +394,54 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
         });
 
-        this.mPlayMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchPlayMode();
-            }
-        });
+        this.mPlayMode.setOnClickListener(v -> switchPlayMode());
 
-        this.mPlayPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        this.mPlayPrevious.setOnClickListener(v -> {
 //                PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
-                //滑动回调，此处可以处理唱针的切换以及当前封面动画的暂停
-                PlayerActivity.this.mViewFlipper.switchDisc(false);
-            }
+            //滑动回调，此处可以处理唱针的切换以及当前封面动画的暂停
+            PlayerActivity.this.mViewFlipper.switchDisc(false);
         });
 
-        this.mPlayPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PlayerActivity.this.mCurrentMetadata != null && !TextUtils.isEmpty(PlayerActivity.this.mCurrentMetadata.getDescription().getMediaId())) {
-                    if (PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING ||
-                            PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_BUFFERING ||
-                            PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_CONNECTING) {
-                        PlayerActivity.this.mControllerCompat.getTransportControls().pause();
-                    } else {
-                        PlayerActivity.this.mControllerCompat.getTransportControls().play();
-                    }
+        this.mPlayPause.setOnClickListener(v -> {
+            if (PlayerActivity.this.mCurrentMetadata != null && !TextUtils.isEmpty(PlayerActivity.this.mCurrentMetadata.getDescription().getMediaId())) {
+                if (PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING ||
+                        PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_BUFFERING ||
+                        PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_CONNECTING) {
+                    PlayerActivity.this.mControllerCompat.getTransportControls().pause();
+                } else {
+                    PlayerActivity.this.mControllerCompat.getTransportControls().play();
                 }
             }
         });
 
-        this.mPlayNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlayerActivity.this.mViewFlipper.switchDisc(true);
-            }
+        this.mPlayNext.setOnClickListener(v -> PlayerActivity.this.mViewFlipper.switchDisc(true));
+
+        this.mPlayList.setOnClickListener(v -> showPlayListDialog());
+
+        this.mRlDisplayContainer.setOnClickListener(v -> {
+            mRlDisplayContainer.setVisibility(View.INVISIBLE);
+            mLayoutLyric.setVisibility(View.VISIBLE);
+            mLayoutSoundController.setVisibility(View.VISIBLE);
         });
 
-        this.mPlayList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPlayListDialog();
-            }
-        });
-
-        this.mRlDisplayContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRlDisplayContainer.setVisibility(View.INVISIBLE);
-                mLayoutLyric.setVisibility(View.VISIBLE);
-                mLayoutSoundController.setVisibility(View.VISIBLE);
-            }
-        });
-
-        this.mCurLyricContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                long times = mLyricView.getCurrentTims();
-                if(times == -1){
-                    if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PAUSED){
-                        PlayerActivity.this.mControllerCompat.getTransportControls().play();
-                    }
-                }else{
-                    PlayerActivity.this.mControllerCompat.getTransportControls().seekTo(times);
-                    if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PAUSED){
-                        PlayerActivity.this.mControllerCompat.getTransportControls().play();
-                    }
+        this.mCurLyricContainer.setOnClickListener(v -> {
+            long times = mLyricView.getCurrentTims();
+            if(times == -1){
+                if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PAUSED){
+                    PlayerActivity.this.mControllerCompat.getTransportControls().play();
+                }
+            }else{
+                PlayerActivity.this.mControllerCompat.getTransportControls().seekTo(times);
+                if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PAUSED){
+                    PlayerActivity.this.mControllerCompat.getTransportControls().play();
                 }
             }
         });
 
-        this.mLyricView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRlDisplayContainer.setVisibility(View.VISIBLE);
-                mLayoutLyric.setVisibility(View.GONE);
-                mLayoutSoundController.setVisibility(View.GONE);
-            }
+        this.mLyricView.setOnClickListener(v -> {
+            mRlDisplayContainer.setVisibility(View.VISIBLE);
+            mLayoutLyric.setVisibility(View.GONE);
+            mLayoutSoundController.setVisibility(View.GONE);
         });
 
         if(effectType != -1){
@@ -481,12 +452,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
     private void addEffectView() {
         this.mEffectLayout = new DynamicEffectLayout(this);
-        this.mEffectLayout.setOnColorGetListener(new DynamicEffectLayout.OnColorGetListener() {
-            @Override
-            public void onColorGet(int color) {
-                //TODO 设置SeekBar的颜色
+        this.mEffectLayout.setOnColorGetListener(color -> {
+            //TODO 设置SeekBar的颜色
 //                ((PlayerSeekBarNew) PlayerActivity.this.r).setColor(color);
-            }
         });
 
         ImageView imageView = findViewById(R.id.iv_disc_bg_1);
@@ -526,6 +494,14 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     }
 
     private DynamicEffectView getEffectView(long type){
+        if(type == 1){
+            return new LonglyEffecyView(this);
+        }
+
+        if(type == 2){
+            return new AbbrEffectView(this);
+        }
+
         return new LonglyEffecyView(this);
     }
 
@@ -590,7 +566,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     }
 
     private void checkPlaybackPosition() {
-        this.clientHandler.postDelayed(mCheckPlaybackPositionRunnable, 100l);
+        this.clientHandler.postDelayed(mCheckPlaybackPositionRunnable, 100L);
     }
 
     /**
@@ -657,6 +633,17 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 this.startStylusRemove();
                 this.mPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;
+            case PlaybackStateCompat.STATE_FAST_FORWARDING:
+                break;
+            case PlaybackStateCompat.STATE_REWINDING:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_NEXT:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_QUEUE_ITEM:
+                break;
+            default:
         }
     }
 

@@ -13,4 +13,16 @@ public class ColorUtil {
         outHsl[2] = 0.7f;
         return ColorUtils.setAlphaComponent(ColorUtils.HSLToColor(outHsl), alpha);
     }
+
+    public static int b(int i2, float[] outHsl) {
+        return a(i2, 50.0f, outHsl);
+    }
+
+    static int a(int i2, float f2, float[] outHsl) {
+        int alpha = Color.alpha(i2);
+        ColorUtils.colorToHSL(i2, outHsl);
+        outHsl[0] = (outHsl[0] + f2) % 360.0f;
+        return ColorUtils.setAlphaComponent(ColorUtils.HSLToColor(outHsl), alpha);
+    }
+
 }

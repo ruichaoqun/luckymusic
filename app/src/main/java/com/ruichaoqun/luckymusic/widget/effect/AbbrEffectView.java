@@ -294,7 +294,7 @@ public class AbbrEffectView extends View implements DynamicEffectView {
                 this.mPath.close();
                 this.mPaint2.setColor(this.colors[i2]);
 //                if (i2 == 0) {
-//                    if (a(canvas)) {
+//                    if (EffectCache(canvas)) {
 //                        z3 = true;
 //                    }
 //                } else if (i2 == this.f9704a - 1) {
@@ -307,5 +307,12 @@ public class AbbrEffectView extends View implements DynamicEffectView {
         if(needInvalidate){
             postInvalidateOnAnimation();
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        fftHandler.getLooper().quit();
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDetachedFromWindow();
     }
 }

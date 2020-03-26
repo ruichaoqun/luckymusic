@@ -181,7 +181,7 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
         this.mGestureListener = simpleOnGestureListener;
     }
 
-//    public void addData(int[] iArr) {
+//    public void addToHead(int[] iArr) {
 //        int[] iArr2 = new int[2];
 //        getLocationOnScreen(iArr2);
 //        int width = this.mArtView.getWidth();

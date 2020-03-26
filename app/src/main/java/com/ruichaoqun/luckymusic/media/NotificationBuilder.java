@@ -110,8 +110,6 @@ public class NotificationBuilder {
         }
 
         largeContentView.setOnClickPendingIntent(R.id.layout_root, controller.getSessionActivity());
-
-
         MediaStyle mediaStyle = new MediaStyle()
                 .setMediaSession(token);
 

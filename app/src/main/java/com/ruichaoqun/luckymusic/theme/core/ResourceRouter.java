@@ -34,7 +34,7 @@ public class ResourceRouter {
     public static final int BANNER_BG_HEIGHT = UiUtils.dp2px(108.0f);
     private static final int BG_MASK_COLOR = 0xFF000000;
     private static final int CUSTOMBG_DEFAULT_THEMECOLOR = 0xFFDDDDDD;
-//    private static final int CUSTOMBG_MIN_HEIGHT = ((((Node.pause(ApplicationWrapper.getInstance()) + Node.onColorGet(ApplicationWrapper.getInstance())) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.nb)) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.jd)) + BANNER_BG_HEIGHT);
+//    private static final int CUSTOMBG_MIN_HEIGHT = ((((QueueData.pause(ApplicationWrapper.getInstance()) + QueueData.onColorGet(ApplicationWrapper.getInstance())) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.nb)) + ApplicationWrapper.getInstance().getResources().getDimensionPixelSize(R.dimen.jd)) + BANNER_BG_HEIGHT);
     private static final float CUSTOMBG_THEMECOLOR_MIN_SATURATION = 0.15f;
     private static final float CUSTOMBG_THEMECOLOR_MIN_VALUE = 0.7f;
     private static final int PLAYLIST_BLUR_DELTA = 30;

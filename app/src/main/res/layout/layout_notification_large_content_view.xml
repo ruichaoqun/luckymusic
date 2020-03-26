@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textAppearance="@style/NotificationTitle" />
+            android:textAppearance="@style/NotificationText" />
 
         <TextView
             android:id="@+id/tv_hint"

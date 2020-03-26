@@ -17,6 +17,8 @@ import com.ruichaoqun.luckymusic.utils.ColorUtil;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 
@@ -45,9 +47,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
     private long mLastMessageTime;
 
 
-
-    private Node<CircleRadius> v = new Node<>();
-    private a<CircleRadius> data = new a<>();
+    private EffectData<LonglyEffectData> mDatas = new EffectData<>();
 
 
     public LonglyEffecyView(Context context) {
@@ -81,6 +81,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         }
 //        this.mCurrentWave = (int) Math.ceil(((sum/length)/64)/2f);
         this.mCurrentWave = (sum/length)/64;
+        Log.w("RRRRR",mCurrentWave+"");
         if (mCurrentWave > 0 && !mHandler.hasMessages(0)) {
             long time = 1000/mCurrentWave;  //250-1000
             long uptimeMillis = SystemClock.uptimeMillis();
@@ -94,26 +95,25 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
     public void updateTime(long uptimeMillis) {
         Log.w("AAAA",(uptimeMillis-mLastMessageTime)+"   ");
         if (this.maxWidth > 0) {
-            boolean isEmpty = this.data.isEmpty();
+            boolean isEmpty = this.mDatas.isEmpty();
             int[] arr = mPointRadis;
-            data.addData(a(arr[this.mRandom.nextInt(arr.length)], this.mRandom.nextInt(360), uptimeMillis));
+            mDatas.addData(getData(arr[this.mRandom.nextInt(arr.length)], this.mRandom.nextInt(360), uptimeMillis));
             this.mLastMessageTime = uptimeMillis;
             if (isEmpty) {
                 invalidate();
             }
         }
-        if(this.mCurrentWave > 0){
-            Log.w("AAAA",mCurrentWave+"   mCurrentWave   ");
-            this.mHandler.sendEmptyMessageAtTime(0, uptimeMillis + 1000/mCurrentWave);
-        }
-
+//        if(this.mCurrentWave > 0){
+//            Log.w("AAAA",mCurrentWave+"   mCurrentWave   ");
+//            this.mHandler.sendEmptyMessageAtTime(0, uptimeMillis + 1000/mCurrentWave);
+//        }
     }
 
     @Override
     public void reset(boolean close) {
         this.mHandler.removeCallbacksAndMessages(null);
         if (close) {
-            this.data.clear();
+            this.mDatas.clear();
         }
     }
 
@@ -168,14 +168,13 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         boolean z2 = false;
         int save = canvas.save();
         canvas.translate((float) width, (float) height);
-        if (!this.data.isEmpty()) {
-            Iterator<CircleRadius> it = this.data.iterator();
+        if (!this.mDatas.isEmpty()) {
+            Iterator<LonglyEffectData> it = this.mDatas.iterator();
             while (it.hasNext()) {
-                CircleRadius next = it.next();
+                LonglyEffectData next = it.next();
                 float uptimeMillis = (float) (SystemClock.uptimeMillis() - next.timeMillis);
                 if (uptimeMillis >= mCircleLiveTime) {
                     it.remove();
-                    a(next);
                 } else {
                     float f2 = uptimeMillis / mCircleLiveTime;
                     int i2 = this.maxWidth;
@@ -204,21 +203,18 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         }
     }
 
-    private void a(CircleRadius aVar) {
-        this.v.addData(aVar);
-    }
 
-    public CircleRadius a(int pointRadius, int pointAngle, long timeMillis) {
-        CircleRadius circleRadius = this.v.addData();
-        if (circleRadius == null) {
-            return new CircleRadius(pointRadius, pointAngle, timeMillis);
+
+    public LonglyEffectData getData(int pointRadius, int pointAngle, long timeMillis){
+        LonglyEffectData data = mDatas.getCacheData();
+        if(data == null){
+            return new LonglyEffectData(pointRadius,pointAngle,timeMillis);
         }
-        circleRadius.pointRadius = pointRadius;
-        circleRadius.pointAngle = pointAngle;
-        circleRadius.timeMillis = timeMillis;
-        return circleRadius;
+        data.pointAngle = pointAngle;
+        data.pointRadius = pointRadius;
+        data.timeMillis = timeMillis;
+        return data;
     }
-
 
     private class LonglyHandler extends Handler {
         private LonglyHandler() {
@@ -230,18 +226,15 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
         }
     }
 
-
-
-    class CircleRadius extends b<CircleRadius> {
+    class LonglyEffectData extends ListNode<LonglyEffectData>{
         int pointRadius;
         int pointAngle;
         long timeMillis;
 
-        CircleRadius(int pointRadius, int pointAngle, long timeMillis) {
+        LonglyEffectData(int pointRadius, int pointAngle, long timeMillis) {
             this.pointRadius = pointRadius;
             this.pointAngle = pointAngle;
             this.timeMillis = timeMillis;
         }
     }
-
 }

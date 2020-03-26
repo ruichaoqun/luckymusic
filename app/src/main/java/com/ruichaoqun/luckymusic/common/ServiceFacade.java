@@ -38,7 +38,7 @@ public class ServiceFacade {
         sServiceMap = map;
     }
 
-//    public static synchronized void put(Class cls, Node cVar) {
+//    public static synchronized void put(Class cls, QueueData cVar) {
 //        synchronized (ServiceFacade.class) {
 //            if (!(cVar == null || cls == null)) {
 //                sCachedLoader.put(cls, cVar);

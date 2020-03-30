@@ -80,14 +80,16 @@ public class EffectData<T extends ListNode<T>> implements Iterable<T>{
         @Override
         public void remove() {
             if(this.privious == null){
-                mEndData.next = cacheData;
-                cacheData = next;
+                mEndData.next =  EffectData.this.cacheData;
+                EffectData.this.cacheData = next;
+                data = null;
                 EffectData.this.data = null;
                 EffectData.this.mEndData = null;
             }else{
-                mEndData.next = cacheData;
-                cacheData = next;
+                EffectData.this.mEndData.next =  EffectData.this.cacheData;
+                EffectData.this.cacheData = next;
                 this.privious.next = null;
+                data = null;
                 EffectData.this.mEndData = privious;
             }
         }

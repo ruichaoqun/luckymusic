@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
@@ -38,7 +39,7 @@ public class ParticleEffectView extends View implements DynamicEffectView {
 
     private EffectData<ParticleData> mData = new EffectData<>();
 
-    private int l;
+    private int mAlpha;
     private Random mRandom = new Random();
 
     private float[] mFfftRanges = new float[30];
@@ -113,7 +114,8 @@ public class ParticleEffectView extends View implements DynamicEffectView {
                 this.J[i] = (int) range;
                 this.K[i] = (f6 * s) + r;
             }
-            this.l = (int) (Math.min((sum / 30.0f) / 10.0f, 1.0f) * 127.0f);
+            this.mAlpha = (int) (Math.min((sum / 30.0f) / 12.0f, 1.0f) * 127.0f);
+            Log.w("SSSSS","mAlpha-->"+sum / 300);
             if (this.o) {
                 this.mHandler.sendEmptyMessage(1);
                 this.o = false;
@@ -134,20 +136,16 @@ public class ParticleEffectView extends View implements DynamicEffectView {
     private void getData(int what, long when) {
         boolean isEmpty = mData.isEmpty();
         if (what == 0) {
-//            for (int i4 = 0; i4 < 70; i4++) {
-//                this.mData.addData(getData(mRandom.nextFloat() * 20.0f, 0.0f, (float) (((double) mRandom.nextFloat()) * Math.PI*2), Color.WHITE, 1500, when));
-//                this.mData.addData(getData(mRandom.nextFloat() * 20.0f+10.0f, 0.0f, (float) (((double) mRandom.nextFloat()) *Math.PI*2), mEffectColor, 1500, when));
-//            }
-//            this.mHandler.sendEmptyMessageDelayed(what, 70);
+            for (int i4 = 0; i4 < 70; i4++) {
+                this.mData.addData(getData(mRandom.nextFloat() * 20.0f, 0.0f, (float) (((double) mRandom.nextFloat()) * Math.PI*2), Color.WHITE, 1500, when));
+                this.mData.addData(getData(mRandom.nextFloat() * 20.0f+10.0f, 0.0f, (float) (((double) mRandom.nextFloat()) *Math.PI*2), mEffectColor, 1500, when));
+            }
+            this.mHandler.sendEmptyMessageDelayed(what, 70);
         } else {
             int i = 0;
-            int sum = 0;
             while (i < 30) {
                 int j = 0;
-                if(J[i] > 3){
-                    sum++;
-                }
-                while (j < 3) {
+                while (j < J[i]) {
                     float nextFloat = i* w + (this.mRandom.nextFloat() * w);
                     this.mData.addData(getData((1 - (mRandom.nextFloat() * 0.5f)) * K[i], t, nextFloat, mEffectColor, 1000, when));
                     j++;
@@ -184,7 +182,7 @@ public class ParticleEffectView extends View implements DynamicEffectView {
         } else {
             this.mHandler.removeMessages(1);
         }
-        this.l = 0;
+        this.mAlpha = 0;
         this.o = true;
         this.p = true;
     }
@@ -235,7 +233,6 @@ public class ParticleEffectView extends View implements DynamicEffectView {
         }
         if (!mData.isEmpty()) {
             int save = canvas.save();
-            float f3 = 2.0f;
             canvas.translate(width / 2, height / 2);
             long uptimeMillis = SystemClock.uptimeMillis();
             Iterator<ParticleData> iterator = mData.iterator();
@@ -245,21 +242,17 @@ public class ParticleEffectView extends View implements DynamicEffectView {
                 if (time >=  next.survivalTime) {
                     iterator.remove();
                 } else {
-                    float f5 = 1000.0f;
                     if (next.velocity == 0.0f) {
                         f2 = next.distance * ((float) time);
                     } else {
-                        float max = Math.max(0.0f, next.distance + ((next.velocity * ((float) time)) / 1000.0f));
-                        f2 = ((max * max) - (next.distance * next.distance)) / f3;
-                        f5 = next.velocity;
+                        f2 = Math.max(30.0f,next.distance /2)* ((float) time);
                     }
-                    double length = (double) (mParticleRadius + (f2 / f5));
+                    double length = (double) (mParticleRadius + (f2 / 1000.0f));
                     float sin = (float) ((length * Math.sin((double) next.angle)) + 0.5d);
-                    int min = Math.min(this.l + 128, 255);
+                    int min = Math.min(this.mAlpha + 128, 255);
                     this.mPaint.setColor(ColorUtils.setAlphaComponent(next.mColor, (int) (((float) min) - ((((float) (((long) min) * time)) * 1.0f) / ((float) next.survivalTime)))));
                     canvas.drawPoint((float) ((Math.cos((double) next.angle) * length) + 0.5d), sin, this.mPaint);
                 }
-                f3 = 2.0f;
             }
             canvas.restoreToCount(save);
             postInvalidateOnAnimation();

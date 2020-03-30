@@ -43,6 +43,7 @@ import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectLayout;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.LonglyEffecyView;
 import com.ruichaoqun.luckymusic.widget.effect.ParticleEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.TestEffectView;
 
 import java.util.List;
 
@@ -505,6 +506,10 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
         if(type == 3){
             return new ParticleEffectView(this);
+        }
+
+        if(type == 4){
+            return new TestEffectView(this);
         }
 
         return new LonglyEffecyView(this);

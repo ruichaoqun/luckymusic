@@ -23,7 +23,7 @@ import java.util.Random;
  * 粒子动效
  */
 public class ParticleEffectView extends View implements DynamicEffectView {
-    private static final float w = 0.20943952f;
+    private static final float w = (float) (Math.PI*2/30);
     private static final float t = -49.0f;
     private static final float n = 45.0f;
     private static final float s = 257.0f;
@@ -41,7 +41,7 @@ public class ParticleEffectView extends View implements DynamicEffectView {
     private int l;
     private Random mRandom = new Random();
 
-    private float[] I = new float[30];
+    private float[] mFfftRanges = new float[30];
     private int[] J = new int[30];
     private float[] K = new float[30];
 
@@ -53,8 +53,8 @@ public class ParticleEffectView extends View implements DynamicEffectView {
     private int samplingRate;
 
     private int k;
-    private int m;
-    private boolean o;
+    private int mStep;
+    private boolean o = true;
     private boolean p;
 
 
@@ -87,35 +87,33 @@ public class ParticleEffectView extends View implements DynamicEffectView {
         int length = fft.length;
         if (length > 0) {
             if (!(this.fftLength == length && this.samplingRate == samplingRate)) {
-                this.fftLength = length;
-                this.samplingRate = samplingRate;
-                float f2 = (samplingRate / 1000.0f) / length;
-                this.k = (int) Math.ceil((double) (800.0f / f2));
-                int min = (Math.min((int) (4800.0f / f2), (length / 2) - 1) - this.k) + 1;
-                this.m = min >= 30 ? min / 30 : -((int) Math.ceil((double) (30.0f / ((float) min))));
+                this.fftLength = length;//1024
+                this.samplingRate = samplingRate;//44100000
+                float f2 = (samplingRate / 1000.0f) / length;//43.066
+                this.k = (int) Math.ceil((double) (800.0f / f2));//19
+                int min = (Math.min((int) (4800.0f / f2), (length / 2) - 1) - this.k) + 1;//111
+                this.mStep = min >= 30 ? min / 30 : -((int) Math.ceil((double) (30.0f / ((float) min))));//3
             }
-            float f3 = 0.0f;
-            float f4 = 0.0f;
-            for (int i3 = 0; i3 < 30; i3++) {
-                int i4 = this.m;
-                float a3 = (float) getPhase(fft, (this.k + (i4 > 0 ? i4 * i3 : i3 / (-i4))) * 2);
-                this.I[i3] = a3;
-                if (a3 > f3) {
-                    f3 = a3;
+            float maxRange = 0.0f;
+            float sum = 0.0f;
+            for (int i = 0; i < 30; i++) {
+                float range = (float) getPhase(fft, (this.k + (mStep > 0 ? mStep * i : i / (-mStep))) * 2);//19+3*29
+                this.mFfftRanges[i] = range;
+                if (range > maxRange) {
+                    maxRange = range;
                 }
-                f4 += a3;
+                sum += range;
             }
-            for (int i5 = 0; i5 < 30; i5++) {
-                float f5 = this.I[i5];
-                float f6 = f5 / n;
-                int i6 = (int) (n * f6);
-                if (i6 < 5 && f5 == f3 && f3 > 0.0f) {
-                    i6 = 5;
+            for (int i = 0; i < 30; i++) {
+                float range = this.mFfftRanges[i];
+                float f6 = range / n;//range/45
+                if (range < 5 && range == maxRange && maxRange > 0.0f) {
+                    range = 5;
                 }
-                this.J[i5] = i6;
-                this.K[i5] = (f6 * s) + r;
+                this.J[i] = (int) range;
+                this.K[i] = (f6 * s) + r;
             }
-            this.l = (int) (Math.min((f4 / 30.0f) / 10.0f, 1.0f) * 127.0f);
+            this.l = (int) (Math.min((sum / 30.0f) / 10.0f, 1.0f) * 127.0f);
             if (this.o) {
                 this.mHandler.sendEmptyMessage(1);
                 this.o = false;
@@ -134,28 +132,27 @@ public class ParticleEffectView extends View implements DynamicEffectView {
     }
 
     private void getData(int what, long when) {
-        float f2 = 1.0f;
         boolean isEmpty = mData.isEmpty();
         if (what == 0) {
-            for (int i4 = 0; i4 < 70; i4++) {
-                this.mData.addData(getData((((mRandom.nextFloat() * 2.0f) - 1.0f) * 10.0f) + 10.0f, 0.0f, (float) (((double) mRandom.nextFloat()) * 6.283185307179586d), Color.WHITE, 1500, when));
-                this.mData.addData(getData((((mRandom.nextFloat() * 2.0f) - 1.0f) * 10.0f) + 20.0f, 0.0f, (float) (((double) mRandom.nextFloat()) * 6.283185307179586d), mEffectColor, 1500, when));
-            }
-            this.mHandler.sendEmptyMessageDelayed(what, 70);
+//            for (int i4 = 0; i4 < 70; i4++) {
+//                this.mData.addData(getData(mRandom.nextFloat() * 20.0f, 0.0f, (float) (((double) mRandom.nextFloat()) * Math.PI*2), Color.WHITE, 1500, when));
+//                this.mData.addData(getData(mRandom.nextFloat() * 20.0f+10.0f, 0.0f, (float) (((double) mRandom.nextFloat()) *Math.PI*2), mEffectColor, 1500, when));
+//            }
+//            this.mHandler.sendEmptyMessageDelayed(what, 70);
         } else {
-            int i5 = 0;
-            while (i5 < 30) {
-                float f3 = ((float) i5) * w;
-                int i6 = 0;
-                while (i6 < this.J[i5]) {
-                    float nextFloat = f3 + (this.mRandom.nextFloat() * w);
-                    float f4 = this.K[i5];
-                    this.mData.addData(getData((f2 - (mRandom.nextFloat() * 0.5f)) * f4, t, nextFloat, mEffectColor, 1000, when));
-                    i6++;
-                    f2 = 1.0f;
+            int i = 0;
+            int sum = 0;
+            while (i < 30) {
+                int j = 0;
+                if(J[i] > 3){
+                    sum++;
                 }
-                i5++;
-                f2 = 1.0f;
+                while (j < 3) {
+                    float nextFloat = i* w + (this.mRandom.nextFloat() * w);
+                    this.mData.addData(getData((1 - (mRandom.nextFloat() * 0.5f)) * K[i], t, nextFloat, mEffectColor, 1000, when));
+                    j++;
+                }
+                i++;
             }
             this.mHandler.sendEmptyMessageDelayed(what, 50);
         }
@@ -164,15 +161,15 @@ public class ParticleEffectView extends View implements DynamicEffectView {
         }
     }
 
-    private ParticleData getData(float v, float v1, float v2, int color, int survivalTime, long when) {
+    private ParticleData getData(float distance, float velocity, float angle, int color, int survivalTime, long when) {
         ParticleData data = this.mData.getCacheData();
         if (data == null) {
-            return new ParticleData(v, v1, v2, color, survivalTime, when);
+            return new ParticleData(distance, velocity, angle, color, survivalTime, when);
         }
-        data.f11614b = v;
-        data.f11615c = v1;
-        data.f11616d = v2;
-        data.f11617e = color;
+        data.distance = distance;
+        data.velocity = velocity;
+        data.angle = angle;
+        data.mColor = color;
         data.survivalTime = survivalTime;
         data.timeMillis = when;
         return data;
@@ -244,23 +241,23 @@ public class ParticleEffectView extends View implements DynamicEffectView {
             Iterator<ParticleData> iterator = mData.iterator();
             while (iterator.hasNext()) {
                 ParticleData next = iterator.next();
-                long j2 = uptimeMillis - next.timeMillis;
-                if (j2 >= ((long) next.survivalTime)) {
+                long time = uptimeMillis - next.timeMillis;
+                if (time >=  next.survivalTime) {
                     iterator.remove();
                 } else {
                     float f5 = 1000.0f;
-                    if (next.f11615c == 0.0f) {
-                        f2 = next.f11614b * ((float) j2);
+                    if (next.velocity == 0.0f) {
+                        f2 = next.distance * ((float) time);
                     } else {
-                        float max = Math.max(0.0f, next.f11614b + ((next.f11615c * ((float) j2)) / 1000.0f));
-                        f2 = ((max * max) - (next.f11614b * next.f11614b)) / f3;
-                        f5 = next.f11615c;
+                        float max = Math.max(0.0f, next.distance + ((next.velocity * ((float) time)) / 1000.0f));
+                        f2 = ((max * max) - (next.distance * next.distance)) / f3;
+                        f5 = next.velocity;
                     }
-                    double d2 = (double) (mParticleRadius + (f2 / f5));
-                    float sin = (float) ((d2 * Math.sin((double) next.f11616d)) + 0.5d);
+                    double length = (double) (mParticleRadius + (f2 / f5));
+                    float sin = (float) ((length * Math.sin((double) next.angle)) + 0.5d);
                     int min = Math.min(this.l + 128, 255);
-                    this.mPaint.setColor(ColorUtils.setAlphaComponent(next.f11617e, (int) (((float) min) - ((((float) (((long) min) * j2)) * 1.0f) / ((float) next.survivalTime)))));
-                    canvas.drawPoint((float) ((Math.cos((double) next.f11616d) * d2) + 0.5d), sin, this.mPaint);
+                    this.mPaint.setColor(ColorUtils.setAlphaComponent(next.mColor, (int) (((float) min) - ((((float) (((long) min) * time)) * 1.0f) / ((float) next.survivalTime)))));
+                    canvas.drawPoint((float) ((Math.cos((double) next.angle) * length) + 0.5d), sin, this.mPaint);
                 }
                 f3 = 2.0f;
             }
@@ -276,23 +273,23 @@ public class ParticleEffectView extends View implements DynamicEffectView {
     }
 
     class ParticleData extends ListNode<ParticleData> {
-        float f11614b;
+        float distance;
 
-        float f11615c;
+        float velocity;
 
-        float f11616d;
+        float angle;
 
-        int f11617e;
+        int mColor;
 
 
         long timeMillis;
         long survivalTime;
 
-        ParticleData(float f2, float f3, float f4, int i2, int survivalTime, long timeMillis) {
-            this.f11614b = f2;
-            this.f11615c = f3;
-            this.f11616d = f4;
-            this.f11617e = i2;
+        ParticleData(float distance, float velocity, float angle, int mColor, int survivalTime, long timeMillis) {
+            this.distance = distance;
+            this.velocity = velocity;
+            this.angle = angle;
+            this.mColor = mColor;
             this.survivalTime = survivalTime;
             this.timeMillis = timeMillis;
         }

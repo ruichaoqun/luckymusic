@@ -9,16 +9,6 @@ import android.util.Pair;
  */
 public interface DynamicEffectView {
 
-    /**
-     * 设置动效主题颜色
-     * @param color
-     */
-    void setColor(int color);
-
-    void onFftDataCapture(byte[] fft, int samplingRate);
-
-    void onWaveFormDataCapture(byte[] waveform, int samplingRate);
-
     void reset(boolean close);
 
     void prepareToDynamic();
@@ -32,4 +22,14 @@ public interface DynamicEffectView {
     Pair<Integer,Integer> getArtViewSize();
 
     int getCaptureSize(VisualizerEntity visualizerEntity);
+
+    void onFftDataCapture(byte[] fft, int samplingRate);
+
+    void onWaveFormDataCapture(byte[] waveform, int samplingRate);
+
+    /**
+     * 设置动效主题颜色
+     * @param color
+     */
+    void setColor(int color);
 }

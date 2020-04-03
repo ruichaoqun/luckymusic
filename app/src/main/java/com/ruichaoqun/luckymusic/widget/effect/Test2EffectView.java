@@ -116,6 +116,7 @@ public abstract class Test2EffectView extends View implements DynamicEffectView 
         return dVar.getCaptureSizeRange()[1];
     }
 
+    @Override
     public int getRate(VisualizerEntity dVar) {
         int d2 = (int) (((double) dVar.getMaxCaptureRate()) * 0.85d);
         this.J = 1000000.0f / ((float) d2);
@@ -291,6 +292,7 @@ public abstract class Test2EffectView extends View implements DynamicEffectView 
 
 
     /* access modifiers changed from: protected */
+    @Override
     public void onDraw(Canvas canvas) {
         boolean z2;
         float f2;

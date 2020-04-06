@@ -45,6 +45,7 @@ import com.ruichaoqun.luckymusic.widget.effect.LonglyEffecyView;
 import com.ruichaoqun.luckymusic.widget.effect.ParticleEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.PsychedelicEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.RadialEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.SingleEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.TestEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.TestEffectView3;
 import com.ruichaoqun.luckymusic.widget.effect.TestEffectView4;
@@ -136,7 +137,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private boolean isBacgroundAutoNext = false;
     long currentPosition;
 
-    private long effectType = 10;
+    private long effectType = 11;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
@@ -541,6 +542,12 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         if(type == 10){
             return new TestEffectView7(this,false);
         }
+
+        if(type == 11){
+            return new SingleEffectView(this);
+        }
+
+
         return new LonglyEffecyView(this);
     }
 

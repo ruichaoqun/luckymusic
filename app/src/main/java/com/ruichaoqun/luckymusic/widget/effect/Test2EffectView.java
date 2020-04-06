@@ -177,7 +177,8 @@ public abstract class Test2EffectView extends View implements DynamicEffectView 
                         double a3 = k(obj, (this.z + (i7 > 0 ? i7 * i6 : i6 / (-i7))) * 2);
                         float[] fArr3 = this.E;
                         int i8 = this.f11642i;
-                        fArr3[i6] = (float) Math.min((a3 / 45.0d) * ((double) i8), (double) i8);
+                        a3 = a3 > 22.0d?(a3-22d):0.0d;
+                        fArr3[i6] = (float) Math.min((a3 / 23.0d) * ((double) i8), (double) i8);
                     }
                     int i9 = 0;
                     while (true) {

@@ -36,7 +36,6 @@ public class TestEffectView3 extends Test2EffectView {
             this.f11640g = false;
         }
         canvas.drawLines(this.k, this.l);
-
     }
 
     @Override

@@ -29,8 +29,8 @@ public class UiUtils {
     }
 
     /** sp值转换为px值*/
-    public static int sp2px(Context context, float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+    public static int sp2px(float spValue) {
+        final float fontScale = LuckyMusicApp.getInstance().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 

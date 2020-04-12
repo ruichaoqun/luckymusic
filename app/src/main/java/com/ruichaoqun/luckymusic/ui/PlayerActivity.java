@@ -574,7 +574,6 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             //TODO 设置是否收藏
             switchBacground(mCurrentMetadata.getDescription().getIconUri());
             this.mEffectLayout.setArtViewResource(mCurrentMetadata.getDescription().getIconUri());
-
         }
         switch (this.mPlaybackState.getState()) {
             case PlaybackStateCompat.STATE_PLAYING:

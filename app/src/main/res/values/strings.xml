@@ -56,4 +56,16 @@
     <string name="play_all">播放全部</string>
     <string name="total_count">(共%1$d首)</string>
     <string name="multiple_choice">多选</string>
+    
+    <!--  EqualizerActivity -->
+    <string name="equalizer_activity_title">均衡器</string>
+    <string name="equalizer_activity_custom">自定义</string>
+    <string name="equalizer_activity_advanced_setup">高级设置</string>
+    <string name="equalizer_activity_high_db">+12db</string>
+    <string name="equalizer_activity_middle_db">0db</string>
+    <string name="equalizer_activity_low_db">-12db</string>
+
+
+    <!--  global -->
+    <string name="global_save">保存</string>
 </resources>

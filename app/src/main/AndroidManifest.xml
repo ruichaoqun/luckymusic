@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-
     <application
         android:name=".LuckyMusicApp"
         android:allowBackup="true"
@@ -20,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.equalizer.EqualizerActivity" />
         <activity android:name=".ui.localmedia.SongsListActivity" />
         <activity android:name=".ui.PlayerActivity" />
         <activity android:name=".ui.localmedia.LocalMediaActivity" />

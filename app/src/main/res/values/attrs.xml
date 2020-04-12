@@ -9,4 +9,17 @@
         <attr name="newBgPaddingLeft" format="dimension"/>
         <attr name="bgType" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomTheme">
+        <attr name="drawableLeftCompat" format="reference"/>
+        <attr name="drawableRightCompat" format="reference"/>
+        <attr name="buttonDrawableWithoutTheme" format="boolean"/>
+        <attr name="needSelected" format="boolean"/>
+        <attr name="needBackground" format="boolean"/>
+        <attr name="needThemeRedShader" format="boolean"/>
+        <attr name="buttonWhiteBackground" format="boolean"/>
+        <attr name="roundedCornerRadius" format="float"/>
+        <attr name="buttonType" format="integer"/>
+
+    </declare-styleable>
 </resources>

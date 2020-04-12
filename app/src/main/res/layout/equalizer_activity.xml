@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    tools:context=".ui.equalizer.EqualizerActivity">
+
+    <TextView
+        android:id="@+id/tv_preinstall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:background="@drawable/button_round_gray"
+        android:paddingLeft="12dp"
+        android:paddingTop="5dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="5dp"
+        android:text="@string/equalizer_activity_custom" />
+
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_toRightOf="@+id/tv_preinstall"
+        android:background="@drawable/button_round_gray"
+        android:paddingLeft="12dp"
+        android:paddingTop="5dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="5dp"
+        android:text="@string/global_save" />
+
+    <TextView
+        android:id="@+id/tv_advanced_setup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/button_round_gray"
+        android:paddingLeft="12dp"
+        android:paddingTop="5dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="5dp"
+        android:text="@string/equalizer_activity_title" />
+
+    <RelativeLayout
+        android:id="@+id/rl_state"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_preinstall"
+        android:layout_above="@id/chart_view"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20.0dip"
+        android:paddingLeft="10.0dip">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/equalizer_activity_high_db"
+            android:textColor="@color/color_66000000"
+            android:textSize="10.0sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/equalizer_activity_middle_db"
+            android:textColor="@color/color_66000000"
+            android:textSize="10.0sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/equalizer_activity_low_db"
+            android:textColor="@color/color_66000000"
+            android:textSize="10.0sp" />
+    </RelativeLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/chart_view"
+        android:layout_below="@id/tv_preinstall"
+        android:layout_toRightOf="@id/rl_state"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/ll_equalizer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/nc"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <View
+        android:id="@+id/chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="150.0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="31.0dip" />
+
+</RelativeLayout>

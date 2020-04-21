@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="50dp"
+    android:layout_height="match_parent">
+    <com.ruichaoqun.luckymusic.widget.EqualizerSeekBar
+        android:layout_width="30dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/seek_bar"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="13sp"
+        android:textColor="#66000000"/>
+</LinearLayout>

@@ -52,7 +52,7 @@ public class CommonLyric {
         this.mPaint = new Paint();
         this.mPaint.setAntiAlias(true);
         this.mPaint.setColor(context.getResources().getColor(R.color.white));
-        this.mPaint.setTextSize(UiUtils.sp2px(context,16.0f));
+        this.mPaint.setTextSize(UiUtils.sp2px(16.0f));
         initTest();
     }
 

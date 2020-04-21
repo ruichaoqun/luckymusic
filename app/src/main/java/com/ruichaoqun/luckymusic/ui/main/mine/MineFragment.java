@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.ui.equalizer.EqualizerActivity;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaActivity;
 
 import butterknife.BindView;
@@ -71,7 +72,7 @@ public class MineFragment extends Fragment {
 
     @OnClick(R.id.layout_loacal)
     public void onViewClicked() {
-        LocalMediaActivity.launchFrom(getActivity());
+        EqualizerActivity.launchFrom(getActivity());
     }
 
     private SpannableStringBuilder mLogBuilder;

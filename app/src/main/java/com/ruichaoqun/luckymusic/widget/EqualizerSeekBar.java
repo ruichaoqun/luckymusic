@@ -59,7 +59,8 @@ public class EqualizerSeekBar extends View {
     private float mTouchY;
 
     private String mTag;
-    private onProgressChangedListener mOnProgressChangedListener;
+    private OnProgressChangedListener mOnProgressChangedListener;
+    private OnDragFinishListener mOnDragFinishListener;
 
     public EqualizerSeekBar(Context context) {
         super(context);
@@ -126,9 +127,13 @@ public class EqualizerSeekBar extends View {
         mProgressColor = ColorUtils.setAlphaComponent(mProgressScrollColor, 160);
     }
 
-    public void setOnProgressChangedListener(String tag,onProgressChangedListener onProgressChangedListener) {
+    public void setOnProgressChangedListener(String tag, OnProgressChangedListener onProgressChangedListener) {
         mTag = tag;
         mOnProgressChangedListener = onProgressChangedListener;
+    }
+
+    public void setOnDragFinishListener(OnDragFinishListener onDragFinishListener) {
+        mOnDragFinishListener = onDragFinishListener;
     }
 
     public void setProgress(int progress) {
@@ -168,6 +173,9 @@ public class EqualizerSeekBar extends View {
                 }
                 progress = (int) (((mMaxTouchHeight - y) / (float) (mMaxTouchHeight - mMinTouchHeight)) * 2400);
                 Log.w("AAAA",progress+"");
+                if(mOnProgressChangedListener != null){
+                    mOnProgressChangedListener.onProgressChanged(mTag,progress);
+                }
                 break;
             case MotionEvent.ACTION_CANCEL:
                 this.mTouched = false;
@@ -286,8 +294,12 @@ public class EqualizerSeekBar extends View {
         canvas.drawText(String.valueOf(value), thumbCx, thumbCy - mThumbRadio - mTextPadding - 20.0f, mTextPaint);
     }
 
-    public interface onProgressChangedListener{
+    public interface OnProgressChangedListener {
         void onProgressChanged(String tag, int progress);
+    }
+
+    public interface OnDragFinishListener{
+        void onDragFinish();
     }
 
 }

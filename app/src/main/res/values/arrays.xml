@@ -6,4 +6,17 @@
         <item>专辑</item>
         <item>文件夹</item>
     </string-array>
+    
+    <string-array name="frequency_band">
+        <item>31</item>
+        <item>62</item>
+        <item>125</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1k</item>
+        <item>2k</item>
+        <item>4k</item>
+        <item>8k</item>
+        <item>16k</item>
+    </string-array>
 </resources>

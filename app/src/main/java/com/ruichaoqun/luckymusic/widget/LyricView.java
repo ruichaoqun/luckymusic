@@ -85,12 +85,12 @@ public class LyricView extends View {
         this.pNormal = new TextPaint();
         this.pNormal.setAntiAlias(true);
         this.pNormal.setColor(Color.parseColor("#80ffffff"));
-        this.pNormal.setTextSize(UiUtils.sp2px(context, 16.0f));
+        this.pNormal.setTextSize(UiUtils.sp2px( 16.0f));
         this.pNormal.setShadowLayer(0.5f, 0.0f, 1.0f, Color.WHITE);
         this.pHighLight = new Paint();
         this.pHighLight.setAntiAlias(true);
         this.pHighLight.setColor(context.getResources().getColor(R.color.white));
-        this.pHighLight.setTextSize(UiUtils.sp2px(context, 16.0f));
+        this.pHighLight.setTextSize(UiUtils.sp2px( 16.0f));
         this.pHighLight.setShadowLayer(0.5f, 0.0f, 1.0f, Color.parseColor("#99000000"));
         this.gestureListener = new GestureListener();
         this.gestureDetector = new GestureDetector(context, this.gestureListener);

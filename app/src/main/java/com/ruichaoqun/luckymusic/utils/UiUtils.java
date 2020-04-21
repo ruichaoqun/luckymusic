@@ -35,8 +35,8 @@ public class UiUtils {
     }
 
     /** 获取屏幕宽度 */
-    public static int getScreenWidth(Context context){
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+    public static int getScreenWidth(){
+        DisplayMetrics dm = LuckyMusicApp.getInstance().getResources().getDisplayMetrics();
         return dm.widthPixels;
     }
 

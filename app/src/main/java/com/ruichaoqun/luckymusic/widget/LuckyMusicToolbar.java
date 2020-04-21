@@ -61,7 +61,7 @@ public class LuckyMusicToolbar extends Toolbar {
     }
 
     public void addCustomView(View child, int gravity, int leftMargin, int rightMargin, OnClickListener onClickListener) {
-        LayoutParams layoutParams = new LayoutParams(gravity);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT,gravity);
         layoutParams.leftMargin = leftMargin;
         layoutParams.rightMargin = rightMargin;
         child.setLayoutParams(layoutParams);
@@ -114,6 +114,8 @@ public class LuckyMusicToolbar extends Toolbar {
             this.title.setSelected(true);
         }
     }
+
+
 
 //    public ImageView getLogoView() {
 //        Object a2 = cc.onColorGet(Toolbar.class, (Object) this, onColorGet.QueueData("IykbAg4lDCsS"));

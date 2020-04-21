@@ -4,18 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kyleduo.switchbutton.SwitchButton;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMediaBrowserActivity;
+import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectProvider;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.ruichaoqun.luckymusic.widget.EqualizerChartView;
 import com.ruichaoqun.luckymusic.widget.EqualizerHorizontalScrollView;
 import com.ruichaoqun.luckymusic.widget.EqualizerSeekBar;
+import com.ruichaoqun.luckymusic.widget.LuckyMusicToolbar;
 
 import java.util.List;
 
@@ -25,6 +31,8 @@ import java.util.List;
  * description:EqualizerActivity
  */
 public class EqualizerActivity extends BaseMediaBrowserActivity implements EqualizerContact.View, EqualizerHorizontalScrollView.OnEqualizerScrollViewScrollListener, EqualizerSeekBar.OnDragFinishListener {
+    private SwitchButton mSwitchButton;
+
     public static void launchFrom(Context context){
         context.startActivity(new Intent(context,EqualizerActivity.class));
     }
@@ -61,11 +69,24 @@ public class EqualizerActivity extends BaseMediaBrowserActivity implements Equal
         relativeLayout.measure(0,0);
         float a = (float) (UiUtils.getScreenWidth() - relativeLayout.getMeasuredWidth());
         mChartView.setRectRatio(a/(UiUtils.dp2px(50.0f)*10));
+        mSwitchButton = (SwitchButton) LayoutInflater.from(this).inflate(R.layout.view_switch_button,null);
+        ((LuckyMusicToolbar) toolbar).addCustomView(mSwitchButton, Gravity.RIGHT, 0, UiUtils.dp2px(7.0f), new View.OnClickListener() {
+            public void onClick(View view) {
+                boolean isChecked = mSwitchButton.isChecked();
+                if (isChecked) {
+
+                } else {
+
+                }
+
+            }
+        });
+
     }
 
     @Override
     protected void initData() {
-
+        AudioEffectProvider effectProvider =
     }
 
     @Override

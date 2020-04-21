@@ -39,5 +39,8 @@
             android:textColor="@color/text_color_black"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_gravity="center_vertical"/>
+        <com.kyleduo.switchbutton.SwitchButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

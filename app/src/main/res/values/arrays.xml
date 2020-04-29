@@ -19,4 +19,54 @@
         <item>8k</item>
         <item>16k</item>
     </string-array>
+
+    <string-array name="local_eq_file_name">
+        <item>pop.json</item>
+        <item>dance.json</item>
+        <item>blues.json</item>
+        <item>classical.json</item>
+        <item>jazz.json</item>
+        <item>downtempo.json</item>
+        <item>electronic.json</item>
+        <item>rock.json</item>
+        <item>country.json</item>
+        <item>acg.json</item>
+        <item>bass.json</item>
+        <item>strong_bass.json</item>
+        <item>bass_treble.json</item>
+        <item>live.json</item>
+        <item>mid.json</item>
+        <item>soft.json</item>
+        <item>soft_bass.json</item>
+        <item>soft_treble.json</item>
+        <item>heavy_metal.json</item>
+        <item>chinese.json</item>
+        <item>ballad.json</item>
+        <item>hiphop.json</item>
+    </string-array>
+
+    <string-array name="local_eq_title">
+        <item>流行</item>
+        <item>舞曲</item>
+        <item>蓝调</item>
+        <item>古典</item>
+        <item>爵士</item>
+        <item>慢歌</item>
+        <item>电音</item>
+        <item>摇滚</item>
+        <item>乡村</item>
+        <item>ACG</item>
+        <item>低音</item>
+        <item>超重低音</item>
+        <item>低音&amp;高音</item>
+        <item>现场</item>
+        <item>中音</item>
+        <item>柔和</item>
+        <item>柔和低音</item>
+        <item>柔和高音</item>
+        <item>重金属</item>
+        <item>古风</item>
+        <item>民谣</item>
+        <item>说唱</item>
+    </string-array>
 </resources>

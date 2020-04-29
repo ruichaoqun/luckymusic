@@ -65,6 +65,26 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     }
 
     @Override
+    public boolean isEffectEnable() {
+        return mPreferenceDataSource.isEffectEnable();
+    }
+
+    @Override
+    public void setEffectEnable(boolean enable) {
+        mPreferenceDataSource.setEffectEnable(enable);
+    }
+
+    @Override
+    public void setEffectData(String effectData) {
+        mPreferenceDataSource.setEffectData(effectData);
+    }
+
+    @Override
+    public String getEffectData() {
+        return mPreferenceDataSource.getEffectData();
+    }
+
+    @Override
     public Observable<BaseResponse<List<BannerItemBean>>> getBannerList() {
         return mHttpDataSource.getBannerList();
     }

@@ -48,7 +48,7 @@ public class EqualizerSeekBar extends View {
     private Paint mTextPaint;
 
     private boolean mTouched;
-    private int progress = 0;
+    private int progress = 1200;
 
     private int mProgressColor;
     private int mProgressScrollColor;
@@ -158,6 +158,10 @@ public class EqualizerSeekBar extends View {
                 this.mTouched = true;
                 break;
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if(mOnDragFinishListener != null){
+                    mOnDragFinishListener.onDragFinish();
+                }
                 this.mTouched = false;
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -176,9 +180,6 @@ public class EqualizerSeekBar extends View {
                 if(mOnProgressChangedListener != null){
                     mOnProgressChangedListener.onProgressChanged(mTag,progress);
                 }
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                this.mTouched = false;
                 break;
         }
         invalidate();

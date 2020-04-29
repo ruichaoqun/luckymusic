@@ -2,6 +2,9 @@ package com.ruichaoqun.luckymusic.ui.equalizer;
 
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBaseView;
+import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
+
+import java.util.List;
 
 /**
  * @author Rui Chaoqun
@@ -14,6 +17,12 @@ public interface EqualizerContact {
     }
 
     interface Presenter extends IBasePresenter<View> {
+        boolean isEffectEnable();
 
+        void setEffectEnable(boolean enable);
+
+        AudioEffectJsonPackage getAudioEffectJsonPackage();
+
+        void setAudioEffectJsonPackage(AudioEffectJsonPackage jsonPackage);
     }
 }

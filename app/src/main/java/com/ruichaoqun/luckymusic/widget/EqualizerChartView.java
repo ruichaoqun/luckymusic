@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
@@ -25,6 +26,7 @@ public class EqualizerChartView extends View implements EqualizerSeekBar.OnProgr
     private Paint mVisibleRectPaint;
     private Paint mBackLinePaint;
     private Paint mArrowPaint;
+    private int mBacgroundColor = Color.TRANSPARENT;
 
     private float mTextMarginBottom;
 
@@ -125,11 +127,20 @@ public class EqualizerChartView extends View implements EqualizerSeekBar.OnProgr
         return mTouchedX > x1 && mTouchedX < x2;
     }
 
+    public void setEffectEnabled(boolean enabled) {
+        if(enabled){
+            mBacgroundColor = ContextCompat.getColor(getContext(),R.color.colorPrimary);
+        }else{
+            mBacgroundColor = ContextCompat.getColor(getContext(),R.color.color_66000000);
+        }
+        invalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         int width = getWidth();
         int height = getHeight();
-        canvas.drawColor(Color.RED);
+        canvas.drawColor(mBacgroundColor);
         if (mFloatsX == null) {
             mFloatsX = new float[10];
             mFloatsY = new float[7];
@@ -194,6 +205,7 @@ public class EqualizerChartView extends View implements EqualizerSeekBar.OnProgr
         for (int i = 0; i < mProgress.length; i++) {
             mProgress[i] = (int) ((list.get(i)+12.0f)*100);
         }
+        invalidate();
     }
 
     public List<Float> getData(){

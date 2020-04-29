@@ -43,4 +43,24 @@ public class PreferenceDataSourceImpl implements PreferenceDataSource{
     public int getPlayMode() {
         return mSharedPreferences.getInt(Constants.SHARE_PREFERENCE_PALY_MODE,2);
     }
+
+    @Override
+    public boolean isEffectEnable() {
+        return mSharedPreferences.getBoolean(Constants.SHARE_PREFERENCE_EFFECT_ENABLE,false);
+    }
+
+    @Override
+    public void setEffectEnable(boolean enable) {
+        mSharedPreferences.edit().putBoolean(Constants.SHARE_PREFERENCE_EFFECT_ENABLE,enable).apply();
+    }
+
+    @Override
+    public void setEffectData(String effectData) {
+        mSharedPreferences.edit().putString(Constants.SHARE_PREFERENCE_EFFECT_DATA,effectData).apply();
+    }
+
+    @Override
+    public String getEffectData() {
+        return mSharedPreferences.getString(Constants.SHARE_PREFERENCE_EFFECT_DATA,"");
+    }
 }

@@ -22,4 +22,12 @@ public interface PreferenceDataSource {
      * @return
      */
     int getPlayMode();
+
+    boolean isEffectEnable();
+
+    void setEffectEnable(boolean enable);
+
+    void setEffectData(String effectData);
+
+    String getEffectData();
 }

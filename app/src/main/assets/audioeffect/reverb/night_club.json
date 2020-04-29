@@ -1,0 +1,63 @@
+﻿{
+  "on": true,
+  "er": {
+    "on": true,
+    "pattern": 4,
+    "rsize": 70,
+    "sdelay": 40
+  },
+  "rvb": {
+    "pdelay": 25,
+    "dtime": 1.5,
+    "hfdamping": 2.79,
+    "density": 60,
+    "rshape": 40,
+    "q": 8,
+    "diffusion": 80,
+    "swidth": 150
+  },
+  "tc": {
+    "on": true,
+    "f": [
+      {
+        "band": 1,
+        "insert": 3,
+        "curve": 0,
+        "gain": -1,
+        "freq": 200,
+        "q": 1
+      },
+      {
+        "band": 2,
+        "insert": 3,
+        "curve": 1,
+        "gain": -3,
+        "freq": 2000,
+        "q": 0.5
+      },
+      {
+        "band": 3,
+        "insert": 3,
+        "curve": 2,
+        "gain": -5,
+        "freq": 8000,
+        "q": 0.5
+      }
+    ]
+  },
+  "il": {
+    "center": 0,
+    "lfe": 0
+  },
+  "rl": {
+    "front": 0,
+    "rear": 0,
+    "center": 0,
+    "lfe": 0
+  },
+  "ol": {
+    "dry": 0,
+    "er": -23,
+    "rvb": -20
+  }
+}

@@ -43,6 +43,7 @@ import com.ruichaoqun.luckymusic.data.DataRepository;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
+import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectProvider;
 import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.utils.RxUtils;
 
@@ -65,6 +66,7 @@ import io.reactivex.functions.Function;
 public class MusicService extends MediaBrowserServiceCompat {
     private static final int NOW_PLAYING_NOTIFICATION = 0xb339;
     public static final String METADATA_KEY_LUCKY_FLAGS = "com.ruichaoqun.luckymusic.media.METADATA_KEY_UAMP_FLAGS";
+    public static final String CUSTOM_ACTION_EFFECT = "com.ruichaoqun.luckymusic.media.CUSTOM_ACTION_EFFECT";
 
     public String TAG = this.getClass().getSimpleName();
 
@@ -73,6 +75,7 @@ public class MusicService extends MediaBrowserServiceCompat {
     private MediaControllerCompat mMediaController;
     private NotificationBuilder mNotificationBuilder;
     private NotificationManagerCompat mNotificationManager;
+    private MediaSessionConnector mediaSessionConnector;
 
     private boolean isForegroundService = false;
 
@@ -87,6 +90,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     @Inject
     protected DataRepository dataRepository;
+
 
     @Override
     public void onCreate() {
@@ -114,24 +118,26 @@ public class MusicService extends MediaBrowserServiceCompat {
             @Override
             public void onAudioSessionId(int audioSessionId) {
                 dataRepository.setAudioSessionId(audioSessionId);
-                Equalizer equalizer = new Equalizer(0,audioSessionId);
-                short[] a = equalizer.getBandLevelRange();
-                int b = equalizer.getNumberOfBands();
-                for (int i = 0; i < b; i++) {
-                    int[] q = equalizer.getBandFreqRange((short) i);
-                    Log.w("SSSSSS",q[0]+"   "+q[1]);
-                    Log.w("SSSSSS",equalizer.getCenterFreq((short) i)+"   ");
-                }
-                Log.w("SSSSSS",a[0]+"   "+a[1]);
-                Log.w("SSSSSS",equalizer.getNumberOfBands()+"");
+                mediaSessionConnector.setCustomActionProviders(new AudioEffectProvider(audioSessionId,dataRepository));
+//                Equalizer equalizer = new Equalizer(0,audioSessionId);
+//                short[] a = equalizer.getBandLevelRange();
+//                int b = equalizer.getNumberOfBands();
+//                for (int i = 0; i < b; i++) {
+//                    int[] q = equalizer.getBandFreqRange((short) i);
+//                    Log.w("SSSSSS",q[0]+"   "+q[1]);
+//                    Log.w("SSSSSS",equalizer.getCenterFreq((short) i)+"   ");
+//                }
+//                Log.w("SSSSSS",a[0]+"   "+a[1]);
+//                Log.w("SSSSSS",equalizer.getNumberOfBands()+"");
             }
         });
-        MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession);
+        mediaSessionConnector = new MediaSessionConnector(mMediaSession);
         mediaSessionConnector.setPlayer(mExoPlayer);
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, getApplication().getPackageName()), null);
         mPlaybackPreparer = new LuckyPlaybackPreparer(mMediaController,mediaSessionConnector,dataRepository, mExoPlayer, dataSourceFactory);
         mediaSessionConnector.setPlaybackPreparer(mPlaybackPreparer);
         mediaSessionConnector.setQueueNavigator(new LuckyQueueNavigator(mMediaSession));
+
         mCompositeDisposable = new CompositeDisposable();
         mMediaController.getTransportControls().setRepeatMode(dataRepository.getPlayMode());
         initPlayListData();
@@ -150,7 +156,6 @@ public class MusicService extends MediaBrowserServiceCompat {
                         }
                     }
                 });
-
     }
 
     @Override

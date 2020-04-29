@@ -16,6 +16,8 @@ import com.kyleduo.switchbutton.SwitchButton;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMediaBrowserActivity;
+import com.ruichaoqun.luckymusic.media.MusicService;
+import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
 import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectProvider;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.ruichaoqun.luckymusic.widget.EqualizerChartView;
@@ -23,6 +25,7 @@ import com.ruichaoqun.luckymusic.widget.EqualizerHorizontalScrollView;
 import com.ruichaoqun.luckymusic.widget.EqualizerSeekBar;
 import com.ruichaoqun.luckymusic.widget.LuckyMusicToolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,8 +33,10 @@ import java.util.List;
  * @date :2020-4-12 21:11:55
  * description:EqualizerActivity
  */
-public class EqualizerActivity extends BaseMediaBrowserActivity implements EqualizerContact.View, EqualizerHorizontalScrollView.OnEqualizerScrollViewScrollListener, EqualizerSeekBar.OnDragFinishListener {
+public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> implements EqualizerContact.View, EqualizerHorizontalScrollView.OnEqualizerScrollViewScrollListener, EqualizerSeekBar.OnDragFinishListener {
     private SwitchButton mSwitchButton;
+    private List<EqualizerSeekBar> mSeekBars;
+    private AudioEffectJsonPackage mEffectJsonPackage;
 
     public static void launchFrom(Context context){
         context.startActivity(new Intent(context,EqualizerActivity.class));
@@ -55,13 +60,15 @@ public class EqualizerActivity extends BaseMediaBrowserActivity implements Equal
         String[] bands = getResources().getStringArray(R.array.frequency_band);
         EqualizerHorizontalScrollView equalizerHorizontalScrollView = findViewById(R.id.scrollView) ;
         LinearLayout layout = findViewById(R.id.ll_equalizer);
+        mSeekBars = new ArrayList<>();
         for (int i = 0; i < layout.getChildCount(); i++) {
             View view = layout.getChildAt(i);
-            EqualizerSeekBar seekBar = (EqualizerSeekBar) view.findViewById(R.id.seek_bar);
+            EqualizerSeekBar seekBar =  view.findViewById(R.id.seek_bar);
             seekBar.setOnProgressChangedListener(bands[i],mChartView);
             TextView textView = view.findViewById(R.id.key);
             textView.setText(bands[i]);
             seekBar.setOnDragFinishListener(this);
+            mSeekBars.add(seekBar);
         }
         this.mChartView.setOnChartViewScrollListener(equalizerHorizontalScrollView);
         equalizerHorizontalScrollView.setOnEqualizerScrollViewScrollListener(this);
@@ -74,19 +81,26 @@ public class EqualizerActivity extends BaseMediaBrowserActivity implements Equal
             public void onClick(View view) {
                 boolean isChecked = mSwitchButton.isChecked();
                 if (isChecked) {
-
+                    mPresenter.setEffectEnable(true);
+                    updateEqualizer();
                 } else {
-
+                    mPresenter.setEffectEnable(false);
+                    updateEqualizer();
                 }
-
             }
         });
-
     }
 
     @Override
     protected void initData() {
-        AudioEffectProvider effectProvider =
+        boolean enable = mPresenter.isEffectEnable();
+        mSwitchButton.setChecked(enable);
+        mChartView.setEffectEnabled(enable);
+        mEffectJsonPackage = mPresenter.getAudioEffectJsonPackage();
+        for (int i = 0; i < mSeekBars.size(); i++) {
+            mSeekBars.get(i).setProgress((int) ((mEffectJsonPackage.getEq().getEqs().get(i)+12.0f)*100));
+        }
+        mChartView.setData(mEffectJsonPackage.getEq().getEqs());
     }
 
     @Override
@@ -109,14 +123,24 @@ public class EqualizerActivity extends BaseMediaBrowserActivity implements Equal
     }
 
     @Override
+    public boolean isNeedMiniPlayerBar() {
+        return false;
+    }
+
+    @Override
     public void onDragFinish() {
+        mSwitchButton.setChecked(true);
+        mChartView.setEffectEnabled(true);
         List<Float> list = mChartView.getData();
+        mEffectJsonPackage.getEq().setEqs(list);
+        mPresenter.setEffectEnable(true);
+        mPresenter.setAudioEffectJsonPackage(mEffectJsonPackage);
         updateEqualizer();
     }
 
     private void updateEqualizer() {
-        Bundle bundle = new Bundle();
-//        mControllerCompat.getTransportControls().sendCustomAction();
-//        Equalizer equaliz = new Equalizer();
+        if(mControllerCompat != null){
+            mControllerCompat.getTransportControls().sendCustomAction(MusicService.CUSTOM_ACTION_EFFECT,null);
+        }
     }
 }

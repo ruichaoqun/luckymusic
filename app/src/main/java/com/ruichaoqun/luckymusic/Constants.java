@@ -18,6 +18,10 @@ public class Constants {
 
     public static final String SHARE_PREFERENCE_PALY_MODE = "play_mode";
 
+    public static final String SHARE_PREFERENCE_EFFECT_ENABLE = "effect_enable";
+
+    public static final String SHARE_PREFERENCE_EFFECT_DATA = "effect_data";
+
 
     public static final String INTENT_EXTRA_LIKE = "like";
 }

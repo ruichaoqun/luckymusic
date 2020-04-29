@@ -118,7 +118,7 @@ public class MusicService extends MediaBrowserServiceCompat {
             @Override
             public void onAudioSessionId(int audioSessionId) {
                 dataRepository.setAudioSessionId(audioSessionId);
-                mediaSessionConnector.setCustomActionProviders(new AudioEffectProvider(audioSessionId,dataRepository));
+                mediaSessionConnector.setCustomActionProviders(new AudioEffectProvider(audioSessionId,dataRepository,mediaSessionConnector));
 //                Equalizer equalizer = new Equalizer(0,audioSessionId);
 //                short[] a = equalizer.getBandLevelRange();
 //                int b = equalizer.getNumberOfBands();

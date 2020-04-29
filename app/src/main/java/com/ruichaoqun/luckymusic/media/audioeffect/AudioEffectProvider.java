@@ -1,14 +1,17 @@
 package com.ruichaoqun.luckymusic.media.audioeffect;
 
+import android.animation.ValueAnimator;
 import android.media.audiofx.DynamicsProcessing;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.android.exoplayer2.ControlDispatcher;
+import com.google.android.exoplayer2.DefaultControlDispatcher;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.gson.Gson;
@@ -20,6 +23,8 @@ import java.util.List;
 public class AudioEffectProvider implements MediaSessionConnector.CustomActionProvider {
     private DataRepository mDataRepository;
     private int mSessionId;
+    private LuckyControlDispatcher mLuckyControlDispatcher;
+
     private DynamicsProcessing dp;
     private DynamicsProcessing.Eq mEq;
     private DynamicsProcessing.Mbc mMbc;
@@ -29,13 +34,16 @@ public class AudioEffectProvider implements MediaSessionConnector.CustomActionPr
     private static final int maxBandCount = bandVal.length;
     private static final int PRIORITY = Integer.MAX_VALUE;
 
-    public AudioEffectProvider(int sessionId,DataRepository dataRepository) {
+    public AudioEffectProvider(int sessionId,DataRepository dataRepository,MediaSessionConnector connector) {
         this.mDataRepository = dataRepository;
         this.mSessionId = sessionId;
         if(Build.VERSION.SDK_INT >= 28){
             DynamicsProcessing.Config.Builder builder = new DynamicsProcessing.Config.Builder(mVariant, mChannelCount, true, maxBandCount, true, maxBandCount, true, maxBandCount, true);
             dp = new DynamicsProcessing(PRIORITY, sessionId, builder.build());
             mEq = new DynamicsProcessing.Eq(true, true, maxBandCount);
+            dp.setEnabled(true);
+            mLuckyControlDispatcher = new LuckyControlDispatcher();
+            connector.setControlDispatcher(mLuckyControlDispatcher);
             init();
         }
     }
@@ -44,7 +52,6 @@ public class AudioEffectProvider implements MediaSessionConnector.CustomActionPr
     private void init() {
         boolean enable = mDataRepository.isEffectEnable();
         if(enable){
-            dp.setEnabled(true);
             mEq.setEnabled(true);
             String effectData = mDataRepository.getEffectData();
             if(!TextUtils.isEmpty(effectData)){
@@ -60,8 +67,6 @@ public class AudioEffectProvider implements MediaSessionConnector.CustomActionPr
                     dp.setPostEqAllChannelsTo(mEq);
                 }
             }
-        }else{
-            dp.setEnabled(enable);
         }
     }
 
@@ -75,5 +80,45 @@ public class AudioEffectProvider implements MediaSessionConnector.CustomActionPr
     @Override
     public PlaybackStateCompat.CustomAction getCustomAction(Player player) {
         return new PlaybackStateCompat.CustomAction.Builder(MusicService.CUSTOM_ACTION_EFFECT,MusicService.CUSTOM_ACTION_EFFECT,-1).build();
+    }
+
+    public class LuckyControlDispatcher extends DefaultControlDispatcher{
+        @Override
+        public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
+            if(playWhenReady){
+                player.setPlayWhenReady(playWhenReady);
+                if(Build.VERSION.SDK_INT >= 28 && dp != null){
+                    ValueAnimator animator = ValueAnimator.ofInt(-50,0);
+                    animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                    animator.setDuration(1000);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int value = (int) animation.getAnimatedValue();
+                            dp.setInputGainAllChannelsTo(value);
+                        }
+                    });
+                    animator.start();
+                }
+            }else{
+                if(Build.VERSION.SDK_INT >= 28 && dp != null){
+                    ValueAnimator animator = ValueAnimator.ofInt(0,-50);
+                    animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                    animator.setDuration(1000);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int value = (int) animation.getAnimatedValue();
+                            dp.setInputGainAllChannelsTo(value);
+                            if(value == -50){
+                                player.setPlayWhenReady(playWhenReady);
+                            }
+                        }
+                    });
+                    animator.start();
+                }
+            }
+            return true;
+        }
     }
 }

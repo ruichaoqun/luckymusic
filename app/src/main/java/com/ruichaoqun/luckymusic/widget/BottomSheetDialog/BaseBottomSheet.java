@@ -36,12 +36,12 @@ public abstract class BaseBottomSheet extends Dialog implements DialogInterface 
         super(context, themeResId);
     }
 
+    @Override
     public void setContentView(View view) {
         ((ViewGroup) view).getChildAt(0).setBackgroundDrawable(ColorDrawableUtils.getTopCornerColorDrawable(getBackgroundColor(), UiUtils.dp2px(15)));
         super.setContentView(view);
     }
 
-    /* access modifiers changed from: protected */
     public int getBackgroundColor() {
         return ResourceRouter.getInstance().getPopupBackgroundColor();
     }
@@ -50,10 +50,12 @@ public abstract class BaseBottomSheet extends Dialog implements DialogInterface 
         this.mDialogView = (ClosableSlidingLayout) View.inflate(getContext(), R.layout.dialog_base_bottom_sheet,  null);
         this.mDialogView.swipeable = true;
         this.mDialogView.setSlideListener(new ClosableSlidingLayout.SlideListener() {
+            @Override
             public void onClosed() {
                 BaseBottomSheet.this.dismiss();
             }
 
+            @Override
             public void onOpened() {
             }
         });
@@ -62,16 +64,18 @@ public abstract class BaseBottomSheet extends Dialog implements DialogInterface 
         initCustomView();
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setCanceledOnTouchOutside(true);
-        super.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 BaseBottomSheet.this.onBottomSheetDismiss();
             }
         });
-        super.setOnShowListener(new DialogInterface.OnShowListener() {
+        setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
             public void onShow(DialogInterface dialogInterface) {
                 BaseBottomSheet.this.onBottomSheetShow();
             }

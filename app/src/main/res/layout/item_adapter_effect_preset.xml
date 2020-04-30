@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/tv_head"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:background="@color/color_66000000"
-        android:text="自定义"
+        tools:text="自定义"
         android:textColor="@color/text_color_middle"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:gravity="center_vertical"
@@ -30,7 +32,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_black"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:text="高音我擦打"
+            tools:text="高音我擦打"
             android:textSize="@dimen/textsize_middle"/>
         <com.ruichaoqun.luckymusic.widget.EqualizerCurveView
             android:id="@+id/ecv_curve"

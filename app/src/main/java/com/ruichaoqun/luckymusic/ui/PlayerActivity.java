@@ -137,7 +137,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private boolean isBacgroundAutoNext = false;
     long currentPosition;
 
-    private long effectType = 11;
+    private long effectType = 8;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {

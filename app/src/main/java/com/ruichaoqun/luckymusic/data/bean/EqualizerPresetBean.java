@@ -14,4 +14,28 @@ public class EqualizerPresetBean {
         this.title = title;
         new Gson().fromJson("",new TypeToken<List<String>>() {}.getType());
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
+    }
 }

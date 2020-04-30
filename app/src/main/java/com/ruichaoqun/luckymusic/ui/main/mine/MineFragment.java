@@ -72,7 +72,7 @@ public class MineFragment extends Fragment {
 
     @OnClick(R.id.layout_loacal)
     public void onViewClicked() {
-        EqualizerActivity.launchFrom(getActivity());
+        LocalMediaActivity.launchFrom(getActivity());
     }
 
     private SpannableStringBuilder mLogBuilder;

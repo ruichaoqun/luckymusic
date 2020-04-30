@@ -15,10 +15,8 @@ import android.widget.TextView;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.base.activity.BaseMediaBrowserActivity;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
-import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectProvider;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.ruichaoqun.luckymusic.widget.EqualizerChartView;
 import com.ruichaoqun.luckymusic.widget.EqualizerHorizontalScrollView;
@@ -77,16 +75,14 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
         float a = (float) (UiUtils.getScreenWidth() - relativeLayout.getMeasuredWidth());
         mChartView.setRectRatio(a/(UiUtils.dp2px(50.0f)*10));
         mSwitchButton = (SwitchButton) LayoutInflater.from(this).inflate(R.layout.view_switch_button,null);
-        ((LuckyMusicToolbar) toolbar).addCustomView(mSwitchButton, Gravity.RIGHT, 0, UiUtils.dp2px(7.0f), new View.OnClickListener() {
-            public void onClick(View view) {
-                boolean isChecked = mSwitchButton.isChecked();
-                if (isChecked) {
-                    mPresenter.setEffectEnable(true);
-                    updateEqualizer();
-                } else {
-                    mPresenter.setEffectEnable(false);
-                    updateEqualizer();
-                }
+        ((LuckyMusicToolbar) toolbar).addCustomView(mSwitchButton, Gravity.RIGHT, 0, UiUtils.dp2px(7.0f), view -> {
+            boolean isChecked = mSwitchButton.isChecked();
+            if (isChecked) {
+                mPresenter.setEffectEnable(true);
+                updateEqualizer();
+            } else {
+                mPresenter.setEffectEnable(false);
+                updateEqualizer();
             }
         });
     }

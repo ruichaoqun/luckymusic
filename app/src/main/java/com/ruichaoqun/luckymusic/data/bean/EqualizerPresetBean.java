@@ -9,10 +9,14 @@ public class EqualizerPresetBean {
     private String title;
     private int type;
     private String resource;
+    private boolean isChecked;
+    private int presetIndex;
 
-    public EqualizerPresetBean(String title) {
-        this.title = title;
-        new Gson().fromJson("",new TypeToken<List<String>>() {}.getType());
+    public static EqualizerPresetBean newEmptyData() {
+        EqualizerPresetBean bean = new EqualizerPresetBean();
+        bean.setType(0);
+        bean.setTitle("空");
+        return bean;
     }
 
     public String getTitle() {
@@ -37,5 +41,21 @@ public class EqualizerPresetBean {
 
     public void setResource(String resource) {
         this.resource = resource;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public int getPresetIndex() {
+        return presetIndex;
+    }
+
+    public void setPresetIndex(int presetIndex) {
+        this.presetIndex = presetIndex;
     }
 }

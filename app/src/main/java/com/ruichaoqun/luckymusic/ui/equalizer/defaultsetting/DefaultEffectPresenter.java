@@ -1,7 +1,14 @@
 package com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting;
 
+import com.ruichaoqun.luckymusic.LuckyMusicApp;
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.data.DataRepository;
+import com.ruichaoqun.luckymusic.data.bean.EqualizerPresetBean;
+import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,5 +21,21 @@ public class DefaultEffectPresenter extends BasePresenter<DefaultEffectContact.V
     @Inject
     public DefaultEffectPresenter(DataRepository dataRepository) {
         super(dataRepository);
+    }
+
+    @Override
+    public void getPresetData() {
+        List<EqualizerPresetBean> mList = new ArrayList<>();
+        mList.add(EqualizerPresetBean.newEmptyData());
+        String[] strings = LuckyMusicApp.getInstance().getResources().getStringArray(R.array.local_eq_file_name);
+        String[] strings1 = LuckyMusicApp.getInstance().getResources().getStringArray(R.array.local_eq_title);
+        for (int i = 0; i < strings1.length; i++) {
+            EqualizerPresetBean presetBean = new EqualizerPresetBean();
+            presetBean.setType(2);
+            presetBean.setTitle(strings1[i]);
+            presetBean.setResource(strings[i]);
+            mList.add(presetBean);
+        }
+        mView.onLoadPresetDataSuccess(mList);
     }
 }

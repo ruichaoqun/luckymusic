@@ -2,6 +2,9 @@ package com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting;
 
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBaseView;
+import com.ruichaoqun.luckymusic.data.bean.EqualizerPresetBean;
+
+import java.util.List;
 
 /**
  * @author Rui Chaoqun
@@ -10,10 +13,10 @@ import com.ruichaoqun.luckymusic.base.mvp.IBaseView;
  */
 public interface DefaultEffectContact {
     interface View extends IBaseView {
-
+        void onLoadPresetDataSuccess(List<EqualizerPresetBean> data);
     }
 
     interface Presenter extends IBasePresenter<View> {
-
+        void getPresetData();
     }
 }

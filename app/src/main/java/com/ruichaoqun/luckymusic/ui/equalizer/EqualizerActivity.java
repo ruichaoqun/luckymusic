@@ -149,13 +149,6 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
     @OnClick({R.id.tv_preinstall, R.id.tv_save, R.id.tv_advanced_setup})
     public void onViewClicked(View view) {
         switch (view.getId()) {

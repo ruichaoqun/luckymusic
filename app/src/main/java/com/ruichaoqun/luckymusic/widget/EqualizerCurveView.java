@@ -7,11 +7,14 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
 
 public class EqualizerCurveView extends View {
 
@@ -48,7 +51,7 @@ public class EqualizerCurveView extends View {
     private void a(Context context, AttributeSet attributeSet, int i2) {
         this.f15007d = new Path();
         this.f15006c = new Paint();
-        this.f15006c.setColor(ResourceRouter.getInstance().getThemeColor());
+        this.f15006c.setColor(ContextCompat.getColor(getContext(),R.color.themeColor));
         this.f15006c.setAntiAlias(true);
         this.f15006c.setStrokeWidth((float) UiUtils.dp2px(1.0f));
         this.f15006c.setStyle(Paint.Style.STROKE);
@@ -63,6 +66,7 @@ public class EqualizerCurveView extends View {
     }
 
     /* access modifiers changed from: protected */
+    @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (this.f15008e) {

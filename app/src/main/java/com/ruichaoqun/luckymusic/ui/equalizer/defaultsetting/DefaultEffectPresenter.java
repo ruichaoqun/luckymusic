@@ -1,5 +1,8 @@
 package com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting;
 
+import android.text.TextUtils;
+
+import com.google.gson.Gson;
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
@@ -34,8 +37,23 @@ public class DefaultEffectPresenter extends BasePresenter<DefaultEffectContact.V
             presetBean.setType(2);
             presetBean.setTitle(strings1[i]);
             presetBean.setResource(strings[i]);
+            presetBean.setPresetIndex(i);
             mList.add(presetBean);
         }
         mView.onLoadPresetDataSuccess(mList);
+    }
+
+    @Override
+    public AudioEffectJsonPackage getAudioEffectJsonPackage() {
+        String gson = dataRepository.getEffectData();
+        if(TextUtils.isEmpty(gson)){
+            return new AudioEffectJsonPackage();
+        }
+        return new Gson().fromJson(gson,AudioEffectJsonPackage.class);
+    }
+
+    @Override
+    public void setAudioEffectJsonPackage(AudioEffectJsonPackage jsonPackage) {
+        dataRepository.setEffectData(new Gson().toJson(jsonPackage));
     }
 }

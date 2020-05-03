@@ -30,14 +30,33 @@ public class EqualizerPresetAdapter extends BaseQuickAdapter<EqualizerPresetBean
             helper.setGone(R.id.iv_profile,false);
         }else if(type == 1){
             helper.setGone(R.id.tv_head, mData.indexOf(item) == 1);
+            helper.setText(R.id.tv_head,R.string.equalizer_activity_custom_define);
             helper.setVisible(R.id.ecv_curve,false);
             helper.setGone(R.id.iv_profile,true);
         }else {
             helper.setGone(R.id.tv_head, mData.get(mData.indexOf(item)-1).getType() != 2);
+            helper.setText(R.id.tv_head,R.string.equalizer_activity_system_preset);
             helper.setVisible(R.id.ecv_curve,true);
             helper.setGone(R.id.iv_profile,false);
             AudioEffectJsonPackage.Eq eq = AudioEffectJsonPackage.Eq.getDefaultEqByIndex(item.getPresetIndex());
             ((EqualizerCurveView)helper.getView(R.id.ecv_curve)).setData(eq.getEqs());
+            item.setmDatas(eq.getEqs());
         }
+        helper.addOnClickListener(R.id.ll_select);
+        helper.addOnClickListener(R.id.iv_profile);
+    }
+
+    public void setSelectedPosition(int position) {
+        int targetInvisible = 0;
+        for (int i = 0; i < getData().size(); i++) {
+            if(getData().get(i).isChecked()){
+                getData().get(i).setChecked(false);
+                targetInvisible = i;
+                break;
+            }
+        }
+        getData().get(position).setChecked(true);
+        notifyItemChanged(targetInvisible);
+        notifyItemChanged(position);
     }
 }

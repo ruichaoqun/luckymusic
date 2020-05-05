@@ -64,6 +64,8 @@
     <string name="equalizer_activity_high_db">+12db</string>
     <string name="equalizer_activity_middle_db">0db</string>
     <string name="equalizer_activity_low_db">-12db</string>
+    <string name="equalizer_activity_custom_define">自定义</string>
+    <string name="equalizer_activity_system_preset">系统预设</string>
 
 
     <!--  global -->

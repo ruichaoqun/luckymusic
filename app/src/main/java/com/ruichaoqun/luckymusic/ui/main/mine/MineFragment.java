@@ -34,9 +34,7 @@ import butterknife.OnClick;
  */
 public class MineFragment extends Fragment {
     @BindView(R.id.layout_loacal)
-    LinearLayout layoutLoacal;
-    @BindView(R.id.tv_test)
-    TextView tvTest;
+    LinearLayout layoutLocal;
 
     public MineFragment() {
 
@@ -55,36 +53,19 @@ public class MineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mLogBuilder = new SpannableStringBuilder();
-        addLog("asdasda",0);
-        addLog("asdasda",0);
-        addLog("asdasda",0);
-        addLog("asdasda",0);
-        addLog("asdasda",0);
-        addLog("asdasda",0);
-        addLog("asdasda",0);
-        addLog("asdasda",1);
-        addLog("asdasda",0);
-        addLog("asdasda",1);
-        addLog("asdasda",0);
-        addLog("asdasda安达科技数据库的回复看电视",1);
+
     }
 
-    @OnClick(R.id.layout_loacal)
-    public void onViewClicked() {
-        EqualizerActivity.launchFrom(getActivity());
-    }
-
-    private SpannableStringBuilder mLogBuilder;
-
-    private void addLog(String log,int type) {
-        mLogBuilder.append(log);
-        if(type == 1){
-            mLogBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#ffaa2222")),mLogBuilder.length()-log.length(),mLogBuilder.length(),Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        }else{
-            mLogBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff333333")),mLogBuilder.length()-log.length(),mLogBuilder.length(),Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+    @OnClick(value = {R.id.layout_loacal,
+    R.id.layout_equalizer})
+    public void onViewClicked(View v) {
+        switch (v.getId()){
+            case R.id.layout_loacal:
+                LocalMediaActivity.launchFrom(getActivity());
+                break;
+            case R.id.layout_equalizer:
+                EqualizerActivity.launchFrom(getActivity());
+                break;
         }
-        mLogBuilder.append("\n");
-        tvTest.setText(mLogBuilder);
     }
 }

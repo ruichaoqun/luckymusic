@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.utils.IoUtils;
@@ -39,8 +40,10 @@ public class AudioEffectJsonPackage {
     }
 
     public static class Eq {
+        @SerializedName("eqs")
         private List<Float> mEqs;
         private String mFileName;
+        @SerializedName("on")
         private boolean mOn = false;
 
         public Eq() {

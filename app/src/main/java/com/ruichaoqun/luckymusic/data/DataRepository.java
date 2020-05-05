@@ -7,6 +7,7 @@ import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.BannerItemBean;
 import com.ruichaoqun.luckymusic.data.bean.BaseResponse;
+import com.ruichaoqun.luckymusic.data.bean.CustomEqBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
@@ -35,13 +36,15 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     private final HttpDataSource mHttpDataSource;
     private final PreferenceDataSource mPreferenceDataSource;
     private final MediaDataSource mMediaDataSource;
+    private final DbDataSource mDbDataSource;
 
 
     @Inject
-    public DataRepository(HttpDataSource httpDataSource, PreferenceDataSource preferenceDataSource,MediaDataSource mediaDataSource ) {
+    public DataRepository(HttpDataSource httpDataSource, PreferenceDataSource preferenceDataSource,MediaDataSource mediaDataSource,DbDataSource dbDataSource) {
         mHttpDataSource = httpDataSource;
         mPreferenceDataSource = preferenceDataSource;
         mMediaDataSource = mediaDataSource;
+        mDbDataSource = dbDataSource;
     }
 
     @Override
@@ -202,5 +205,21 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     @Override
     public void setAudioSessionId(int audioSessionId) {
         mMediaDataSource.setAudioSessionId(audioSessionId);
+    }
+
+    public List<CustomEqBean> getAllCustomEq(){
+        return mDbDataSource.getAllCustomEq();
+    }
+
+    public void insertCustomEq(CustomEqBean eqBean){
+        mDbDataSource.insertCustomEq(eqBean);
+    }
+
+    public void deleteCustomEq(String title){
+        mDbDataSource.deleteCustomEq(title);
+    }
+
+    public void renameCustomEq(String oldName,String name){
+        mDbDataSource.renameCustomEq(oldName,name);
     }
 }

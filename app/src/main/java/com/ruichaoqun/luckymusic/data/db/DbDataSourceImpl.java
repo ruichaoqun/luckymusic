@@ -5,6 +5,8 @@ import android.support.v4.media.MediaMetadataCompat;
 
 import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
+import com.ruichaoqun.luckymusic.data.bean.CustomEqBean;
+import com.ruichaoqun.luckymusic.data.bean.CustomEqBeanDao;
 import com.ruichaoqun.luckymusic.data.bean.DaoMaster;
 import com.ruichaoqun.luckymusic.data.bean.DaoSession;
 import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
@@ -240,6 +242,33 @@ public class DbDataSourceImpl implements DbDataSource{
             mDaoSession.getPlayListBeanDao().update(playListBean1);
             //调用detach后下次再从数据库获取实体时会直接访问数据库，而不是从缓存获取，这样避免其关联的list还是原先的
             mDaoSession.getPlayListBeanDao().detach(playListBean1);
+        }
+    }
+
+    @Override
+    public List<CustomEqBean> getAllCustomEq() {
+        return mDaoSession.getCustomEqBeanDao().queryBuilder().list();
+    }
+
+    @Override
+    public void insertCustomEq(CustomEqBean eqBean) {
+        mDaoSession.getCustomEqBeanDao().insert(eqBean);
+    }
+
+    @Override
+    public void deleteCustomEq(String title) {
+        CustomEqBean eqBean = mDaoSession.getCustomEqBeanDao().queryBuilder().where(CustomEqBeanDao.Properties.EqTitle.eq(title)).unique();
+        if(eqBean != null){
+            mDaoSession.getCustomEqBeanDao().delete(eqBean);
+        }
+    }
+
+    @Override
+    public void renameCustomEq(String oldName, String name) {
+        CustomEqBean eqBean = mDaoSession.getCustomEqBeanDao().queryBuilder().where(CustomEqBeanDao.Properties.EqTitle.eq(oldName)).unique();
+        if(eqBean != null){
+            eqBean.setEqTitle(name);
+            mDaoSession.getCustomEqBeanDao().update(eqBean);
         }
     }
 }

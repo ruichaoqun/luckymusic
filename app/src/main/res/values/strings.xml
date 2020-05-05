@@ -66,8 +66,14 @@
     <string name="equalizer_activity_low_db">-12db</string>
     <string name="equalizer_activity_custom_define">自定义</string>
     <string name="equalizer_activity_system_preset">系统预设</string>
+    <string name="equalizer_activity_rename_hint">请输入自定义预设名称</string>
+    <string name="equalizer_activity_rename_error">该名称已存在</string>
+    <string name="equalizer_activity_preset_activity_title">预设</string>
 
 
     <!--  global -->
     <string name="global_save">保存</string>
+    <string name="none">无</string>
+    <string name="rename">重命名</string>
+    <string name="delete">删除</string>
 </resources>

@@ -7,6 +7,7 @@ import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.mvp.BasePresenter;
 import com.ruichaoqun.luckymusic.data.DataRepository;
+import com.ruichaoqun.luckymusic.data.bean.CustomEqBean;
 import com.ruichaoqun.luckymusic.data.bean.EqualizerPresetBean;
 import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
 
@@ -27,9 +28,24 @@ public class DefaultEffectPresenter extends BasePresenter<DefaultEffectContact.V
     }
 
     @Override
-    public void getPresetData() {
+    public void getPresetData(AudioEffectJsonPackage.Eq eq) {
         List<EqualizerPresetBean> mList = new ArrayList<>();
         mList.add(EqualizerPresetBean.newEmptyData());
+        List<CustomEqBean> customEqBeans = dataRepository.getAllCustomEq();
+        if(customEqBeans != null){
+            for (int i = 0; i < customEqBeans.size(); i++) {
+                EqualizerPresetBean presetBean = new EqualizerPresetBean();
+                presetBean.setType(1);
+                presetBean.setTitle(customEqBeans.get(i).getEqTitle());
+                String[] strings = customEqBeans.get(i).getEqJson().split(",");
+                List<Float> floats = new ArrayList<>();
+                for (int j = 0; j < strings.length; j++) {
+                    floats.add(Float.valueOf(strings[i]));
+                }
+                presetBean.setmDatas(floats);
+                mList.add(presetBean);
+            }
+        }
         String[] strings = LuckyMusicApp.getInstance().getResources().getStringArray(R.array.local_eq_file_name);
         String[] strings1 = LuckyMusicApp.getInstance().getResources().getStringArray(R.array.local_eq_title);
         for (int i = 0; i < strings1.length; i++) {
@@ -39,6 +55,16 @@ public class DefaultEffectPresenter extends BasePresenter<DefaultEffectContact.V
             presetBean.setResource(strings[i]);
             presetBean.setPresetIndex(i);
             mList.add(presetBean);
+        }
+        if(!eq.isOn()){
+            mList.get(0).setChecked(true);
+        }else if(!TextUtils.isEmpty(eq.getFileName())){
+            for (int i = 0; i < mList.size(); i++) {
+                if(TextUtils.equals(eq.getFileName(),mList.get(i).getTitle())){
+                    mList.get(i).setChecked(true);
+                    break;
+                }
+            }
         }
         mView.onLoadPresetDataSuccess(mList);
     }
@@ -55,5 +81,15 @@ public class DefaultEffectPresenter extends BasePresenter<DefaultEffectContact.V
     @Override
     public void setAudioEffectJsonPackage(AudioEffectJsonPackage jsonPackage) {
         dataRepository.setEffectData(new Gson().toJson(jsonPackage));
+    }
+
+    @Override
+    public void deleteEq(String title) {
+        dataRepository.deleteCustomEq(title);
+    }
+
+    @Override
+    public void renameEq(String title, String toString) {
+        dataRepository.renameCustomEq(title,toString);
     }
 }

@@ -18,10 +18,14 @@ public interface DefaultEffectContact {
     }
 
     interface Presenter extends IBasePresenter<View> {
-        void getPresetData();
+        void getPresetData(AudioEffectJsonPackage.Eq mEffectJsonPackage);
 
         AudioEffectJsonPackage getAudioEffectJsonPackage();
 
         void setAudioEffectJsonPackage(AudioEffectJsonPackage jsonPackage);
+
+        void deleteEq(String title);
+
+        void renameEq(String title, String toString);
     }
 }

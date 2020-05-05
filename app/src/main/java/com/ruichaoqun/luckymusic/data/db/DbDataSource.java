@@ -4,6 +4,7 @@ import android.support.v4.media.MediaMetadataCompat;
 
 import com.ruichaoqun.luckymusic.data.bean.AlbumBean;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
+import com.ruichaoqun.luckymusic.data.bean.CustomEqBean;
 import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 
@@ -56,4 +57,12 @@ public interface DbDataSource {
     void updatePlayLastSong(long lastPlaySongId,long lastPlaySongPosition);
 
     void removePlayListItem(long id);
+
+    List<CustomEqBean> getAllCustomEq();
+
+    void insertCustomEq(CustomEqBean eqBean);
+
+    void deleteCustomEq(String title);
+
+    void renameCustomEq(String oldName,String name);
 }

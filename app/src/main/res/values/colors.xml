@@ -23,6 +23,7 @@
 
     <color name="themeColor">@color/color_ff3a3a</color>
     <color name="color_ff3a3a">#ffff3a3a</color>
+    <color name="color_663a3a">#66ff3a3a</color>
     <color name="color_ff0a0a">#ffaa3a3a</color>
 
     <color name="color_click_gray">#19ffffff</color>

@@ -67,6 +67,10 @@ public class AudioEffectProvider implements MediaSessionConnector.CustomActionPr
                     dp.setPostEqAllChannelsTo(mEq);
                 }
             }
+        }else{
+            mEq.setEnabled(false);
+            dp.setPreEqAllChannelsTo(mEq);
+            dp.setPostEqAllChannelsTo(mEq);
         }
     }
 

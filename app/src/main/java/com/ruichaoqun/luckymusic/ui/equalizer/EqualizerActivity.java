@@ -3,12 +3,15 @@ package com.ruichaoqun.luckymusic.ui.equalizer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.kyleduo.switchbutton.SwitchButton;
 import com.ruichaoqun.luckymusic.R;
@@ -106,6 +109,11 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
             mSeekBars.get(i).setProgress((int) ((mEffectJsonPackage.getEq().getEqs().get(i) + 12.0f) * 100));
         }
         mChartView.setData(mEffectJsonPackage.getEq().getEqs());
+        if(!mEffectJsonPackage.getEq().isOn()){
+            tvPreinstall.setText(R.string.none);
+        }else{
+            tvPreinstall.setText(TextUtils.isEmpty(mEffectJsonPackage.getEq().getFileName())?getString(R.string.equalizer_activity_custom_define):mEffectJsonPackage.getEq().getFileName());
+        }
     }
 
     @Override
@@ -134,9 +142,11 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
 
     @Override
     public void onDragFinish() {
+        tvPreinstall.setText(R.string.equalizer_activity_custom_define);
         mSwitchButton.setChecked(true);
         mChartView.setEffectEnabled(true);
         List<Float> list = mChartView.getData();
+        mEffectJsonPackage.getEq().setFileName("");
         mEffectJsonPackage.getEq().setEqs(list);
         mPresenter.setEffectEnable(true);
         mPresenter.setAudioEffectJsonPackage(mEffectJsonPackage);
@@ -160,6 +170,14 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
             case R.id.tv_advanced_setup:
                 break;
                 default:
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100){
+            initData();
         }
     }
 }

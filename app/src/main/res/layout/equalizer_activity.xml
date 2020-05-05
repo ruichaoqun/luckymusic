@@ -12,12 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:background="@drawable/button_round_gray"
+        android:drawableRight="@drawable/ic_arrow_right"
+        android:drawableTint="@color/text_color_black"
+        android:drawablePadding="4dp"
+        android:drawableTintMode="add"
         android:paddingLeft="12dp"
         android:paddingTop="5dp"
         android:paddingRight="12dp"
         android:paddingBottom="5dp"
-        android:text="@string/equalizer_activity_custom"
-        android:foreground="?attr/selectableItemBackground"/>
+        tools:text="@string/equalizer_activity_custom"
+        android:textColor="@color/text_color_black" />
 
     <TextView
         android:id="@+id/tv_save"
@@ -25,12 +29,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_toRightOf="@+id/tv_preinstall"
-        android:background="@drawable/button_round_gray"
+        android:background="@drawable/button_round_red"
         android:paddingLeft="12dp"
         android:paddingTop="5dp"
         android:paddingRight="12dp"
         android:paddingBottom="5dp"
-        android:text="@string/global_save" />
+        android:text="@string/global_save"
+        android:textColor="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/tv_advanced_setup"
@@ -39,10 +44,14 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/dp_10"
         android:background="@drawable/button_round_gray"
+        android:drawableRight="@drawable/ic_arrow_right"
+        android:drawableTint="@color/text_color_black"
+        android:drawablePadding="4dp"
         android:paddingLeft="12dp"
         android:paddingTop="5dp"
         android:paddingRight="12dp"
         android:paddingBottom="5dp"
+        android:textColor="@color/text_color_black"
         android:text="@string/equalizer_activity_title" />
 
     <RelativeLayout

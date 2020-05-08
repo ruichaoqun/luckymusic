@@ -6,6 +6,8 @@ import com.ruichaoqun.luckymusic.ui.equalizer.EqualizerActivity;
 import com.ruichaoqun.luckymusic.ui.equalizer.EqualizerModule;
 import com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.DefaultEffectActivity;
 import com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.DefaultEffectModule;
+import com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.savepreset.EqualizerSavePresetActivity;
+import com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.savepreset.EqualizerSavePresetModule;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaActivity;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaModule;
 import com.ruichaoqun.luckymusic.ui.localmedia.SongsListActivity;
@@ -55,4 +57,7 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = DefaultEffectModule.class)
     abstract DefaultEffectActivity mDefaultEffectActivity();
+
+    @ContributesAndroidInjector(modules = EqualizerSavePresetModule.class)
+    abstract EqualizerSavePresetActivity mEqualizerSavePresetActivity();
 }

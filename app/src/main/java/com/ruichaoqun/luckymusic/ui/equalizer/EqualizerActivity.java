@@ -19,6 +19,7 @@ import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
 import com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.DefaultEffectActivity;
+import com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.savepreset.EqualizerSavePresetActivity;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.ruichaoqun.luckymusic.widget.EqualizerChartView;
 import com.ruichaoqun.luckymusic.widget.EqualizerHorizontalScrollView;
@@ -89,6 +90,7 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
         mSwitchButton = (SwitchButton) LayoutInflater.from(this).inflate(R.layout.view_switch_button, null);
         ((LuckyMusicToolbar) toolbar).addCustomView(mSwitchButton, Gravity.RIGHT, 0, UiUtils.dp2px(7.0f), view -> {
             boolean isChecked = mSwitchButton.isChecked();
+            mChartView.setEffectEnabled(isChecked);
             if (isChecked) {
                 mPresenter.setEffectEnable(true);
                 updateEqualizer();
@@ -166,6 +168,7 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
                 DefaultEffectActivity.launchFrom(this);
                 break;
             case R.id.tv_save:
+                EqualizerSavePresetActivity.launchFrom(this);
                 break;
             case R.id.tv_advanced_setup:
                 break;

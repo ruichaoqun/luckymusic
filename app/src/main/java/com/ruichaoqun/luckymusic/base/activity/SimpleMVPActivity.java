@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBaseView;
 
@@ -35,6 +36,10 @@ public abstract class SimpleMVPActivity<T extends IBasePresenter> extends BaseAc
     @Override
     public void showToast(String message) {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public void showToast(int stringRes) {
+        Toast.makeText(this,getString(stringRes),Toast.LENGTH_SHORT).show();
     }
 
     @Override

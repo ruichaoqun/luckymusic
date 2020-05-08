@@ -15,7 +15,6 @@
         android:drawableRight="@drawable/ic_arrow_right"
         android:drawableTint="@color/text_color_black"
         android:drawablePadding="4dp"
-        android:drawableTintMode="add"
         android:paddingLeft="12dp"
         android:paddingTop="5dp"
         android:paddingRight="12dp"
@@ -52,7 +51,7 @@
         android:paddingRight="12dp"
         android:paddingBottom="5dp"
         android:textColor="@color/text_color_black"
-        android:text="@string/equalizer_activity_title" />
+        android:text="@string/equalizer_activity_advanced_setup" />
 
     <RelativeLayout
         android:id="@+id/rl_state"

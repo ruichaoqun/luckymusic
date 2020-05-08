@@ -1,6 +1,8 @@
 package com.ruichaoqun.luckymusic.media.audioeffect;
 
 import android.content.res.AssetManager;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AudioEffectJsonPackage {
+public class AudioEffectJsonPackage implements Parcelable {
     private Eq mEq;
 
     public AudioEffectJsonPackage() {
@@ -39,7 +41,7 @@ public class AudioEffectJsonPackage {
         mEq = eq;
     }
 
-    public static class Eq {
+    public static class Eq implements Parcelable {
         @SerializedName("eqs")
         private List<Float> mEqs;
         private String mFileName;
@@ -150,8 +152,62 @@ public class AudioEffectJsonPackage {
             }
         }
 
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeList(this.mEqs);
+            dest.writeString(this.mFileName);
+            dest.writeByte(this.mOn ? (byte) 1 : (byte) 0);
+        }
+
+        protected Eq(Parcel in) {
+            this.mEqs = new ArrayList<Float>();
+            in.readList(this.mEqs, Float.class.getClassLoader());
+            this.mFileName = in.readString();
+            this.mOn = in.readByte() != 0;
+        }
+
+        public static final Creator<Eq> CREATOR = new Creator<Eq>() {
+            @Override
+            public Eq createFromParcel(Parcel source) {
+                return new Eq(source);
+            }
+
+            @Override
+            public Eq[] newArray(int size) {
+                return new Eq[size];
+            }
+        };
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.mEq, flags);
+    }
+
+    protected AudioEffectJsonPackage(Parcel in) {
+        this.mEq = in.readParcelable(Eq.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<AudioEffectJsonPackage> CREATOR = new Parcelable.Creator<AudioEffectJsonPackage>() {
+        @Override
+        public AudioEffectJsonPackage createFromParcel(Parcel source) {
+            return new AudioEffectJsonPackage(source);
+        }
+
+        @Override
+        public AudioEffectJsonPackage[] newArray(int size) {
+            return new AudioEffectJsonPackage[size];
+        }
+    };
 }

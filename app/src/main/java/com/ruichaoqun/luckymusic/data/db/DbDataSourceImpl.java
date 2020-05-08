@@ -252,7 +252,7 @@ public class DbDataSourceImpl implements DbDataSource{
 
     @Override
     public void insertCustomEq(CustomEqBean eqBean) {
-        mDaoSession.getCustomEqBeanDao().insert(eqBean);
+        mDaoSession.getCustomEqBeanDao().insertOrReplace(eqBean);
     }
 
     @Override

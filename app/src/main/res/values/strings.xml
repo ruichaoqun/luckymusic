@@ -70,6 +70,13 @@
     <string name="equalizer_activity_rename_error">该名称已存在</string>
     <string name="equalizer_activity_preset_activity_title">预设</string>
 
+    <!--  EqualizerSavePresetActivity -->
+    <string name="equalizer_save_preset_save_to">保存到</string>
+    <string name="equalizer_save_preset_new">新增预设</string>
+    <string name="equalizer_save_preset_save_title">保存当前音效设置为</string>
+    <string name="equalizer_save_preset_name_exit">该名称已存在</string>
+
+
 
     <!--  global -->
     <string name="global_save">保存</string>

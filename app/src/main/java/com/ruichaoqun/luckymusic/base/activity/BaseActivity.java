@@ -55,8 +55,8 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mUnbinder.unbind();
         mCompositeDisposable.dispose();
+        super.onDestroy();
     }
 }

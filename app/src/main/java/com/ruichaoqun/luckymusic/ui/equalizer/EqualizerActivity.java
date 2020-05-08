@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,8 +114,20 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
         mChartView.setData(mEffectJsonPackage.getEq().getEqs());
         if(!mEffectJsonPackage.getEq().isOn()){
             tvPreinstall.setText(R.string.none);
+            tvSave.setEnabled(false);
+            tvSave.setTextColor(getResources().getColor(R.color.color_663a3a));
         }else{
-            tvPreinstall.setText(TextUtils.isEmpty(mEffectJsonPackage.getEq().getFileName())?getString(R.string.equalizer_activity_custom_define):mEffectJsonPackage.getEq().getFileName());
+
+            if(TextUtils.isEmpty(mEffectJsonPackage.getEq().getFileName())){
+                tvPreinstall.setText(R.string.equalizer_activity_custom_define);
+                tvSave.setEnabled(true);
+                tvSave.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+            }else{
+                tvPreinstall.setText(mEffectJsonPackage.getEq().getFileName());
+                tvSave.setEnabled(false);
+                tvSave.setTextColor(getResources().getColor(R.color.color_663a3a));
+            }
         }
     }
 
@@ -145,6 +158,8 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
     @Override
     public void onDragFinish() {
         tvPreinstall.setText(R.string.equalizer_activity_custom_define);
+        tvSave.setEnabled(true);
+        tvSave.setTextColor(getResources().getColor(R.color.colorPrimary));
         mSwitchButton.setChecked(true);
         mChartView.setEffectEnabled(true);
         List<Float> list = mChartView.getData();
@@ -168,7 +183,7 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
                 DefaultEffectActivity.launchFrom(this);
                 break;
             case R.id.tv_save:
-                EqualizerSavePresetActivity.launchFrom(this);
+                EqualizerSavePresetActivity.launchFrom(this,mEffectJsonPackage);
                 break;
             case R.id.tv_advanced_setup:
                 break;
@@ -179,7 +194,7 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100){
+        if(requestCode == 100 || requestCode == 101){
             initData();
         }
     }

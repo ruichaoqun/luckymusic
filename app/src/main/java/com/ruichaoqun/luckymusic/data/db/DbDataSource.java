@@ -65,4 +65,5 @@ public interface DbDataSource {
     void deleteCustomEq(String title);
 
     void renameCustomEq(String oldName,String name);
+
 }

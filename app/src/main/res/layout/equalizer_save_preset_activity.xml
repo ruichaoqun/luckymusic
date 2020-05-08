@@ -3,10 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="draw"
+    android:background="@drawable/bac_dialog_actiivity"
+    android:orientation="vertical"
     tools:context=".ui.equalizer.defaultsetting.savepreset.EqualizerSavePresetActivity">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="asda"/>
+        android:text="@string/equalizer_save_preset_save_to"
+        android:textSize="@dimen/textsize_middle"
+        android:textColor="@color/text_color_black"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/dp_15"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

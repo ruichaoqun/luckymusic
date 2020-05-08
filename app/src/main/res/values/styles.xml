@@ -105,7 +105,7 @@
         <item name="android:layout_height">66.0dip</item>
     </style>
 
-    <style name="DialogActivity" parent="Theme.AppCompat.Dialog">
+    <style name="DialogActivity" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowMinWidthMajor">65.0%</item>

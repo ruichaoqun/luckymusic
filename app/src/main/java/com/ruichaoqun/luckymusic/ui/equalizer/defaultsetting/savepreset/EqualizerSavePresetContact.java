@@ -2,6 +2,10 @@ package com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.savepreset;
 
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
 import com.ruichaoqun.luckymusic.base.mvp.IBaseView;
+import com.ruichaoqun.luckymusic.data.bean.CustomEqBean;
+import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
+
+import java.util.List;
 
 /**
  * @author Rui Chaoqun
@@ -10,10 +14,13 @@ import com.ruichaoqun.luckymusic.base.mvp.IBaseView;
  */
 public interface EqualizerSavePresetContact {
     interface View extends IBaseView {
-
     }
 
     interface Presenter extends IBasePresenter<View> {
+        List<CustomEqBean> getAllCustomEq();
 
+        void saveOrUpdate(CustomEqBean customEqBean);
+
+        void setAudioEffectJsonPackage(AudioEffectJsonPackage jsonPackage);
     }
 }

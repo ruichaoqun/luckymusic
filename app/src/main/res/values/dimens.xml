@@ -48,4 +48,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="player_seekbar_height">22.67dp</dimen>
     <dimen name="dp_120">120dp</dimen>
     <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_15">15dp</dimen>
 </resources>

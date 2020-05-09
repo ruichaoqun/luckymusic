@@ -145,6 +145,27 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_dynamic_effect"
+                android:scaleType="centerInside"
+                android:layout_marginLeft="20dp"/>
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                />
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_audio_effect"
+                android:scaleType="centerInside"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"/>
+        </RelativeLayout>
         <include layout="@layout/layout_player_seekbar" />
                 <LinearLayout
                     android:gravity="center"

@@ -22,6 +22,8 @@ public class Constants {
 
     public static final String SHARE_PREFERENCE_EFFECT_DATA = "effect_data";
 
+    public static final String SHARE_PREFERENCE_DYNAMIC_EFFECT_TYPE = "dynamic_effect_type";
+
 
     public static final String INTENT_EXTRA_LIKE = "like";
 }

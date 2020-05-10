@@ -22,8 +22,10 @@ import java.util.Queue;
 import java.util.Random;
 
 
-
-public class LonglyEffecyView extends View implements DynamicEffectView {
+/**
+ * 孤独星球动效
+ */
+public class LonelyPlanetEffectView extends View implements DynamicEffectView {
     static final int[] mPointRadis = {UiUtils.dp2px(2.0f), UiUtils.dp2px(3.0f),UiUtils.dp2px(4.0f),UiUtils.dp2px(5.0f)};
     private static final float mCircleLiveTime = 2000.0f;
     private static final float f11624f = -20.0f;
@@ -50,7 +52,7 @@ public class LonglyEffecyView extends View implements DynamicEffectView {
     private EffectData<LonglyEffectData> mDatas = new EffectData<>();
 
 
-    public LonglyEffecyView(Context context) {
+    public LonelyPlanetEffectView(Context context) {
         super(context);
         this.mPaint.setStyle(Paint.Style.STROKE);
         this.mStrokePaint.setStyle(Paint.Style.STROKE);

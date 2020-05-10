@@ -2,14 +2,25 @@ package com.ruichaoqun.luckymusic.widget.effect;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.util.Log;
+import android.util.Pair;
+import android.view.View;
 
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
-public class TestEffectView4 extends Test2EffectView {
+
+/**
+ * @author Rui Chaoqun
+ * @date :2020/3/31 19:07
+ * description:动感音阶动效
+ */
+public class DynamicScaleEffectView extends ParticleCommonEffectView {
     private static final int q = UiUtils.dp2px(3.0f);
 
-    public TestEffectView4(Context context) {
+    public DynamicScaleEffectView(Context context) {
         super(context);
         this.f11635b = q;
         this.l.setStrokeWidth((float) q);

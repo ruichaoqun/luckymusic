@@ -1,8 +1,10 @@
 package com.ruichaoqun.luckymusic.widget.effect;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -12,9 +14,9 @@ import com.ruichaoqun.luckymusic.utils.ColorUtil;
 /**
  * @author Rui Chaoqun
  * @date :2020/4/3 15:58
- * description:
+ * description:水晶音波动效
  */
-public class TestEffectView7 extends FrameLayout implements DynamicEffectView {
+public class CrystalSoundWaveEffectView extends FrameLayout implements DynamicEffectView {
 
     /* renamed from: a  reason: collision with root package name */
     private ImageView f9786a;
@@ -25,15 +27,15 @@ public class TestEffectView7 extends FrameLayout implements DynamicEffectView {
     /* renamed from: c  reason: collision with root package name */
     private float[] f9788c = new float[3];
 
-    public TestEffectView7(Context context, boolean z) {
+    public CrystalSoundWaveEffectView(Context context, boolean z) {
         super(context);
         this.f9786a = new ImageView(context);
         this.f9786a.setScaleType(ImageView.ScaleType.CENTER_CROP);
         this.f9786a.setImageResource(R.drawable.c0e);
-        this.f9786a.setColorFilter(ColorUtil.getEffectColor(-1, this.f9788c));
-        addView(this.f9786a, new FrameLayout.LayoutParams(-1, -1));
-        this.f9787b = z ? new TestEffectView8(context) : new TestEffectView9(context);
-        addView((View) this.f9787b, new FrameLayout.LayoutParams(-1, -1));
+        this.f9786a.setColorFilter(ColorUtil.getEffectColor(Color.WHITE, this.f9788c));
+        addView(this.f9786a, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        this.f9787b = z ? new BitmapEffectView(context) : new PathEffectView(context);
+        addView((View) this.f9787b, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     @Override

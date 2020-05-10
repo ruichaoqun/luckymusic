@@ -53,18 +53,13 @@ public class MineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
-    @OnClick(value = {R.id.layout_loacal,
-    R.id.layout_equalizer})
+    @OnClick(value = {R.id.layout_loacal})
     public void onViewClicked(View v) {
         switch (v.getId()){
             case R.id.layout_loacal:
                 LocalMediaActivity.launchFrom(getActivity());
-                break;
-            case R.id.layout_equalizer:
-                EqualizerActivity.launchFrom(getActivity());
                 break;
         }
     }

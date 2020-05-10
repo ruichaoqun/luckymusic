@@ -10,24 +10,27 @@
         android:id="@+id/vs_bacground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
-            android:background="@drawable/bg_playing"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:scaleType="centerCrop"/>
-        <ImageView
             android:background="@drawable/bg_playing"
+            android:scaleType="centerCrop" />
+
+        <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:scaleType="centerCrop"/>
+            android:background="@drawable/bg_playing"
+            android:scaleType="centerCrop" />
     </ViewSwitcher>
 
     <RelativeLayout
+        android:id="@+id/artist_image_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:layout_above="@+id/ll_container_bottom"
-        android:id="@+id/artist_image_container">
+        android:layout_below="@+id/toolbar">
+
         <RelativeLayout
             android:id="@+id/rl_display_container"
             android:layout_width="match_parent"
@@ -40,46 +43,53 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="92dp"
                 android:src="@mipmap/bg_player" />
+
             <com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper
                 android:id="@+id/view_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="94dp">
+
                 <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_disc_playhoder"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_disc_playhoder" />
+
                     <ImageView
                         android:id="@+id/iv_disc_bg_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/bg_disc"
                         android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true" />
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/bg_disc" />
                 </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
 
                 <com.ruichaoqun.luckymusic.widget.RotationRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_disc_playhoder"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_disc_playhoder" />
+
                     <ImageView
                         android:id="@+id/iv_disc_bg_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/bg_disc"
                         android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true" />
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/bg_disc" />
                 </com.ruichaoqun.luckymusic.widget.RotationRelativeLayout>
 
             </com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper>
+
             <ImageView
                 android:id="@+id/iv_stylus"
                 android:layout_width="122dp"
@@ -100,12 +110,12 @@
         android:id="@+id/layout_sound_controller"
         android:layout_width="match_parent"
         android:layout_height="19dp"
+        android:layout_below="@+id/toolbar"
         android:clickable="true"
         android:gravity="center_vertical"
         android:paddingLeft="23dip"
         android:paddingRight="23dip"
-        android:visibility="gone"
-        android:layout_below="@+id/toolbar">
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -132,78 +142,95 @@
     </LinearLayout>
 
 
-    <include layout="@layout/layout_lyric"
+    <include
+        layout="@layout/layout_lyric"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_sound_controller"
-        android:layout_above="@+id/ll_container_bottom" />
+        android:layout_above="@+id/ll_container_bottom"
+        android:layout_below="@+id/layout_sound_controller" />
 
     <LinearLayout
         android:id="@+id/ll_container_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="45dp">
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/ic_dynamic_effect"
-                android:scaleType="centerInside"
-                android:layout_marginLeft="20dp"/>
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                />
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/ic_audio_effect"
-                android:scaleType="centerInside"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"/>
-        </RelativeLayout>
-        <include layout="@layout/layout_player_seekbar" />
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:clickable="true"
-                    android:layout_width="360.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp">
-                    <ImageView
-                        android:id="@+id/iv_play_mode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="25.0dip"
-                        android:src="@drawable/selector_player_mode_list_circulation" />
-                    <ImageView
-                        android:id="@+id/iv_play_previous"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/selector_player_previous" />
-                    <ImageView
-                        android:id="@+id/iv_play_pause"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12.0dip"
-                        android:layout_marginRight="12.0dip"
-                        android:src="@drawable/selector_player_play" />
-                    <ImageView
-                        android:id="@+id/iv_play_next"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="25.0dip"
-                        android:src="@drawable/selector_player_next" />
-                    <ImageView
-                        android:id="@+id/iv_play_list"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/selector_player_play_list" />
-                </LinearLayout>
-    </LinearLayout>
 
+            <ImageView
+                android:id="@+id/iv_like"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_no_like" />
+
+            <ImageView
+                android:id="@+id/iv_audio_effect"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:padding="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_audio_effect" />
+
+            <ImageView
+                android:id="@+id/iv_dynamic_effect"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_dynamic_effect_off" />
+        </RelativeLayout>
+
+        <include layout="@layout/layout_player_seekbar" />
+
+        <LinearLayout
+            android:layout_width="360.0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_play_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25.0dip"
+                android:src="@drawable/selector_player_mode_list_circulation" />
+
+            <ImageView
+                android:id="@+id/iv_play_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_player_previous" />
+
+            <ImageView
+                android:id="@+id/iv_play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12.0dip"
+                android:layout_marginRight="12.0dip"
+                android:src="@drawable/selector_player_play" />
+
+            <ImageView
+                android:id="@+id/iv_play_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25.0dip"
+                android:src="@drawable/selector_player_next" />
+
+            <ImageView
+                android:id="@+id/iv_play_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_player_play_list" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

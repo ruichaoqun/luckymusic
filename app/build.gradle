@@ -94,5 +94,7 @@ dependencies {
 
     implementation 'com.kyleduo.switchbutton:library:2.0.0'
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
+
 
 }

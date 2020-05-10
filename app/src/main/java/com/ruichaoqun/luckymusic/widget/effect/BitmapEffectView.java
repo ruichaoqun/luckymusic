@@ -33,7 +33,7 @@ import java.util.Random;
  * @date :2020/4/3 16:04
  * description:
  */
-public class TestEffectView8 extends View implements DynamicEffectView {
+public class BitmapEffectView extends View implements DynamicEffectView {
 
     /* renamed from: a  reason: collision with root package name */
     private static final int f9789a = 1000;
@@ -127,7 +127,7 @@ public class TestEffectView8 extends View implements DynamicEffectView {
         return false;
     }
 
-    public TestEffectView8(Context context) {
+    public BitmapEffectView(Context context) {
         super(context);
         Resources resources = context.getResources();
         this.S = new Bitmap[]{((BitmapDrawable) resources.getDrawable(com.ruichaoqun.luckymusic.R.drawable.c3l)).getBitmap(), ((BitmapDrawable) resources.getDrawable(com.ruichaoqun.luckymusic.R.drawable.c3m)).getBitmap(), ((BitmapDrawable) resources.getDrawable(com.ruichaoqun.luckymusic.R.drawable.c3n)).getBitmap()};

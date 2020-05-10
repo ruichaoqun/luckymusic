@@ -20,4 +20,14 @@ public class PlayerPresenter extends BasePresenter<PlayerContact.View> implement
     public int getSessionId() {
         return dataRepository.getAudioSessionId();
     }
+
+    @Override
+    public int getDynamicEffectType() {
+        return dataRepository.getDynamicEffectType();
+    }
+
+    @Override
+    public void setDynamicEffectType(int type) {
+        dataRepository.setDynamicEffectType(type);
+    }
 }

@@ -24,9 +24,9 @@ import java.util.Arrays;
 /**
  * @author Rui Chaoqun
  * @date :2020/4/3 15:10
- * description:激然电音
+ * description:音乐射线动效
  */
-public class TestEffectView6 extends View implements DynamicEffectView {
+public class MusicRadialEffectView extends View implements DynamicEffectView {
 
     /* renamed from: a  reason: collision with root package name */
     private static final int f9756a = 800;
@@ -98,7 +98,7 @@ public class TestEffectView6 extends View implements DynamicEffectView {
         return false;
     }
 
-    public TestEffectView6(Context context) {
+    public MusicRadialEffectView(Context context) {
         super(context);
         this.E.setStrokeWidth((float) f9760e);
         this.E.setStrokeCap(Paint.Cap.ROUND);

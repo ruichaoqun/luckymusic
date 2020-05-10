@@ -51,11 +51,12 @@
     <string name="play_mode_list_circulation">列表循环</string>
     <string name="play_mode_single_cycle">单曲循环</string>
 
-
+    <!--  PlayerActivity -->
     <string name="artist_track_number">%d首</string>
     <string name="play_all">播放全部</string>
     <string name="total_count">(共%1$d首)</string>
     <string name="multiple_choice">多选</string>
+    <string name="player_activity_dynamic_effect">当前动效</string>
     
     <!--  EqualizerActivity -->
     <string name="equalizer_activity_title">均衡器</string>

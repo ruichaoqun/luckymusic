@@ -21,9 +21,9 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * 粒子动效
+ * 宇宙尘埃动效
  */
-public class ParticleEffectView extends View implements DynamicEffectView {
+public class CosmicDustEffectView extends View implements DynamicEffectView {
     private static final float w = (float) (Math.PI*2/30);
     private static final float t = -49.0f;
     private static final float n = 45.0f;
@@ -69,7 +69,7 @@ public class ParticleEffectView extends View implements DynamicEffectView {
     };
 
 
-    public ParticleEffectView(Context context) {
+    public CosmicDustEffectView(Context context) {
         super(context);
         this.mPaint.setStrokeWidth(3.0f);
     }

@@ -30,26 +30,5 @@
 
         </LinearLayout>
         <include layout="@layout/divider_match"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_row_height"
-            android:id="@+id/layout_equalizer"
-            android:background="?attr/selectableItemBackground">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_music_local"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/equalizer_activity_title"
-                android:textColor="@color/text_color_black"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_gravity="center_vertical"/>
-
-        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

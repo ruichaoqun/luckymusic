@@ -88,6 +88,16 @@ public class DataRepository implements HttpDataSource, PreferenceDataSource, Med
     }
 
     @Override
+    public void setDynamicEffectType(int type) {
+        mPreferenceDataSource.setDynamicEffectType(type);
+    }
+
+    @Override
+    public int getDynamicEffectType() {
+        return mPreferenceDataSource.getDynamicEffectType();
+    }
+
+    @Override
     public Observable<BaseResponse<List<BannerItemBean>>> getBannerList() {
         return mHttpDataSource.getBannerList();
     }

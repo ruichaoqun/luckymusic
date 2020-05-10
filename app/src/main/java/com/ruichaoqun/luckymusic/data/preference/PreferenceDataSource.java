@@ -30,4 +30,16 @@ public interface PreferenceDataSource {
     void setEffectData(String effectData);
 
     String getEffectData();
+
+    /**
+     * 获保存当前动效类型
+     * @param type
+     */
+    void setDynamicEffectType(int type);
+
+    /**
+     * 获取保存的动效类型
+     * @return
+     */
+    int getDynamicEffectType();
 }

@@ -63,4 +63,14 @@ public class PreferenceDataSourceImpl implements PreferenceDataSource{
     public String getEffectData() {
         return mSharedPreferences.getString(Constants.SHARE_PREFERENCE_EFFECT_DATA,"");
     }
+
+    @Override
+    public void setDynamicEffectType(int type) {
+        mSharedPreferences.edit().putInt(Constants.SHARE_PREFERENCE_DYNAMIC_EFFECT_TYPE,type).apply();
+    }
+
+    @Override
+    public int getDynamicEffectType() {
+        return mSharedPreferences.getInt(Constants.SHARE_PREFERENCE_DYNAMIC_EFFECT_TYPE,0);
+    }
 }

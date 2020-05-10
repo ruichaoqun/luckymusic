@@ -69,4 +69,16 @@
         <item>民谣</item>
         <item>说唱</item>
     </string-array>
+
+    <string-array name="dynamic_effect_list">
+        <item>无</item>
+        <item>宇宙尘埃</item>
+        <item>孤独星球</item>
+        <item>跳动旋律</item>
+        <item>迷幻水波</item>
+        <item>爆炸粒子</item>
+        <item>动感音阶</item>
+        <item>水晶音波</item>
+        <item>音乐射线</item>
+    </string-array>
 </resources>

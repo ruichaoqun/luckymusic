@@ -169,22 +169,7 @@ public class PlaylistBottomSheet extends BaseBottomSheet {
     }
 
 
-    public Activity getActivity() {
-        Context context = getContext();
-        int i2 = 20;
-        while (context instanceof ContextWrapper) {
-            int i3 = i2 - 1;
-            if (i2 <= 0) {
-                return null;
-            }
-            if (context instanceof Activity) {
-                return (Activity) context;
-            }
-            context = ((ContextWrapper) context).getBaseContext();
-            i2 = i3;
-        }
-        return null;
-    }
+
 
 
 

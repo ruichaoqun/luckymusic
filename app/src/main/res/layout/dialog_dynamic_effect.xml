@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50.0dip"
+            android:drawablePadding="7.0dip"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="@string/player_activity_dynamic_effect"
+            android:textColor="@color/color_cc000000"
+            android:textSize="@dimen/textsize_large"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_current_effect"
+            android:layout_width="wrap_content"
+            android:layout_height="50.0dip"
+            android:drawablePadding="7.0dip"
+            android:gravity="center_vertical"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@string/player_activity_dynamic_effect"
+            android:textColor="@color/color_cc000000"
+            android:textSize="@dimen/textsize_large"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <com.ruichaoqun.luckymusic.widget.BottomSheetDialog.BottomSheetRecyclerView
+        android:id="@+id/rv_effect_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

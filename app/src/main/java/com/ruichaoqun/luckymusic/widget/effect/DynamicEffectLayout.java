@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -39,13 +41,15 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
     public GestureDetector.SimpleOnGestureListener mGestureListener;
     public OnColorGetListener mOnColorGetListener;
 
+    private Uri mCurrentImageUri;
+
 
     public interface OnColorGetListener {
         void onColorGet(int color);
     }
 
     public DynamicEffectLayout(Context context) {
-        this(context, (AttributeSet) null);
+        this(context,  null);
     }
 
     public DynamicEffectLayout(Context context, AttributeSet attributeSet) {
@@ -101,7 +105,7 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
         mPaletteAsyncListener = new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(@Nullable Palette palette) {
-                DynamicEffectLayout.this.mDominantColor = palette.getDominantColor(-1);
+                DynamicEffectLayout.this.mDominantColor = palette.getDominantColor(Color.WHITE);
                 if (DynamicEffectLayout.this.mEffectView != null) {
                     DynamicEffectLayout.this.mEffectView.setColor(DynamicEffectLayout.this.mDominantColor);
                 }
@@ -116,11 +120,15 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
         this.mOnColorGetListener = listener;
     }
 
-    public void setArtViewResource(Object str) {
+    public void setArtViewResource(Uri uri) {
+        if(mCurrentImageUri != null && TextUtils.equals(mCurrentImageUri.toString(),uri.toString())){
+            return;
+        }
+        this.mCurrentImageUri = uri;
         Drawable drawable = getResources().getDrawable(R.drawable.ic_disc_playhoder);
         RequestBuilder<Drawable> requestBuilder = GlideApp.with(this).load(drawable).circleCrop();
         GlideApp.with(this)
-                .load(str)
+                .load(uri)
                 .circleCrop()
                 .thumbnail(requestBuilder)
                 .transition(DrawableTransitionOptions.withCrossFade())
@@ -139,7 +147,10 @@ public class DynamicEffectLayout extends DynamicEffectCommonLayout {
                     }
                 })
                 .into(mArtView);
+        resetArtViewAnimator();
     }
+
+
 
     public void asyncGetColor(Drawable drawable){
         if(drawable == null){

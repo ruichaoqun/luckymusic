@@ -22,9 +22,9 @@ import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 /**
- * 动感3D动效
+ * 跳动旋律动效
  */
-public class AbbrEffectView extends View implements DynamicEffectView {
+public class BounceMelodyEffectView extends View implements DynamicEffectView {
 
     private int length;
     private int samplingRate;
@@ -61,7 +61,7 @@ public class AbbrEffectView extends View implements DynamicEffectView {
     private long lastUpdateTimes;
 
 
-    public AbbrEffectView(Context context) {
+    public BounceMelodyEffectView(Context context) {
         super(context);
         colors = getColors(originalColor);
         mPaint1.setStyle(Paint.Style.STROKE);

@@ -15,5 +15,9 @@ public interface PlayerContact {
 
     interface Presenter extends IBasePresenter<View> {
         int getSessionId();
+
+        int getDynamicEffectType();
+
+        void setDynamicEffectType(int type);
     }
 }

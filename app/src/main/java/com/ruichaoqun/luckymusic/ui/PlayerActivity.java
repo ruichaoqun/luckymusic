@@ -2,8 +2,10 @@ package com.ruichaoqun.luckymusic.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -12,8 +14,6 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -24,33 +24,35 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.common.GlideApp;
+import com.ruichaoqun.luckymusic.ui.equalizer.EqualizerActivity;
+import com.ruichaoqun.luckymusic.utils.ColorUtil;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
 import com.ruichaoqun.luckymusic.utils.RenderScriptTransformation;
 import com.ruichaoqun.luckymusic.utils.StylusAnimation;
 import com.ruichaoqun.luckymusic.utils.TimeUtils;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
+import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.DynamicEffectSheet;
 import com.ruichaoqun.luckymusic.widget.LyricView;
 import com.ruichaoqun.luckymusic.widget.PlayerDiscViewFlipper;
 import com.ruichaoqun.luckymusic.widget.RotationRelativeLayout;
 import com.ruichaoqun.luckymusic.utils.ViewSwitcherTarget;
-import com.ruichaoqun.luckymusic.widget.effect.AbbrEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.BounceMelodyEffectView;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectLayout;
 import com.ruichaoqun.luckymusic.widget.effect.DynamicEffectView;
-import com.ruichaoqun.luckymusic.widget.effect.LonglyEffecyView;
-import com.ruichaoqun.luckymusic.widget.effect.ParticleEffectView;
-import com.ruichaoqun.luckymusic.widget.effect.PsychedelicEffectView;
-import com.ruichaoqun.luckymusic.widget.effect.RadialEffectView;
-import com.ruichaoqun.luckymusic.widget.effect.SingleEffectView;
-import com.ruichaoqun.luckymusic.widget.effect.TestEffectView;
-import com.ruichaoqun.luckymusic.widget.effect.TestEffectView3;
-import com.ruichaoqun.luckymusic.widget.effect.TestEffectView4;
-import com.ruichaoqun.luckymusic.widget.effect.TestEffectView6;
-import com.ruichaoqun.luckymusic.widget.effect.TestEffectView7;
+import com.ruichaoqun.luckymusic.widget.effect.LonelyPlanetEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.CosmicDustEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.PsychedelicRippleEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.DynamicScaleEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.ExplosiveParticleEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.MusicRadialEffectView;
+import com.ruichaoqun.luckymusic.widget.effect.CrystalSoundWaveEffectView;
 
 import java.util.List;
 
@@ -68,6 +70,12 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @BindView(R.id.iv_stylus)
     ImageView mStylus;
 
+    @BindView(R.id.iv_like)
+    ImageView mLike;
+    @BindView(R.id.iv_dynamic_effect)
+    ImageView mDynamicEffect;
+    @BindView(R.id.iv_audio_effect)
+    ImageView mAudioEffect;
     @BindView(R.id.iv_play_mode)
     ImageView mPlayMode;
     @BindView(R.id.iv_play_previous)
@@ -137,7 +145,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     private boolean isBacgroundAutoNext = false;
     long currentPosition;
 
-    private long effectType = 8;
+    private int effectType = -1;
 
 
     private Runnable mStylusRemoveRunnable = new Runnable() {
@@ -453,102 +461,124 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             mLayoutSoundController.setVisibility(View.GONE);
         });
 
-        if(effectType != -1){
-            addEffectView();
-            mRlDisplayContainer.setVisibility(View.GONE);
+        setEffectView(mPresenter.getDynamicEffectType());
+
+        mDynamicEffect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDynamicEffectDialog();
+            }
+        });
+
+        mLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        mAudioEffect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EqualizerActivity.launchFrom(PlayerActivity.this);
+            }
+        });
+    }
+
+    public void setEffectView(int type) {
+        if(this.effectType != type){
+            this.effectType = type;
+            mPresenter.setDynamicEffectType(type);
+            if(effectType != 0){
+                addEffectView();
+                mRlDisplayContainer.setVisibility(View.GONE);
+                this.mDynamicEffect.setImageResource(R.drawable.selector_dynamic_effect_on);
+            }else{
+                removeEffectView();
+                mRlDisplayContainer.setVisibility(View.VISIBLE);
+                this.mDynamicEffect.setImageResource(R.drawable.selector_dynamic_effect_off);
+            }
         }
     }
 
     private void addEffectView() {
-        this.mEffectLayout = new DynamicEffectLayout(this);
-        this.mEffectLayout.setOnColorGetListener(color -> {
-            //TODO 设置SeekBar的颜色
-//                ((PlayerSeekBarNew) PlayerActivity.this.r).setColor(color);
-        });
-
-        ImageView imageView = findViewById(R.id.iv_disc_bg_1);
-        int height = imageView.getLayoutParams().height;
-        if (height <= 0) {
-            Drawable drawable = imageView.getDrawable();
-            if (drawable == null) {
-                drawable = getResources().getDrawable(R.drawable.bg_disc);
+        if(this.mEffectLayout == null){
+            this.mEffectLayout = new DynamicEffectLayout(this);
+            this.mEffectLayout.setOnColorGetListener(color -> {
+                LayerDrawable drawable = (LayerDrawable) mPlayerSeekBar.getProgressDrawable();
+                int c =  ColorUtil.getEffectColor(color, new float[3]);
+                DrawableCompat.setTintList(drawable.findDrawableByLayerId(android.R.id.progress), ColorStateList.valueOf(c));
+                mPlayerSeekBar.setProgressDrawable(drawable);
+            });
+            ImageView imageView = findViewById(R.id.iv_disc_bg_1);
+            int height = imageView.getLayoutParams().height;
+            if (height <= 0) {
+                Drawable drawable = imageView.getDrawable();
+                if (drawable == null) {
+                    drawable = getResources().getDrawable(R.drawable.bg_disc);
+                }
+                height = drawable.getIntrinsicWidth();
             }
-            height = drawable.getIntrinsicWidth();
+            this.mArtistImageContainer.addView(this.mEffectLayout, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height + (((RelativeLayout.LayoutParams) this.mViewFlipper.getLayoutParams()).topMargin * 2)));
+            if(this.mCurrentMetadata != null){
+                this.mEffectLayout.setArtViewResource(this.mCurrentMetadata.getDescription().getIconUri());
+            }
         }
-        this.mArtistImageContainer.addView(this.mEffectLayout, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height + (((RelativeLayout.LayoutParams) this.mViewFlipper.getLayoutParams()).topMargin * 2)));
-        this.mEffectLayout.setOnGestureListener(new GestureDetector.SimpleOnGestureListener(){
-            @Override
-            public void onLongPress(MotionEvent e) {
-                super.onLongPress(e);
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                return super.onFling(e1, e2, velocityX, velocityY);
-            }
-
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                return super.onDoubleTap(e);
-            }
-
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                return super.onSingleTapConfirmed(e);
-            }
-        });
-
         this.mEffectLayout.setVisualizer(mPresenter.getSessionId());
         this.mEffectLayout.addDynamicEffectView(getEffectView(effectType));
+        if(mPlaybackState != null && mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING){
+            this.mEffectLayout.prepare();
+        }
+    }
+
+    private void removeEffectView() {
+        if(this.mEffectLayout != null){
+            this.mArtistImageContainer.removeView(this.mEffectLayout);
+            mEffectLayout = null;
+        }
+    }
+
+    /**
+     * 展示动效列表dialog
+     */
+    private void showDynamicEffectDialog() {
+        DynamicEffectSheet.showDynamicEffectSheet(this, effectType);
     }
 
     private DynamicEffectView getEffectView(long type){
         if(type == 1){
-            return new LonglyEffecyView(this);
+            return new CosmicDustEffectView(this);
         }
 
         if(type == 2){
-            return new AbbrEffectView(this);
+            return new LonelyPlanetEffectView(this);
         }
 
         if(type == 3){
-            return new ParticleEffectView(this);
+            return new BounceMelodyEffectView(this);
         }
 
         if(type == 4){
-            return new RadialEffectView(this);
+            return new PsychedelicRippleEffectView(this);
         }
 
         if(type == 5){
-            return new PsychedelicEffectView(this);
+            return new ExplosiveParticleEffectView(this);
         }
 
         if(type == 6){
-            return new TestEffectView3(this);
+            return new DynamicScaleEffectView(this);
         }
 
         if(type == 7){
-            return new TestEffectView4(this);
+            return new CrystalSoundWaveEffectView(this,false);
         }
 
         if(type == 8){
-            return new TestEffectView6(this);
+            return new MusicRadialEffectView(this);
         }
 
-        if(type == 9){
-            return new TestEffectView7(this,true);
-        }
-
-        if(type == 10){
-            return new TestEffectView7(this,false);
-        }
-
-        if(type == 11){
-            return new SingleEffectView(this);
-        }
-
-
-        return new LonglyEffecyView(this);
+        throw new RuntimeException("无效动效类型");
     }
 
     private void switchBacground(Uri iconUri) {
@@ -573,7 +603,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
             //TODO 设置是否收藏
             switchBacground(mCurrentMetadata.getDescription().getIconUri());
-            this.mEffectLayout.setArtViewResource(mCurrentMetadata.getDescription().getIconUri());
+            if(this.mEffectLayout != null){
+                this.mEffectLayout.setArtViewResource(mCurrentMetadata.getDescription().getIconUri());
+            }
         }
         switch (this.mPlaybackState.getState()) {
             case PlaybackStateCompat.STATE_PLAYING:
@@ -585,7 +617,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     this.startStylusReturn();
                 }
                 this.mPlayPause.setImageResource(R.drawable.selector_player_pause);
-                this.mEffectLayout.prepare();
+                if(this.mEffectLayout != null) {
+                    this.mEffectLayout.prepare();
+                }
                 break;
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_STOPPED:
@@ -647,7 +681,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             switchBacground(mCurrentMetadata.getDescription().getIconUri());
             currentDataPosition = position;
         }
-        this.mEffectLayout.setArtViewResource(mCurrentMetadata.getDescription().getIconUri());
+        if(this.mEffectLayout != null) {
+            this.mEffectLayout.setArtViewResource(mCurrentMetadata.getDescription().getIconUri());
+        }
     }
 
     /**
@@ -668,13 +704,17 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     this.mCurrentDiscLayout.start();
                 }
                 this.mPlayPause.setImageResource(R.drawable.selector_player_pause);
-                this.mEffectLayout.prepare();
+                if(this.mEffectLayout != null) {
+                    this.mEffectLayout.prepare();
+                }
                 break;
             case PlaybackStateCompat.STATE_STOPPED:
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_PAUSED:
             case PlaybackStateCompat.STATE_ERROR:
-                this.mEffectLayout.pause();
+                if(this.mEffectLayout != null) {
+                    this.mEffectLayout.pause();
+                }
                 this.startStylusRemove();
                 this.mPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;

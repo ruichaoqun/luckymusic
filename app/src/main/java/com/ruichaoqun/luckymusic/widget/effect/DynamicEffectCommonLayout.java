@@ -26,7 +26,7 @@ public class DynamicEffectCommonLayout extends FrameLayout {
 
     private VisualizerEntity.DataCaptureListener mDataCaptureListener;
     private ObjectAnimator mAnimator;
-    private long k;
+    protected long mCurrentPlayTime;
 
     public DynamicEffectCommonLayout(Context context) {
         this(context, (AttributeSet) null);
@@ -44,7 +44,8 @@ public class DynamicEffectCommonLayout extends FrameLayout {
 
     /**
      * 添加封面ImageView
-     * @param view 
+     *
+     * @param view
      * @param width
      * @param height
      */
@@ -64,14 +65,12 @@ public class DynamicEffectCommonLayout extends FrameLayout {
         return this.mArtView;
     }
 
-    public int addDynamicEffectView(DynamicEffectView view) {
-        int i2 = 0;
+    public void addDynamicEffectView( DynamicEffectView view) {
         if (this.mEffectView != view) {
-            boolean z = mVisualizerEntity != null && mVisualizerEntity.getEnabled();
-            pause();
-            VisualizerEntity newVisualizerEntity = null;
+            boolean visualizerEnable = mVisualizerEntity != null && mVisualizerEntity.getEnabled();
             if (mVisualizerEntity != null) {
                 //清空Visualizer回调
+                mVisualizerEntity.setEnabled(false);
                 mVisualizerEntity.setDataCaptureListener(null, 0, false, false);
             }
             if (mEffectView != null) {
@@ -92,47 +91,31 @@ public class DynamicEffectCommonLayout extends FrameLayout {
             if (mVisualizerEntity != null) {
                 if (mEffectView == null || mEffectView.getCaptureSize(mVisualizerEntity) != view.getCaptureSize(this.mVisualizerEntity)) {
                     this.mVisualizerEntity.release();
-                    try {
-                        newVisualizerEntity = this.mVisualizerEntity.getNewVisualizer();
-                        newVisualizerEntity.setCaptureSize(view.getCaptureSize(newVisualizerEntity));
-                    } catch (Throwable th) {
-                        th.printStackTrace();
-                        i2 = (!(th instanceof RuntimeException) || !th.getMessage().contains("-3")) ? -1 : -3;
-                    }
-                    this.mVisualizerEntity = newVisualizerEntity;
+                    this.mVisualizerEntity  = this.mVisualizerEntity.getNewVisualizer();
+                    this.mVisualizerEntity .setCaptureSize(view.getCaptureSize(this.mVisualizerEntity));
+                    this.mVisualizerEntity.setEnabled(false);
                 }
-                if (mVisualizerEntity != null) {
-                    mVisualizerEntity.setDataCaptureListener(this.mDataCaptureListener, view.getRate(mVisualizerEntity), view.isWaveform(), view.isFft());
-                }
+                this.mVisualizerEntity.setDataCaptureListener(this.mDataCaptureListener, view.getRate(mVisualizerEntity), view.isWaveform(), view.isFft());
             }
             this.mEffectView = view;
             this.mEffectView.setColor(this.mDominantColor);
-            if(z){
+            if (visualizerEnable) {
                 prepare();
             }
         }
-        return i2;
     }
 
-    public int setVisualizer(int sessionId) {
+    public void setVisualizer(int sessionId) {
         if (this.mVisualizerEntity == null || this.mSessionId != sessionId) {
             if (mVisualizerEntity != null) {
                 mVisualizerEntity.release();
                 this.mVisualizerEntity = null;
             }
-            try {
-                this.mVisualizerEntity = new RealVisualizer(sessionId);
-                if (this.mVisualizerEntity.getEnabled()) {
-                    this.mVisualizerEntity.setEnabled(false);
-                }
-                this.mSessionId = sessionId;
-                initVisualizerListener();
-            } catch (Throwable th) {
-                th.printStackTrace();
-                return (!(th instanceof RuntimeException) || !th.getMessage().contains("-3")) ? -1 : -3;
-            }
+            this.mVisualizerEntity = new VisualizerProxy(sessionId);
+            this.mVisualizerEntity.setEnabled(false);
+            this.mSessionId = sessionId;
+            initVisualizerListener();
         }
-        return 0;
     }
 
     void initVisualizerListener() {
@@ -140,22 +123,22 @@ public class DynamicEffectCommonLayout extends FrameLayout {
             this.mDataCaptureListener = new VisualizerEntity.DataCaptureListener() {
                 @Override
                 public void onWaveFormDataCapture(byte[] waveform, int samplingRate) {
-                    if(mEffectView != null){
-                        mEffectView.onWaveFormDataCapture(waveform,samplingRate);
+                    if (mEffectView != null) {
+                        mEffectView.onWaveFormDataCapture(waveform, samplingRate);
                     }
                 }
 
                 @Override
                 public void onFftDataCapture(byte[] fft, int samplingRate) {
-                    if(mEffectView != null){
-                        mEffectView.onFftDataCapture(fft,samplingRate);
+                    if (mEffectView != null) {
+                        mEffectView.onFftDataCapture(fft, samplingRate);
                     }
                 }
             };
         }
         if (mEffectView != null) {
             mVisualizerEntity.setCaptureSize(mEffectView.getCaptureSize(mVisualizerEntity));
-            mVisualizerEntity.setDataCaptureListener(this.mDataCaptureListener, this.mEffectView.getRate(mVisualizerEntity), this.mEffectView.isWaveform(), this.mEffectView.isFft());
+            mVisualizerEntity.setDataCaptureListener(this.mDataCaptureListener, mEffectView.getRate(mVisualizerEntity), mEffectView.isWaveform(), mEffectView.isFft());
         }
     }
 
@@ -163,13 +146,15 @@ public class DynamicEffectCommonLayout extends FrameLayout {
      * 准备接收音频数据
      */
     public void prepare() {
-        if (mVisualizerEntity != null) {
-            mVisualizerEntity.setEnabled(true);
+        if(!mVisualizerEntity.getEnabled()){
+            if (mVisualizerEntity != null) {
+                mVisualizerEntity.setEnabled(true);
+            }
+            if (mEffectView != null) {
+                mEffectView.prepareToDynamic();
+            }
+            prepareAnimator(true);
         }
-        if (mEffectView != null) {
-            mEffectView.prepareToDynamic();
-        }
-        prepareAnimater(false);
     }
 
     /**
@@ -182,34 +167,38 @@ public class DynamicEffectCommonLayout extends FrameLayout {
         if (mEffectView != null) {
             mEffectView.reset(false);
         }
-        stopAnimator(false);
+        stopAnimator();
     }
 
 
-
-    public void prepareAnimater(boolean z) {
-        View view = this.mArtView;
-        if (view != null) {
+    public void prepareAnimator(boolean prepare) {
+        if (this.mArtView != null) {
             if (this.mAnimator == null) {
-                this.mAnimator = ObjectAnimator.ofFloat(view, ROTATION, new float[]{0.0f, 360.0f}).setDuration(25000);
+                this.mAnimator = ObjectAnimator.ofFloat(this.mArtView, ROTATION, new float[]{0.0f, 360.0f}).setDuration(25000);
                 this.mAnimator.setRepeatCount(-1);
                 this.mAnimator.setInterpolator(new LinearInterpolator());
             }
             if (!this.mAnimator.isRunning()) {
-                this.mAnimator.setCurrentPlayTime(z ? this.k : 0);
+                this.mAnimator.setCurrentPlayTime(prepare ? this.mCurrentPlayTime : 0);
                 this.mAnimator.start();
             }
         }
     }
 
-    public void stopAnimator(boolean z) {
-        ObjectAnimator objectAnimator = this.mAnimator;
-        if (objectAnimator != null) {
-            this.k = objectAnimator.getCurrentPlayTime();
+    public void stopAnimator() {
+        if (this.mAnimator != null) {
+            this.mCurrentPlayTime = this.mAnimator.getCurrentPlayTime();
             this.mAnimator.cancel();
-            if (z) {
-                this.mAnimator.setCurrentPlayTime(0);
-            }
+        }
+    }
+
+    public void resetArtViewAnimator() {
+        this.mArtView.setRotation(0.0f);
+        this.mCurrentPlayTime = 0;
+        if(this.mAnimator != null && this.mAnimator.isRunning()){
+            this.mAnimator.cancel();
+            this.mAnimator.setCurrentPlayTime(0);
+            this.mAnimator.start();
         }
     }
 
@@ -218,6 +207,9 @@ public class DynamicEffectCommonLayout extends FrameLayout {
         if (mVisualizerEntity != null) {
             mVisualizerEntity.release();
             this.mVisualizerEntity = null;
+        }
+        if (this.mAnimator != null) {
+            this.mAnimator.cancel();
         }
         super.onDetachedFromWindow();
     }

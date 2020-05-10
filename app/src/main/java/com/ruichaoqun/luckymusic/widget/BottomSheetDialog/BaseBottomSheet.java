@@ -1,7 +1,9 @@
 package com.ruichaoqun.luckymusic.widget.BottomSheetDialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -85,5 +87,22 @@ public abstract class BaseBottomSheet extends Dialog implements DialogInterface 
         attributes.gravity = 80;
         attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(attributes);
+    }
+
+    public Activity getActivity() {
+        Context context = getContext();
+        int i2 = 20;
+        while (context instanceof ContextWrapper) {
+            int i3 = i2 - 1;
+            if (i2 <= 0) {
+                return null;
+            }
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+            i2 = i3;
+        }
+        return null;
     }
 }

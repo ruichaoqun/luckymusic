@@ -30,7 +30,7 @@ import java.util.Random;
  * @date :2020/4/3 16:26
  * description:
  */
-public class TestEffectView9 extends View implements DynamicEffectView {
+public class PathEffectView extends View implements DynamicEffectView {
 
     /* renamed from: a  reason: collision with root package name */
     private static final int f9765a = 1000;
@@ -142,7 +142,7 @@ public class TestEffectView9 extends View implements DynamicEffectView {
         return false;
     }
 
-    public TestEffectView9(Context context) {
+    public PathEffectView(Context context) {
         super(context);
         this.af.setStrokeWidth((float) x);
         this.ag.setStrokeWidth((float) w);
@@ -153,13 +153,13 @@ public class TestEffectView9 extends View implements DynamicEffectView {
             @Override
             public void handleMessage(Message message) {
                 byte[] bytes = (byte[]) message.obj;
-                TestEffectView9.this.a(bytes, message.arg1, message.arg2);
+                PathEffectView.this.a(bytes, message.arg1, message.arg2);
             }
         };
         this.an = new Handler() {
             @Override
             public void handleMessage(Message message) {
-                TestEffectView9.this.e();
+                PathEffectView.this.e();
             }
         };
     }

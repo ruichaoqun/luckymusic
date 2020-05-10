@@ -21,9 +21,9 @@ import java.util.Random;
 /**
  * @author Rui Chaoqun
  * @date :2020/3/31 9:18
- * description:迷幻管音动效
+ * description:迷幻水波动效
  */
-public class PsychedelicEffectView extends View implements DynamicEffectView {
+public class PsychedelicRippleEffectView extends View implements DynamicEffectView {
     private static final int circleWidth = UiUtils.dp2px(5.0f);
     private Paint mCirclePaint;
     private Paint mWavePaint;
@@ -53,7 +53,7 @@ public class PsychedelicEffectView extends View implements DynamicEffectView {
     private Random mRandom = new Random();
 
 
-    public PsychedelicEffectView(Context context) {
+    public PsychedelicRippleEffectView(Context context) {
         super(context);
         mWavePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);

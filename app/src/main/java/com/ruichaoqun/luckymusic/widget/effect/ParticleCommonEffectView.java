@@ -14,7 +14,7 @@ import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 import java.util.Arrays;
 
-public abstract class Test2EffectView extends View implements DynamicEffectView {
+public abstract class ParticleCommonEffectView extends View implements DynamicEffectView {
     /* renamed from: a  reason: collision with root package name */
     protected static final int f11634a = UiUtils.dp2px(10.0f);
     private static final int q = 800;
@@ -99,7 +99,7 @@ public abstract class Test2EffectView extends View implements DynamicEffectView 
     /* access modifiers changed from: protected */
     public abstract int getStartRadius();
 
-    public Test2EffectView(Context context) {
+    public ParticleCommonEffectView(Context context) {
         super(context);
         this.m.setStrokeCap(Paint.Cap.ROUND);
         this.m.setColor(this.f11639f);

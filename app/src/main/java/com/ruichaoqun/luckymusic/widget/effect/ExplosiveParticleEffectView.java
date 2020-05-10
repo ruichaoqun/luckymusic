@@ -10,12 +10,15 @@ import androidx.core.graphics.ColorUtils;
 
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
-public class TestEffectView3 extends Test2EffectView {
+/**
+ * 爆炸粒子动效
+ */
+public class ExplosiveParticleEffectView extends ParticleCommonEffectView {
     private static final int q = UiUtils.dp2px(2.0f);
     private static final int r = UiUtils.dp2px(1.0f);
     private int s = -1;
 
-    public TestEffectView3(Context context) {
+    public ExplosiveParticleEffectView(Context context) {
         super(context);
         this.f11635b = UiUtils.dp2px(4.0f);
         this.f11636c = true;

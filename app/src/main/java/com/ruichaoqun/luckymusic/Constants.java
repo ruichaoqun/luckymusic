@@ -26,4 +26,9 @@ public class Constants {
 
 
     public static final String INTENT_EXTRA_LIKE = "like";
+
+    public static int testToken = 1;
+
+    public static boolean needRefreshToken = true;
+    public static boolean isRefreshToken = false;
 }

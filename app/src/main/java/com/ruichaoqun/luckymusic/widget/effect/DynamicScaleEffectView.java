@@ -2,12 +2,7 @@ package com.ruichaoqun.luckymusic.widget.effect;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.util.Log;
-import android.util.Pair;
-import android.view.View;
 
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
@@ -18,31 +13,29 @@ import com.ruichaoqun.luckymusic.utils.UiUtils;
  * description:动感音阶动效
  */
 public class DynamicScaleEffectView extends ParticleCommonEffectView {
-    private static final int q = UiUtils.dp2px(3.0f);
+    private static final int width = UiUtils.dp2px(3.0f);
 
     public DynamicScaleEffectView(Context context) {
         super(context);
-        this.f11635b = q;
-        this.l.setStrokeWidth((float) q);
+        this.mPointsWidth = width;
+        this.l.setStrokeWidth(width);
         this.l.setStrokeCap(Paint.Cap.ROUND);
-        this.m.setStrokeWidth((float) this.f11635b);
+        this.m.setStrokeWidth(this.mPointsWidth);
 
     }
 
     @Override
     public void a(Canvas canvas) {
         if (this.f11640g) {
-            this.l.setColor(this.f11639f);
+            this.l.setColor(this.mPointColor);
             this.f11640g = false;
         }
-        canvas.drawLines(this.k, this.l);
-
+        canvas.drawLines(this.pts, this.l);
     }
 
     @Override
     public int getStartRadius() {
-        return this.f11641h;
-
+        return this.mPointCircleRadius;
     }
 
     @Override

@@ -30,7 +30,7 @@ public class WanAndroidPresenter extends BasePresenter<WanAndroidContact.View> i
 
     @Override
     public void initData() {
-        Observable.zip(dataRepository.getBannerList().flatMap(RxUtils.transformerResult()), dataRepository.getHomeList(0).flatMap(RxUtils.transformerResult()), dataRepository.getTopList().flatMap(RxUtils.transformerResult()),
+        Observable.zip(dataRepository.getBannerList().compose(RxUtils.tokenTimeoutHelper()).flatMap(RxUtils.transformerResult()), dataRepository.getHomeList(0).compose(RxUtils.tokenTimeoutHelper()).flatMap(RxUtils.transformerResult()), dataRepository.getTopList().compose(RxUtils.tokenTimeoutHelper()).flatMap(RxUtils.transformerResult()),
                 new Function3<List<BannerItemBean>, HomePageBean, List<HomePageItemBean>, List<MultiItemEntity>>() {
                     @Override
                     public List<MultiItemEntity> apply(List<BannerItemBean> bannerItemBeans, HomePageBean homePageBean, List<HomePageItemBean> homePageItemBeans) throws Exception {

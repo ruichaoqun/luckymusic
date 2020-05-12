@@ -50,6 +50,10 @@
     <string name="play_mode_shuffle_play">随机播放</string>
     <string name="play_mode_list_circulation">列表循环</string>
     <string name="play_mode_single_cycle">单曲循环</string>
+    
+    <!-- MainActivity -->
+    <string name="main_activity_drawer_night_theme">夜间模式</string>
+    <string name="main_activity_drawer_light_theme">日间模式</string>
 
     <!--  PlayerActivity -->
     <string name="artist_track_number">%d首</string>

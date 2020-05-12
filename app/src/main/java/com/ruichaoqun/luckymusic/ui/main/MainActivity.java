@@ -10,6 +10,8 @@ import androidx.core.view.GravityCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +29,8 @@ import com.ruichaoqun.luckymusic.ui.main.mine.MineFragment;
 import com.ruichaoqun.luckymusic.ui.main.video.VideoFragment;
 import com.ruichaoqun.luckymusic.ui.search.SearchActivity;
 
+import java.io.EOFException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

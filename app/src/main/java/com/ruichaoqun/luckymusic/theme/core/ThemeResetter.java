@@ -1,6 +1,5 @@
 package com.ruichaoqun.luckymusic.theme.core;
 
-import com.ruichaoqun.luckymusic.theme.ThemeService;
 import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 
 /**
@@ -10,32 +9,29 @@ import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
  */
 public class ThemeResetter {
     private int mCurrentCustomColor = 0;
-    private int mCurrentThemeId = ThemeService.getInstance().getThemeId();
+    private int mCurrentThemeId = ResourceRouter.getInstance().getThemeId();
     private OnThemeResetListener mOnThemeResetListener;
 
     public ThemeResetter(OnThemeResetListener listener) {
         this.mOnThemeResetListener = listener;
-        ThemeService proxy = ThemeService.getInstance();
-        if (proxy.isCustomColorTheme()) {
-            this.mCurrentCustomColor = proxy.getCurrentColor();
-        } else if (proxy.isCustomBgTheme()) {
-            this.mCurrentCustomColor = proxy.getCustomBgThemeColor();
+        if (ResourceRouter.getInstance().isCustomColorTheme()) {
+            this.mCurrentCustomColor = ThemeConfig.getCurrentColor();
+        } else if (ResourceRouter.getInstance().isCustomBgTheme()) {
+            this.mCurrentCustomColor = ThemeConfig.getCustomBgThemeColor();
         }
     }
 
     public void checkIfNeedResetTheme() {
-        int themeId = ThemeService.getInstance().getThemeId();
-        ThemeService proxy = ThemeService.getInstance();
-        if (themeId != this.mCurrentThemeId || ((proxy.isCustomColorTheme() && this.mCurrentCustomColor != proxy.getCurrentColor()) || (proxy.isCustomBgTheme() && this.mCurrentCustomColor != proxy.getCustomBgThemeColor()))) {
+        int themeId = ResourceRouter.getInstance().getThemeId();
+        if (themeId != this.mCurrentThemeId || ((ResourceRouter.getInstance().isCustomColorTheme() && this.mCurrentCustomColor != ThemeConfig.getCurrentColor()) || (ResourceRouter.getInstance().isCustomBgTheme() && this.mCurrentCustomColor != ThemeConfig.getCustomBgThemeColor()))) {
             this.mOnThemeResetListener.onThemeReset();
             saveCurrentThemeInfo();
         }
     }
 
     public void saveCurrentThemeInfo() {
-        ThemeService proxy = ThemeService.getInstance();
-        this.mCurrentThemeId = ThemeService.getInstance().getThemeId();
-        int i = proxy.isCustomColorTheme() ? proxy.getCurrentColor() : proxy.isCustomBgTheme() ? proxy.getCustomBgThemeColor() : 0;
+        this.mCurrentThemeId = ResourceRouter.getInstance().getThemeId();
+        int i = ResourceRouter.getInstance().isCustomColorTheme() ? ThemeConfig.getCurrentColor() : ResourceRouter.getInstance().isCustomBgTheme() ? ThemeConfig.getCustomBgThemeColor() : 0;
         this.mCurrentCustomColor = i;
     }
 }

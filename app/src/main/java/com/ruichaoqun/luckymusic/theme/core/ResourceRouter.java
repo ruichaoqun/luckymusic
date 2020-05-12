@@ -805,14 +805,17 @@ public class ResourceRouter {
             this.mHeight = i2;
         }
 
+        @Override
         public int getIntrinsicWidth() {
             return this.mWidth;
         }
 
+        @Override
         public int getIntrinsicHeight() {
             return this.mHeight;
         }
 
+        @Override
         @Nullable
         public Drawable.ConstantState getConstantState() {
             if (this.mMyConstantState == null) {
@@ -826,11 +829,13 @@ public class ResourceRouter {
             MyConstantState() {
             }
 
+            @Override
             @NonNull
             public Drawable newDrawable() {
                 return new SizeExplicitDrawable(getWrappedDrawable().getConstantState().newDrawable(), SizeExplicitDrawable.this.mWidth, SizeExplicitDrawable.this.mHeight);
             }
 
+            @Override
             public int getChangingConfigurations() {
                 return 0;
             }

@@ -1,11 +1,9 @@
 package com.ruichaoqun.luckymusic.theme.ui;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.ruichaoqun.luckymusic.theme.ThemeService;
 import com.ruichaoqun.luckymusic.theme.core.ThemeResetter;
 import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 

@@ -9,9 +9,6 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
-import com.ruichaoqun.luckymusic.theme.ThemeService;
-
 /**
  * @author Rui Chaoqun
  * @date :2019/10/12 16:46

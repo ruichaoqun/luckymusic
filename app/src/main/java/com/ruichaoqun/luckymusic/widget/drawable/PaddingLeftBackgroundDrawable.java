@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+
 /**
  * @author Rui Chaoqun
  * @date :2019/10/12 16:46
@@ -103,17 +105,17 @@ public class PaddingLeftBackgroundDrawable extends Drawable {
             if (!mForCard) {
                 return Color.TRANSPARENT;
             }
-            if (ThemeService.getInstance().isNightTheme()) {
+            if (ResourceRouter.getInstance().isNightTheme()) {
                 return Color.parseColor("#7FFFFFFF");
             }
-            if (ThemeService.getInstance().isGeneralRuleTheme()) {
+            if (ResourceRouter.getInstance().isGeneralRuleTheme()) {
                 return Color.WHITE;
             }
-            if (ThemeService.getInstance().isCustomLightTheme()) {
+            if (ResourceRouter.getInstance().isCustomLightTheme()) {
                 return Color.parseColor("#33FFFFFF");
             }
             return Color.parseColor("#19FFFFFF");
-        } else if (!ThemeService.getInstance().isNightTheme()) {
+        } else if (!ResourceRouter.getInstance().isNightTheme()) {
             return Color.parseColor("#19000000");
         } else {
             return Color.parseColor("#19FFFFFF");
@@ -125,7 +127,7 @@ public class PaddingLeftBackgroundDrawable extends Drawable {
         if (this.mLineColor != null) {
             return this.mLineColor.intValue();
         }
-        return ThemeService.getInstance().getLineColor();
+        return ResourceRouter.getInstance().getLineColor();
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.theme.core.ThemeResetter;
 import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 
@@ -22,6 +23,7 @@ public class CustomThemeLine extends View implements OnThemeResetListener {
         }
     }
 
+    @Override
     public void onFinishTemporaryDetach() {
         super.onFinishTemporaryDetach();
         this.mThemeResetter.checkIfNeedResetTheme();
@@ -38,11 +40,12 @@ public class CustomThemeLine extends View implements OnThemeResetListener {
         onThemeReset();
     }
 
+    @Override
     public void onThemeReset() {
         if (this.mThemeResetter != null) {
             this.mThemeResetter.saveCurrentThemeInfo();
         }
-        setBackgroundColor(ThemeService.getInstance().getLineColor());
+        setBackgroundColor(ResourceRouter.getInstance().getLineColor());
     }
 
 }

@@ -90,7 +90,7 @@ public class ThemeHelper {
     }
 
     public static void configDrawableTheme(Drawable drawable) {
-        configDrawableTheme(drawable, ThemeService.getInstance().getThemeColor());
+        configDrawableTheme(drawable, ResourceRouter.getInstance().getThemeColor());
     }
 
 
@@ -176,10 +176,11 @@ public class ThemeHelper {
 
     @SuppressLint("RestrictedApi")
     public static Drawable wrapTopOrBottomLineBackground(final Drawable drawable, final boolean z) {
-        return ThemeService.getInstance().isGeneralRuleTheme() ? new DrawableWrapper(drawable) {
+        return ResourceRouter.getInstance().isGeneralRuleTheme() ? new DrawableWrapper(drawable) {
             private MyConstantState mMyConstantState;
             private Paint mPaint = new Paint();
 
+            @Override
             public void draw(@NonNull Canvas canvas) {
                 drawable.draw(canvas);
                 if (this.mPaint.getStrokeWidth() == 0.0f) {
@@ -190,6 +191,7 @@ public class ThemeHelper {
                 canvas.drawLine(0.0f, height, (float) getBounds().width(), height, this.mPaint);
             }
 
+            @Override
             @Nullable
             public Drawable.ConstantState getConstantState() {
                 if (this.mMyConstantState == null) {
@@ -204,11 +206,13 @@ public class ThemeHelper {
                 MyConstantState() {
                 }
 
+                @Override
                 @NonNull
                 public Drawable newDrawable() {
                     return ThemeHelper.wrapTopOrBottomLineBackground(drawable, z);
                 }
 
+                @Override
                 public int getChangingConfigurations() {
                     return 0;
                 }
@@ -234,7 +238,7 @@ public class ThemeHelper {
     }
 
     public static Drawable getRippleDrawable(Context context, Drawable drawable) {
-        boolean isNightTheme = ThemeService.getInstance().isNightTheme();
+        boolean isNightTheme = ResourceRouter.getInstance().isNightTheme();
         if(!CommonUtils.versionAbove21()){
             return drawable;
         }

@@ -2,8 +2,7 @@
 <com.ruichaoqun.luckymusic.theme.ui.CustomTopLineLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="@dimen/dp_50"
-    android:layout_gravity="bottom"
-    android:layout_marginBottom="@dimen/dp_50">
+    android:layout_gravity="bottom">
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"

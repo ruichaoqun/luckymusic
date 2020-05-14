@@ -42,7 +42,7 @@ public class ThemeConfig {
     public static final int THEME_INTERNAL_MAX_ID = -1;
     public static final int THEME_NIGHT = -3;
     public static final int THEME_RED = -5;
-    public static final int THEME_WHITE = -1;
+    public static final int THEME_DEFAULT = -1;
 
     public static int getCurrentColor() {
         return 0;
@@ -53,7 +53,7 @@ public class ThemeConfig {
     }
 
     @IntDef({
-            THEME_WHITE,
+            THEME_DEFAULT,
             THEME_CUSTOM_COLOR,
             THEME_NIGHT,
             THEME_CUSTOM_BG,

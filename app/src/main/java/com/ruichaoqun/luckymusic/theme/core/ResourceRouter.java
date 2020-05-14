@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.graphics.drawable.DrawableWrapper;
 
+import android.util.Log;
 import android.util.SparseIntArray;
 
 
@@ -90,21 +91,22 @@ public class ResourceRouter {
     private ResourceRouter(Context context) {
         this.mContext = context;
         this.mResources = context.getResources();
+
     }
 
     private void reset() {
         this.mThemeInfo = new ThemeInfo(ThemeConfig.getCurrentThemeId());
         int id = this.mThemeInfo.getId();
-        if (id == -1) {
+        if (id == ThemeConfig.THEME_DEFAULT) {
             this.mThemeInfo.setName(this.mContext.getString(R.string.default_theme));
-        } else if (id == -5) {
-            this.mThemeInfo.setName(this.mContext.getString(R.string.classics_red));
-        } else if (id == -2) {
+        } else if (id == ThemeConfig.THEME_CUSTOM_COLOR) {
             this.mThemeInfo.setName(this.mContext.getString(R.string.custom_color));
-        } else if (id == -3) {
+        } else if (id == ThemeConfig.THEME_NIGHT) {
             this.mThemeInfo.setName(this.mContext.getString(R.string.night_mode));
-        } else if (id == -4) {
+        } else if (id == ThemeConfig.THEME_CUSTOM_BG) {
             this.mThemeInfo.setName(this.mContext.getString(R.string.custom_skin));
+        } else if (id == ThemeConfig.THEME_RED) {
+            this.mThemeInfo.setName(this.mContext.getString(R.string.classics_red));
         } else {
             //TODO 皮肤包
 //            this.mThemeInfo.setName(ThemeCache.getInstance().getThemeNameById(id));
@@ -116,10 +118,6 @@ public class ResourceRouter {
 
     }
 
-
-
-
-
     @MainThread
     public Drawable getCacheStatusBarDrawable() {
         if (this.mCacheStatusBarDrawable == null) {
@@ -130,13 +128,34 @@ public class ResourceRouter {
 
     public void buildCache() {
         int i;
+        Drawable drawable;
         Drawable colorDrawable;
         Context context = this.mContext;
-        this.mCacheStatusBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"), Color.parseColor("#D33A31")});
-        this.mCacheToolBarDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.parseColor("#D33A31"),Color.parseColor("#DB3F35")});
-        this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.t_dialogBackground));
-        this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(0XF9FFFFFF));
-        this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.mini_player_bar_height)));
+        boolean isRedTheme = isRedTheme();
+        if(isGeneralRuleTheme()){
+            this.mCacheBgDrawable = new ColorDrawable(context.getResources().getColor(R.color.white));
+            this.mCacheBgBlurDrawable = this.mCacheBgDrawable.getConstantState().newDrawable();
+            this.mCacheDrawerBgDrawable = this.mCacheBgDrawable.getConstantState().newDrawable();
+            if (isRedTheme) {
+                drawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0xFFD33A31, ThemeConfig.COLOR_RED_TOOLBAR_END});
+            } else {
+                drawable = new ColorDrawable(Color.WHITE);
+            }
+            this.mCacheToolBarDrawable = drawable;
+            this.mCacheStatusBarDrawable = isRedTheme ? new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0xffd33a31, 0xFFD33A31}) : this.mCacheToolBarDrawable.getConstantState().newDrawable();
+            this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.t_dialogBackground));
+            this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(0XF9FFFFFF));
+            this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.mini_player_bar_height)));
+        }else if(isNightTheme()){
+            this.mCacheBgDrawable = new ColorDrawable(context.getResources().getColor(R.color.night_theme_bg));
+            this.mCacheBgBlurDrawable = this.mCacheBgDrawable.getConstantState().newDrawable();
+            this.mCacheDrawerBgDrawable = this.mCacheBgDrawable.getConstantState().newDrawable();
+            this.mCacheToolBarDrawable = new ColorDrawable(context.getResources().getColor(R.color.night_toolbar_drawable));
+            this.mCacheStatusBarDrawable = this.mCacheToolBarDrawable.getConstantState().newDrawable();
+            this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.night_dialog_background));
+            this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(context.getResources().getColor(R.color.night_toolbar_drawable)));
+            this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.dp_49)));
+        }
     }
 
     @MainThread
@@ -187,7 +206,7 @@ public class ResourceRouter {
 
 
     public boolean isInternalTheme() {
-        return this.mThemeInfo.getId() <= ThemeConfig.THEME_WHITE;
+        return this.mThemeInfo.getId() <= ThemeConfig.THEME_DEFAULT;
     }
 
 
@@ -318,12 +337,17 @@ public class ResourceRouter {
         return null;
     }
 
+    public boolean isDefaultTheme() {
+        return isWhiteTheme();
+    }
+
+
     public boolean isWhiteTheme() {
-        return false;
+        return mThemeInfo.getId() == ThemeConfig.THEME_DEFAULT;
     }
 
     public boolean isRedTheme() {
-        return false;
+        return this.mThemeInfo.getId() == -5;
     }
 
     public boolean isGeneralRuleTheme() {
@@ -331,7 +355,7 @@ public class ResourceRouter {
     }
 
     public int getThemeId() {
-        return 0;
+        return mThemeInfo.getId();
     }
 
     public int getBgMaskDrawableColor(int i) {
@@ -368,11 +392,7 @@ public class ResourceRouter {
     }
 
     public boolean isCustomColorTheme() {
-        return false;
-    }
-
-    public boolean isDefaultTheme() {
-        return false;
+        return mThemeInfo.getId() == ThemeConfig.THEME_CUSTOM_COLOR;
     }
 
     public int getIconColorByDefaultColor(int i) {
@@ -403,7 +423,11 @@ public class ResourceRouter {
     }
 
     public Drawable getCacheBgBlurDrawable() {
-        return null;
+        if (this.mCacheBgBlurDrawable == null) {
+            buildCache();
+        }
+        return this.mCacheBgBlurDrawable.getConstantState().newDrawable();
+
     }
 
     public int[] getThemeColorBackgroundColorAndIconColor() {

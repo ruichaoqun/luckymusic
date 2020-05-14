@@ -72,9 +72,10 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         initToolBar();
         transparentStatusBar(true);
         initDraw();
+        ((ViewGroup)mPlayBarContainer.getParent()).removeView(mPlayBarContainer);
+        ((ViewGroup)findViewById(R.id.layout_drawer_content)).addView(mPlayBarContainer,1);
         applyStatusBarCurrentTheme();
         applyToolbarCurrentTheme();
-
     }
 
     @Override

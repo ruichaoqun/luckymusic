@@ -45,7 +45,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     private static final long POSITION_UPDATE_INTERVAL_MILLIS = 100L;
 
     private ViewGroup mMusicContainer;
-    private RelativeLayout mPlayBarContainer;
+    protected RelativeLayout mPlayBarContainer;
     private ImageView mPlayBarCover;
     private TextView mPlayBarTitle;
     private TextView mPlayBarArtist;

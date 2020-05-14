@@ -8,9 +8,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,6 +59,23 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         }
         overridePendingTransition(R.anim.l, R.anim.m);
     }
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setWindowBackground();
+        super.onCreate(savedInstanceState);
+    }
+
+    private void setWindowBackground() {
+        getWindow().setBackgroundDrawable(getWindowBackgroundDrawable());
+    }
+
+    public Drawable getWindowBackgroundDrawable() {
+        return ResourceRouter.getInstance().getCacheBgBlurDrawable();
+    }
+
+
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -295,9 +315,9 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
 
-    public StatusBarHolderView initStatusBarHolderView(int i) {
+    public StatusBarHolderView initStatusBarHolderView(int id) {
         StatusBarHolderView statusBarHolderView = new StatusBarHolderView(this);
-        statusBarHolderView.setId(i);
+        statusBarHolderView.setId(id);
         setStyleForStatusBarView(statusBarHolderView);
         return statusBarHolderView;
     }

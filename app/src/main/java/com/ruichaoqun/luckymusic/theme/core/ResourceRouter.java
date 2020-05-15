@@ -146,6 +146,7 @@ public class ResourceRouter {
             this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.t_dialogBackground));
             this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(0XF9FFFFFF));
             this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.mini_player_bar_height)));
+            this.mThemeCustomBgColor = 0;
         }else if(isNightTheme()){
             this.mCacheBgDrawable = new ColorDrawable(context.getResources().getColor(R.color.night_theme_bg));
             this.mCacheBgBlurDrawable = this.mCacheBgDrawable.getConstantState().newDrawable();
@@ -155,6 +156,7 @@ public class ResourceRouter {
             this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.night_dialog_background));
             this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(context.getResources().getColor(R.color.night_toolbar_drawable)));
             this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.dp_49)));
+            this.mThemeCustomBgColor = 0;
         }
     }
 
@@ -170,17 +172,17 @@ public class ResourceRouter {
         return getToolbarIconColor(false);
     }
 
-    public int getToolbarIconColor(boolean z) {
-//        if (z) {
-//            return getInstance().getColorByDefaultColor(com.netease.cloudmusic.pause.l);
-//        }
-//        if (isWhiteTheme() || isCustomLightTheme() || isCustomColorTheme()) {
-//            return com.netease.cloudmusic.pause.f21073e;
-//        }
-//        if (isNightTheme()) {
-//            return 0x99FFFFFF;
-//        }
-        return Color.WHITE;
+    public int getToolbarIconColor(boolean isToolbarOnImage) {
+        if (isToolbarOnImage) {
+            return getInstance().getColorByDefaultColor(mResources.getColor(R.color.white));
+        }
+        if(isRedTheme()){
+            return mResources.getColor(R.color.white);
+        }
+        if (isWhiteTheme() || isCustomLightTheme() || isCustomColorTheme()) {
+            return mResources.getColor(R.color.color_cc000000);
+        }
+        return isNightTheme() ? 0x99FFFFFF : Color.WHITE;
     }
 
 
@@ -265,62 +267,67 @@ public class ResourceRouter {
         return R.color.themeColor;
     }
 
-//    @ColorInt
-//    public int getColor(int colorRes) {
-//        return getColorByDefaultColor(0, colorRes);
-//    }
-//
-//    @ColorInt
-//    public int getColorByDefaultColor(int colorRes) {
-//        return getColorByDefaultColor(colorRes, 0);
-//    }
-//
-//    @ColorInt
-//    private int getColorByDefaultColor(int i, int colorRes) {
+    public int getColor(int colorRes) {
+        return getColorByDefaultColor(0, colorRes);
+    }
+
+    public int getColorByDefaultColor(int colorInt) {
+        return getColorByDefaultColor(colorInt, 0);
+    }
+
+    private int getColorByDefaultColor(int colorInt, int colorRes) {
+        int skinColorByResId;
 //        if (!isInternalTheme()) {
 //            if (colorRes == 0) {
-//                if (i == com.netease.cloudmusic.pause.f21069a) {
+//                if (i2 == c.f59025a) {
 //                    colorRes = R.color.themeColor;
-//                } else if (i == com.netease.cloudmusic.pause.mGestureListener) {
-//                    colorRes = R.color.kl;
+//                } else if (i2 == c.j) {
+//                    colorRes = R.color.oj;
 //                }
 //            }
-//            if (colorRes != 0) {
-//                int skinColorByResId = getSkinColorByResId(colorRes);
-//                if (skinColorByResId != 0) {
-//                    return skinColorByResId;
-//                }
+//            if (!(colorRes == 0 || (skinColorByResId = getSkinColorByResId(colorRes)) == 0)) {
+//                return skinColorByResId;
 //            }
 //        }
-//        if (i == 0 && colorRes != 0) {
-//            i = this.mResources.getColor(colorRes);
-//        }
-//        if (isNightTheme()) {
-//            return getNightColor(i);
-//        }
-//        if (isWhiteTheme() || isCustomColorTheme()) {
-//            if (i != com.netease.cloudmusic.pause.f21069a || !isCustomColorTheme()) {
-//                return i;
-//            }
-//            return ThemeConfig.getCurrentColor();
-//        } else if (isRedTheme()) {
-//            if (i == com.netease.cloudmusic.pause.f21069a) {
-//                return com.netease.cloudmusic.pause.f21070b;
-//            }
-//            if (i == com.netease.cloudmusic.pause.f21071c) {
-//                return com.netease.cloudmusic.pause.f21072d;
-//            }
-//            return i;
-//        } else if (!isCustomLightTheme()) {
-//            return getCustomColor(i);
-//        } else {
-//            int i3 = this.mCompatibleColors.get(i);
-//            if (i3 != 0) {
-//                return i3;
-//            }
-//            return i;
-//        }
-//    }
+        if (colorInt == 0 && colorRes != 0) {
+            colorInt = this.mResources.getColor(colorRes);
+        }
+        if (isNightTheme()) {
+            return getNightColor(colorInt);
+        }
+        if (isWhiteTheme() || isCustomColorTheme()) {
+            return (colorInt !=  mResources.getColor(R.color.themeColor) || !isCustomColorTheme()) ? colorInt : ThemeConfig.getCurrentColor();
+        }
+        if (isRedTheme()) {
+            if (colorInt == mResources.getColor(R.color.themeColor)) {
+                return colorInt;
+            }
+            return colorInt == mResources.getColor(R.color.themeRedColorForShader) ? mResources.getColor(R.color.old_theme_shader) : colorInt;
+        } else if (!isCustomLightTheme()) {
+            return getCustomColor(colorInt);
+        } else {
+            int i4 = this.mCompatibleColors.get(colorInt);
+            return i4 != 0 ? i4 : colorInt;
+        }
+
+    }
+
+    public int getCustomColor(int colorInt) {
+        int i = mResources.getColor(R.color.themeColor);
+        if (this.mCustomColors.indexOfKey(i) < 0) {
+            this.mCustomColors.put(i, getThemeCustomBgColor());
+        }
+        int i3 = this.mCustomColors.get(colorInt);
+        return i3 != 0 ? i3 : colorInt;
+    }
+
+    public int getThemeCustomBgColor() {
+        if (this.mThemeCustomBgColor == null) {
+            buildCache();
+        }
+        return this.mThemeCustomBgColor.intValue();
+    }
+
 
 
 
@@ -330,7 +337,10 @@ public class ResourceRouter {
     }
 
     public boolean isCustomLightTheme() {
-        return false;
+        if (isInternalTheme()) {
+            return false;
+        }
+        return !isCustomDarkTheme();
     }
 
     public Drawable getDrawable(int i) {
@@ -374,8 +384,9 @@ public class ResourceRouter {
         return 0;
     }
 
-    public int getNightColor(int i) {
-        return 0;
+    public int getNightColor(int colorInt) {
+        int color = this.mNightColors.get(colorInt);
+        return color != 0 ? color : colorInt;
     }
 
     /**
@@ -468,6 +479,10 @@ public class ResourceRouter {
 
     public int getThemeNormalColor() {
         return 0;
+    }
+
+    public int getTitleTextColor(boolean isToolbarOnImage) {
+        return getToolbarIconColor(isToolbarOnImage);
     }
 
 

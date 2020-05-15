@@ -6,6 +6,7 @@
 
     <color name="white">#ffffffff</color>
     <color name="black">#000000</color>
+    <color name="transpaint">#00000000</color>
 
     <color name="color_66FFFFFF">#66FFFFFF</color>
     <color name="t_dialogBackground">#FFFFFFFF</color>
@@ -25,6 +26,8 @@
     <color name="color_ff3a3a">#ffff3a3a</color>
     <color name="color_663a3a">#66ff3a3a</color>
     <color name="color_ff0a0a">#ffaa3a3a</color>
+    <color name="themeRedColorForShader">#ffff6340</color>
+    <color name="old_theme_shader">#ffe14237</color>
 
     <color name="color_click_gray">#19ffffff</color>
     <color name="listItemPressedColor">#19000000</color>

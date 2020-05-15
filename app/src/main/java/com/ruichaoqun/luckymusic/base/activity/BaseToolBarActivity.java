@@ -276,22 +276,20 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         toolbar2.setSubtitleTextColor(getSubtitleTextColor(isToolbarOnImage));
     }
 
-    public int getTitleTextColor(boolean z) {
-        return Color.WHITE;
-//        return ResourceRouter.getInstance().getTitleTextColor(z);
+    public int getTitleTextColor(boolean isToolbarOnImage) {
+        return ResourceRouter.getInstance().getTitleTextColor(isToolbarOnImage);
     }
 
-    public int getSubtitleTextColor(boolean z) {
-        if (z) {
+    public int getSubtitleTextColor(boolean isToolbarOnImage) {
+        if (isToolbarOnImage) {
             return getResources().getColor(R.color.color_66FFFFFF);
         }
-        int titleTextColor = getTitleTextColor(z);
+        int titleTextColor = getTitleTextColor(false);
         return ColorUtils.setAlphaComponent(titleTextColor, Color.alpha(titleTextColor) / 2);
     }
 
-    public int getToolbarIconColor(boolean z) {
-//        return getResourceRouter().getToolbarIconColor(z);
-        return Color.WHITE;
+    public int getToolbarIconColor(boolean isToolbarOnImage) {
+        return getResourceRouter().getToolbarIconColor(isToolbarOnImage);
     }
 
     public ResourceRouter getResourceRouter() {
@@ -330,32 +328,24 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     public void setStyleForStatusBarView(StatusBarHolderView statusBarHolderView, boolean isToolbarOnImage) {
         boolean z2 = true;
         boolean z3 = false;
-        if (Build.VERSION.SDK_INT >= 23) {
-//            getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        if(ResourceRouter.getInstance().isWhiteTheme() || ResourceRouter.getInstance().isCustomLightTheme() || ResourceRouter.getInstance().isCustomColorTheme()){
             statusBarHolderView.setStatusBarTranslucent(true);
-            statusBarHolderView.setBackgroundDrawable(getStatusbarBg());
+            if(!isToolbarOnImage){
+                getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | 8192);
+                z3 = false;
+            }
+        }else{
+            if (ResourceRouter.getInstance().getColor(R.color.transpaint) == 0) {
+                z2 = true;
+            }
+            statusBarHolderView.setStatusBarTranslucent(z2);
+
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            if (getResourceRouter().isWhiteTheme() || getResourceRouter().isCustomLightTheme() || getResourceRouter().isCustomColorTheme()) {
-//                boolean mGestureListener = Build.VERSION.SDK_INT >= 23;
-//                statusBarHolderView.setStatusBarTranslucent(mGestureListener);
-//                if (!mGestureListener || z) {
-//                    z3 = true;
-//                } else {
-//                    getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                }
-//                z2 = z3;
-//            } else {
-//                if (getResourceRouter().getColor(R.color.nn) == 0) {
-//                    z3 = true;
-//                }
-//                statusBarHolderView.setStatusBarTranslucent(z3);
-//            }
-//            if (z2) {
-//                getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() & View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//            }
-//        }
-//        statusBarHolderView.setBackgroundDrawable(getStatusbarBg());
+        if (z3) {
+            getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() & -8193);
+        }
+        statusBarHolderView.setBackgroundDrawable(getStatusbarBg());
     }
 
 

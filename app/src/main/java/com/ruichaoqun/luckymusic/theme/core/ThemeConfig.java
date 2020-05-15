@@ -45,11 +45,11 @@ public class ThemeConfig {
     public static final int THEME_DEFAULT = -1;
 
     public static int getCurrentColor() {
-        return 0;
+        return getPrefer().getInt(PREF_KEY_CURRENT_COLOR, 0);
     }
 
     public static int getCustomBgThemeColor() {
-        return 0;
+        return getPrefer().getInt(PREF_KEY_CUSTOM_BG_ALPHA, 0);
     }
 
     @IntDef({
@@ -68,7 +68,7 @@ public class ThemeConfig {
 
 
     public static int getCurrentThemeId() {
-        int currentThemeId = getPrefer().getInt(SharedPreferencesUtils.THEME_CURRENT_ID,-1);
+        int currentThemeId = getPrefer().getInt(SharedPreferencesUtils.THEME_CURRENT_ID,-3);
         return currentThemeId;
     }
 

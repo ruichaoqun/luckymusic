@@ -9,11 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeLinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_row_height"
-            android:id="@+id/layout_loacal"
-            android:background="?attr/selectableItemBackground">
+            android:id="@+id/layout_loacal">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,7 +27,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_gravity="center_vertical"/>
 
-        </LinearLayout>
+        </com.ruichaoqun.luckymusic.theme.ui.CustomThemeLinearLayout>
         <include layout="@layout/divider_match"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

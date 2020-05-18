@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
@@ -25,11 +28,27 @@ public class CustomThemeLinearLayout extends LinearLayout implements OnThemeRese
     protected ThemeResetter mThemeResetter = new ThemeResetter(this);
     protected int newBgPaddingLeft;
 
+    public CustomThemeLinearLayout(Context context) {
+        super(context);
+    }
+
+    public CustomThemeLinearLayout(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.CustomThemeContainer, 0, 0);
+        this.forCard = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeContainer_forCard, false);
+        this.newBgPaddingLeft = obtainStyledAttributes.getDimensionPixelSize(R.styleable.CustomThemeContainer_newBgPaddingLeft, 0);
+        this.bgType = obtainStyledAttributes.getInteger(R.styleable.CustomThemeContainer_bgType, 0);
+        obtainStyledAttributes.recycle();
+        this.mRoundedViewHelper = RoundedViewHelper.onParseStyledAttributes(this, context, attributeSet);
+        onParseStyledAttributes(context, attributeSet);
+        onThemeReset();
+    }
+
+
     public void setNeedThemeResetWithOnAttachedToWindow(boolean z) {
         this.mNeedThemeResetWithOnAttachedToWindow = z;
     }
 
-    /* access modifiers changed from: protected */
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -46,21 +65,7 @@ public class CustomThemeLinearLayout extends LinearLayout implements OnThemeRese
         }
     }
 
-    public CustomThemeLinearLayout(Context context) {
-        super(context);
-    }
 
-    public CustomThemeLinearLayout(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.CustomThemeContainer, 0, 0);
-        this.forCard = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeContainer_forCard, false);
-        this.newBgPaddingLeft = obtainStyledAttributes.getDimensionPixelSize(R.styleable.CustomThemeContainer_newBgPaddingLeft, 0);
-        this.bgType = obtainStyledAttributes.getInteger(R.styleable.CustomThemeContainer_bgType, 0);
-        obtainStyledAttributes.recycle();
-        this.mRoundedViewHelper = RoundedViewHelper.onParseStyledAttributes(this, context, attributeSet);
-        onParseStyledAttributes(context, attributeSet);
-        onThemeReset();
-    }
 
     @Override
     public void onDraw(Canvas canvas) {

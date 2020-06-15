@@ -88,6 +88,12 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         }
         //设置透明主题
         applyCurrentTheme();
+
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
     }
 
     public void doSetContentViewWithToolBar(int layoutResID) {

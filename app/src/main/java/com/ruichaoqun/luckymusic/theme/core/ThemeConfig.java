@@ -68,7 +68,7 @@ public class ThemeConfig {
 
 
     public static int getCurrentThemeId() {
-        int currentThemeId = getPrefer().getInt(SharedPreferencesUtils.THEME_CURRENT_ID,-5);
+        int currentThemeId = getPrefer().getInt(SharedPreferencesUtils.THEME_CURRENT_ID,-1);
         return currentThemeId;
     }
 

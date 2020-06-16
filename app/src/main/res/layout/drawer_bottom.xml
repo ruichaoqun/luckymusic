@@ -8,17 +8,16 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="@string/main_activity_drawer_night_theme"
+        android:textColor=""
         android:gravity="center"/>
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/main_activity_drawer_night_theme"
+        android:text="@string/main_activity_drawer_setting"
         android:gravity="center"/>
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/main_activity_drawer_night_theme"
+        android:text="@string/main_activity_drawer_exit"
         android:gravity="center"/>
 </com.ruichaoqun.luckymusic.theme.ui.CustomTopLineLinearLayout>

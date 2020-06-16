@@ -54,6 +54,8 @@
     <!-- MainActivity -->
     <string name="main_activity_drawer_night_theme">夜间模式</string>
     <string name="main_activity_drawer_light_theme">日间模式</string>
+    <string name="main_activity_drawer_setting">设置</string>
+    <string name="main_activity_drawer_exit">退出</string>
 
     <!--  PlayerActivity -->
     <string name="artist_track_number">%d首</string>

@@ -20,6 +20,9 @@
         <attr name="buttonWhiteBackground" format="boolean"/>
         <attr name="roundedCornerRadius" format="float"/>
         <attr name="buttonType" format="integer"/>
+        <!--图片颜色是否适配主题  用于TextView、Button、ImageView-->
+        <attr name="needApplyDrawableColor" format="boolean"/>
+
 
     </declare-styleable>
 </resources>

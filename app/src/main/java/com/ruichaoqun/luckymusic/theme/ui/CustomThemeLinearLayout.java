@@ -34,14 +34,6 @@ public class CustomThemeLinearLayout extends LinearLayout implements OnThemeRese
 
     public CustomThemeLinearLayout(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.CustomThemeContainer, 0, 0);
-        this.forCard = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeContainer_forCard, false);
-        this.newBgPaddingLeft = obtainStyledAttributes.getDimensionPixelSize(R.styleable.CustomThemeContainer_newBgPaddingLeft, 0);
-        this.bgType = obtainStyledAttributes.getInteger(R.styleable.CustomThemeContainer_bgType, 0);
-        obtainStyledAttributes.recycle();
-        this.mRoundedViewHelper = RoundedViewHelper.onParseStyledAttributes(this, context, attributeSet);
-        onParseStyledAttributes(context, attributeSet);
-        onThemeReset();
     }
 
 

@@ -15,9 +15,14 @@ import com.ruichaoqun.luckymusic.theme.core.ThemeResetter;
 import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 import com.ruichaoqun.luckymusic.utils.ReflectUtils;
 
+/**
+ * 1、文字颜色
+ */
 public class CustomThemeTextView extends AppCompatTextView implements OnThemeResetListener {
     private boolean mNeedApplyDrawableColor;
     private boolean mNeedApplyTextColor;
+    private boolean mNeedSelect;
+    private int normalDrawableColor;
     private ColorStateList mColorsOriginal;
     protected ThemeResetter mThemeResetter = new ThemeResetter(this);
 
@@ -29,8 +34,11 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
     public CustomThemeTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mNeedApplyTextColor = true;
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, R.styleable.CustomTheme, 0, 0);
-        this.mNeedApplyDrawableColor = obtainStyledAttributes.getBoolean(R.styleable.CustomTheme_needApplyDrawableColor,false);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, R.styleable.CustomThemeTextView, 0, 0);
+        this.mNeedApplyDrawableColor = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeTextView_needApplyDrawableColor,false);
+        this.mNeedApplyTextColor = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeTextView_needApplyTextColor,true);
+        this.mNeedSelect = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeTextView_needSelected,false);
+        this.normalDrawableColor = obtainStyledAttributes.getInt(R.styleable.CustomThemeTextView_normalDrawableColor,0);
         obtainStyledAttributes.recycle();
         setTextColorOriginal(getTextColors());
     }

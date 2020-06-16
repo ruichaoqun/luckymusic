@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.ruichaoqun.luckymusic.theme.ui.CustomTopLineLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="@dimen/dp_50"
-    android:layout_gravity="bottom">
-    <TextView
+    android:layout_gravity="bottom"
+    android:id="@+id/layout_bottom">
+    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
+        android:id="@+id/tv_theme_mode"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="@string/main_activity_drawer_night_theme"
-        android:textColor=""
-        android:gravity="center"/>
-    <TextView
+        android:gravity="center"
+        app:needSelected="true"
+        app:needApplyDrawableColor="true"/>
+    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
+        android:id="@+id/tv_setting"
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:text="@string/main_activity_drawer_setting"
-        android:gravity="center"/>
-    <TextView
+        android:gravity="center"
+        app:needSelected="true"
+        app:needApplyDrawableColor="true"/>
+    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
+        android:id="@+id/tv_quit"
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:text="@string/main_activity_drawer_exit"
-        android:gravity="center"/>
+        android:gravity="center"
+        app:needSelected="true"
+        app:needApplyDrawableColor="true"/>
 </com.ruichaoqun.luckymusic.theme.ui.CustomTopLineLinearLayout>

@@ -145,6 +145,7 @@ public class ResourceRouter {
             this.mCacheStatusBarDrawable = isRedTheme ? new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0xffd33a31, 0xFFD33A31}) : this.mCacheToolBarDrawable.getConstantState().newDrawable();
             this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.t_dialogBackground));
             this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(0XF9FFFFFF));
+            this.mCacheDrawerBottomDrawable = this.mCacheOperationBottomDrawable.getConstantState().newDrawable();
             this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.mini_player_bar_height)));
             this.mThemeCustomBgColor = 0;
         }else if(isNightTheme()){
@@ -155,10 +156,27 @@ public class ResourceRouter {
             this.mCacheStatusBarDrawable = this.mCacheToolBarDrawable.getConstantState().newDrawable();
             this.mPopupBackgroundColor = Integer.valueOf(context.getResources().getColor(R.color.night_dialog_background));
             this.mCacheOperationBottomDrawable = ThemeHelper.getBgSelectorWithDrawalbe(context, new ColorDrawable(context.getResources().getColor(R.color.night_toolbar_drawable)));
+            this.mCacheDrawerBottomDrawable = this.mCacheOperationBottomDrawable.getConstantState().newDrawable();
             this.mCachePlayerDrawable = ThemeHelper.getRippleDrawable(context, new SizeExplicitDrawable(this.mCacheOperationBottomDrawable.getConstantState().newDrawable(), context.getResources().getDisplayMetrics().widthPixels, context.getResources().getDimensionPixelOffset(R.dimen.dp_49)));
             this.mThemeCustomBgColor = 0;
         }
     }
+
+
+    public Drawable getCacheDrawerBottomDrawable() {
+        if (this.mCacheDrawerBottomDrawable == null) {
+            buildCache();
+        }
+        return this.mCacheDrawerBottomDrawable;
+    }
+
+    public Drawable getCacheDrawerBgDrawable() {
+        if (this.mCacheDrawerBgDrawable == null) {
+            buildCache();
+        }
+        return this.mCacheDrawerBgDrawable;
+    }
+
 
     @MainThread
     public Drawable getCacheToolBarDrawable() {

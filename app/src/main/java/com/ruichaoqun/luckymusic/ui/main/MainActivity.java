@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.GravityCompat;
@@ -39,9 +40,14 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View{
+public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View {
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
@@ -55,6 +61,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     private VectorDrawableCompat mDrawerIconDrawable;
     private ActionBarDrawerToggle mDrawerToggle;
     private List<Fragment> mFragments;
+    private MainDrawer mMainDrawer = new MainDrawer(this);
 
 
     @Override
@@ -72,10 +79,38 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         initToolBar();
         transparentStatusBar(true);
         initDraw();
-        ((ViewGroup)mPlayBarContainer.getParent()).removeView(mPlayBarContainer);
-        ((ViewGroup)findViewById(R.id.layout_drawer_content)).addView(mPlayBarContainer,1);
+        ((ViewGroup) mPlayBarContainer.getParent()).removeView(mPlayBarContainer);
+        ((ViewGroup) findViewById(R.id.layout_drawer_content)).addView(mPlayBarContainer, 1);
         applyStatusBarCurrentTheme();
         applyToolbarCurrentTheme();
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        list.add(6);
+        list.add(7);
+        Observable.fromIterable(list)
+                .flatMap(new Function<Integer, ObservableSource<Integer>>() {
+                    @Override
+                    public ObservableSource<Integer> apply(Integer integer) throws Exception {
+                        return Observable.create(new ObservableOnSubscribe<Integer>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                                Thread.sleep(2000);
+                                emitter.onNext(integer);
+                            }
+                        });
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        Log.w("AAAA",integer+"");
+                    }
+                });
     }
 
     @Override
@@ -84,6 +119,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     }
 
     private void initDraw() {
+        mMainDrawer.initView();
         this.mDrawerIconDrawable = VectorDrawableCompat.create(getResources(), R.drawable.icon_menu, null);
         this.mDrawIcon.setImageDrawable(this.mDrawerIconDrawable);
         this.mDrawerToggle = new ActionBarDrawerToggle(this, this.mDrawerLayout, getToolbar(), R.string.app_name, R.string.app_name) {
@@ -116,7 +152,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         mFragments.add(new MineFragment());
         mFragments.add(new WanAndroidFragment());
         mFragments.add(new VideoFragment());
-        mViewPager.setAdapter(new BaseFragmentStateAdapter(getSupportFragmentManager(),mFragments,getResources().getStringArray(R.array.main_titles)));
+        mViewPager.setAdapter(new BaseFragmentStateAdapter(getSupportFragmentManager(), mFragments, getResources().getStringArray(R.array.main_titles)));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

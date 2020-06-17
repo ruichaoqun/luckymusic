@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="needSelected" format="boolean"/>
+    <attr name="needApplyTextColor" format="boolean"/>
+    <attr name="needApplyDrawableColor" format="boolean"/>
+    <attr name="normalDrawableColor" format="reference|color"/>
+
     <declare-styleable name="CMRoundedCorner">
         <attr name="cmRoundedCorner" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="CustomThemeTextView">
-        <attr name="needSelected" format="boolean"/>
-        <attr name="needApplyTextColor" format="boolean"/>
-        <attr name="needApplyDrawableColor" format="boolean"/>
-        <attr name="normalDrawableColor" format="reference"/>
+        <attr name="needSelected" />
+        <attr name="needApplyTextColor" />
+        <attr name="needApplyDrawableColor" />
+        <attr name="normalDrawableColor" />
     </declare-styleable>
 </resources>

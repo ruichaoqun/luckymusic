@@ -23,6 +23,7 @@
     <color name="theme_ripple_mask_light">@color/white</color>
 
     <color name="themeColor">@color/color_ff3a3a</color>
+    <color name="theme_color_PrimaryDark">#ffa53e37</color>
     <color name="color_ff3a3a">#ffff3a3a</color>
     <color name="color_663a3a">#66ff3a3a</color>
     <color name="color_ff0a0a">#ffaa3a3a</color>
@@ -40,6 +41,48 @@
     <color name="night_theme_bg">#ff111214</color>
     <color name="night_toolbar_drawable">#ff17181a</color>
     <color name="night_dialog_background">#ff222326</color>
+
+
+    <color name="normalCLink">#ff507daf</color>
+    <color name="normalCDownload">#ff5ab5e7</color>
+
+
+    <color name="iconColorNormal1">#b2000000</color>
+    <color name="iconColorNormal2">#99000000</color>
+    <color name="iconColorNormal3">#7f000000</color>
+    <color name="iconColorNormal4">#66000000</color>
+    <color name="iconColorNormal5">#4c000000</color>
+    <color name="iconColorNormal6">#33000000</color>
+
+    <color name="iconColorPressed1">#e5000000</color>
+    <color name="iconColorPressed2">#cc000000</color>
+    <color name="iconColorPressed3">#b2000000</color>
+    <color name="iconColorPressed4">#99000000</color>
+    <color name="iconColorPressed5">#7f000000</color>
+    <color name="iconColorPressed6">#66000000</color>
+
+    <color name="iconColorUnable1">#35000000</color>
+    <color name="iconColorUnable2">#2d000000</color>
+    <color name="iconColorUnable3">#26000000</color>
+    <color name="iconColorUnable4">#1e000000</color>
+    <color name="iconColorUnable5">#19000000</color>
+    <color name="iconColorUnable6">#19000000</color>
+
+
+    <color name="normalC1">#cc000000</color>
+    <color name="normalC2">#99000000</color>
+    <color name="normalC3">#7f000000</color>
+    <color name="normalC4">#66000000</color>
+    <color name="normalC5">#33000000</color>
+
+    <color name="normalImageC1">#ffffffff</color>
+    <color name="normalImageC2">#ccffffff</color>
+    <color name="normalImageC3">#b2ffffff</color>
+    <color name="normalImageC4">#99ffffff</color>
+    <color name="normalImageC5">#7fffffff</color>
+    <color name="normalImageC6">#66ffffff</color>
+
+
 
 
 </resources>

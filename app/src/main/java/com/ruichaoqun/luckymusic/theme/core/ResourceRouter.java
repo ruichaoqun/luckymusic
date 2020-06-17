@@ -92,6 +92,127 @@ public class ResourceRouter {
         this.mContext = context;
         this.mResources = context.getResources();
 
+        this.mNightColors.put(getResourceColor(R.color.themeColor), getResourceColor(R.color.theme_color_PrimaryDark));
+        this.mNightColors.put(getResourceColor(R.color.normalC1), 0x72FFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalC2), 0X4CFFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalC3), 0x33FFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalC4), 0x26FFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalC5), 0x11FFFFFF);
+        this.mNightColors.put(0xFF333333, 0x72FFFFFF);
+        this.mNightColors.put(0xFF666666, 0X4CFFFFFF);
+        this.mNightColors.put(0xFF888888, 0x33FFFFFF);
+        this.mNightColors.put(0xFF828282, 0x33FFFFFF);
+        this.mNightColors.put(0xFF999999, 0x26FFFFFF);
+        this.mNightColors.put(0xFFA2A4A6, 0x26FFFFFF);
+        this.mNightColors.put(0xFFB2B2B2, 0x11FFFFFF);
+        this.mNightColors.put(0xFFCCCCCC, 0x11FFFFFF);
+        this.mNightColors.put(0xFFC9C9C9, 0x11FFFFFF);
+        this.mNightColors.put(0xFFD9D9D9, 0x11FFFFFF);
+        this.mNightColors.put(0x19000000, 0xDFFFFFFF);
+        this.mNightColors.put(0xFFF2F4F5, 0X4CFFFFFF);
+        this.mNightColors.put(0xFFE6E8E9, 0xFF151618);
+        this.mNightColors.put(getResourceColor(R.color.normalCLink), 0xFF486F9A);
+        this.mNightColors.put(0XFFFE672E, 0XFFFE672E);
+        this.mNightColors.put(getResourceColor(R.color.normalCDownload), 0xFF2B85B5);
+        this.mNightColors.put(getResourceColor(R.color.normalImageC1), 0X8CFFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalImageC2), 0x72FFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalImageC3), 0x59FFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalImageC4), 0X4CFFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalImageC5), 0x33FFFFFF);
+        this.mNightColors.put(getResourceColor(R.color.normalImageC6), 0x26FFFFFF);
+
+        this.mCustomColors.put(getResourceColor(R.color.normalC1), Color.WHITE);
+        this.mCustomColors.put(getResourceColor(R.color.normalC2), 0xCCFFFFFF);
+        this.mCustomColors.put(getResourceColor(R.color.normalC3), 0XA5FFFFFF);
+        this.mCustomColors.put(getResourceColor(R.color.normalC4), 0X8CFFFFFF);
+        this.mCustomColors.put(getResourceColor(R.color.normalC5), 0x59FFFFFF);
+        this.mCustomColors.put(getResourceColor(R.color.normalC5), 0x33FFFFFF);
+        this.mCustomColors.put(0xFF333333, Color.WHITE);
+        this.mCustomColors.put(0xFF666666, 0xCCFFFFFF);
+        this.mCustomColors.put(0xFF888888, 0XA5FFFFFF);
+        this.mCustomColors.put(0xFF828282, 0XA5FFFFFF);
+        this.mCustomColors.put(0xFF999999, 0X8CFFFFFF);
+        this.mCustomColors.put(0xFFA2A4A6, 0X8CFFFFFF);
+        this.mCustomColors.put(0xFFB2B2B2, 0x59FFFFFF);
+        this.mCustomColors.put(0xFFCCCCCC, 0x59FFFFFF);
+        this.mCustomColors.put(0xFFC9C9C9, 0x59FFFFFF);
+        this.mCustomColors.put(0xFFD9D9D9, 0x33FFFFFF);
+        this.mCustomColors.put(getResourceColor(R.color.normalCLink), 0xFF85B9E6);
+        this.mCustomColors.put(0XFFFE672E, 0xCCFFFFFF);
+        this.mCustomColors.put(getResourceColor(R.color.normalCDownload), 0xFF6AC4F5);
+        this.mCustomColors.put(getResourceColor(R.color.normalImageC1), getResourceColor(R.color.normalImageC1));
+        this.mCustomColors.put(getResourceColor(R.color.normalImageC2), getResourceColor(R.color.normalImageC2));
+        this.mCustomColors.put(getResourceColor(R.color.normalImageC3), getResourceColor(R.color.normalImageC3));
+        this.mCustomColors.put(getResourceColor(R.color.normalImageC4), getResourceColor(R.color.normalImageC4));
+        this.mCustomColors.put(getResourceColor(R.color.normalImageC5), getResourceColor(R.color.normalImageC5));
+        this.mCustomColors.put(getResourceColor(R.color.normalImageC6), getResourceColor(R.color.normalImageC6));
+
+        this.mIconNightColors.put(getResourceColor(R.color.normalCLink), 0xFF486F9A);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorNormal1), 0X66FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorNormal2), 0x3FFFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorNormal3), 0x33FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorNormal4), 0X26FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorNormal5), 0X19FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorNormal6), 0X11FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorPressed1), 0X99FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorPressed2), 0X72FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorPressed3), 0X66FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorPressed4), 0X4CFFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorPressed5), 0X4CFFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorPressed6), 0X44FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorUnable1), 0X33FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorUnable2), 0X14FFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorUnable3), 0X0FFFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorUnable3), 0X0AFFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorUnable4), 0X0AFFFFFF);
+        this.mIconNightColors.put(getResourceColor(R.color.iconColorUnable6), 0X0AFFFFFF);
+
+
+        this.mIconCustomColors.put(getResourceColor(R.color.normalCLink), 0XFF85B9E6);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorNormal1), 0XD8FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorNormal2), 0XBFFFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorNormal3), 0XA5FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorNormal4), 0X8CFFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorNormal5), 0X66FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorNormal6), 0X4CFFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorPressed1), Color.WHITE);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorPressed2), 0xF2FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorPressed3), 0XD8FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorPressed4), 0XBFFFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorPressed5), 0x99FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorPressed6), 0x7FFFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorUnable1), 0x42FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorUnable2), 0x3AFFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorUnable3), 0x33FFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorUnable4), 0x2BFFFFFF);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorUnable5), 520093695);
+        this.mIconCustomColors.put(getResourceColor(R.color.iconColorUnable6), 520093695);
+
+        this.mIconStatusUnableColors.put(getResourceColor(R.color.iconColorNormal1), getResourceColor(R.color.iconColorUnable1));
+        this.mIconStatusUnableColors.put(getResourceColor(R.color.iconColorNormal2), getResourceColor(R.color.iconColorUnable2));
+        this.mIconStatusUnableColors.put(getResourceColor(R.color.iconColorNormal3), getResourceColor(R.color.iconColorUnable3));
+        this.mIconStatusUnableColors.put(getResourceColor(R.color.iconColorNormal4), getResourceColor(R.color.iconColorUnable4));
+        this.mIconStatusUnableColors.put(getResourceColor(R.color.iconColorNormal5), getResourceColor(R.color.iconColorUnable5));
+        this.mIconStatusUnableColors.put(getResourceColor(R.color.iconColorNormal6), getResourceColor(R.color.iconColorUnable6));
+
+        this.mIconStatusPressedColors.put(getResourceColor(R.color.iconColorNormal1),getResourceColor(R.color.iconColorPressed1));
+        this.mIconStatusPressedColors.put(getResourceColor(R.color.iconColorNormal2), getResourceColor(R.color.iconColorPressed2));
+        this.mIconStatusPressedColors.put(getResourceColor(R.color.iconColorNormal3), getResourceColor(R.color.iconColorPressed3));
+        this.mIconStatusPressedColors.put(getResourceColor(R.color.iconColorNormal4), getResourceColor(R.color.iconColorPressed4));
+        this.mIconStatusPressedColors.put(getResourceColor(R.color.iconColorNormal5), getResourceColor(R.color.iconColorPressed5));
+        this.mIconStatusPressedColors.put(getResourceColor(R.color.iconColorNormal6), getResourceColor(R.color.iconColorPressed6));
+
+        this.mNotWhiteNightColors.put(Color.WHITE, 0x33FFFFFF);
+        this.mCompatibleColors.put(0xFF333333, getResourceColor(R.color.normalC1));
+        this.mCompatibleColors.put(0xFF666666, getResourceColor(R.color.normalC1));
+        this.mCompatibleColors.put(0xFF888888, getResourceColor(R.color.normalC1));
+        this.mCompatibleColors.put(0xFF999999, getResourceColor(R.color.normalC1));
+        this.mCompatibleColors.put(0xFFCCCCCC, getResourceColor(R.color.normalC1));
+
+    }
+
+    private int getResourceColor(int colorRes){
+        return LuckyMusicApp.getInstance().getResources().getColor(colorRes);
     }
 
     private void reset() {
@@ -281,8 +402,7 @@ public class ResourceRouter {
     }
 
     public int getThemeColor() {
-//        return getColor(R.color.themeColor);
-        return R.color.themeColor;
+        return getColor(R.color.themeColor);
     }
 
     public int getColor(int colorRes) {
@@ -299,7 +419,7 @@ public class ResourceRouter {
 //            if (colorRes == 0) {
 //                if (i2 == c.f59025a) {
 //                    colorRes = R.color.themeColor;
-//                } else if (i2 == c.j) {
+//                } else if (i2 == getResourceColor(R.color.normalCLink)) {
 //                    colorRes = R.color.oj;
 //                }
 //            }
@@ -428,12 +548,18 @@ public class ResourceRouter {
         return 0;
     }
 
+    /**
+     * 获取自定义
+     * @param i
+     * @return
+     */
     public int getIconCustomColor(int i) {
         return 0;
     }
 
-    public int getIconNightColor(int i) {
-        return 0;
+    public int getIconNightColor(int color) {
+        int nightColor = this.mIconNightColors.get(color);
+        return nightColor != 0 ? nightColor : color;
     }
 
     public int getColorByDefaultColorJustNight(int i) {
@@ -516,7 +642,7 @@ public class ResourceRouter {
 //            return com.netease.cloudmusic.pause.f21073e;
 //        }
 //        if (isNightTheme()) {
-//            return -1711276033;
+//            return 0x99FFFFFF;
 //        }
 //        return -1;
 //    }
@@ -535,7 +661,7 @@ public class ResourceRouter {
 //            return com.netease.cloudmusic.pause.f21073e;
 //        }
 //        if (isNightTheme()) {
-//            return -1711276033;
+//            return 0x99FFFFFF;
 //        }
 //        return -1;
 //    }
@@ -678,7 +804,7 @@ public class ResourceRouter {
 //        public void setForPressed(boolean z) {
 ////            ((pause) getWrappedDrawable()).onColorGet(z);
 //////            if (this.mLeftDecorate != null) {
-//////                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(419430400, PorterDuff.Mode.SRC_ATOP) : null);
+//////                this.mLeftDecorate.mutate().setColorFilter(z ? new PorterDuffColorFilter(0x19000000, PorterDuff.Mode.SRC_ATOP) : null);
 //////            }
 //        }
 //

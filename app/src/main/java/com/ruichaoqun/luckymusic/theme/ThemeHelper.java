@@ -41,12 +41,12 @@ import java.lang.reflect.Field;
 
 public class ThemeHelper {
 
-    public static Drawable getBgSelector(Context context, int res) {
-        return getBgSelector(context, res, false);
+    public static Drawable getBgSelector(Context context, int paddingLeft) {
+        return getBgSelector(context, paddingLeft, false);
     }
 
-    public static Drawable getBgSelector(Context context, int padding, boolean forCard) {
-        return getBgSelector(context, padding, forCard, false);
+    public static Drawable getBgSelector(Context context, int paddingLeft, boolean forCard) {
+        return getBgSelector(context, paddingLeft, forCard, false);
     }
 
     public static Drawable getBgSelector(Context context, int paddingLeft, boolean forCard, boolean bothPadding) {
@@ -58,7 +58,7 @@ public class ThemeHelper {
         } else {
             drawable = paddingLeftBackgroundDrawable2;
         }
-        return getRippleDrawable(context, StateListDrawableUtils.getPressedDrawable(context, paddingLeftBackgroundDrawable, drawable, (Drawable) null, (Drawable) null));
+        return getRippleDrawable(context, StateListDrawableUtils.getPressedDrawable(context, paddingLeftBackgroundDrawable, drawable, null,null));
     }
 
     public static int getColor700from500(int i) {

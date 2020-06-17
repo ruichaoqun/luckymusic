@@ -12,6 +12,8 @@
         android:layout_weight="1"
         android:text="@string/main_activity_drawer_night_theme"
         android:gravity="center"
+        app:normalDrawableColor="@color/iconColorNormal1"
+        android:drawableLeft="@drawable/ic_theme_dyatime_mode"
         app:needSelected="true"
         app:needApplyDrawableColor="true"/>
     <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
@@ -20,6 +22,7 @@
         android:layout_height="match_parent"
         android:text="@string/main_activity_drawer_setting"
         android:gravity="center"
+        app:normalDrawableColor="@color/iconColorNormal1"
         app:needSelected="true"
         app:needApplyDrawableColor="true"/>
     <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
@@ -28,6 +31,7 @@
         android:layout_height="match_parent"
         android:text="@string/main_activity_drawer_exit"
         android:gravity="center"
+        app:normalDrawableColor="@color/iconColorNormal1"
         app:needSelected="true"
         app:needApplyDrawableColor="true"/>
 </com.ruichaoqun.luckymusic.theme.ui.CustomTopLineLinearLayout>

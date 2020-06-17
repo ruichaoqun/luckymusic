@@ -1,10 +1,12 @@
 package com.ruichaoqun.luckymusic.theme.core;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import androidx.annotation.IntDef;
 
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.utils.SharedPreferencesUtils;
 
 import java.io.File;
@@ -68,9 +70,33 @@ public class ThemeConfig {
 
 
     public static int getCurrentThemeId() {
-        int currentThemeId = getPrefer().getInt(SharedPreferencesUtils.THEME_CURRENT_ID,THEME_NIGHT);
+        int currentThemeId = getPrefer().getInt(SharedPreferencesUtils.THEME_CURRENT_ID,THEME_DEFAULT);
         return currentThemeId;
     }
+
+    public static String getPrevThemeName() {
+        return getPrefer().getString(PREF_KEY_PREV_NAME, LuckyMusicApp.getInstance().getResources().getString(R.string.default_theme));
+    }
+
+    /**
+     * 保存当前主题并保存上一个主题
+     * @param themeId 即将更新的主题id
+     * @param preThemeId 当前主题id
+     * @param preThemeName 当前主题名
+     * @param preThemeColor 当前主题色
+     */
+    public static void updateCurrentThemeIdAndPrevThemeInfo(int themeId, int preThemeId, String preThemeName, int preThemeColor) {
+        //保存即将设置的主题id到当前主题
+        SharedPreferences.Editor putInt = getPrefer().getEditor().putInt(PREF_KEY_CURRENT_THEME, themeId);
+        //如果当前主题不是夜间模式，保存到上一个主题
+        if (preThemeId != -3) {
+            putInt.putInt(PREF_KEY_PREV_THEME, preThemeId).putString(PREF_KEY_PREV_NAME, preThemeName).putInt(PREF_KEY_PREV_COLOR, preThemeColor);
+        }
+        putInt.apply();
+    }
+
+
+
 
     public static SharedPreferencesUtils getPrefer(){
         return SharedPreferencesUtils.getInstance();

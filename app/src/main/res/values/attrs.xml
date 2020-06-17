@@ -5,6 +5,8 @@
     <attr name="needApplyDrawableColor" format="boolean"/>
     <attr name="normalDrawableColor" format="reference|color"/>
 
+
+
     <declare-styleable name="CMRoundedCorner">
         <attr name="cmRoundedCorner" format="dimension"/>
     </declare-styleable>
@@ -14,5 +16,13 @@
         <attr name="needApplyTextColor" />
         <attr name="needApplyDrawableColor" />
         <attr name="normalDrawableColor" />
+    </declare-styleable>
+
+    <declare-styleable name="DrawableCenterTextView">
+        <attr name="needRightHint" format="boolean"/>
+        <attr name="hintLeftMargin" format="dimension"/>
+        <attr name="hintTextSize" format="dimension"/>
+        <attr name="hintRadius" format="dimension"/>
+        <attr name="hintText" format="string"/>
     </declare-styleable>
 </resources>

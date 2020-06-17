@@ -31,4 +31,7 @@ public class Constants {
 
     public static boolean needRefreshToken = true;
     public static boolean isRefreshToken = false;
+
+    public static String CHANGE_THEME = "com.ruichaoqun.luckymusic.action.CHANGE_THEME";
+    public static String CHANGED_THEME = "com.ruichaoqun.luckymusic.action.CHANGED_THEME";
 }

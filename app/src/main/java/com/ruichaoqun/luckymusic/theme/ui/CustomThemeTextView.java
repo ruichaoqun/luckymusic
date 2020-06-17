@@ -84,26 +84,30 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
                 setTextColor(mColorsOriginal);
             }
         }
+
         //是否可点击，可点击需要设置background
         if(mNeedSelect){
             setBackgroundDrawable(ThemeHelper.getBgSelector(getContext(), -1));
         }
 
-        int drawableColor = normalDrawableColor.getDefaultColor();
 
-        //如果图片需要适配主题
+        int drawableColor = 0;
+        //如果图片颜色需要适配主题
         if(mNeedApplyDrawableColor){
-            int color = resourceRouter.getThemeColor();
-            if(resourceRouter.isNightTheme()){
-                drawableColor = resourceRouter.getIconNightColor(drawableColor);
+            if(normalDrawableColor != null){
+                drawableColor = normalDrawableColor.getDefaultColor();
+            }
+            int color = drawableColor != 0?drawableColor:resourceRouter.getThemeColor();
+            if(resourceRouter.isNightTheme()){//夜间模式，获取对应的夜间模式颜色
+                drawableColor = resourceRouter.getIconNightColor(color);
             }
         }
-        Drawable[] drawables = getCompoundDrawables();
-        for (int i = 0; i < drawables.length; i++) {
-            Drawable d = drawables[i];
-            if(d != null){
-                if(normalDrawableColor != null){
-                    ThemeHelper.configDrawableTheme(d, normalDrawableColor.getDefaultColor());
+        if(drawableColor != 0){
+            Drawable[] drawables = getCompoundDrawables();
+            for (int i = 0; i < drawables.length; i++) {
+                Drawable d = drawables[i];
+                if (d != null) {
+                    ThemeHelper.configDrawableTheme(d, drawableColor);
                 }
             }
         }

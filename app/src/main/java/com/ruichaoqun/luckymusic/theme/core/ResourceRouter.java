@@ -215,7 +215,7 @@ public class ResourceRouter {
         return LuckyMusicApp.getInstance().getResources().getColor(colorRes);
     }
 
-    private void reset() {
+    public void reset() {
         this.mThemeInfo = new ThemeInfo(ThemeConfig.getCurrentThemeId());
         int id = this.mThemeInfo.getId();
         if (id == ThemeConfig.THEME_DEFAULT) {
@@ -569,6 +569,11 @@ public class ResourceRouter {
     public boolean isCompatibleColor(int i) {
         return false;
     }
+
+    public String getName(boolean z) {
+        return (!z || !isNightTheme()) ? this.mThemeInfo.getName() : ThemeConfig.getPrevThemeName();
+    }
+
 
     public Drawable getCachePlayerDrawable() {
         if (this.mCachePlayerDrawable == null) {

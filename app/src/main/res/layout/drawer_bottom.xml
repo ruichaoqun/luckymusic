@@ -9,29 +9,38 @@
         android:id="@+id/tv_theme_mode"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:text="@string/main_activity_drawer_night_theme"
-        android:gravity="center"
+        android:gravity="center|left"
+        android:layout_gravity="center"
         app:normalDrawableColor="@color/iconColorNormal1"
         android:drawableLeft="@drawable/ic_theme_dyatime_mode"
         app:needSelected="true"
-        app:needApplyDrawableColor="true"/>
-    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
+        app:needApplyDrawableColor="true"
+        android:paddingLeft="@dimen/dp_20"
+        android:drawablePadding="12.0dp"/>
+    <com.ruichaoqun.luckymusic.widget.DrawableCenterTextView
         android:id="@+id/tv_setting"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
+        android:layout_weight="3"
         android:layout_height="match_parent"
         android:text="@string/main_activity_drawer_setting"
         android:gravity="center"
+        android:drawablePadding="8.0dp"
         app:normalDrawableColor="@color/iconColorNormal1"
+        android:drawableLeft="@drawable/ic_drawer_setting"
         app:needSelected="true"
         app:needApplyDrawableColor="true"/>
-    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
+    <com.ruichaoqun.luckymusic.widget.DrawableCenterTextView
         android:id="@+id/tv_quit"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
+        android:layout_weight="3"
         android:layout_height="match_parent"
         android:text="@string/main_activity_drawer_exit"
         android:gravity="center"
+        android:drawablePadding="8.0dp"
         app:normalDrawableColor="@color/iconColorNormal1"
+        android:drawableLeft="@drawable/ic_drawer_quit"
         app:needSelected="true"
         app:needApplyDrawableColor="true"/>
 </com.ruichaoqun.luckymusic.theme.ui.CustomTopLineLinearLayout>

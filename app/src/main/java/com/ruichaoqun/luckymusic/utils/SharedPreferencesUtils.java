@@ -44,6 +44,10 @@ public class SharedPreferencesUtils {
         return instance;
     }
 
+    public SharedPreferences.Editor getEditor() {
+        return editor;
+    }
+
     public void putInt(String spName, int value) {
         editor.putInt(spName, value);
         editor.commit();

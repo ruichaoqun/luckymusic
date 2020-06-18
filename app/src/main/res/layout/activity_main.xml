@@ -41,7 +41,9 @@
                     app:tabSelectedTextColor="@android:color/white"
                     app:tabTextColor="@color/color_66FFFFFF"
                     app:tabMinWidth="100dp"
-                    app:tabIndicatorHeight="0dp"/>
+                    app:tabIndicatorHeight="0dp"
+                    app:tabIndicatorFullWidth="true"
+                    app:tabRippleColor="#FF660000"/>
             </androidx.appcompat.widget.Toolbar>
 
             <FrameLayout

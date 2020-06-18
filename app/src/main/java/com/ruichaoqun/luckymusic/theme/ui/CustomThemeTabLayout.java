@@ -10,7 +10,9 @@ import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 /**
  * @author Rui Chaoqun
  * @date :2020/6/15 16:53
- * description:主题样式--文字颜色、背景色、底部横线颜色
+ * description:bacgroundColor 透明
+ * 首页模式：
+ * 其他模式
  */
 public class CustomThemeTabLayout extends TabLayout implements OnThemeResetListener {
     private boolean mNeedThemeResetWithOnAttachedToWindow = true;
@@ -51,5 +53,6 @@ public class CustomThemeTabLayout extends TabLayout implements OnThemeResetListe
         if (this.mThemeResetter != null) {
             this.mThemeResetter.saveCurrentThemeInfo();
         }
+
     }
 }

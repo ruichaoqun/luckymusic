@@ -19,14 +19,19 @@ import androidx.core.graphics.ColorUtils;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EdgeEffect;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ruichaoqun.luckymusic.LuckyMusicApp;
@@ -244,5 +249,81 @@ public class ThemeHelper {
         }
         return new RippleDrawable(ColorStateList.valueOf(context.getResources().getColor(isNightTheme ? R.color.theme_ripple_dark : R.color.theme_ripple_light)), drawable, new ColorDrawable(context.getResources().getColor(isNightTheme ? R.color.theme_ripple_mask_dark : R.color.theme_ripple_mask_light)));
     }
+
+    /**
+     * 设置Viewpager的边界颜色
+     * @param viewPager
+     * @param color
+     */
+    public static void setEdgeGlowColor(ViewPager viewPager, int color) {
+        if (CommonUtils.versionAbove21()) {
+            EdgeEffect mLeftEdge = (EdgeEffect) ReflectUtils.getDeclaredField(ViewPager.class,  viewPager, "mLeftEdge");
+            if (mLeftEdge != null) {
+                mLeftEdge.setColor(color);
+            }
+            EdgeEffect mRightEdge = (EdgeEffect) ReflectUtils.getDeclaredField(ViewPager.class, viewPager, "mRightEdge");
+            if (mRightEdge != null) {
+                mRightEdge.setColor(color);
+            }
+        }
+    }
+
+    /**
+     * 设置RecyclerView的边界颜色
+     * @param recyclerView
+     * @param color
+     */
+    public static void setEdgeGlowColor(RecyclerView recyclerView, int color) {
+        if (CommonUtils.versionAbove21()) {
+            for (String string : new String[]{"ensureTopGlow", "ensureBottomGlow", "ensureLeftGlow", "ensureRightGlow"}) {
+                ReflectUtils.invoke(RecyclerView.class, string, null, recyclerView, new Object[0]);
+            }
+            for (String string : new String[]{"mLeftGlow", "mTopGlow", "mRightGlow", "mBottomGlow"}) {
+                EdgeEffect edgeEffect = (EdgeEffect) ReflectUtils.getDeclaredField(RecyclerView.class, recyclerView, string);
+                if (edgeEffect != null) {
+                    edgeEffect.setColor(color);
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置AbsListView的边界颜色
+     * @param absListView
+     * @param color
+     */
+    public static void setEdgeGlowColor(AbsListView absListView, int color) {
+        if (CommonUtils.versionAbove21()) {
+            EdgeEffect mEdgeGlowTop = (EdgeEffect)ReflectUtils.getDeclaredField( AbsListView.class, absListView, "mEdgeGlowTop");
+            if (mEdgeGlowTop != null) {
+                mEdgeGlowTop.setColor(color);
+            }
+            EdgeEffect mEdgeGlowBottom = (EdgeEffect) ReflectUtils.getDeclaredField(AbsListView.class,absListView, "mEdgeGlowBottom");
+            if (mEdgeGlowBottom != null) {
+                mEdgeGlowBottom.setColor(color);
+            }
+        }
+    }
+
+    /**
+     * 设置scrollView的边界颜色
+     * @param scrollView
+     * @param color
+     */
+    public static void setEdgeGlowColor(ScrollView scrollView, int color) {
+        if (CommonUtils.versionAbove21()) {
+            EdgeEffect mEdgeGlowTop = (EdgeEffect) ReflectUtils.getDeclaredField(ScrollView.class, scrollView, "mEdgeGlowTop");
+            if (mEdgeGlowTop != null) {
+                mEdgeGlowTop.setColor(color);
+            }
+            EdgeEffect mEdgeGlowBottom = (EdgeEffect) ReflectUtils.getDeclaredField(ScrollView.class, scrollView, "mEdgeGlowBottom");
+            if (mEdgeGlowBottom != null) {
+                mEdgeGlowBottom.setColor(color);
+            }
+        }
+    }
+
+
+
 
 }

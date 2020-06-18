@@ -28,6 +28,8 @@ import android.widget.TextView;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.theme.core.ThemeConfig;
+import com.ruichaoqun.luckymusic.utils.CommonUtils;
 import com.ruichaoqun.luckymusic.widget.FitSystemWindowHackFrameLayout;
 import com.ruichaoqun.luckymusic.widget.StatusBarHolderView;
 import com.ruichaoqun.luckymusic.utils.ReflectUtils;
@@ -67,7 +69,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    private void setWindowBackground() {
+    protected void setWindowBackground() {
         getWindow().setBackgroundDrawable(getWindowBackgroundDrawable());
     }
 
@@ -246,8 +248,29 @@ public abstract class BaseToolBarActivity extends BaseActivity {
                 applyStatusBarCurrentTheme();
                 applyToolbarCurrentTheme();
             }
+            applyRecentTaskPreviewCurrentTheme();
         }
     }
+
+    public void applyRecentTaskPreviewCurrentTheme() {
+        int color;
+        if (CommonUtils.versionAbove21()) {
+            if (ResourceRouter.getInstance().isWhiteTheme()) {
+                color = -1;
+            } else if (ResourceRouter.getInstance().isRedTheme()) {
+                color = ThemeConfig.COLOR_RED_TOOLBAR_END;
+            } else if (ResourceRouter.getInstance().isNightTheme()) {
+                color = 0xff17181a;
+            } else if (!ResourceRouter.getInstance().isInternalTheme()) {
+                color = ResourceRouter.getInstance().getPopupBackgroundColor();
+            } else {
+                color = ResourceRouter.getInstance().getThemeColor();
+            }
+            setTaskDescription(new ActivityManager.TaskDescription(null, null, ColorUtils.setAlphaComponent(color, 255)));
+        }
+    }
+
+
 
     public void applyToolbarCurrentTheme() {
         if (getSupportActionBar() != null) {

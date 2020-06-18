@@ -54,15 +54,18 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
         onThemeReset();
     }
 
-    @Override
-    public void setCompoundDrawablesRelativeWithIntrinsicBounds(int start, int top, int end, int bottom) {
-        super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
+    public void setBackgroundDrawableOriginal(Drawable drawable) {
+        super.setBackgroundDrawable(drawable);
         onThemeReset();
     }
 
-    @Override
-    public void setCompoundDrawablesWithIntrinsicBounds(int left, int top, int right, int bottom) {
-        super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
+    public void setCompoundDrawablesWithIntrinsicBoundsOriginal(int i2, int i3, int i4, int i5) {
+        super.setCompoundDrawablesWithIntrinsicBounds(i2, i3, i4, i5);
+        onThemeReset();
+    }
+
+    public void setCompoundDrawablesWithIntrinsicBoundsOriginal(Drawable drawable, Drawable drawable2, Drawable drawable3, Drawable drawable4) {
+        super.setCompoundDrawablesWithIntrinsicBounds(drawable, drawable2, drawable3, drawable4);
         onThemeReset();
     }
 

@@ -1,5 +1,9 @@
 package com.ruichaoqun.luckymusic.ui.main;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
@@ -25,6 +29,7 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
+import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.ui.main.discover.WanAndroidFragment;
 import com.ruichaoqun.luckymusic.ui.main.mine.MineFragment;
 import com.ruichaoqun.luckymusic.ui.main.video.VideoFragment;
@@ -47,6 +52,9 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.ruichaoqun.luckymusic.Constants.CHANGED_THEME;
+import static com.ruichaoqun.luckymusic.Constants.CHANGE_THEME;
+
 public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View {
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
@@ -62,6 +70,14 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     private ActionBarDrawerToggle mDrawerToggle;
     private List<Fragment> mFragments;
     private MainDrawer mMainDrawer = new MainDrawer(this);
+    private BroadcastReceiver updateThemeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+                dispatchResetTheme();
+        }
+    };
+
+
 
 
     @Override
@@ -83,34 +99,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         ((ViewGroup) findViewById(R.id.layout_drawer_content)).addView(mPlayBarContainer, 1);
         applyStatusBarCurrentTheme();
         applyToolbarCurrentTheme();
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.add(5);
-        list.add(6);
-        list.add(7);
-        Observable.fromIterable(list)
-                .flatMap(new Function<Integer, ObservableSource<Integer>>() {
-                    @Override
-                    public ObservableSource<Integer> apply(Integer integer) throws Exception {
-                        return Observable.create(new ObservableOnSubscribe<Integer>() {
-                            @Override
-                            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                                Thread.sleep(2000);
-                                emitter.onNext(integer);
-                            }
-                        });
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Integer>() {
-                    @Override
-                    public void accept(Integer integer) throws Exception {
-                        Log.w("AAAA",integer+"");
-                    }
-                });
+        registerReceiver(updateThemeReceiver,new IntentFilter(CHANGED_THEME));
     }
 
     @Override
@@ -165,6 +154,19 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
 //            this.isFromDraggingOpen = false;
             this.mDrawerLayout.openDrawer(GravityCompat.START);
         }
+    }
+
+    private void dispatchResetTheme() {
+        //设置windowBackground
+        setWindowBackground();
+        ThemeHelper.setEdgeGlowColor(this.mViewPager, ResourceRouter.getInstance().getThemeColor());
+        applyStatusBarCurrentTheme();
+        applyToolbarCurrentTheme();
+        applyRecentTaskPreviewCurrentTheme();
+        mMainDrawer.applyDrawerCurrentTheme();
+        applyMiniPlaybarCurrentTheme();
+        invalidateOptionsMenu();
+
     }
 
     @OnClick(R.id.iv_back)

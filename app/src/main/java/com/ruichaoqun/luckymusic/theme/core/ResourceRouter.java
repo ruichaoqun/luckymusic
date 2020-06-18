@@ -216,6 +216,8 @@ public class ResourceRouter {
     }
 
     public void reset() {
+        clearCache();
+        this.mThemeResources = null;
         this.mThemeInfo = new ThemeInfo(ThemeConfig.getCurrentThemeId());
         int id = this.mThemeInfo.getId();
         if (id == ThemeConfig.THEME_DEFAULT) {
@@ -235,8 +237,34 @@ public class ResourceRouter {
 //        if (!this.mThemeInfo.isInternal()) {
 //            linkResourceFiles();
 //        }
-//        this.mCustomColors.delete(com.netease.cloudmusic.pause.f21069a);
+        this.mCustomColors.delete(getResourceColor(R.color.themeColor));
 
+    }
+
+    private void clearCache() {
+        this.mCachePlaylistToolBarDrawable = null;
+        this.mCachePlaylistDrawable = null;
+        this.mCacheDrawerBottomDrawable = null;
+        this.mCacheDrawerBgDrawable = null;
+        this.mCacheMessageBarDrawable = null;
+        this.mCacheOperationBottomDrawable = null;
+        this.mCachePlayerDrawable = null;
+        this.mCacheToolBarDrawable = null;
+        this.mCacheStatusBarDrawable = null;
+        this.mCacheTabDrawable = null;
+        this.mCacheBgDrawable = null;
+        this.mCacheBgBlurDrawable = null;
+        this.mCacheTabForTopDrawable = null;
+        this.mCacheBannerBgDrawable = null;
+        this.mCacheCardBannerBgDrawable = null;
+        this.mCacheTabForTopDrawable = null;
+        this.mCacheBannerBgDrawable = null;
+        this.mCacheNoTabBannerBgDrawable = null;
+        this.mCacheDiscoveryRefreshBtnDrawable = null;
+        this.mThemeCustomBgColor = null;
+        this.mPopupBackgroundColor = null;
+        this.mThemeResourceIdentifiers.clear();
+        this.mThemeIsLightTheme = null;
     }
 
     @MainThread

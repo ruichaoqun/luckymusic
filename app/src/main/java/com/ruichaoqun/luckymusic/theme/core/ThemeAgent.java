@@ -61,7 +61,6 @@ public class ThemeAgent {
         Intent intent = new Intent(CHANGE_THEME);
         intent.putExtra(EXTRA_THEME_ID, id);
         LocalBroadcastManager.getInstance(LuckyMusicApp.getInstance()).sendBroadcast(intent);
-
     }
 
 

@@ -37,14 +37,17 @@ public class ThemeConfig {
     private static final String PREF_KEY_PREV_THEME = "prev_theme";
     private static final String PREF_KEY_PREV_VIP = "prev_vip";
     private static final String PREF_KEY_SELECTED_COLOR = "selected_color";
-    public static final int THEME_CUSTOM_BG = -4;
+
     private static final String THEME_CUSTOM_BG_IMAGE = (DIR + File.separator + "custom_bg.png");
-    public static final int THEME_CUSTOM_COLOR = -2;
+
     public static final int THEME_DEFAULT_COLOR_ID = -1;
     public static final int THEME_INTERNAL_MAX_ID = -1;
+
+    public static final int THEME_DEFAULT = -1;//默认，白色背景，透明toolbar
+    public static final int THEME_CUSTOM_COLOR = -2;
     public static final int THEME_NIGHT = -3;
+    public static final int THEME_CUSTOM_BG = -4;
     public static final int THEME_RED = -5;
-    public static final int THEME_DEFAULT = -1;
 
     public static int getCurrentColor() {
         return getPrefer().getInt(PREF_KEY_CURRENT_COLOR, 0);
@@ -70,12 +73,16 @@ public class ThemeConfig {
 
 
     public static int getCurrentThemeId() {
-        int currentThemeId = getPrefer().getInt(SharedPreferencesUtils.THEME_CURRENT_ID,THEME_DEFAULT);
+        int currentThemeId = getPrefer().getInt(PREF_KEY_CURRENT_THEME,THEME_DEFAULT);
         return currentThemeId;
     }
 
     public static String getPrevThemeName() {
         return getPrefer().getString(PREF_KEY_PREV_NAME, LuckyMusicApp.getInstance().getResources().getString(R.string.default_theme));
+    }
+
+    public static int getPrevThemeId(){
+        return getPrefer().getInt(PREF_KEY_PREV_THEME,-1);
     }
 
     /**

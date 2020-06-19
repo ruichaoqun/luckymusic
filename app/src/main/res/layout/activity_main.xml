@@ -31,7 +31,7 @@
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/icon_menu"
                     android:background="?attr/selectableItemBackgroundBorderless"/>
-                <com.google.android.material.tabs.TabLayout
+                <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -42,8 +42,7 @@
                     app:tabTextColor="@color/color_66FFFFFF"
                     app:tabMinWidth="100dp"
                     app:tabIndicatorHeight="0dp"
-                    app:tabIndicatorFullWidth="true"
-                    app:tabRippleColor="#FF660000"/>
+                    app:tabIndicatorFullWidth="true" />
             </androidx.appcompat.widget.Toolbar>
 
             <FrameLayout

@@ -1,9 +1,11 @@
 package com.ruichaoqun.luckymusic.theme.ui;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import com.google.android.material.tabs.TabLayout;
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.core.ThemeResetter;
 import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 
@@ -29,6 +31,8 @@ public class CustomThemeTabLayout extends TabLayout implements OnThemeResetListe
 
     public CustomThemeTabLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomThemeTabLayout,0, 0);
+
         onThemeReset();
     }
 

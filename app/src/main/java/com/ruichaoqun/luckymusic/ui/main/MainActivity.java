@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
@@ -30,6 +32,7 @@ import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.theme.ui.CustomThemeTabLayout;
 import com.ruichaoqun.luckymusic.ui.main.discover.WanAndroidFragment;
 import com.ruichaoqun.luckymusic.ui.main.mine.MineFragment;
 import com.ruichaoqun.luckymusic.ui.main.video.VideoFragment;
@@ -57,7 +60,7 @@ import static com.ruichaoqun.luckymusic.Constants.CHANGE_THEME;
 
 public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View {
     @BindView(R.id.tab_layout)
-    TabLayout mTabLayout;
+    CustomThemeTabLayout mTabLayout;
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
     @BindView(R.id.drawer_layout)
@@ -143,6 +146,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         mFragments.add(new VideoFragment());
         mViewPager.setAdapter(new BaseFragmentStateAdapter(getSupportFragmentManager(), mFragments, getResources().getStringArray(R.array.main_titles)));
         mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(mFragments.size());
     }
 
     public void toggleDrawerMenu() {
@@ -164,6 +168,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         applyToolbarCurrentTheme();
         applyRecentTaskPreviewCurrentTheme();
         mMainDrawer.applyDrawerCurrentTheme();
+        mTabLayout.onThemeReset();
         applyMiniPlaybarCurrentTheme();
         invalidateOptionsMenu();
 
@@ -204,6 +209,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     public void applyToolbarCurrentTheme() {
         super.applyToolbarCurrentTheme();
         this.mDrawIcon.setImageDrawable(ThemeHelper.configDrawableThemeUseTint(this.mDrawerIconDrawable.getConstantState().newDrawable(), getResourceRouter().getToolbarIconColor()));
+        this.mDrawIcon.setBackground(ThemeHelper.getBgSelectorWithNoBorder(this));
     }
 
     @Override

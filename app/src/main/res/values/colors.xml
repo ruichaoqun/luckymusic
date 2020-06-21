@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#740A09</color>
     <color name="colorAccent">#D53A38</color>
 
-    <color name="white">#ffffffff</color>
-    <color name="black">#000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#00000000</color>
     <color name="transpaint">#00000000</color>
 
     <color name="color_66FFFFFF">#66FFFFFF</color>
@@ -24,7 +24,7 @@
 
     <color name="themeColor">@color/color_ff3a3a</color>
     <color name="theme_color_PrimaryDark">#ffa53e37</color>
-    <color name="color_ff3a3a">#ffff3a3a</color>
+    <color name="color_ff3a3a">#FFFF3A3A</color>
     <color name="color_663a3a">#66ff3a3a</color>
     <color name="color_ff0a0a">#ffaa3a3a</color>
     <color name="themeRedColorForShader">#ffff6340</color>

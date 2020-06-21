@@ -29,7 +29,10 @@
 
     <declare-styleable name="CustomThemeTabLayout">
         <!--背景色是否随主题而改变-->
-        <attr name="needApplyBackgroundColor"/>
-        <attr name="needApplyTextColor"/>
+        <attr name="type">
+            <enum name="normal" value="0"/>
+            <enum name="showInToolbar" value="1"/>
+            <enum name="showBelowToolbar" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

@@ -204,10 +204,10 @@ public class ResourceRouter {
 
         this.mNotWhiteNightColors.put(Color.WHITE, 0x33FFFFFF);
         this.mCompatibleColors.put(0xFF333333, getResourceColor(R.color.normalC1));
-        this.mCompatibleColors.put(0xFF666666, getResourceColor(R.color.normalC1));
-        this.mCompatibleColors.put(0xFF888888, getResourceColor(R.color.normalC1));
-        this.mCompatibleColors.put(0xFF999999, getResourceColor(R.color.normalC1));
-        this.mCompatibleColors.put(0xFFCCCCCC, getResourceColor(R.color.normalC1));
+        this.mCompatibleColors.put(0xFF666666, getResourceColor(R.color.normalC2));
+        this.mCompatibleColors.put(0xFF888888, getResourceColor(R.color.normalC3));
+        this.mCompatibleColors.put(0xFF999999, getResourceColor(R.color.normalC4));
+        this.mCompatibleColors.put(0xFFCCCCCC, getResourceColor(R.color.normalC5));
 
     }
 
@@ -382,6 +382,7 @@ public class ResourceRouter {
     public boolean isNightTheme() {
         return this.mThemeInfo.getId() == ThemeConfig.THEME_NIGHT;
     }
+
 
     public boolean isCustomDarkTheme() {
         boolean z = true;
@@ -660,6 +661,13 @@ public class ResourceRouter {
 
     public int getTitleTextColor(boolean isToolbarOnImage) {
         return getToolbarIconColor(isToolbarOnImage);
+    }
+
+    public int getRippleColor() {
+        if(isNightTheme() || isCustomDarkTheme()){
+            return 0x1FFFFFFF;
+        }
+        return 0x1F000000;
     }
 
 

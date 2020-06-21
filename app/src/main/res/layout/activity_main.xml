@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
+            <com.ruichaoqun.luckymusic.widget.LuckyMusicToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="fill_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -38,12 +38,10 @@
                     android:layout_gravity="center"
                     app:tabGravity="fill"
                     app:tabUnboundedRipple="true"
-                    app:tabSelectedTextColor="@android:color/white"
-                    app:tabTextColor="@color/color_66FFFFFF"
                     app:tabMinWidth="100dp"
                     app:tabIndicatorHeight="0dp"
-                    app:tabIndicatorFullWidth="true" />
-            </androidx.appcompat.widget.Toolbar>
+                    app:type="showInToolbar"/>
+            </com.ruichaoqun.luckymusic.widget.LuckyMusicToolbar>
 
             <FrameLayout
                 android:layout_width="match_parent"

@@ -66,6 +66,15 @@ public class ThemeHelper {
         return getRippleDrawable(context, StateListDrawableUtils.getPressedDrawable(context, paddingLeftBackgroundDrawable, drawable, null,null));
     }
 
+    public static Drawable getBgSelectorWithNoBorder(Context context){
+        Drawable drawable = new PaddingLeftBackgroundDrawable(-1, false, true, false);
+        boolean isNightTheme = ResourceRouter.getInstance().isNightTheme();
+        if(!CommonUtils.versionAbove21()){
+            return drawable;
+        }
+        return new RippleDrawable(ColorStateList.valueOf(context.getResources().getColor(isNightTheme ? R.color.theme_ripple_dark : R.color.theme_ripple_light)), null, null);
+    }
+
     public static int getColor700from500(int i) {
         float[] fArr = new float[3];
         Color.colorToHSV(i, fArr);

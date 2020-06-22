@@ -10,6 +10,7 @@
     android:scrollbars="none">
 
     <LinearLayout
+        android:id="@+id/drawer_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -46,27 +47,48 @@
                     android:singleLine="true"
                     android:textColor="@color/black"
                     tools:text="as给大家爱国" />
-
-                <TextView
+            </LinearLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+                <ImageView
+                    android:id="@+id/iv_head_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"/>
+                <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
+                    android:id="@+id/tv_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_12sp"
+                    android:textStyle="bold"
+                    android:layout_toEndOf="@+id/iv_head_image"
+                    android:layout_toStartOf="@+id/tv_sign"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_centerVertical="true"
+                    android:text="hello"/>
+                <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
+                    android:id="@+id/tv_sign"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:background="@drawable/selector_red_rectangle_solid_circle"
                     android:drawableStart="@mipmap/ic_sign"
                     android:drawablePadding="4dp"
                     android:gravity="center"
-                    android:paddingStart="11dp"
-                    android:paddingEnd="11dp"
                     android:text="签到"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/textsize_small" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin">
+                    android:textSize="@dimen/textsize_small"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,8 +96,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="我的消息" />
+                    android:text="我的消息"
+                    android:id="@+id/tv_my_message"/>
             </RelativeLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.ui.main;
 import android.graphics.drawable.Drawable;
 import android.util.Pair;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -20,12 +21,17 @@ public class MainDrawer implements View.OnClickListener {
     private CustomThemeTextView mThemeModeView;
     private CustomThemeTextView mSettingView;
     private CustomThemeTextView mQuitView;
+    private LinearLayout mLayoutContent;
+    private TextView mTvMyMessage;
 
     public MainDrawer(MainActivity mainActivity) {
         mMainActivity = mainActivity;
     }
 
     public void initView(){
+        mScrollView = findViewById(R.id.scroll_view);
+        mLayoutContent = findViewById(R.id.drawer_content);
+        mTvMyMessage = findViewById(R.id.tv_my_message);
         mThemeModeView = findViewById(R.id.tv_theme_mode);
         mThemeModeView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +66,8 @@ public class MainDrawer implements View.OnClickListener {
         Drawable cacheDrawerBgDrawable = ResourceRouter.getInstance().getCacheDrawerBgDrawable();
         Drawable cacheDrawerBottomDrawable = ResourceRouter.getInstance().getCacheDrawerBottomDrawable();
         findViewById(R.id.layout_bottom).setBackgroundDrawable(cacheDrawerBottomDrawable);
-
+        mScrollView.setBackground(cacheDrawerBgDrawable);
+//        mTvMyMessage.setBackground(cacheDrawerBgDrawable);
         if(getResourceRouter().isNightTheme()){
             mThemeModeView.setText(R.string.main_activity_drawer_light_theme);
             mThemeModeView.setCompoundDrawablesWithIntrinsicBoundsOriginal(R.drawable.ic_theme_dyatime_mode,0,0,0);

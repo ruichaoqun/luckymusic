@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.graphics.ColorUtils;
@@ -45,6 +46,19 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
         setTextColorOriginal(getTextColors());
     }
 
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+    }
+
+    @Override
+    public void onFinishTemporaryDetach() {
+        super.onFinishTemporaryDetach();
+        Log.w("AAAAAA","onFinishTemporaryDetach");
+        this.mThemeResetter.checkIfNeedResetTheme();
+    }
+
+
     public void setTextColorOriginal(int color) {
         setTextColorOriginal(ColorStateList.valueOf(color));
     }
@@ -79,9 +93,10 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
         if(mNeedApplyTextColor){
             if(resourceRouter.isNightTheme() || resourceRouter.isCustomBgTheme() || resourceRouter.isCustomDarkTheme()){
                 //如果是夜晚模式或自定义背景模式或者暗黑模式
-                int color = mColorsOriginal.getDefaultColor();
-                int color1 = Color.argb(Color.alpha(color),255-Color.red(color),255-Color.blue(color),255-Color.green(color));
-                setTextColor(color1);
+                Log.w("AAAAA","orihinal-->"+Integer.toHexString(mColorsOriginal.getDefaultColor()));
+                int color = resourceRouter.getColorByDefaultColor(mColorsOriginal.getDefaultColor());
+                Log.w("AAAAA","night-->"+Integer.toHexString(color));
+                setTextColor(color);
             }else{
                 //否则，设置原来的颜色
                 setTextColor(mColorsOriginal);

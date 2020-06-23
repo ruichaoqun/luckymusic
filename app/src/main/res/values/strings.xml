@@ -56,6 +56,10 @@
     <string name="main_activity_drawer_light_theme">日间模式</string>
     <string name="main_activity_drawer_setting">设置</string>
     <string name="main_activity_drawer_exit">退出</string>
+    <string name="drawer_my_message">我的消息</string>
+    <string name="drawer_my_friends">我的好友</string>
+    <string name="drawer_my_person_homepage">个人主页</string>
+    <string name="drawer_my_theme">个性装扮</string>
 
     <!--  PlayerActivity -->
     <string name="artist_track_number">%d首</string>

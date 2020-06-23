@@ -18,7 +18,8 @@
         app:needSelected="true"
         app:needApplyDrawableColor="true"
         android:paddingLeft="@dimen/dp_20"
-        android:drawablePadding="12.0dp"/>
+        android:drawablePadding="12.0dp"
+        android:textColor="@color/color_cc000000"/>
     <com.ruichaoqun.luckymusic.widget.DrawableCenterTextView
         android:id="@+id/tv_setting"
         android:layout_width="0dp"
@@ -30,7 +31,8 @@
         app:normalDrawableColor="@color/iconColorNormal1"
         android:drawableLeft="@drawable/ic_drawer_setting"
         app:needSelected="true"
-        app:needApplyDrawableColor="true"/>
+        app:needApplyDrawableColor="true"
+        android:textColor="@color/color_cc000000"/>
     <com.ruichaoqun.luckymusic.widget.DrawableCenterTextView
         android:id="@+id/tv_quit"
         android:layout_width="0dp"
@@ -42,5 +44,6 @@
         app:normalDrawableColor="@color/iconColorNormal1"
         android:drawableLeft="@drawable/ic_drawer_quit"
         app:needSelected="true"
-        app:needApplyDrawableColor="true"/>
+        app:needApplyDrawableColor="true"
+        android:textColor="@color/color_cc000000"/>
 </com.ruichaoqun.luckymusic.theme.ui.CustomTopLineLinearLayout>

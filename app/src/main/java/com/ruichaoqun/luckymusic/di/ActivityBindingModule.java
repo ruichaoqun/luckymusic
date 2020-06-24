@@ -22,6 +22,8 @@ import com.ruichaoqun.luckymusic.ui.splash.SplashModule;
 import com.ruichaoqun.luckymusic.ui.splash.SplashActivity;
 import com.ruichaoqun.luckymusic.ui.test.TestActivity;
 import com.ruichaoqun.luckymusic.ui.test.TestModule;
+import com.ruichaoqun.luckymusic.ui.theme.themedetail.ThemeDetailActivity;
+import com.ruichaoqun.luckymusic.ui.theme.themedetail.ThemeDetailModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -60,4 +62,8 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = EqualizerSavePresetModule.class)
     abstract EqualizerSavePresetActivity mEqualizerSavePresetActivity();
+
+    @ContributesAndroidInjector(modules = ThemeDetailModule.class)
+    abstract ThemeDetailActivity mThemeDetailActivity();
+
 }

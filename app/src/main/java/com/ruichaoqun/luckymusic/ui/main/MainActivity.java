@@ -4,27 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.RippleDrawable;
-import android.os.Bundle;
-
-import com.google.android.material.internal.ScrimInsetsFrameLayout;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.GravityCompat;
 import androidx.viewpager.widget.ViewPager;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ScrollView;
 
 
 import com.ruichaoqun.luckymusic.R;
@@ -44,33 +31,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.ruichaoqun.luckymusic.Constants.CHANGED_THEME;
-import static com.ruichaoqun.luckymusic.Constants.CHANGE_THEME;
 
 public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View {
     @BindView(R.id.tab_layout)
     CustomThemeTabLayout mTabLayout;
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
-    @BindView(R.id.scroll_view)
-    ScrollView mScrollView;
-    @BindView(R.id.iv_back)
-    ImageView mDrawIcon;
-    private VectorDrawableCompat mDrawerIconDrawable;
-    private ActionBarDrawerToggle mDrawerToggle;
+
     private List<Fragment> mFragments;
     private MainDrawer mMainDrawer = new MainDrawer(this);
     private BroadcastReceiver updateThemeReceiver = new BroadcastReceiver() {
@@ -112,31 +81,6 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
 
     private void initDraw() {
         mMainDrawer.initView();
-        this.mDrawerIconDrawable = VectorDrawableCompat.create(getResources(), R.drawable.icon_menu, null);
-        this.mDrawIcon.setImageDrawable(this.mDrawerIconDrawable);
-        this.mDrawerToggle = new ActionBarDrawerToggle(this, this.mDrawerLayout, getToolbar(), R.string.app_name, R.string.app_name) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                MainActivity.this.onDrawerClosed(drawerView);
-                mScrollView.fullScroll(View.FOCUS_UP);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                super.onDrawerStateChanged(newState);
-            }
-        };
-        this.mDrawerLayout.addDrawerListener(this.mDrawerToggle);
     }
 
     private void initViewPager() {
@@ -147,17 +91,6 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         mViewPager.setAdapter(new BaseFragmentStateAdapter(getSupportFragmentManager(), mFragments, getResources().getStringArray(R.array.main_titles)));
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setOffscreenPageLimit(mFragments.size());
-    }
-
-    public void toggleDrawerMenu() {
-        if (this.mDrawerLayout != null && this.mScrollView != null) {
-            if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                this.mDrawerLayout.closeDrawer(GravityCompat.START);
-                return;
-            }
-//            this.isFromDraggingOpen = false;
-            this.mDrawerLayout.openDrawer(GravityCompat.START);
-        }
     }
 
     private void dispatchResetTheme() {
@@ -174,12 +107,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
 
     }
 
-    @OnClick(R.id.iv_back)
-    public void onViewClicked() {
-        toggleDrawerMenu();
-    }
-
-    private void onDrawerClosed(View drawerView) {
+    public void onDrawerClosed(View drawerView) {
 
     }
 
@@ -208,16 +136,12 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     @Override
     public void applyToolbarCurrentTheme() {
         super.applyToolbarCurrentTheme();
-        this.mDrawIcon.setImageDrawable(ThemeHelper.configDrawableThemeUseTint(this.mDrawerIconDrawable.getConstantState().newDrawable(), getResourceRouter().getToolbarIconColor()));
-        this.mDrawIcon.setBackground(ThemeHelper.getBgSelectorWithNoBorder(this));
     }
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        if(!mMainDrawer.interuptAndCloseDrawer()){
+            moveTaskToBack(true);
         }
     }
 

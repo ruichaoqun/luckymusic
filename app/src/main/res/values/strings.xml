@@ -46,11 +46,11 @@
     <string name="is_playing">正在播放</string>
     <string name="duration_unknown">--:--</string>
     <string name="duration_format">%d:%02d</string>
-    
+
     <string name="play_mode_shuffle_play">随机播放</string>
     <string name="play_mode_list_circulation">列表循环</string>
     <string name="play_mode_single_cycle">单曲循环</string>
-    
+
     <!-- MainActivity -->
     <string name="main_activity_drawer_night_theme">夜间模式</string>
     <string name="main_activity_drawer_light_theme">日间模式</string>
@@ -67,7 +67,7 @@
     <string name="total_count">(共%1$d首)</string>
     <string name="multiple_choice">多选</string>
     <string name="player_activity_dynamic_effect">当前动效</string>
-    
+
     <!--  EqualizerActivity -->
     <string name="equalizer_activity_title">均衡器</string>
     <string name="equalizer_activity_custom">自定义</string>
@@ -86,7 +86,6 @@
     <string name="equalizer_save_preset_new">新增预设</string>
     <string name="equalizer_save_preset_save_title">保存当前音效设置为</string>
     <string name="equalizer_save_preset_name_exit">该名称已存在</string>
-
 
 
     <!--  global -->

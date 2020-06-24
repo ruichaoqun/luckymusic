@@ -19,7 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.equalizer.defaultsetting.savepreset.EqualizerSavePresetActivity" android:theme="@style/DialogActivity"/>
+        <activity android:name=".ui.theme.themedetail.ThemeDetailActivity"></activity>
+        <activity
+            android:name=".ui.equalizer.defaultsetting.savepreset.EqualizerSavePresetActivity"
+            android:theme="@style/DialogActivity" />
         <activity android:name=".ui.equalizer.defaultsetting.DefaultEffectActivity" />
         <activity android:name=".ui.equalizer.EqualizerActivity" />
         <activity android:name=".ui.localmedia.SongsListActivity" />

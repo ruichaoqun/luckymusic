@@ -49,8 +49,7 @@
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@color/black"
-                        tools:text="as给大家爱国" />
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -74,6 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/textsize_12sp"
+                        android:textColor="@color/color_cc000000"
                         android:textStyle="bold"
                         android:layout_toEndOf="@+id/iv_head_image"
                         android:layout_marginStart="@dimen/dp_10"

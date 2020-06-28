@@ -48,6 +48,8 @@ public class ThemeConfig {
     public static final int THEME_NIGHT = -3;
     public static final int THEME_CUSTOM_BG = -4;
     public static final int THEME_RED = -5;
+    public static final int THEME_COOL_BLACK = -6;
+
 
     public static int getCurrentColor() {
         return getPrefer().getInt(PREF_KEY_CURRENT_COLOR, 0);

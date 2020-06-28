@@ -22,6 +22,8 @@ import com.ruichaoqun.luckymusic.ui.splash.SplashModule;
 import com.ruichaoqun.luckymusic.ui.splash.SplashActivity;
 import com.ruichaoqun.luckymusic.ui.test.TestActivity;
 import com.ruichaoqun.luckymusic.ui.test.TestModule;
+import com.ruichaoqun.luckymusic.ui.theme.themecolor.ThemeColorDetailActivity;
+import com.ruichaoqun.luckymusic.ui.theme.themecolor.ThemeColorDetailModule;
 import com.ruichaoqun.luckymusic.ui.theme.themedetail.ThemeDetailActivity;
 import com.ruichaoqun.luckymusic.ui.theme.themedetail.ThemeDetailModule;
 
@@ -65,5 +67,9 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = ThemeDetailModule.class)
     abstract ThemeDetailActivity mThemeDetailActivity();
+
+    @ContributesAndroidInjector(modules = ThemeColorDetailModule.class)
+    abstract ThemeColorDetailActivity mThemeColorDetailActivity();
+
 
 }

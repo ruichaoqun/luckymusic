@@ -35,6 +35,7 @@
 
     <string name="default_theme">默认</string>
     <string name="classics_red">经典红</string>
+    <string name="cool_black">炫酷黑</string>
     <string name="custom_color">自选颜色</string>
     <string name="night_mode">夜间模式</string>
     <string name="custom_skin">自定义皮肤</string>
@@ -93,4 +94,13 @@
     <string name="none">无</string>
     <string name="rename">重命名</string>
     <string name="delete">删除</string>
+
+    <!--ThemeDetailActivity-->
+    <string name="theme_detail_activity_title">个性换肤</string>
+    <string name="theme_detail_activity_recommend">推荐</string>
+    <string name="theme_detail_activity_internal_default">默认</string>
+    <string name="theme_detail_activity_internal_red">经典红</string>
+    <string name="theme_detail_activity_internal_black">炫酷黑</string>
+    <string name="theme_detail_activity_internal_custom_color">自选色</string>
+    <string name="theme_detail_activity_internal_custom_bg">自定义</string>
 </resources>

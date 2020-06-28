@@ -1,9 +1,12 @@
 package com.ruichaoqun.luckymusic.utils.drawhelper;
 
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
 import androidx.annotation.ColorInt;
+
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
 public class ColorDrawableUtils {
 
@@ -19,6 +22,13 @@ public class ColorDrawableUtils {
         gradientDrawable.setCornerRadii(new float[]{(float) radii, (float) radii, (float) radii, (float) radii, 0.0f, 0.0f, 0.0f, 0.0f});
         gradientDrawable.setColor(argb);
         return gradientDrawable;
+    }
+
+    public static Drawable getCircleColorDrawable(@ColorInt int argb) {
+        GradientDrawable circleDrawable = new GradientDrawable();
+        circleDrawable.setShape(GradientDrawable.OVAL);
+        circleDrawable.setColor(argb);
+        return circleDrawable;
     }
 
 }

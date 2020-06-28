@@ -23,6 +23,7 @@ import com.ruichaoqun.luckymusic.LuckyMusicApp;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.ThemeInfo;
+import com.ruichaoqun.luckymusic.utils.ColorUtil;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 /**
@@ -620,11 +621,15 @@ public class ResourceRouter {
     }
 
     public int[] getThemeColorBackgroundColorAndIconColor() {
-        return new int[0];
+        if (isCustomBgOrDarkThemeWhiteColor()) {
+            return new int[]{getThemeColor(), 0xFF333333};
+        }
+        return new int[]{getThemeColorWithDarken(), Color.WHITE};
+
     }
 
     public boolean isCustomBgOrDarkThemeWhiteColor() {
-        return false;
+        return getThemeColor() == Color.WHITE;
     }
 
     public Drawable getCacheBannerBgDrawable() {
@@ -640,7 +645,8 @@ public class ResourceRouter {
     }
 
     public int getThemeColorWithDarken() {
-        return 0;
+        int themeColor = getThemeColor();
+        return needDark() ? ColorUtil.a(themeColor,0.9f,new float[3]) : themeColor;
     }
 
     public Drawable getCacheTabDrawable() {
@@ -652,7 +658,7 @@ public class ResourceRouter {
     }
 
     public boolean needDark() {
-        return false;
+        return isCustomDarkTheme() || isCustomBgTheme();
     }
 
     public int getThemeNormalColor() {

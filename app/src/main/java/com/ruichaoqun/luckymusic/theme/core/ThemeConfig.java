@@ -59,6 +59,8 @@ public class ThemeConfig {
         return getPrefer().getInt(PREF_KEY_CUSTOM_BG_ALPHA, 0);
     }
 
+
+
     @IntDef({
             THEME_DEFAULT,
             THEME_CUSTOM_COLOR,
@@ -104,6 +106,13 @@ public class ThemeConfig {
         putInt.apply();
     }
 
+    public static int getSelectedColor() {
+        return getPrefer().getInt(PREF_KEY_SELECTED_COLOR, -1);
+    }
+
+    public static void updateCurrentAndSelectedColor(int currentColor, int selectColor) {
+        getPrefer().getEditor().putInt(PREF_KEY_CURRENT_COLOR, currentColor).putInt(PREF_KEY_SELECTED_COLOR, selectColor).commit();
+    }
 
 
 

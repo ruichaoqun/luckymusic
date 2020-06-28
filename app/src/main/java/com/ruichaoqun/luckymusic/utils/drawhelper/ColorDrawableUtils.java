@@ -31,4 +31,11 @@ public class ColorDrawableUtils {
         return circleDrawable;
     }
 
+    public static Drawable getRoundCornerColorDrawable(@ColorInt int argb,float radius) {
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+        gradientDrawable.setCornerRadius(radius);
+        gradientDrawable.setColor(argb);
+        return gradientDrawable;
+    }
 }

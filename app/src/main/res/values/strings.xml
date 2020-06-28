@@ -32,6 +32,9 @@
     </string-array>
     <string name="local_music">本地音乐</string>
 
+    <!--global-->
+    <string name="global_confirm">确定</string>
+
 
     <string name="default_theme">默认</string>
     <string name="classics_red">经典红</string>
@@ -103,4 +106,7 @@
     <string name="theme_detail_activity_internal_black">炫酷黑</string>
     <string name="theme_detail_activity_internal_custom_color">自选色</string>
     <string name="theme_detail_activity_internal_custom_bg">自定义</string>
+
+    <!--ThemeColorDetailActivity-->
+    <string name="theme_color_detail_activity_title">自选色</string>
 </resources>

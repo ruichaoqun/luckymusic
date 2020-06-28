@@ -8,15 +8,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
+
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMvpToolbarActivity;
 import com.ruichaoqun.luckymusic.common.GlideApp;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.ThemeInfo;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.theme.core.ThemeAgent;
 import com.ruichaoqun.luckymusic.theme.core.ThemeConfig;
+import com.ruichaoqun.luckymusic.ui.theme.themecolor.ThemeColorDetailActivity;
 import com.ruichaoqun.luckymusic.utils.drawhelper.ColorDrawableUtils;
 import com.ruichaoqun.luckymusic.widget.drawable.CheckedDrawable;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +54,8 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
     ImageView ivUseThemeCustomColor;
     @BindView(R.id.iv_use_theme_custom_bg)
     ImageView ivUseThemeCustomBg;
+
+
 
 
     public static void launchFrom(Activity activity) {
@@ -116,6 +125,7 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
     @Override
     protected void initData() {
         setTitle(R.string.theme_detail_activity_title);
+
     }
 
 
@@ -123,13 +133,14 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.click_theme_default:
-                setCustomTheme(-1);
+//                setCustomTheme(-1);
                 break;
             case R.id.click_theme_red:
                 break;
             case R.id.click_theme_black:
                 break;
             case R.id.click_theme_custom_color:
+                ThemeColorDetailActivity.launchFrom(this,100);
                 break;
             case R.id.click_theme_custom_bg:
                 break;
@@ -137,4 +148,11 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100){
+            ThemeAgent.getInstance().switchTheme(this, new ThemeInfo(ThemeConfig.THEME_CUSTOM_COLOR), true);
+        }
+    }
 }

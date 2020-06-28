@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.theme.themecolor.ThemeColorDetailActivity"
+    android:background="#07000000"
     android:orientation="vertical">
 
     <ImageView
@@ -21,5 +22,8 @@
     <com.ruichaoqun.luckymusic.theme.ui.CustomThemeLine
         android:layout_width="fill_parent"
         android:layout_height="1dp" />
-    <
+    <com.ruichaoqun.luckymusic.widget.SwipeDisableViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
 </LinearLayout>

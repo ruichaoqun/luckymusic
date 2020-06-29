@@ -141,6 +141,7 @@ public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorD
                     @Override
                     public void onItemChildClick(BaseQuickAdapter a, View view, int position) {
                         if(colorList.get(position) == 0){
+                            mViewPager.setCurrentItem(1);
                             return;
                         }
                         currentColor = colorList.get(position);

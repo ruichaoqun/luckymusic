@@ -29,6 +29,7 @@ import com.ruichaoqun.luckymusic.base.activity.BaseMvpToolbarActivity;
 import com.ruichaoqun.luckymusic.base.adapter.pager.ViewPagerAdapter;
 import com.ruichaoqun.luckymusic.theme.core.ThemeConfig;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
+import com.ruichaoqun.luckymusic.widget.ColorPicker;
 
 import java.util.Arrays;
 import java.util.List;
@@ -153,10 +154,22 @@ public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorD
                 return recyclerView;
             }
             RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.layout_color_picker, container, false);
+            relativeLayout.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewPager.setCurrentItem(0);
+                }
+            });
+            ColorPicker colorPicker = relativeLayout.findViewById(R.id.color_picker);
+            colorPicker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
+                @Override
+                public void onColorChanged(int color) {
+                    currentColor = color;
+                    mModel.setColorFilter(currentColor, PorterDuff.Mode.DST_OVER);
+                }
+            });
             container.addView(relativeLayout);
             return relativeLayout;
         }
     }
-
-
 }

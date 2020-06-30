@@ -13,9 +13,9 @@
         android:src="@drawable/ic_arrow_left" />
 
     <com.ruichaoqun.luckymusic.widget.ColorPicker
+        android:id="@+id/color_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/back"
-        android:background="#66000000"/>
+        android:layout_toRightOf="@+id/back" />
 </RelativeLayout>

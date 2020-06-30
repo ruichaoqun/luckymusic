@@ -132,6 +132,7 @@ public class MainDrawer implements View.OnClickListener {
                         default:
                     }
                 }
+                closeActionMenu = null;
             }
 
             @Override

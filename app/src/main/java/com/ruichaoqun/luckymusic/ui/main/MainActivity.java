@@ -104,7 +104,6 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         mTabLayout.onThemeReset();
         applyMiniPlaybarCurrentTheme();
         invalidateOptionsMenu();
-
     }
 
     public void onDrawerClosed(View drawerView) {
@@ -162,4 +161,9 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(updateThemeReceiver);
+        super.onDestroy();
+    }
 }

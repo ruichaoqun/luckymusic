@@ -42,7 +42,7 @@ public class ColorPicker extends View {
     private Rect mValueThumbRect;
 
     public interface OnColorChangedListener {
-        void onColorChanged(int i2);
+        void onColorChanged(int color);
     }
 
     public ColorPicker(Context context) {
@@ -89,7 +89,7 @@ public class ColorPicker extends View {
             int round2 = Math.round(((float) this.mBarWidth) * this.mHSVColor[2]);
             this.mHueThumbRect = new Rect(round - mThumbRadius, 0, round + mThumbRadius, mThumbRadius * 2);
             this.mValueThumbRect = new Rect(round2, mHeight - (mThumbRadius * 2), round2 + mThumbRadius * 2, mHeight);
-            this.mValueBarShader = new LinearGradient(this.mValueBarRectF.left, this.mValueBarRectF.top, this.mValueBarRectF.right, this.mValueBarRectF.bottom, new int[]{-16777216, Color.HSVToColor(this.mHue)}, (float[]) null, Shader.TileMode.CLAMP);
+            this.mValueBarShader = new LinearGradient(this.mValueBarRectF.left, this.mValueBarRectF.top, this.mValueBarRectF.right, this.mValueBarRectF.bottom, new int[]{Color.BLACK, Color.HSVToColor(this.mHue)}, (float[]) null, Shader.TileMode.CLAMP);
             this.mValueBarPaint.setShader(this.mValueBarShader);
             invalidate();
         }
@@ -109,9 +109,9 @@ public class ColorPicker extends View {
         this.mHueBarRectF = new RectF(mThumbRadius, mThumbRadius - mBarHeight / 2, width - mThumbRadius, mThumbRadius + mBarHeight / 2);
         this.mValueBarRectF = new RectF(mThumbRadius, height - mThumbRadius - mBarHeight / 2, width - mThumbRadius, height - mThumbRadius + mBarHeight / 2);
         this.mBarWidth = (int) (this.mHueBarRectF.right - this.mHueBarRectF.left);
-        int round = Math.round(((float) this.mBarWidth) * (this.mHSVColor[0] / 360.0f)) + this.mThumbRadius;
+        int round = Math.round(((float) this.mBarWidth) * (this.mHSVColor[0] / 360.0f));
         int round2 = Math.round(((float) this.mBarWidth) * this.mHSVColor[2]);
-        this.mHueThumbRect = new Rect(round - mThumbRadius, 0, round + mThumbRadius, mThumbRadius * 2);
+        this.mHueThumbRect = new Rect(round, 0, round + mThumbRadius*2, mThumbRadius * 2);
         this.mValueThumbRect = new Rect(round2, height - (mThumbRadius * 2), round2 + mThumbRadius*2, height);
         LinearGradient linearGradient = new LinearGradient(this.mHueBarRectF.left, this.mHueBarRectF.top, this.mHueBarRectF.right, this.mHueBarRectF.bottom, COLORS, null, Shader.TileMode.CLAMP);
         this.mValueBarShader = new LinearGradient(mValueBarRectF.left, mValueBarRectF.top, mValueBarRectF.right, mValueBarRectF.bottom, new int[]{Color.BLACK, Color.HSVToColor(this.mHue)},  null, Shader.TileMode.CLAMP);
@@ -136,10 +136,26 @@ public class ColorPicker extends View {
         float y = event.getY();
         int action = event.getActionMasked();
         if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE){
-            if(y < mHueThumbRect.bottom){
-                x = Math.min(Math.max(x,mHueBarRectF.left),mHueBarRectF.right);
-
+            if(y <= mHueThumbRect.bottom){
+                if(x >= mHueBarRectF.left && x <= mHueBarRectF.right){
+                    mHueThumbRect.left = Math.round(x - mThumbRadius);
+                    mHueThumbRect.right = Math.round(x + mThumbRadius);
+                }
+                mHue[0] = 360 * ((x-mHueBarRectF.left)/mBarWidth);
+                mHSVColor[0] = mHue[0];
+                this.mValueBarShader = new LinearGradient(mValueBarRectF.left, mValueBarRectF.top, mValueBarRectF.right, mValueBarRectF.bottom, new int[]{Color.BLACK, Color.HSVToColor(this.mHue)},  null, Shader.TileMode.CLAMP);
+                this.mValueBarPaint.setShader(this.mValueBarShader);
+            }else if(y >= mValueThumbRect.top){
+                if(x >= mThumbRadius && x <= mBarWidth - mThumbRadius){
+                    mValueThumbRect.left = Math.round(x - mThumbRadius);
+                    mValueThumbRect.right = Math.round(x + mThumbRadius);
+                }
+                mHSVColor[2] = (x-mValueBarRectF.left)/mBarWidth;
             }
+            if(mOnColorChangedListener != null){
+                mOnColorChangedListener.onColorChanged(Color.HSVToColor(mHSVColor));
+            }
+            invalidate();
         }
         return true;
     }

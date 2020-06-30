@@ -130,11 +130,11 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
 
     public void applyMiniPlaybarCurrentTheme() {
         this.mPlayBarContainer.setBackgroundDrawable(ResourceRouter.getInstance().getCachePlayerDrawable());
+        this.mPlayPauseView.setColor(ResourceRouter.getInstance().getThemeColor());
     }
 
     private void addChildContentView(int layoutResID, int index) {
         addChildContentView(getLayoutInflater().inflate(layoutResID, null), index);
-
     }
 
     private void addChildContentView(View view, int index) {

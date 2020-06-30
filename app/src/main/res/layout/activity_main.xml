@@ -36,6 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    app:tabTextAppearance="@style/Toolbar_Main_TextAppearance"
                     app:tabGravity="fill"
                     app:tabUnboundedRipple="true"
                     app:tabMinWidth="100dp"

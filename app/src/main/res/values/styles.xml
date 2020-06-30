@@ -123,4 +123,10 @@
         <item name="android:windowElevation">@dimen/dp_16</item>
     </style>
 
+    <style name="Toolbar_Main_TextAppearance">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+
 </resources>

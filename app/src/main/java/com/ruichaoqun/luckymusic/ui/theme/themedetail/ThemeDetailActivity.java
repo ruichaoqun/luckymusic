@@ -1,7 +1,10 @@
 package com.ruichaoqun.luckymusic.ui.theme.themedetail;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,6 +32,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.ruichaoqun.luckymusic.Constants.CHANGED_THEME;
+
 /**
  * 个性换肤
  */
@@ -54,6 +59,13 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
     ImageView ivUseThemeCustomColor;
     @BindView(R.id.iv_use_theme_custom_bg)
     ImageView ivUseThemeCustomBg;
+
+    private BroadcastReceiver updateThemeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            dispatchResetTheme();
+        }
+    };
 
 
 
@@ -119,6 +131,7 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
                 break;
             default:
         }
+        registerReceiver(updateThemeReceiver,new IntentFilter(CHANGED_THEME));
 
     }
 
@@ -133,11 +146,13 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.click_theme_default:
-//                setCustomTheme(-1);
+                setCurrentTheme(-1);
                 break;
             case R.id.click_theme_red:
+                setCurrentTheme(-5);
                 break;
             case R.id.click_theme_black:
+                setCurrentTheme(-6);
                 break;
             case R.id.click_theme_custom_color:
                 ThemeColorDetailActivity.launchFrom(this,100);
@@ -148,11 +163,32 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
         }
     }
 
+    private void setCurrentTheme(int themeId) {
+        if(ThemeConfig.getCurrentThemeId() != themeId){
+            ThemeAgent.getInstance().switchTheme(this, new ThemeInfo(themeId), true);
+        }
+    }
+
+    private void dispatchResetTheme() {
+        setWindowBackground();
+        applyStatusBarCurrentTheme();
+        applyToolbarCurrentTheme();
+        applyRecentTaskPreviewCurrentTheme();
+        invalidateOptionsMenu();
+        initView();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 100){
             ThemeAgent.getInstance().switchTheme(this, new ThemeInfo(ThemeConfig.THEME_CUSTOM_COLOR), true);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(updateThemeReceiver);
+        super.onDestroy();
     }
 }

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
 
@@ -28,7 +29,7 @@ public class PlayPauseView extends View {
     private int state = PLAY_STATE_PLAYING;//播放状态
     private Path path,path1,path2;//里面三角路径
     private int radius;//半径
-    private int color = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+    private int color;
     private long max;//最大播放进度
     private long progress = 0;//播放进度
 
@@ -42,6 +43,7 @@ public class PlayPauseView extends View {
     }
 
     private void init() {
+        color = ResourceRouter.getInstance().getThemeColor();
         double hudu = 2*Math.PI/360;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(5);
@@ -68,6 +70,11 @@ public class PlayPauseView extends View {
         path2.moveTo(x4,y1);
         path2.lineTo(x4,y2);
         path.close();
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        invalidate();
     }
 
     @Override

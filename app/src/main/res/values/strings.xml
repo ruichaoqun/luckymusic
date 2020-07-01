@@ -26,9 +26,9 @@
     <string name="add_widget">Add widget</string>
 
     <string-array name="main_titles">
-        <item>我的</item>
-        <item>发现</item>
-        <item>视频</item>
+        <item>音乐</item>
+        <item>玩Android</item>
+<!--        <item>视频</item>-->
     </string-array>
     <string name="local_music">本地音乐</string>
 

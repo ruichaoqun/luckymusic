@@ -3,6 +3,7 @@ package com.ruichaoqun.luckymusic.theme.ui;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
@@ -21,6 +22,7 @@ public class CustomThemeIconImageView extends CustomThemeImageView {
     public CustomThemeIconImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         onThemeReset();
+        Log.w("AAAAAA","CustomThemeIconImageView");
     }
 
     @Override

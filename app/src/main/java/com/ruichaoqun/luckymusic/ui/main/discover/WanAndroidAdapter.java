@@ -1,6 +1,8 @@
 package com.ruichaoqun.luckymusic.ui.main.discover;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;

@@ -5,9 +5,13 @@ package com.ruichaoqun.luckymusic.base.fragment;
 import androidx.annotation.NonNull;
 
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
+import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.widget.CustomMaterialHeader;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import java.util.Objects;
 
 
 /**
@@ -18,6 +22,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 public abstract class BaseSwipeFragment<T extends IBasePresenter> extends BaseLazyFragment<T> {
 
     protected RefreshLayout refreshLayout;
+    protected CustomMaterialHeader mMaterialHeader;
 
     public void bindRefreshLayout(int refreshLayoutId){
         bindRefreshLayout((RefreshLayout) getView().findViewById(refreshLayoutId));
@@ -27,14 +32,20 @@ public abstract class BaseSwipeFragment<T extends IBasePresenter> extends BaseLa
         this.refreshLayout = refreshLayout;
         this.refreshLayout.setEnableHeaderTranslationContent(false);
         this.refreshLayout.setEnableLoadMore(false);
-//        this.refreshLayout.setPrimaryColorsId(R.color.color_ff3a3a);
-        this.refreshLayout.setRefreshHeader(new MaterialHeader(getContext()));
+        mMaterialHeader = new CustomMaterialHeader(Objects.requireNonNull(getContext()));
+        this.refreshLayout.setRefreshHeader(mMaterialHeader);
         this.refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshlayout) {
                 BaseSwipeFragment.this.onRefresh();
             }
         });
+    }
+
+    protected void applyCurrentTheme() {
+        if(mMaterialHeader != null){
+            mMaterialHeader.onThemeReset();
+        }
     }
 
     /**

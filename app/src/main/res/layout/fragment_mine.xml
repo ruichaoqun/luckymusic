@@ -13,13 +13,13 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_row_height"
             android:id="@+id/layout_loacal">
-            <ImageView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeIconImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@mipmap/ic_music_local"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/local_music"
@@ -28,6 +28,8 @@
                 android:layout_gravity="center_vertical"/>
 
         </com.ruichaoqun.luckymusic.theme.ui.CustomThemeLinearLayout>
-        <include layout="@layout/divider_match"/>
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeLine
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

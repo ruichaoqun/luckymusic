@@ -4,8 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
@@ -40,7 +45,8 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
 
-    private List<Fragment> mFragments;
+    private String[] mTabTitles;
+    private PagerAdapter mPagerAdapter;
     private MainDrawer mMainDrawer = new MainDrawer(this);
     private BroadcastReceiver updateThemeReceiver = new BroadcastReceiver() {
         @Override
@@ -76,6 +82,7 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
 
     @Override
     protected void initData() {
+        mTabTitles = getResources().getStringArray(R.array.main_titles);
         initViewPager();
     }
 
@@ -84,13 +91,10 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     }
 
     private void initViewPager() {
-        mFragments = new ArrayList<>();
-        mFragments.add(new MineFragment());
-        mFragments.add(new WanAndroidFragment());
-        mFragments.add(new VideoFragment());
-        mViewPager.setAdapter(new BaseFragmentStateAdapter(getSupportFragmentManager(), mFragments, getResources().getStringArray(R.array.main_titles)));
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(mFragments.size());
+        mViewPager.setOffscreenPageLimit(mTabTitles.length);
     }
 
     private void dispatchResetTheme() {
@@ -104,6 +108,18 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         mTabLayout.onThemeReset();
         applyMiniPlaybarCurrentTheme();
         invalidateOptionsMenu();
+        dispatchThemeToFragment(getSupportFragmentManager());
+    }
+
+    private void dispatchThemeToFragment(FragmentManager supportFragmentManager) {
+        List<Fragment> fragmentList = supportFragmentManager.getFragments();
+        for (int i = 0; i < fragmentList.size(); i++) {
+            Fragment fragment = fragmentList.get(i);
+            if(fragment instanceof DispatchResetThemeInterface){
+                ((DispatchResetThemeInterface)fragment).dispatchResetTheme();
+                dispatchThemeToFragment(fragment.getChildFragmentManager());
+            }
+        }
     }
 
     public void onDrawerClosed(View drawerView) {
@@ -165,5 +181,38 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
     protected void onDestroy() {
         unregisterReceiver(updateThemeReceiver);
         super.onDestroy();
+    }
+
+    class PagerAdapter extends FragmentPagerAdapter{
+
+        public PagerAdapter(@NonNull FragmentManager fm) {
+            super(fm);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            if(position == 0){
+                return Fragment.instantiate(MainActivity.this,MineFragment.class.getName(),null);
+            }else {
+                return Fragment.instantiate(MainActivity.this,WanAndroidFragment.class.getName(),null);
+            }
+
+        }
+
+        @Override
+        public int getCount() {
+            return mTabTitles.length;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabTitles[position];
+        }
+    }
+
+    public interface DispatchResetThemeInterface{
+        void dispatchResetTheme();
     }
 }

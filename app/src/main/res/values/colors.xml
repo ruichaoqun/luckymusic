@@ -12,10 +12,10 @@
     <color name="t_dialogBackground">#FFFFFFFF</color>
     <color name="divider_color">#f2f2f2</color>
 
-    <color name="text_color_black">#333333</color>
-    <color name="text_color_gray">#999999</color>
-    <color name="text_color_light">#dddddd</color>
-    <color name="text_color_middle">#555555</color>
+    <color name="text_color_black">#CC000000</color>
+    <color name="text_color_gray">#99000000</color>
+    <color name="text_color_light">#66000000</color>
+    <color name="text_color_middle">#33000000</color>
 
     <color name="theme_ripple_dark">#1affffff</color>
     <color name="theme_ripple_light">#1a000000</color>

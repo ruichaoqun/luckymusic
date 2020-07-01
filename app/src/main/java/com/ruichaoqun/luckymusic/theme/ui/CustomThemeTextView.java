@@ -54,7 +54,6 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
     @Override
     public void onFinishTemporaryDetach() {
         super.onFinishTemporaryDetach();
-        Log.w("AAAAAA","onFinishTemporaryDetach");
         this.mThemeResetter.checkIfNeedResetTheme();
     }
 
@@ -93,9 +92,7 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
         if(mNeedApplyTextColor){
             if(resourceRouter.isNightTheme() || resourceRouter.isCustomBgTheme() || resourceRouter.isCustomDarkTheme()){
                 //如果是夜晚模式或自定义背景模式或者暗黑模式
-                Log.w("AAAAA","orihinal-->"+Integer.toHexString(mColorsOriginal.getDefaultColor()));
                 int color = resourceRouter.getColorByDefaultColor(mColorsOriginal.getDefaultColor());
-                Log.w("AAAAA","night-->"+Integer.toHexString(color));
                 setTextColor(color);
             }else{
                 //否则，设置原来的颜色

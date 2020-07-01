@@ -2,6 +2,8 @@ package com.ruichaoqun.luckymusic.base.fragment;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.View;
 
 
@@ -112,6 +114,12 @@ public abstract class BaseSwipeTableFragment<R,T extends IBasePresenter> extends
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+    }
+
+    @Override
+    protected void applyCurrentTheme() {
+        super.applyCurrentTheme();
 
     }
 }

@@ -22,8 +22,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ruichaoqun.luckymusic.R;
+import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 import com.ruichaoqun.luckymusic.ui.equalizer.EqualizerActivity;
 import com.ruichaoqun.luckymusic.ui.localmedia.LocalMediaActivity;
+import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +34,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MineFragment extends Fragment {
+public class MineFragment extends Fragment implements MainActivity.DispatchResetThemeInterface {
     @BindView(R.id.layout_loacal)
     LinearLayout layoutLocal;
 
@@ -61,6 +63,22 @@ public class MineFragment extends Fragment {
             case R.id.layout_loacal:
                 LocalMediaActivity.launchFrom(getActivity());
                 break;
+        }
+    }
+
+    @Override
+    public void dispatchResetTheme() {
+        resetTheme(getView());
+    }
+
+    private void resetTheme(View view) {
+        if(view instanceof OnThemeResetListener){
+            ((OnThemeResetListener) view).onThemeReset();
+        }
+        if(view instanceof ViewGroup){
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                resetTheme(((ViewGroup) view).getChildAt(i));
+            }
         }
     }
 }

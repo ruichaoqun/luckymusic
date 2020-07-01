@@ -2,6 +2,7 @@ package com.ruichaoqun.luckymusic.theme.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -33,6 +34,7 @@ public class CustomThemeImageView extends AppCompatImageView implements OnThemeR
     @Override
     public void onFinishTemporaryDetach() {
         super.onFinishTemporaryDetach();
+        Log.w("AAAAAA","onFinishTemporaryDetach");
         if (this.mNeedThemeResetWithOnAttachedToWindow) {
             this.mThemeResetter.checkIfNeedResetTheme();
         }
@@ -42,6 +44,7 @@ public class CustomThemeImageView extends AppCompatImageView implements OnThemeR
     public void onAttachedToWindow() {
         ThemeResetter themeResetter;
         super.onAttachedToWindow();
+        Log.w("AAAAAA","onAttachedToWindow");
         if (this.mNeedThemeResetWithOnAttachedToWindow && (themeResetter = this.mThemeResetter) != null) {
             themeResetter.checkIfNeedResetTheme();
         }

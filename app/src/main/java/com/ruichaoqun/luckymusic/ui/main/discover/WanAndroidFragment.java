@@ -1,19 +1,24 @@
 package com.ruichaoqun.luckymusic.ui.main.discover;
 
 
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.fragment.BaseSwipeMoreTableFragment;
+import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WanAndroidFragment extends BaseSwipeMoreTableFragment<MultiItemEntity, WanAndroidContact.Presenter> implements WanAndroidContact.View{
+public class WanAndroidFragment extends BaseSwipeMoreTableFragment<MultiItemEntity, WanAndroidContact.Presenter> implements WanAndroidContact.View, MainActivity.DispatchResetThemeInterface{
 
 
     public WanAndroidFragment() {
@@ -53,6 +58,12 @@ public class WanAndroidFragment extends BaseSwipeMoreTableFragment<MultiItemEnti
         stopRefresh();
         arrayList.clear();
         arrayList.addAll(multiItemEntityList);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void dispatchResetTheme() {
+        applyCurrentTheme();
         notifyDataSetChanged();
     }
 }

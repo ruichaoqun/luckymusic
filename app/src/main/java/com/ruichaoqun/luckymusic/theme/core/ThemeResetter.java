@@ -31,7 +31,7 @@ public class ThemeResetter {
 
     public void saveCurrentThemeInfo() {
         this.mCurrentThemeId = ResourceRouter.getInstance().getThemeId();
-        int i = ResourceRouter.getInstance().isCustomColorTheme() ? ThemeConfig.getCurrentColor() : ResourceRouter.getInstance().isCustomBgTheme() ? ThemeConfig.getCustomBgThemeColor() : 0;
-        this.mCurrentCustomColor = i;
+        int color = ResourceRouter.getInstance().isCustomColorTheme() ? ThemeConfig.getCurrentColor() : ResourceRouter.getInstance().isCustomBgTheme() ? ThemeConfig.getCustomBgThemeColor() : 0;
+        this.mCurrentCustomColor = color;
     }
 }

@@ -11,7 +11,7 @@ import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 /**
  * @author Rui Chaoqun
  * @date :2020/6/23 14:32
- * description:
+ * description:使用本地图片资源作为icon的imageview
  */
 public class CustomThemeIconImageView extends CustomThemeImageView {
     public CustomThemeIconImageView(Context context) {
@@ -22,7 +22,6 @@ public class CustomThemeIconImageView extends CustomThemeImageView {
     public CustomThemeIconImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         onThemeReset();
-        Log.w("AAAAAA","CustomThemeIconImageView");
     }
 
     @Override

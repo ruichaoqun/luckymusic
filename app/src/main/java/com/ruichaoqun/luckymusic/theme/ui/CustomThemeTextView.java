@@ -49,6 +49,7 @@ public class CustomThemeTextView extends AppCompatTextView implements OnThemeRes
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
+        this.mThemeResetter.checkIfNeedResetTheme();
     }
 
     @Override

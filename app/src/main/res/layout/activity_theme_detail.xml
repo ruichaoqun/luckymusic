@@ -42,7 +42,7 @@
                 android:layout_height="15dp"
                 android:layout_alignBottom="@+id/iv_theme_default"
                 android:layout_alignEnd="@+id/iv_theme_default" />
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_12sp"
@@ -71,7 +71,7 @@
                 android:layout_height="15dp"
                 android:layout_alignBottom="@+id/iv_theme_red"
                 android:layout_alignEnd="@+id/iv_theme_red"/>
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_12sp"
@@ -100,7 +100,7 @@
                 android:layout_height="15dp"
                 android:layout_alignBottom="@+id/iv_theme_black"
                 android:layout_alignEnd="@+id/iv_theme_black"/>
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_12sp"
@@ -129,7 +129,7 @@
                 android:layout_height="15dp"
                 android:layout_alignBottom="@+id/iv_theme_custom_color"
                 android:layout_alignEnd="@+id/iv_theme_custom_color"/>
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_12sp"
@@ -158,7 +158,7 @@
                 android:layout_height="15dp"
                 android:layout_alignBottom="@+id/iv_theme_custom_bg"
                 android:layout_alignEnd="@+id/iv_theme_custom_bg"/>
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_12sp"

@@ -3,7 +3,9 @@ package com.ruichaoqun.luckymusic.ui.main.discover;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -12,6 +14,7 @@ import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.data.bean.BannerListBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
+import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.tmall.ultraviewpager.UltraViewPager;
 
 import java.util.List;
@@ -34,7 +37,11 @@ public class WanAndroidAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
         switch (item.getItemType()) {
             case HomePageItemType.BANNER:
                 BannerListBean bannerListBean = (BannerListBean) item;
-                helper.getView(R.id.iv_bac).setBackgroundColor(0xFFDB3F35);
+                if(ResourceRouter.getInstance().isRedTheme()){
+                    helper.getView(R.id.iv_bac).setBackgroundColor(0xFFDB3F35);
+                }else{
+                    helper.getView(R.id.iv_bac).setBackgroundColor(Color.TRANSPARENT);
+                }
 
                 UltraViewPager ultraViewPager = helper.getView(R.id.ultra_viewpager);
                 ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);

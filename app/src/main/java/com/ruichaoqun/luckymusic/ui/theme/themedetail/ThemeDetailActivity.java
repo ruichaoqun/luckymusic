@@ -152,7 +152,8 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
                 setCurrentTheme(-5);
                 break;
             case R.id.click_theme_black:
-                setCurrentTheme(-6);
+//                setCurrentTheme(-6);
+                showToast("暂未完成");
                 break;
             case R.id.click_theme_custom_color:
                 ThemeColorDetailActivity.launchFrom(this,100);

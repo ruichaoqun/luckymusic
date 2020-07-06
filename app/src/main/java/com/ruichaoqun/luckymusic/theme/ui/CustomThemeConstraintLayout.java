@@ -1,26 +1,17 @@
 package com.ruichaoqun.luckymusic.theme.ui;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ThemeResetter;
 import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
 import com.ruichaoqun.luckymusic.utils.drawhelper.RoundedViewHelper;
 
-/**
- * @author Rui Chaoqun
- * @date :2019/10/12 10:51
- * description:
- */
-public class CustomThemeLinearLayout extends LinearLayout implements OnThemeResetListener {
+public class CustomThemeConstraintLayout extends ConstraintLayout implements OnThemeResetListener {
     protected int bgType;
     private boolean forCard;
     private boolean mNeedThemeResetWithOnAttachedToWindow = true;
@@ -28,15 +19,21 @@ public class CustomThemeLinearLayout extends LinearLayout implements OnThemeRese
     protected ThemeResetter mThemeResetter = new ThemeResetter(this);
     protected int newBgPaddingLeft;
 
-    public CustomThemeLinearLayout(Context context) {
+    public CustomThemeConstraintLayout(Context context) {
         super(context);
         onThemeReset();
     }
 
-    public CustomThemeLinearLayout(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
+    public CustomThemeConstraintLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
         onThemeReset();
     }
+
+    public CustomThemeConstraintLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        onThemeReset();
+    }
+
 
 
     public void setNeedThemeResetWithOnAttachedToWindow(boolean z) {
@@ -58,8 +55,6 @@ public class CustomThemeLinearLayout extends LinearLayout implements OnThemeRese
             this.mThemeResetter.checkIfNeedResetTheme();
         }
     }
-
-
 
     @Override
     public void onDraw(Canvas canvas) {

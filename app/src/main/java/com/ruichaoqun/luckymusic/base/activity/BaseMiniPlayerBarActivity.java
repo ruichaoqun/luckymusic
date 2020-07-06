@@ -1,5 +1,7 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.transition.Fade;
 
@@ -28,7 +31,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.GlideApp;
 import com.ruichaoqun.luckymusic.common.WatchMiniPlayBarListener;
+import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
+import com.ruichaoqun.luckymusic.theme.ui.CustomThemeIconImageView;
+import com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView;
 import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
@@ -47,8 +53,8 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     private ViewGroup mMusicContainer;
     protected RelativeLayout mPlayBarContainer;
     private ImageView mPlayBarCover;
-    private TextView mPlayBarTitle;
-    private TextView mPlayBarArtist;
+    private CustomThemeTextView mPlayBarTitle;
+    private CustomThemeTextView mPlayBarArtist;
     private ImageView mPlayBarList;
     private PlayPauseView mPlayPauseView;
     private boolean updatePosition = false;
@@ -128,9 +134,14 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
         applyMiniPlaybarCurrentTheme();
     }
 
+    @SuppressLint("RestrictedApi")
     public void applyMiniPlaybarCurrentTheme() {
-        this.mPlayBarContainer.setBackgroundDrawable(ResourceRouter.getInstance().getCachePlayerDrawable());
-        this.mPlayPauseView.setColor(ResourceRouter.getInstance().getThemeColor());
+        mPlayBarContainer.setBackgroundDrawable(ResourceRouter.getInstance().getCachePlayerDrawable());
+        mPlayPauseView.setColor(ResourceRouter.getInstance().getThemeColor());
+        mPlayBarTitle.onThemeReset();
+        mPlayBarArtist.onThemeReset();
+        mPlayBarList.setImageDrawable(AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_playlist));
+        ThemeHelper.configDrawableThemeUseTint(mPlayBarList.getDrawable(), ResourceRouter.getInstance().isNightTheme()? 0x99FFFFFF:0xCC000000);
     }
 
     private void addChildContentView(int layoutResID, int index) {

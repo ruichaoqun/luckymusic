@@ -5,6 +5,7 @@
     <attr name="needApplyDrawableColor" format="boolean"/>
     <attr name="needApplyBackgroundColor" format="boolean"/>
     <attr name="normalDrawableColor" format="reference|color"/>
+    <attr name="needApplyThemeColor" format="boolean"/>
 
 
 
@@ -18,6 +19,13 @@
         <attr name="needApplyDrawableColor" />
         <attr name="normalDrawableColor" />
     </declare-styleable>
+
+    <declare-styleable name="CustomThemeIconImageView">
+        <attr name="needApplyThemeColor" />
+        <attr name="normalDrawableColor" />
+        <attr name="needSelected" />
+    </declare-styleable>
+
 
     <declare-styleable name="DrawableCenterTextView">
         <attr name="needRightHint" format="boolean"/>

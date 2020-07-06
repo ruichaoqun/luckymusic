@@ -25,13 +25,10 @@ import java.util.ArrayList;
 public abstract class BaseBottomSheet extends Dialog implements DialogInterface {
     protected ClosableSlidingLayout mDialogView;
 
-    /* access modifiers changed from: protected */
     public abstract void initCustomView();
 
-    /* access modifiers changed from: protected */
     public abstract void onBottomSheetDismiss();
 
-    /* access modifiers changed from: protected */
     public abstract void onBottomSheetShow();
 
     public BaseBottomSheet(Context context, @StyleRes int themeResId) {

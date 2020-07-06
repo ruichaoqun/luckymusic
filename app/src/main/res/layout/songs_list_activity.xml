@@ -6,12 +6,12 @@
     tools:context=".ui.localmedia.SongsListActivity"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeRelativeLayout
         android:id="@+id/rl_play_all"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="?attr/selectableItemBackground">
-        <TextView
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
             android:id="@+id/tv_play_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textColor="@color/color_cc000000"
             android:textSize="16.0sp" />
 
-        <TextView
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:text="@string/total_count"
             android:textColor="@color/color_66000000"
             android:textSize="14.0sp" />
-        <TextView
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
             android:id="@+id/tv_profile"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -46,7 +46,7 @@
             android:text="@string/multiple_choice"
             android:gravity="center"
             android:background="?attr/selectableItemBackground"/>
-    </RelativeLayout>
+    </com.ruichaoqun.luckymusic.theme.ui.CustomThemeRelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_song_list"
         android:layout_width="match_parent"

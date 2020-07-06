@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ruichaoqun.luckymusic.theme.ui.CustomThemeRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="?attr/selectableItemBackground">
@@ -19,7 +19,7 @@
         android:layout_toRightOf="@+id/iv_artist"
         android:layout_toLeftOf="@+id/iv_profile"
         android:layout_marginLeft="5dp">
-        <TextView
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:text="测试" />
-        <TextView
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
             android:id="@+id/tv_subTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,4 +55,4 @@
         android:scaleType="center"
         android:layout_alignParentRight="true"
         android:visibility="gone"/>
-</RelativeLayout>
+</com.ruichaoqun.luckymusic.theme.ui.CustomThemeRelativeLayout>

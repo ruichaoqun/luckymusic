@@ -53,7 +53,7 @@
                 android:id="@+id/play_list"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/ic_playlist"
+                android:src="@drawable/ic_playlist"
                 android:tint="#222222"
                 android:layout_alignParentEnd="true"
                 android:background="?android:attr/selectableItemBackgroundBorderless"/>

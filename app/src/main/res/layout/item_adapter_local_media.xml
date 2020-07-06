@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ruichaoqun.luckymusic.theme.ui.CustomThemeConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/iv_playing"
         android:layout_width="15dp"
@@ -28,14 +29,14 @@
         app:layout_goneMarginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_centerVertical="true">
-        <TextView
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_black"
             android:textSize="@dimen/textsize_middle"
-            android:text="测试" />
-        <TextView
+            tools:text="测试" />
+        <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
             android:id="@+id/tv_subTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
             android:textSize="@dimen/textsize_small"
             android:singleLine="true"
             android:ellipsize="end"
-            android:text="测试"
+            tools:text="测试"
             android:layout_marginTop="5dp"/>
     </LinearLayout>
     <ImageView
@@ -51,9 +52,9 @@
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:src="@mipmap/icon_profile"
-        android:scaleType="center"
+        android:scaleType="centerInside"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/layout_content"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.ruichaoqun.luckymusic.theme.ui.CustomThemeConstraintLayout>

@@ -1,10 +1,13 @@
 package com.ruichaoqun.luckymusic.theme.ui;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 
@@ -14,6 +17,10 @@ import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
  * description:
  */
 public class CustomThemeIconImageView extends CustomThemeImageView {
+    private boolean mNeedApplyThemeColor;
+    private ColorStateList normalDrawableColor;
+    private boolean mNeedSelect;
+
     public CustomThemeIconImageView(Context context) {
         super(context);
         onThemeReset();
@@ -21,8 +28,12 @@ public class CustomThemeIconImageView extends CustomThemeImageView {
 
     public CustomThemeIconImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, R.styleable.CustomThemeIconImageView, 0, 0);
+        mNeedApplyThemeColor = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeIconImageView_needApplyThemeColor,true);
+        mNeedSelect = obtainStyledAttributes.getBoolean(R.styleable.CustomThemeIconImageView_needSelected,false);
+        normalDrawableColor = obtainStyledAttributes.getColorStateList(R.styleable.CustomThemeIconImageView_normalDrawableColor);
+        obtainStyledAttributes.recycle();
         onThemeReset();
-        Log.w("AAAAAA","CustomThemeIconImageView");
     }
 
     @Override
@@ -34,8 +45,21 @@ public class CustomThemeIconImageView extends CustomThemeImageView {
     private void resetTheme(Drawable drawable) {
         if(drawable != null){
             ResourceRouter router = ResourceRouter.getInstance();
-            int themeColor = router.getThemeColor();
-            ThemeHelper.configDrawableTheme(drawable, themeColor);
+            int color = router.getThemeColor();
+            if(!mNeedApplyThemeColor){
+                if(normalDrawableColor != null){
+                    color = normalDrawableColor.getDefaultColor();
+                }
+                if(router.isNightTheme()){
+                    color = router.getNightColor(color);
+                }
+                ThemeHelper.configDrawableTheme(drawable, color);
+                return;
+            }
+            ThemeHelper.configDrawableTheme(drawable, color);
+        }
+        if(mNeedSelect){
+            ThemeHelper.configBg(this, 0, false);
         }
     }
 }

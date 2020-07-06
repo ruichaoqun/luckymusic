@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,8 @@ public class PlayPauseView extends View {
     private Path path,path1,path2;//里面三角路径
     private int radius;//半径
     private int color;
+    private int pauseColor;
+    private int playColor;
     private long max;//最大播放进度
     private long progress = 0;//播放进度
 
@@ -44,9 +47,12 @@ public class PlayPauseView extends View {
 
     private void init() {
         color = ResourceRouter.getInstance().getThemeColor();
+        pauseColor = ResourceRouter.getInstance().isNightTheme()?0x72FFFFFF:0xCC000000;
+        playColor = ResourceRouter.getInstance().isNightTheme()?0x33FFFFFF:0X99000000;
         double hudu = 2*Math.PI/360;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(5);
+        int width = UiUtils.dp2px(1.0f);
+        paint.setStrokeWidth(width%2!=0?width+1:width);
         paint.setStyle(Paint.Style.STROKE);
         radius = UiUtils.dp2px(25)/2;
         path = new Path();
@@ -74,6 +80,8 @@ public class PlayPauseView extends View {
 
     public void setColor(int color) {
         this.color = color;
+        pauseColor = ResourceRouter.getInstance().isNightTheme()?0x72FFFFFF:0xCC000000;
+        playColor = ResourceRouter.getInstance().isNightTheme()?0x33FFFFFF:0X99000000;
         invalidate();
     }
 
@@ -87,7 +95,7 @@ public class PlayPauseView extends View {
         super.onDraw(canvas);
 
         if(state == PLAY_STATE_PAUSE){
-            paint.setColor(Color.parseColor("#444444"));
+            paint.setColor(pauseColor);
             canvas.drawCircle(canvas.getWidth()/2,canvas.getHeight()/2,radius,paint);
             canvas.drawPath(path,paint);
             paint.setColor(color);
@@ -95,7 +103,7 @@ public class PlayPauseView extends View {
             int angle = (int) (100*progress*3.6/max);
             canvas.drawArc(rectF,-90,angle,false,paint);
         }else{
-            paint.setColor(Color.parseColor("#999999"));
+            paint.setColor(playColor);
             canvas.drawCircle(canvas.getWidth()/2,canvas.getHeight()/2,radius,paint);
             paint.setColor(color);
             canvas.drawPath(path1,paint);

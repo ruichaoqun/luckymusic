@@ -168,11 +168,6 @@ public class PlaylistBottomSheet extends BaseBottomSheet {
         return playlistBottomSheet;
     }
 
-
-
-
-
-
     private class PlaylistAdapter extends BaseQuickAdapter<MediaSessionCompat.QueueItem, BaseViewHolder>{
         private int color;
 

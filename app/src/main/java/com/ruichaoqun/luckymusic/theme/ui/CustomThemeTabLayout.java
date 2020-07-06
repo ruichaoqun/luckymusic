@@ -41,6 +41,7 @@ public class CustomThemeTabLayout extends TabLayout implements OnThemeResetListe
         super(context, attrs);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomThemeTabLayout,0, 0);
         type = array.getInt(R.styleable.CustomThemeTabLayout_type,0);
+        array.recycle();
         onThemeReset();
     }
 

@@ -780,7 +780,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
     @Override
     public boolean isToolbarOnImage() {
-        return false;
+        return true;
     }
 
     @Override
@@ -791,6 +791,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @Override
     protected void onDestroy() {
         updatePosition = false;
+        mCurrentDiscLayout.stop();
         super.onDestroy();
     }
 

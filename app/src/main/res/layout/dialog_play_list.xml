@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/tv_header_title"
@@ -13,24 +14,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="50.0dip"
                 android:drawablePadding="7.0dip"
                 android:gravity="center_vertical"
                 android:paddingLeft="10.0dip"
                 android:text="当前播放"
-                android:textColor="@color/color_cc000000"
+                android:textColor="@color/text_color_black"
                 android:textSize="@dimen/textsize_large"
                 android:textStyle="bold"/>
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:id="@+id/tv_header_count"
                 android:layout_width="wrap_content"
                 android:layout_height="50.0dip"
                 android:drawablePadding="7.0dip"
                 android:gravity="center_vertical"
                 android:paddingLeft="10.0dip"
-                android:text="(123)"
+                tools:text="(123)"
                 android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/textsize_middle"
                 android:textStyle="bold"
@@ -39,15 +40,15 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="50dp">
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:id="@+id/tv_play_mode"
                 style="@style/TextViewMiddleStyle"
                 android:layout_height="50.0dip"
                 android:drawablePadding="7.0dip"
                 android:gravity="center_vertical"
-                android:text="列表循环"
+                tools:text="列表循环"
                 android:paddingLeft="10.0dip" />
-            <TextView
+            <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
                 android:id="@+id/tv_collect"
                 style="@style/TextViewMiddleStyle"
                 android:layout_height="50.0dip"

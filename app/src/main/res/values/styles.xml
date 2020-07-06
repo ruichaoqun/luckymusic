@@ -79,7 +79,7 @@
 
     <style name="TextViewMiddleStyle" parent="@style/BaseSingleTextViewStyle">
         <item name="android:textSize">@dimen/textsize_15sp</item>
-        <item name="android:textColor">@color/color_cc000000</item>
+        <item name="android:textColor">@color/text_color_black</item>
     </style>
     <style name="BaseSingleTextViewStyle">
         <item name="android:layout_width">wrap_content</item>

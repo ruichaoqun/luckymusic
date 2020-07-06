@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/play_bar_parent"
     android:layout_width="match_parent"
     android:layout_height="@dimen/mini_player_bar_height"
@@ -12,7 +13,7 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="5dp"/>
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,30 +24,30 @@
         android:focusable="true"
         android:singleLine="true"
         android:clickable="true"
-        android:textColor="@android:color/black"
+        android:textColor="@color/text_color_black"
         android:focusableInTouchMode="true"
         android:layout_marginTop="3dp"
-        android:layout_marginStart="3dp"/>
-    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginStart="8dp"/>
+    <com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView
         android:id="@+id/artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="11sp"
-        android:textColor="#777777"
+        android:textColor="@color/text_color_light"
         android:maxLines="1"
         android:layout_toStartOf="@+id/play"
         android:layout_toEndOf="@+id/cover"
         android:layout_alignBottom="@+id/cover"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="3dp"
         tools:ignore="SmallSp" />
     <ImageView
         android:id="@+id/play_list"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_playlist"
-        android:tint="#222222"
+        android:src="@drawable/ic_playlist"
         android:layout_alignParentEnd="true"
+        android:scaleType="centerInside"
         android:background="?android:attr/selectableItemBackgroundBorderless"/>
     <com.ruichaoqun.luckymusic.widget.PlayPauseView
         android:id="@+id/playPause"

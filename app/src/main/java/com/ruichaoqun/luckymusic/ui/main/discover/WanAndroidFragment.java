@@ -3,6 +3,9 @@ package com.ruichaoqun.luckymusic.ui.main.discover;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -11,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.fragment.BaseSwipeMoreTableFragment;
+import com.ruichaoqun.luckymusic.databinding.FragmentWanAndroidBinding;
 import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 
 import java.util.List;
@@ -25,10 +29,18 @@ public class WanAndroidFragment extends BaseSwipeMoreTableFragment<MultiItemEnti
         // Required empty public constructor
     }
 
+    private FragmentWanAndroidBinding mBinding;
+
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_wan_android;
+    }
+
+    @Override
+    protected View inflate(LayoutInflater inflater, ViewGroup container, boolean b) {
+        mBinding = FragmentWanAndroidBinding.inflate(inflater,container,false);
+        return mBinding.getRoot();
     }
 
     @Override

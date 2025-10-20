@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseToolBarActivity;
+import com.ruichaoqun.luckymusic.databinding.ActivitySearchBinding;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 
@@ -23,6 +24,7 @@ public class SearchActivity extends BaseToolBarActivity {
     private AutoCompleteTextView mCompleteTextView;
     private ImageView mImageView;
 
+    private ActivitySearchBinding mBinding;
 
     public static void launchFrom(Context context) {
         Intent intent = bringActivityToFrontIntent(context);
@@ -33,6 +35,12 @@ public class SearchActivity extends BaseToolBarActivity {
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_search;
+    }
+
+    @Override
+    protected View getContentView() {
+        mBinding = ActivitySearchBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
     }
 
 

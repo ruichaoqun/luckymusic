@@ -15,13 +15,11 @@ import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
-import com.ruichaoqun.luckymusic.media.MediaDataType;
+import com.ruichaoqun.luckymusic.databinding.SongsListActivityBinding;
 import com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs.LocalMediaAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * @author Rui Chaoqun
@@ -33,20 +31,12 @@ public class SongsListActivity extends BaseMVPActivity<SongsListContact.Presente
     private final static String INTENT_EXTRA_TYPE = "extra_type";
     private final static String INTENT_EXTRA_TITLE = "extra_title";
 
-    @BindView(R.id.rl_play_all)
-    RelativeLayout mRlPlayAll;
-    @BindView(R.id.tv_profile)
-    TextView mTvProfile;
-    @BindView(R.id.tv_count)
-    TextView mTvCount;
-    @BindView(R.id.rv_song_list)
-    RecyclerView mRxSongsList;
-
     private String id;
     private String type;
     private String title;
     private LocalMediaAdapter mSongsAdapter;
     private List<SongBean> mSongBeanList = new ArrayList<>();
+    private SongsListActivityBinding mBinding;
 
     public static void launchFrom(Activity activity, String id, String type, String extra_title) {
         Intent intent = new Intent(activity, SongsListActivity.class);
@@ -62,6 +52,12 @@ public class SongsListActivity extends BaseMVPActivity<SongsListContact.Presente
     }
 
     @Override
+    protected View getContentView() {
+        mBinding = SongsListActivityBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
+    }
+
+    @Override
     protected void initParams() {
         this.id = getIntent().getStringExtra(INTENT_EXTRA_ID);
         this.type = getIntent().getStringExtra(INTENT_EXTRA_TYPE);
@@ -70,24 +66,24 @@ public class SongsListActivity extends BaseMVPActivity<SongsListContact.Presente
 
     @Override
     protected void initView() {
-        mRlPlayAll.setOnClickListener(new View.OnClickListener() {
+        mBinding.rlPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 播放全部
             }
         });
 
-        mTvProfile.setOnClickListener(new View.OnClickListener() {
+        mBinding.tvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 多选
             }
         });
 
-        mRxSongsList.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.rvSongList.setLayoutManager(new LinearLayoutManager(this));
         mSongsAdapter = new LocalMediaAdapter(R.layout.item_adapter_local_media, mSongBeanList);
-        mSongsAdapter.setEmptyView(R.layout.layout_loading, mRxSongsList);
-        mRxSongsList.setAdapter(mSongsAdapter);
+        mSongsAdapter.setEmptyView(R.layout.layout_loading, mBinding.rvSongList);
+        mBinding.rvSongList.setAdapter(mSongsAdapter);
         mSongsAdapter.setOnItemClickListener(this);
         mSongsAdapter.setOnItemChildClickListener(this);
     }
@@ -114,7 +110,7 @@ public class SongsListActivity extends BaseMVPActivity<SongsListContact.Presente
     public void onLoadSongsSuccess(List<SongBean> list) {
         mSongBeanList.addAll(list);
         mSongsAdapter.notifyDataSetChanged();
-        this.mTvCount.setText(String.format(getString(R.string.total_count), list.size()));
+        this.mBinding.tvCount.setText(String.format(getString(R.string.total_count), list.size()));
     }
 
     @Override

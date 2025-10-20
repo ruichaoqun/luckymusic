@@ -15,6 +15,7 @@ import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.data.bean.EqualizerPresetBean;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
+import com.ruichaoqun.luckymusic.databinding.DefaultEffectActivityBinding;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
 import com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs.LocalMediaAdapter;
@@ -23,7 +24,6 @@ import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.CustomEqActionSheet;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * @author Rui Chaoqun
@@ -31,11 +31,12 @@ import butterknife.BindView;
  * description:DefaultEffectActivity
  */
 public class DefaultEffectActivity extends BaseMVPActivity<DefaultEffectContact.Presenter> implements DefaultEffectContact.View{
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+//    @BindView(R.id.recycler_view)
+//    RecyclerView recyclerView;
     private EqualizerPresetAdapter mEqualizerPresetAdapter;
     private List<EqualizerPresetBean> mPresetBeans = new ArrayList<>();
     private AudioEffectJsonPackage mEffectJsonPackage;
+    private DefaultEffectActivityBinding mBinding;
 
     public static void launchFrom(Activity activity){
         activity.startActivityForResult(new Intent(activity,DefaultEffectActivity.class),100);
@@ -47,6 +48,12 @@ public class DefaultEffectActivity extends BaseMVPActivity<DefaultEffectContact.
     }
 
     @Override
+    protected View getContentView() {
+        mBinding = DefaultEffectActivityBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
+    }
+
+    @Override
     protected void initParams() {
 
     }
@@ -54,10 +61,10 @@ public class DefaultEffectActivity extends BaseMVPActivity<DefaultEffectContact.
     @Override
     protected void initView() {
         setTitle(R.string.equalizer_activity_preset_activity_title);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mEqualizerPresetAdapter = new EqualizerPresetAdapter(mPresetBeans);
-        mEqualizerPresetAdapter.setEmptyView(R.layout.layout_loading, recyclerView);
-        recyclerView.setAdapter(mEqualizerPresetAdapter);
+        mEqualizerPresetAdapter.setEmptyView(R.layout.layout_loading, mBinding.recyclerView);
+        mBinding.recyclerView.setAdapter(mEqualizerPresetAdapter);
         mEqualizerPresetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

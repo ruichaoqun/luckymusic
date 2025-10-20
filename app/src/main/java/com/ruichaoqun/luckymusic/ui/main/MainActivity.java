@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.base.adapter.BaseFragmentStateAdapter;
+import com.ruichaoqun.luckymusic.databinding.ActivityMainBinding;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.theme.ui.CustomThemeTabLayout;
@@ -35,15 +36,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 
 import static com.ruichaoqun.luckymusic.Constants.CHANGED_THEME;
 
 public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View {
-    @BindView(R.id.tab_layout)
-    CustomThemeTabLayout mTabLayout;
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
+//    @BindView(R.id.tab_layout)
+//    CustomThemeTabLayout mTabLayout;
+//    @BindView(R.id.view_pager)
+//    ViewPager mViewPager;
 
     private String[] mTabTitles;
     private PagerAdapter mPagerAdapter;
@@ -55,12 +55,18 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
         }
     };
 
-
+    private ActivityMainBinding mBinding;
 
 
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected View getContentView() {
+        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
     }
 
     @Override
@@ -92,20 +98,20 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
 
     private void initViewPager() {
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mPagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(mTabTitles.length);
+        mBinding.viewPager.setAdapter(mPagerAdapter);
+        mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
+        mBinding.viewPager.setOffscreenPageLimit(mTabTitles.length);
     }
 
     private void dispatchResetTheme() {
         //设置windowBackground
         setWindowBackground();
-        ThemeHelper.setEdgeGlowColor(this.mViewPager, ResourceRouter.getInstance().getThemeColor());
+        ThemeHelper.setEdgeGlowColor(this.mBinding.viewPager, ResourceRouter.getInstance().getThemeColor());
         applyStatusBarCurrentTheme();
         applyToolbarCurrentTheme();
         applyRecentTaskPreviewCurrentTheme();
         mMainDrawer.applyDrawerCurrentTheme();
-        mTabLayout.onThemeReset();
+        mBinding.tabLayout.onThemeReset();
         applyMiniPlaybarCurrentTheme();
         invalidateOptionsMenu();
         dispatchThemeToFragment(getSupportFragmentManager());

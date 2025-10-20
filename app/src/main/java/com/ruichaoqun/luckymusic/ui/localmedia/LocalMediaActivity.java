@@ -2,6 +2,7 @@ package com.ruichaoqun.luckymusic.ui.localmedia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,11 +12,11 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
+import com.ruichaoqun.luckymusic.databinding.LocalMediaActivityBinding;
 import com.ruichaoqun.luckymusic.ui.localmedia.fragment.album.AlbumListFragment;
 import com.ruichaoqun.luckymusic.ui.localmedia.fragment.artist.ArtistListFragment;
 import com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs.LocalMediaFragment;
 
-import butterknife.BindView;
 
 /**
  * @author Rui Chaoqun
@@ -23,11 +24,12 @@ import butterknife.BindView;
  * description:LocalMediaActivity
  */
 public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presenter> implements LocalMediaContact.View{
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
-    @BindView(R.id.view_pager)
-    ViewPager viewPager;
+//    @BindView(R.id.tab_layout)
+//    TabLayout tabLayout;
+//    @BindView(R.id.view_pager)
+//    ViewPager viewPager;
     private String[] mStrings;
+    private LocalMediaActivityBinding mBinding;
 
     public static void launchFrom(Context context) {
         context.startActivity(new Intent(context, LocalMediaActivity.class));
@@ -36,6 +38,12 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
     @Override
     protected int getLayoutResId() {
         return R.layout.local_media_activity;
+    }
+
+    @Override
+    protected View getContentView() {
+        mBinding = LocalMediaActivityBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
     }
 
     @Override
@@ -58,9 +66,9 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
     public void onMediaServiceConnected() {
         super.onMediaServiceConnected();
         LocalMediaPagerAdapter adapter = new LocalMediaPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOffscreenPageLimit(mStrings.length);
+        mBinding.viewPager.setAdapter(adapter);
+        mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
+        mBinding.viewPager.setOffscreenPageLimit(mStrings.length);
     }
 
     class LocalMediaPagerAdapter extends FragmentPagerAdapter {

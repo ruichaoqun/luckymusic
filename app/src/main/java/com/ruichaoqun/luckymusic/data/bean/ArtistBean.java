@@ -29,10 +29,26 @@ public class ArtistBean {
 
     public static ArtistBean fromCursor(Cursor cursor) {
         ArtistBean artistBean = new ArtistBean();
-        artistBean.id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
-        artistBean.artistName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-        artistBean.tracksNumber = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.ArtistColumns.NUMBER_OF_TRACKS));
-        artistBean.albumsNumber = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.ArtistColumns.NUMBER_OF_ALBUMS));
+        int idIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
+        if (idIndex != -1) {
+            artistBean.id = cursor.getLong(idIndex);
+        }
+        
+        int artistNameIndex = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+        if (artistNameIndex != -1) {
+            artistBean.artistName = cursor.getString(artistNameIndex);
+        }
+        
+        int tracksNumberIndex = cursor.getColumnIndex(MediaStore.Audio.ArtistColumns.NUMBER_OF_TRACKS);
+        if (tracksNumberIndex != -1) {
+            artistBean.tracksNumber = cursor.getInt(tracksNumberIndex);
+        }
+        
+        int albumsNumberIndex = cursor.getColumnIndex(MediaStore.Audio.ArtistColumns.NUMBER_OF_ALBUMS);
+        if (albumsNumberIndex != -1) {
+            artistBean.albumsNumber = cursor.getInt(albumsNumberIndex);
+        }
+        
         return artistBean;
     }
 

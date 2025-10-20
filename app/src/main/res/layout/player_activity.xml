@@ -103,7 +103,9 @@
     </RelativeLayout>
 
 
-    <include layout="@layout/layout_toolbar" />
+    <include
+        android:id="@+id/layout_toolbar"
+        layout="@layout/layout_toolbar" />
 
 
     <LinearLayout
@@ -143,6 +145,7 @@
 
 
     <include
+        android:id="@+id/layout_lyric"
         layout="@layout/layout_lyric"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -188,7 +191,9 @@
                 android:src="@drawable/selector_dynamic_effect_off" />
         </RelativeLayout>
 
-        <include layout="@layout/layout_player_seekbar" />
+        <include
+            android:id="@+id/layout_player_seekbar"
+            layout="@layout/layout_player_seekbar" />
 
         <LinearLayout
             android:layout_width="360.0dip"

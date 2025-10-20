@@ -16,8 +16,6 @@ import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerFragment;
 import com.ruichaoqun.luckymusic.media.MediaDataType;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * @author Rui Chaoqun
@@ -26,7 +24,6 @@ import butterknife.Unbinder;
  */
 public abstract class BaseFragment extends DaggerFragment {
     public static String TAG = BaseFragment.class.getSimpleName();
-    private Unbinder mUnbinder;
 
 
     protected abstract int getLayoutId();
@@ -34,10 +31,11 @@ public abstract class BaseFragment extends DaggerFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
-        mUnbinder = ButterKnife.bind(this,view);
+        View view = inflate(inflater, container, false);
         return  view;
     }
+
+    protected abstract View inflate(LayoutInflater inflater, ViewGroup container, boolean b);
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -68,7 +66,6 @@ public abstract class BaseFragment extends DaggerFragment {
 
     @Override
     public void onDestroy() {
-        mUnbinder.unbind();
         super.onDestroy();
     }
 }

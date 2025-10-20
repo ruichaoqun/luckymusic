@@ -5,9 +5,9 @@ package com.ruichaoqun.luckymusic.base.activity;
 import androidx.annotation.NonNull;
 
 import com.ruichaoqun.luckymusic.base.mvp.IBasePresenter;
-import com.scwang.smartrefresh.header.MaterialHeader;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smart.refresh.header.MaterialHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 /**
  * @author Rui Chaoqun
@@ -27,12 +27,7 @@ public abstract class BaseSwipeActivity<T extends IBasePresenter> extends BaseMV
         this.refreshLayout.setEnableLoadMore(false);
 //        this.refreshLayout.setPrimaryColorsId(R.color.color_ff3a3a);
         this.refreshLayout.setRefreshHeader(new MaterialHeader(this));
-        this.refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshlayout) {
-                BaseSwipeActivity.this.onRefresh();
-            }
-        });
+        this.refreshLayout.setOnRefreshListener(refreshlayout -> BaseSwipeActivity.this.onRefresh());
 
     }
 

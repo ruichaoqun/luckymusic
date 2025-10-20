@@ -1,22 +1,20 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
 
 import com.ruichaoqun.luckymusic.di.daggerandroidx.DaggerAppCompatActivity;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {
     protected String TAG = this.getClass().getSimpleName();
 
-
     protected CompositeDisposable mCompositeDisposable;
-    private Unbinder mUnbinder;
 
     protected abstract @LayoutRes int getLayoutResId();
 
@@ -24,14 +22,15 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutResId());
-        mUnbinder = ButterKnife.bind(this);
+        setContentView(getContentView());
         mCompositeDisposable = new CompositeDisposable();
         initPresenter();
         initParams();
         initView();
         initData();
     }
+
+    protected abstract View getContentView();
 
     /**
      * 设置presenter
@@ -55,7 +54,6 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        mUnbinder.unbind();
         mCompositeDisposable.dispose();
         super.onDestroy();
     }

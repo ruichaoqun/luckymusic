@@ -1,5 +1,6 @@
 package com.ruichaoqun.luckymusic.ui.equalizer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,15 +9,17 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.kyleduo.switchbutton.SwitchButton;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
+import com.ruichaoqun.luckymusic.databinding.EqualizerActivityBinding;
 import com.ruichaoqun.luckymusic.media.MusicService;
 import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
 import com.ruichaoqun.luckymusic.ui.equalizer.defaultsetting.DefaultEffectActivity;
@@ -30,25 +33,26 @@ import com.ruichaoqun.luckymusic.widget.LuckyMusicToolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+//import butterknife.BindView;
+//import butterknife.ButterKnife;
+//import butterknife.OnClick;
 
 /**
  * @author Rui Chaoqun
  * @date :2020-4-12 21:11:55
  * description:EqualizerActivity
  */
-public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> implements EqualizerContact.View, EqualizerHorizontalScrollView.OnEqualizerScrollViewScrollListener, EqualizerSeekBar.OnDragFinishListener {
-    @BindView(R.id.tv_preinstall)
-    TextView tvPreinstall;
-    @BindView(R.id.tv_save)
-    TextView tvSave;
-    @BindView(R.id.tv_advanced_setup)
-    TextView tvAdvancedSetup;
-    private SwitchButton mSwitchButton;
+public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> implements EqualizerContact.View, EqualizerHorizontalScrollView.OnEqualizerScrollViewScrollListener, EqualizerSeekBar.OnDragFinishListener, View.OnClickListener {
+//    @BindView(R.id.tv_preinstall)
+//    TextView tvPreinstall;
+//    @BindView(R.id.tv_save)
+//    TextView tvSave;
+//    @BindView(R.id.tv_advanced_setup)
+//    TextView tvAdvancedSetup;
+    private Switch mSwitchButton;
     private List<EqualizerSeekBar> mSeekBars;
     private AudioEffectJsonPackage mEffectJsonPackage;
+    private EqualizerActivityBinding mBinding;
 
     public static void launchFrom(Context context) {
         context.startActivity(new Intent(context, EqualizerActivity.class));
@@ -59,6 +63,12 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
     @Override
     protected int getLayoutResId() {
         return R.layout.equalizer_activity;
+    }
+
+    @Override
+    protected View getContentView() {
+        mBinding = EqualizerActivityBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
     }
 
     @Override
@@ -88,7 +98,7 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
         relativeLayout.measure(0, 0);
         float a = (float) (UiUtils.getScreenWidth() - relativeLayout.getMeasuredWidth());
         mChartView.setRectRatio(a / (UiUtils.dp2px(50.0f) * 10));
-        mSwitchButton = (SwitchButton) LayoutInflater.from(this).inflate(R.layout.view_switch_button, null);
+        mSwitchButton = (Switch) LayoutInflater.from(this).inflate(R.layout.view_switch_button, null);
         ((LuckyMusicToolbar) toolbar).addCustomView(mSwitchButton, Gravity.RIGHT, 0, UiUtils.dp2px(7.0f), view -> {
             boolean isChecked = mSwitchButton.isChecked();
             mChartView.setEffectEnabled(isChecked);
@@ -100,6 +110,9 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
                 updateEqualizer();
             }
         });
+        mBinding.tvSave.setOnClickListener(this);
+        mBinding.tvPreinstall.setOnClickListener(this);
+        mBinding.tvAdvancedSetup.setOnClickListener(this);
     }
 
     @Override
@@ -113,20 +126,20 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
         }
         mChartView.setData(mEffectJsonPackage.getEq().getEqs());
         if(!mEffectJsonPackage.getEq().isOn()){
-            tvPreinstall.setText(R.string.none);
-            tvSave.setEnabled(false);
-            tvSave.setTextColor(getResources().getColor(R.color.color_663a3a));
+            mBinding.tvPreinstall.setText(R.string.none);
+            mBinding.tvSave.setEnabled(false);
+            mBinding.tvSave.setTextColor(getResources().getColor(R.color.color_663a3a));
         }else{
 
             if(TextUtils.isEmpty(mEffectJsonPackage.getEq().getFileName())){
-                tvPreinstall.setText(R.string.equalizer_activity_custom_define);
-                tvSave.setEnabled(true);
-                tvSave.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mBinding.tvPreinstall.setText(R.string.equalizer_activity_custom_define);
+                mBinding.tvSave.setEnabled(true);
+                mBinding.tvSave.setTextColor(getResources().getColor(R.color.colorPrimary));
 
             }else{
-                tvPreinstall.setText(mEffectJsonPackage.getEq().getFileName());
-                tvSave.setEnabled(false);
-                tvSave.setTextColor(getResources().getColor(R.color.color_663a3a));
+                mBinding.tvPreinstall.setText(mEffectJsonPackage.getEq().getFileName());
+                mBinding.tvSave.setEnabled(false);
+                mBinding.tvSave.setTextColor(getResources().getColor(R.color.color_663a3a));
             }
         }
     }
@@ -157,9 +170,9 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
 
     @Override
     public void onDragFinish() {
-        tvPreinstall.setText(R.string.equalizer_activity_custom_define);
-        tvSave.setEnabled(true);
-        tvSave.setTextColor(getResources().getColor(R.color.colorPrimary));
+        mBinding.tvPreinstall.setText(R.string.equalizer_activity_custom_define);
+        mBinding.tvSave.setEnabled(true);
+        mBinding.tvSave.setTextColor(getResources().getColor(R.color.colorPrimary));
         mSwitchButton.setChecked(true);
         mChartView.setEffectEnabled(true);
         List<Float> list = mChartView.getData();
@@ -176,8 +189,17 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
         }
     }
 
-    @OnClick({R.id.tv_preinstall, R.id.tv_save, R.id.tv_advanced_setup})
-    public void onViewClicked(View view) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100 || requestCode == 101){
+            initData();
+        }
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_preinstall:
                 DefaultEffectActivity.launchFrom(this);
@@ -187,15 +209,7 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
                 break;
             case R.id.tv_advanced_setup:
                 break;
-                default:
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100 || requestCode == 101){
-            initData();
+            default:
         }
     }
 }

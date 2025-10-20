@@ -68,15 +68,51 @@ public class SongBean {
 
     public static SongBean fromCursor(Cursor cursor) {
         SongBean songBean = new SongBean();
-        songBean.id = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
-        songBean.title = cursor.getString(cursor.getColumnIndex(TITLE));
-        songBean.artist = cursor.getString(cursor.getColumnIndex(ARTIST));
-        songBean.album = cursor.getString(cursor.getColumnIndex(ALBUM));
-        songBean.albumId = cursor.getLong(cursor.getColumnIndex(ALBUM_ID));
-        songBean.artistId = cursor.getLong(cursor.getColumnIndex(ARTIST_ID));
-        songBean.duration = cursor.getLong(cursor.getColumnIndex(DURATION));
-        songBean.data = cursor.getString(cursor.getColumnIndex(DATA));
-        songBean.trackNumber = cursor.getInt(cursor.getColumnIndex(TRACK));
+        int idIndex = cursor.getColumnIndex(BaseColumns._ID);
+        if (idIndex != -1) {
+            songBean.id = cursor.getLong(idIndex);
+        }
+        
+        int titleIndex = cursor.getColumnIndex(TITLE);
+        if (titleIndex != -1) {
+            songBean.title = cursor.getString(titleIndex);
+        }
+        
+        int artistIndex = cursor.getColumnIndex(ARTIST);
+        if (artistIndex != -1) {
+            songBean.artist = cursor.getString(artistIndex);
+        }
+        
+        int albumIndex = cursor.getColumnIndex(ALBUM);
+        if (albumIndex != -1) {
+            songBean.album = cursor.getString(albumIndex);
+        }
+        
+        int albumIdIndex = cursor.getColumnIndex(ALBUM_ID);
+        if (albumIdIndex != -1) {
+            songBean.albumId = cursor.getLong(albumIdIndex);
+        }
+        
+        int artistIdIndex = cursor.getColumnIndex(ARTIST_ID);
+        if (artistIdIndex != -1) {
+            songBean.artistId = cursor.getLong(artistIdIndex);
+        }
+        
+        int durationIndex = cursor.getColumnIndex(DURATION);
+        if (durationIndex != -1) {
+            songBean.duration = cursor.getLong(durationIndex);
+        }
+        
+        int dataIndex = cursor.getColumnIndex(DATA);
+        if (dataIndex != -1) {
+            songBean.data = cursor.getString(dataIndex);
+        }
+        
+        int trackIndex = cursor.getColumnIndex(TRACK);
+        if (trackIndex != -1) {
+            songBean.trackNumber = cursor.getInt(trackIndex);
+        }
+        
         songBean.isLike = 0;
         songBean.albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),songBean.albumId).toString();
         return songBean;

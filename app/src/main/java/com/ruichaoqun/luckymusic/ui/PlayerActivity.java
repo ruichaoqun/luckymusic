@@ -25,12 +25,15 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.viewbinding.ViewBinding;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.common.GlideApp;
+import com.ruichaoqun.luckymusic.databinding.PlayerActivityBinding;
 import com.ruichaoqun.luckymusic.ui.equalizer.EqualizerActivity;
 import com.ruichaoqun.luckymusic.utils.ColorUtil;
 import com.ruichaoqun.luckymusic.utils.CommonUtils;
@@ -56,7 +59,6 @@ import com.ruichaoqun.luckymusic.widget.effect.CrystalSoundWaveEffectView;
 
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * @author Rui Chaoqun
@@ -65,49 +67,50 @@ import butterknife.BindView;
  */
 public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
-    @BindView(R.id.view_flipper)
-    PlayerDiscViewFlipper mViewFlipper;
-    @BindView(R.id.iv_stylus)
-    ImageView mStylus;
-
-    @BindView(R.id.iv_like)
-    ImageView mLike;
-    @BindView(R.id.iv_dynamic_effect)
-    ImageView mDynamicEffect;
-    @BindView(R.id.iv_audio_effect)
-    ImageView mAudioEffect;
-    @BindView(R.id.iv_play_mode)
-    ImageView mPlayMode;
-    @BindView(R.id.iv_play_previous)
-    ImageView mPlayPrevious;
-    @BindView(R.id.iv_play_pause)
-    ImageView mPlayPause;
-    @BindView(R.id.iv_play_next)
-    ImageView mPlayNext;
-    @BindView(R.id.iv_play_list)
-    ImageView mPlayList;
-    @BindView(R.id.tv_current_time)
-    TextView mCurrentPosition;
-    @BindView(R.id.tv_total_time)
-    TextView mTotalPosition;
-    @BindView(R.id.player_seek_bar)
-    SeekBar mPlayerSeekBar;
-    @BindView(R.id.vs_bacground)
-    ViewSwitcher mVsBacground;
-    @BindView(R.id.lv_lyric)
-    LyricView mLyricView;
-    @BindView(R.id.layout_lyric)
-    RelativeLayout mLayoutLyric;
-    @BindView(R.id.layout_sound_controller)
-    LinearLayout mLayoutSoundController;
-    @BindView(R.id.rl_display_container)
-    RelativeLayout mRlDisplayContainer;
-    @BindView(R.id.cur_lyric_container)
-    LinearLayout mCurLyricContainer;
-    @BindView(R.id.tv_lyric_container_time)
-    TextView mTvLyricContainerTime;
-    @BindView(R.id.artist_image_container)
-    RelativeLayout mArtistImageContainer;
+//    @BindView(R.id.view_flipper)
+//    PlayerDiscViewFlipper mViewFlipper;
+//    @BindView(R.id.iv_stylus)
+//    ImageView mStylus;
+//
+//    @BindView(R.id.iv_like)
+//    ImageView mLike;
+//    @BindView(R.id.iv_dynamic_effect)
+//    ImageView mDynamicEffect;
+//    @BindView(R.id.iv_audio_effect)
+//    ImageView mAudioEffect;
+//    @BindView(R.id.iv_play_mode)
+//    ImageView mPlayMode;
+//    @BindView(R.id.iv_play_previous)
+//    ImageView mPlayPrevious;
+//    @BindView(R.id.iv_play_pause)
+//    ImageView mPlayPause;
+//    @BindView(R.id.iv_play_next)
+//    ImageView mPlayNext;
+//    @BindView(R.id.iv_play_list)
+//    ImageView mPlayList;
+//    @BindView(R.id.tv_current_time)
+//    TextView mCurrentPosition;
+//    @BindView(R.id.tv_total_time)
+//    TextView mBinding.layoutPlayerSeekbar.tvTotalTime;
+//    @BindView(R.id.player_seek_bar)
+//    SeekBar mPlayerSeekBar;
+//    @BindView(R.id.vs_bacground)
+//    ViewSwitcher mVsBacground;
+//    @BindView(R.id.lv_lyric)
+//    LyricView mLyricView;
+//    @BindView(R.id.layout_lyric)
+//    RelativeLayout mBinding.layoutPlayerSeekbar.tvTotalTime;
+//    @BindView(R.id.layout_sound_controller)
+//    LinearLayout mLayoutSoundController;
+//    @BindView(R.id.rl_display_container)
+//    RelativeLayout mRlDisplayContainer;
+//    @BindView(R.id.cur_lyric_container)
+//    LinearLayout mCurLyricContainer;
+//    @BindView(R.id.tv_lyric_container_time)
+//    TextView mTvLyricContainerTime;
+//    @BindView(R.id.artist_image_container)
+//    RelativeLayout mArtistImageContainer;
+    private PlayerActivityBinding mBinding;
 
     private DynamicEffectLayout mEffectLayout;
 
@@ -156,8 +159,8 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 PlayerActivity.this.clientHandler.postDelayed(this, 50);
             } else if (PlayerActivity.this.mStylusAnimationType == STYLUS_ON) {
                 //此时唱针ON状态，开启动画
-                PlayerActivity.this.mStylus.clearAnimation();
-                PlayerActivity.this.mStylus.startAnimation(PlayerActivity.this.mStylusRemoveAnimation);
+                mBinding.ivStylus.clearAnimation();
+                mBinding.ivStylus.startAnimation(PlayerActivity.this.mStylusRemoveAnimation);
             }
         }
     };
@@ -170,8 +173,8 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 PlayerActivity.this.clientHandler.postDelayed(this, 50);
             } else if (PlayerActivity.this.mStylusAnimationType == STYLUS_OFF) {
                 //此时唱针OFF状态，开启动画
-                PlayerActivity.this.mStylus.clearAnimation();
-                PlayerActivity.this.mStylus.startAnimation(PlayerActivity.this.mStylusReturnAnimation);
+                mBinding.ivStylus.clearAnimation();
+                mBinding.ivStylus.startAnimation(PlayerActivity.this.mStylusReturnAnimation);
             }
         }
     };
@@ -188,12 +191,13 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
             if (updatePosition) {
                 if (!mSeekbarInTouch && !mAwaitPlaySeekChanged) {
-                    mCurrentPosition.setText(TimeUtils.getCurrentPosition(currentPosition));
-                    mPlayerSeekBar.setProgress(TimeUtils.formateToSeconds(currentPosition));
+                    mBinding.layoutPlayerSeekbar.tvCurrentTime.setText(TimeUtils.getCurrentPosition(currentPosition));
+                    mBinding.layoutPlayerSeekbar.playerSeekBar.setProgress(TimeUtils.formateToSeconds(currentPosition));
                 }
                 checkPlaybackPosition();
-                if(mLayoutLyric.getVisibility() == View.VISIBLE){
-                    mLyricView.setPosition(currentPosition,mPlaybackState.getState());
+                
+                if(mBinding.layoutLyric.layoutLyric.getVisibility() == View.VISIBLE){
+                    mBinding.layoutLyric.lvLyric.setPosition(currentPosition,mPlaybackState.getState());
                 }
             }
         }
@@ -227,20 +231,28 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     }
 
     @Override
+    protected View getContentView() {
+        mBinding = PlayerActivityBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
+    }
+
+    @Override
     protected void initParams() {
 
     }
 
     @Override
     protected void initView() {
-        this.mCurrentDiscLayout = (RotationRelativeLayout) this.mViewFlipper.getCurrentView();
+
+
+        this.mCurrentDiscLayout = (RotationRelativeLayout) this.mBinding.viewFlipper.getCurrentView();
         this.mCurrentDiscLayout.prepareAnimation();
         this.mCurrentDiscLayout.start();
-        mPlayerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mBinding.layoutPlayerSeekbar.playerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mCurrentPosition.setText(TimeUtils.getCurrentPositionFromSeekbar(progress));
+                    mBinding.layoutPlayerSeekbar.tvCurrentTime.setText(TimeUtils.getCurrentPositionFromSeekbar(progress));
                 }
             }
 
@@ -255,15 +267,15 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 startSeekPlayer(seekBar);
             }
         });
-        mVsBacground.setInAnimation(this, android.R.anim.fade_in);
-        mVsBacground.setOutAnimation(this, android.R.anim.fade_out);
-        mViewSwitcherTarget = new ViewSwitcherTarget(mVsBacground);
+        mBinding.vsBacground.setInAnimation(this, android.R.anim.fade_in);
+        mBinding.vsBacground.setOutAnimation(this, android.R.anim.fade_out);
+        mViewSwitcherTarget = new ViewSwitcherTarget(mBinding.vsBacground);
     }
 
     private void startSeekPlayer(SeekBar seekBar) {
         mAwaitPlaySeekChanged = true;
         int duration = seekBar.getProgress();
-        mCurrentPosition.setText(TimeUtils.getCurrentPositionFromSeekbar(duration));
+        mBinding.layoutPlayerSeekbar.tvCurrentTime.setText(TimeUtils.getCurrentPositionFromSeekbar(duration));
         this.mControllerCompat.getTransportControls().seekTo((long) (duration * 1E3));
     }
 
@@ -323,7 +335,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
         });
 
-        this.mViewFlipper.setOnPlayerDiscListener(new PlayerDiscViewFlipper.OnPlayerDiscListener() {
+        this.mBinding.viewFlipper.setOnPlayerDiscListener(new PlayerDiscViewFlipper.OnPlayerDiscListener() {
             @Override
             public void onScrolled(boolean z) {
                 //滑动回调，此处可以处理唱针的切换以及当前封面动画的暂停
@@ -350,7 +362,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                             .transform(new CircleCrop())
                             .centerCrop()
                             .error(R.drawable.ic_disc_playhoder)
-                            .into((ImageView) ((ViewGroup) PlayerActivity.this.mViewFlipper.getNextView()).getChildAt(0));
+                            .into((ImageView) ((ViewGroup) PlayerActivity.this.mBinding.viewFlipper.getNextView()).getChildAt(0));
                 }
             }
 
@@ -385,14 +397,14 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     }
                 }
                 isBacgroundAutoNext = false;
-                PlayerActivity.this.mCurrentDiscLayout = (RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getCurrentView();
+                PlayerActivity.this.mCurrentDiscLayout = (RotationRelativeLayout) PlayerActivity.this.mBinding.viewFlipper.getCurrentView();
                 for (int i = 0; i < queueItems.size(); i++) {
                     if (nextQueueItem != null && nextQueueItem.getQueueId() == queueItems.get(i).getQueueId()) {
                         PlayerActivity.this.currentDataPosition = i;
                         break;
                     }
                 }
-                ((RotationRelativeLayout) PlayerActivity.this.mViewFlipper.getNextView()).stopAndRest();
+                ((RotationRelativeLayout) PlayerActivity.this.mBinding.viewFlipper.getNextView()).stopAndRest();
                 PlayerActivity.this.mCurrentDiscLayout.prepareAnimation();
             }
 
@@ -410,16 +422,15 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 }
             }
         });
+        mBinding.ivPlayMode.setOnClickListener(v -> switchPlayMode());
 
-        this.mPlayMode.setOnClickListener(v -> switchPlayMode());
-
-        this.mPlayPrevious.setOnClickListener(v -> {
+        mBinding.ivPlayPrevious.setOnClickListener(v -> {
 //                PlayerActivity.this.mControllerCompat.getTransportControls().skipToPrevious();
             //滑动回调，此处可以处理唱针的切换以及当前封面动画的暂停
-            PlayerActivity.this.mViewFlipper.switchDisc(false);
+            PlayerActivity.this.mBinding.viewFlipper.switchDisc(false);
         });
 
-        this.mPlayPause.setOnClickListener(v -> {
+        mBinding.ivPlayPause.setOnClickListener(v -> {
             if (PlayerActivity.this.mCurrentMetadata != null && !TextUtils.isEmpty(PlayerActivity.this.mCurrentMetadata.getDescription().getMediaId())) {
                 if (PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING ||
                         PlayerActivity.this.mPlaybackState.getState() == PlaybackStateCompat.STATE_BUFFERING ||
@@ -431,18 +442,18 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
         });
 
-        this.mPlayNext.setOnClickListener(v -> PlayerActivity.this.mViewFlipper.switchDisc(true));
+        this.mBinding.ivPlayNext.setOnClickListener(v -> PlayerActivity.this.mBinding.viewFlipper.switchDisc(true));
 
-        this.mPlayList.setOnClickListener(v -> showPlayListDialog());
+        this.mBinding.ivPlayList.setOnClickListener(v -> showPlayListDialog());
 
-        this.mRlDisplayContainer.setOnClickListener(v -> {
-            mRlDisplayContainer.setVisibility(View.INVISIBLE);
-            mLayoutLyric.setVisibility(View.VISIBLE);
-            mLayoutSoundController.setVisibility(View.VISIBLE);
+        this.mBinding.rlDisplayContainer.setOnClickListener(v -> {
+            mBinding.rlDisplayContainer.setVisibility(View.INVISIBLE);
+            mBinding.layoutPlayerSeekbar.tvTotalTime.setVisibility(View.VISIBLE);
+            mBinding.layoutSoundController.setVisibility(View.VISIBLE);
         });
 
-        this.mCurLyricContainer.setOnClickListener(v -> {
-            long times = mLyricView.getCurrentTims();
+        this.mBinding.layoutLyric.curLyricContainer.setOnClickListener(v -> {
+            long times = mBinding.layoutLyric.lvLyric.getCurrentTims();
             if(times == -1){
                 if(mPlaybackState.getState() == PlaybackStateCompat.STATE_PAUSED){
                     PlayerActivity.this.mControllerCompat.getTransportControls().play();
@@ -455,29 +466,29 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             }
         });
 
-        this.mLyricView.setOnClickListener(v -> {
-            mRlDisplayContainer.setVisibility(View.VISIBLE);
-            mLayoutLyric.setVisibility(View.GONE);
-            mLayoutSoundController.setVisibility(View.GONE);
+        this.mBinding.layoutLyric.lvLyric.setOnClickListener(v -> {
+            mBinding.rlDisplayContainer.setVisibility(View.VISIBLE);
+            mBinding.layoutPlayerSeekbar.tvTotalTime.setVisibility(View.GONE);
+            mBinding.layoutSoundController.setVisibility(View.GONE);
         });
 
         setEffectView(mPresenter.getDynamicEffectType());
 
-        mDynamicEffect.setOnClickListener(new View.OnClickListener() {
+        mBinding.ivDynamicEffect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDynamicEffectDialog();
             }
         });
 
-        mLike.setOnClickListener(new View.OnClickListener() {
+        mBinding.ivLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        mAudioEffect.setOnClickListener(new View.OnClickListener() {
+        mBinding.ivAudioEffect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EqualizerActivity.launchFrom(PlayerActivity.this);
@@ -491,12 +502,12 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             mPresenter.setDynamicEffectType(type);
             if(effectType != 0){
                 addEffectView();
-                mRlDisplayContainer.setVisibility(View.GONE);
-                this.mDynamicEffect.setImageResource(R.drawable.selector_dynamic_effect_on);
+                mBinding.rlDisplayContainer.setVisibility(View.GONE);
+                this.mBinding.ivDynamicEffect.setImageResource(R.drawable.selector_dynamic_effect_on);
             }else{
                 removeEffectView();
-                mRlDisplayContainer.setVisibility(View.VISIBLE);
-                this.mDynamicEffect.setImageResource(R.drawable.selector_dynamic_effect_off);
+                mBinding.rlDisplayContainer.setVisibility(View.VISIBLE);
+                this.mBinding.ivDynamicEffect.setImageResource(R.drawable.selector_dynamic_effect_off);
             }
         }
     }
@@ -505,10 +516,10 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         if(this.mEffectLayout == null){
             this.mEffectLayout = new DynamicEffectLayout(this);
             this.mEffectLayout.setOnColorGetListener(color -> {
-                LayerDrawable drawable = (LayerDrawable) mPlayerSeekBar.getProgressDrawable();
+                LayerDrawable drawable = (LayerDrawable) mBinding.layoutPlayerSeekbar.playerSeekBar.getProgressDrawable();
                 int c =  ColorUtil.getEffectColor(color, new float[3]);
                 DrawableCompat.setTintList(drawable.findDrawableByLayerId(android.R.id.progress), ColorStateList.valueOf(c));
-                mPlayerSeekBar.setProgressDrawable(drawable);
+                mBinding.layoutPlayerSeekbar.playerSeekBar.setProgressDrawable(drawable);
             });
             ImageView imageView = findViewById(R.id.iv_disc_bg_1);
             int height = imageView.getLayoutParams().height;
@@ -519,7 +530,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 }
                 height = drawable.getIntrinsicWidth();
             }
-            this.mArtistImageContainer.addView(this.mEffectLayout, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height + (((RelativeLayout.LayoutParams) this.mViewFlipper.getLayoutParams()).topMargin * 2)));
+            this.mBinding.artistImageContainer.addView(this.mEffectLayout, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height + (((RelativeLayout.LayoutParams) this.mBinding.viewFlipper.getLayoutParams()).topMargin * 2)));
             if(this.mCurrentMetadata != null){
                 this.mEffectLayout.setArtViewResource(this.mCurrentMetadata.getDescription().getIconUri());
             }
@@ -533,7 +544,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
 
     private void removeEffectView() {
         if(this.mEffectLayout != null){
-            this.mArtistImageContainer.removeView(this.mEffectLayout);
+            this.mBinding.artistImageContainer.removeView(this.mEffectLayout);
             mEffectLayout = null;
         }
     }
@@ -597,9 +608,9 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             this.setTitle(this.mCurrentMetadata.getDescription().getTitle());
             this.setSubTitle(this.mCurrentMetadata.getDescription().getSubtitle());
             currentDataPosition = getCurrentMusicPosition();
-            this.mTotalPosition.setText(TimeUtils.getCurrentPosition(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
-            this.mPlayerSeekBar.setMax(TimeUtils.formateToSeconds(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
-            this.mPlayerSeekBar.setProgress(TimeUtils.formateToSeconds(mPlaybackState.getPosition()));
+            mBinding.layoutPlayerSeekbar.tvTotalTime.setText(TimeUtils.getCurrentPosition(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+            this.mBinding.layoutPlayerSeekbar.playerSeekBar.setMax(TimeUtils.formateToSeconds(mCurrentMetadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+            this.mBinding.layoutPlayerSeekbar.playerSeekBar.setProgress(TimeUtils.formateToSeconds(mPlaybackState.getPosition()));
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
             //TODO 设置是否收藏
             switchBacground(mCurrentMetadata.getDescription().getIconUri());
@@ -616,7 +627,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     this.mStylusReturnAnimation.setDegrees(0);
                     this.startStylusReturn();
                 }
-                this.mPlayPause.setImageResource(R.drawable.selector_player_pause);
+                this.mBinding.ivPlayPause.setImageResource(R.drawable.selector_player_pause);
                 if(this.mEffectLayout != null) {
                     this.mEffectLayout.prepare();
                 }
@@ -626,7 +637,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
             case PlaybackStateCompat.STATE_PAUSED:
                 this.mStylusRemoveAnimation.setDegrees(-25);
                 this.startStylusRemove();
-                this.mPlayPause.setImageResource(R.drawable.selector_player_play);
+                this.mBinding.ivPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;
             default:
         }
@@ -658,8 +669,8 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         super.onMetadataChanged(metadata);
         PlayerActivity.this.setTitle(metadata.getDescription().getTitle());
         PlayerActivity.this.setSubTitle(metadata.getDescription().getSubtitle());
-        this.mTotalPosition.setText(TimeUtils.getCurrentPosition(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
-        this.mPlayerSeekBar.setMax(TimeUtils.formateToSeconds(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+        this.mBinding.layoutPlayerSeekbar.tvTotalTime.setText(TimeUtils.getCurrentPosition(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
+        this.mBinding.layoutPlayerSeekbar.playerSeekBar.setMax(TimeUtils.formateToSeconds(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)));
         //判断是否是后台自动切换的
         if (currentDataPosition == -1) {
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
@@ -673,7 +684,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
         if(((currentDataPosition == queueItems.size()-1 && position == 0)||position == currentDataPosition+1)&& !isBacgroundAutoNext ){
             if (!TextUtils.equals(queueItems.get(currentDataPosition).getDescription().getMediaId(), metadata.getDescription().getMediaId()) && !isBacgroundAutoNext) {
                 isBacgroundAutoNext = true;
-                PlayerActivity.this.mViewFlipper.switchDisc(true);
+                PlayerActivity.this.mBinding.viewFlipper.switchDisc(true);
             }
         }else{
             GlideApp.with(this).load(mCurrentMetadata.getDescription().getIconUri()).transform(new CircleCrop()).centerCrop().transition(DrawableTransitionOptions.withCrossFade()).placeholder(R.drawable.ic_disc_playhoder).into((ImageView) this.mCurrentDiscLayout.getChildAt(0));
@@ -703,7 +714,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                 if (!this.mCurrentDiscLayout.isRunning()) {
                     this.mCurrentDiscLayout.start();
                 }
-                this.mPlayPause.setImageResource(R.drawable.selector_player_pause);
+                this.mBinding.ivPlayPause.setImageResource(R.drawable.selector_player_pause);
                 if(this.mEffectLayout != null) {
                     this.mEffectLayout.prepare();
                 }
@@ -716,7 +727,7 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
                     this.mEffectLayout.pause();
                 }
                 this.startStylusRemove();
-                this.mPlayPause.setImageResource(R.drawable.selector_player_play);
+                this.mBinding.ivPlayPause.setImageResource(R.drawable.selector_player_play);
                 break;
             case PlaybackStateCompat.STATE_FAST_FORWARDING:
                 break;
@@ -735,11 +746,11 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     @Override
     public void onRepeatModeChanged(int repeatMode) {
         if (repeatMode == 3) {
-            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_shuffer);
+            this.mBinding.ivPlayMode.setImageResource(R.drawable.selector_player_mode_shuffer);
         } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
-            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_single);
+            this.mBinding.ivPlayMode.setImageResource(R.drawable.selector_player_mode_single);
         } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ALL) {
-            this.mPlayMode.setImageResource(R.drawable.selector_player_mode_list_circulation);
+            this.mBinding.ivPlayMode.setImageResource(R.drawable.selector_player_mode_list_circulation);
         }
     }
 
@@ -796,6 +807,6 @@ public class PlayerActivity extends BaseMVPActivity<PlayerContact.Presenter> {
     }
 
     public View getPlayCurLyricContainer() {
-        return this.mCurLyricContainer;
+        return this.mBinding.layoutLyric.curLyricContainer;
     }
 }

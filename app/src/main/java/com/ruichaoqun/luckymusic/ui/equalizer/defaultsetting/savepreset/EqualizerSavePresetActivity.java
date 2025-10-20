@@ -17,12 +17,12 @@ import com.ruichaoqun.luckymusic.base.activity.BaseMVPActivity;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.SimpleMVPActivity;
 import com.ruichaoqun.luckymusic.data.bean.CustomEqBean;
+import com.ruichaoqun.luckymusic.databinding.EqualizerSavePresetActivityBinding;
 import com.ruichaoqun.luckymusic.media.audioeffect.AudioEffectJsonPackage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * @author Rui Chaoqun
@@ -32,11 +32,12 @@ import butterknife.BindView;
 public class EqualizerSavePresetActivity extends SimpleMVPActivity<EqualizerSavePresetContact.Presenter> implements EqualizerSavePresetContact.View{
     private static final String INTENT_EXTRA_AUDIO_EFFECT = "effect;";
 
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+//    @BindView(R.id.recycler_view)
+//    RecyclerView mRecyclerView;
     private EqualizerSavePresetAdapter mSavePresetAdapter;
     private List<CustomEqBean> mList = new ArrayList<>();
     private AudioEffectJsonPackage mCurrentJsonPackage;
+    private EqualizerSavePresetActivityBinding mBinding;
 
     public static void launchFrom(Activity activity,AudioEffectJsonPackage mCurrentJsonPackage){
         Intent intent = new Intent(activity,EqualizerSavePresetActivity.class);
@@ -50,6 +51,12 @@ public class EqualizerSavePresetActivity extends SimpleMVPActivity<EqualizerSave
     }
 
     @Override
+    protected View getContentView() {
+        mBinding = EqualizerSavePresetActivityBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
+    }
+
+    @Override
     protected void initParams() {
         mCurrentJsonPackage = getIntent().getParcelableExtra(INTENT_EXTRA_AUDIO_EFFECT);
     }
@@ -60,8 +67,8 @@ public class EqualizerSavePresetActivity extends SimpleMVPActivity<EqualizerSave
         View view = LayoutInflater.from(this).inflate(R.layout.item_adapter_equalizer_save_preset_add,null);
         ImageView imageView = view.findViewById(R.id.add_view);
         mSavePresetAdapter.addHeaderView(view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mSavePresetAdapter);
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recyclerView.setAdapter(mSavePresetAdapter);
         imageView.setBackgroundResource(R.drawable.bac_add_view);
         view.setOnClickListener(v -> showAddViewDialog());
         mSavePresetAdapter.setOnItemClickListener((adapter, view1, position) -> {

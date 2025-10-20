@@ -5,7 +5,9 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import com.ruichaoqun.luckymusic.base.fragment.BaseLazyFragment;
 import com.ruichaoqun.luckymusic.data.bean.ArtistBean;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
+import com.ruichaoqun.luckymusic.databinding.FragmentLocalMediaBinding;
 import com.ruichaoqun.luckymusic.media.MediaControllerInterface;
 import com.ruichaoqun.luckymusic.media.MediaDataType;
 import com.ruichaoqun.luckymusic.ui.localmedia.SongsListActivity;
@@ -23,7 +26,6 @@ import com.ruichaoqun.luckymusic.ui.localmedia.SongsListActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * @author Rui Chaoqun
@@ -31,22 +33,28 @@ import butterknife.BindView;
  * description:
  */
 public class ArtistListFragment extends BaseLazyFragment<ArtistListPresenter> implements ArtistListContact.View, MediaControllerInterface, BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+
     private ArtistListAdapter mArtistListAdapter;
     private List<ArtistBean> mArtistBeanList = new ArrayList<>();
 
+    private FragmentLocalMediaBinding mBinding;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_local_media;
     }
 
     @Override
+    protected View inflate(LayoutInflater inflater, ViewGroup container, boolean b) {
+        mBinding = FragmentLocalMediaBinding.inflate(inflater,container,false);
+        return mBinding.getRoot();
+    }
+
+    @Override
     protected void initView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mArtistListAdapter = new ArtistListAdapter(R.layout.item_adapter_artist, mArtistBeanList);
-        mArtistListAdapter.setEmptyView(R.layout.layout_loading, recyclerView);
-        recyclerView.setAdapter(mArtistListAdapter);
+        mArtistListAdapter.setEmptyView(R.layout.layout_loading, mBinding.recyclerView);
+        mBinding.recyclerView.setAdapter(mArtistListAdapter);
         mArtistListAdapter.setOnItemClickListener(this);
         mArtistListAdapter.setOnItemChildClickListener(this);
     }

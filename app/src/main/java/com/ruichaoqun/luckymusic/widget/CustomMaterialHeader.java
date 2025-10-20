@@ -2,13 +2,12 @@ package com.ruichaoqun.luckymusic.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
-import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
 import com.ruichaoqun.luckymusic.theme.core.ThemeResetter;
 import com.ruichaoqun.luckymusic.theme.impl.OnThemeResetListener;
-import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smart.refresh.header.MaterialHeader;
+
 
 /**
  * @author Rui Chaoqun
@@ -42,10 +41,10 @@ public class CustomMaterialHeader extends MaterialHeader implements OnThemeReset
         }
         if(ResourceRouter.getInstance().isNightTheme()){
             mProgress.setAlpha(30);
-            mProgress.setBackgroundColor(0xFF555555);
+            //mProgress.setBackgroundColor(0xFF555555);
         }else{
             mProgress.setAlpha(255);
-            mProgress.setBackgroundColor(0xFFFAFAFA);
+            //mProgress.setBackgroundColor(0xFFFAFAFA);
         }
         mProgress.setColorSchemeColors(ResourceRouter.getInstance().getThemeColor());
     }

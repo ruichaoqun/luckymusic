@@ -1,1 +1,1 @@
-include ':app', ':media',':flac'
+include ':app'

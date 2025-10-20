@@ -15,7 +15,7 @@ import android.widget.ViewFlipper;
 
 import androidx.core.view.ViewCompat;
 
-import com.panasonic.jp.flow2ndproto.utils.CommonUtils;
+import com.ruichaoqun.luckymusic.utils.CommonUtils;
 
 
 /**
@@ -234,7 +234,7 @@ public class SceneRecordFlipper extends ViewFlipper {
             nextX = getMeasuredWidth() + measuredWidth3;
         } else {
             nextX = measuredWidth2;
-            nextY = measuredWidth;
+            nextY = getMeasuredWidth();
         }
         if (nextY < getMeasuredWidth() || nextY > 0) {
             View nextView = getNextView();

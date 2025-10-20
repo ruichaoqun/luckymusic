@@ -9,28 +9,14 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.ruichaoqun.luckymusic.R;
-import com.ruichaoqun.luckymusic.common.WatchMiniPlayBarListener;
 import com.ruichaoqun.luckymusic.media.MediaBrowserProvider;
-import com.ruichaoqun.luckymusic.media.MediaCommonConstant;
 import com.ruichaoqun.luckymusic.media.MediaControllerInterface;
 import com.ruichaoqun.luckymusic.media.MusicService;
-import com.ruichaoqun.luckymusic.ui.PlayerActivity;
-import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.PlaylistBottomSheet;
-import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,23 +160,19 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback {
         @Override
         public void onConnected() {
-            try {
-                BaseMediaBrowserActivity.this.mControllerCompat = new MediaControllerCompat(getApplicationContext(), mBrowserCompat.getSessionToken());
-                BaseMediaBrowserActivity.this.mMediaControllerCallback = new MediaControllerCallback();
-                BaseMediaBrowserActivity.this.mControllerCompat.registerCallback(mMediaControllerCallback);
-                MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this, mControllerCompat);
-                BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
-                BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
-                BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
-                if(mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL){
-                    BaseMediaBrowserActivity.this.playMode = PlaybackStateCompat.SHUFFLE_MODE_ALL;
-                }else{
-                    BaseMediaBrowserActivity.this.playMode = mControllerCompat.getRepeatMode();
-                }
-                BaseMediaBrowserActivity.this.onMediaServiceConnected();
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            BaseMediaBrowserActivity.this.mControllerCompat = new MediaControllerCompat(getApplicationContext(), mBrowserCompat.getSessionToken());
+            BaseMediaBrowserActivity.this.mMediaControllerCallback = new MediaControllerCallback();
+            BaseMediaBrowserActivity.this.mControllerCompat.registerCallback(mMediaControllerCallback);
+            MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this, mControllerCompat);
+            BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
+            BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
+            BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
+            if(mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+                BaseMediaBrowserActivity.this.playMode = PlaybackStateCompat.SHUFFLE_MODE_ALL;
+            }else{
+                BaseMediaBrowserActivity.this.playMode = mControllerCompat.getRepeatMode();
             }
+            BaseMediaBrowserActivity.this.onMediaServiceConnected();
         }
 
         @Override

@@ -27,6 +27,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.base.activity.BaseMvpToolbarActivity;
 import com.ruichaoqun.luckymusic.base.adapter.pager.ViewPagerAdapter;
+import com.ruichaoqun.luckymusic.databinding.ActivityThemeColorDetailBinding;
 import com.ruichaoqun.luckymusic.theme.core.ThemeConfig;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
 import com.ruichaoqun.luckymusic.widget.ColorPicker;
@@ -34,7 +35,6 @@ import com.ruichaoqun.luckymusic.widget.ColorPicker;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 
@@ -45,13 +45,14 @@ import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorDetailContact.Presenter> implements ThemeColorDetailContact.View {
     public static final String INTENT_EXTRA_COLOR = "extra_color";
 
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
-    @BindView(R.id.model)
-    ImageView mModel;
+//    @BindView(R.id.view_pager)
+//    ViewPager mViewPager;
+//    @BindView(R.id.model)
+//    ImageView mModel;
 
     private List<Integer> colorList;
     private int currentColor;
+    private ActivityThemeColorDetailBinding mBinding;
 
     public static void launchFrom(Activity activity,int result) {
         activity.startActivityForResult(new Intent(activity, ThemeColorDetailActivity.class),result);
@@ -60,6 +61,12 @@ public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorD
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_theme_color_detail;
+    }
+
+    @Override
+    protected View getContentView() {
+        mBinding = ActivityThemeColorDetailBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
     }
 
 
@@ -79,9 +86,9 @@ public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorD
         colorList = Arrays.asList(new Integer[]{-13552072, -6543440, -10011977, -12627531, -14575885, -16728876, -24576, -4668160, -7617718, -11751600, -16738680, -689152, -769226, -1499549, -4056997, 0});
         int currentThemeId = ThemeConfig.getCurrentThemeId();
         currentColor = currentThemeId == ThemeConfig.THEME_CUSTOM_COLOR?ThemeConfig.getSelectedColor():colorList.get(0).intValue();
-        mModel.setColorFilter(currentColor, PorterDuff.Mode.DST_OVER);
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setAdapter(new Adapter());
+        mBinding.model.setColorFilter(currentColor, PorterDuff.Mode.DST_OVER);
+        mBinding.viewPager.setOffscreenPageLimit(2);
+        mBinding.viewPager.setAdapter(new Adapter());
     }
 
     @Override
@@ -142,11 +149,11 @@ public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorD
                     @Override
                     public void onItemChildClick(BaseQuickAdapter a, View view, int position) {
                         if(colorList.get(position) == 0){
-                            mViewPager.setCurrentItem(1);
+                            mBinding.viewPager.setCurrentItem(1);
                             return;
                         }
                         currentColor = colorList.get(position);
-                        mModel.setColorFilter(currentColor, PorterDuff.Mode.DST_OVER);
+                        mBinding.model.setColorFilter(currentColor, PorterDuff.Mode.DST_OVER);
                         adapter.setCurrentColor(currentColor);
                     }
                 });
@@ -157,7 +164,7 @@ public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorD
             relativeLayout.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mViewPager.setCurrentItem(0);
+                    mBinding.viewPager.setCurrentItem(0);
                 }
             });
             ColorPicker colorPicker = relativeLayout.findViewById(R.id.color_picker);
@@ -165,7 +172,7 @@ public class ThemeColorDetailActivity extends BaseMvpToolbarActivity<ThemeColorD
                 @Override
                 public void onColorChanged(int color) {
                     currentColor = color;
-                    mModel.setColorFilter(currentColor, PorterDuff.Mode.DST_OVER);
+                    mBinding.model.setColorFilter(currentColor, PorterDuff.Mode.DST_OVER);
                 }
             });
             container.addView(relativeLayout);

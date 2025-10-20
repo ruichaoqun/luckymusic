@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.ruichaoqun.luckymusic.databinding.ActivitySplashBinding;
 import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.ui.main.MainActivity;
 import com.ruichaoqun.luckymusic.R;
@@ -23,6 +24,8 @@ import io.reactivex.functions.Consumer;
 public class SplashActivity extends BaseActivity {
     private ImageView mSplash;
     final RxPermissions rxPermissions = new RxPermissions(this);
+
+    private ActivitySplashBinding mBinding;
 
     @Override
     protected int getLayoutResId() {
@@ -45,6 +48,12 @@ public class SplashActivity extends BaseActivity {
                     }
                 });
         mCompositeDisposable.add(subscribe);
+    }
+
+    @Override
+    protected View getContentView() {
+        mBinding = ActivitySplashBinding.inflate(getLayoutInflater());
+        return mBinding.getRoot();
     }
 
     @Override

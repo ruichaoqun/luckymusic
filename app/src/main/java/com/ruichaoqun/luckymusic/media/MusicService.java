@@ -26,10 +26,12 @@ import androidx.media.MediaBrowserServiceCompat;
 import androidx.media3.common.AudioAttributes;
 import androidx.media3.common.C;
 import androidx.media3.common.ForwardingSimpleBasePlayer;
+import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.datasource.DefaultDataSource;
 import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
 import androidx.media3.session.MediaSessionService;
 
@@ -57,7 +59,7 @@ import io.reactivex.functions.Function;
  * @date :2019/12/19 19:14
  * description:
  */
-public class MusicService extends MediaSessionService {
+public class MusicService extends MediaLibraryService {
     private static final int NOW_PLAYING_NOTIFICATION = 0xb339;
     public static final String METADATA_KEY_LUCKY_FLAGS = "com.ruichaoqun.luckymusic.media.METADATA_KEY_UAMP_FLAGS";
     public static final String CUSTOM_ACTION_EFFECT = "com.ruichaoqun.luckymusic.media.CUSTOM_ACTION_EFFECT";
@@ -83,6 +85,7 @@ public class MusicService extends MediaSessionService {
 
     @Inject
     protected DataRepository dataRepository;
+    private MediaServiceCallback mediaServiceCallback = new MediaServiceCallback();
 
 
     @UnstableApi @Override
@@ -94,31 +97,27 @@ public class MusicService extends MediaSessionService {
 
         mExoPlayer = new ExoPlayer.Builder(this).build();
         mExoPlayer.setAudioAttributes(uAmpAudioAttributes, true);
+        mExoPlayer.setHandleAudioBecomingNoisy(true);
         mExoPlayer.addListener(new Player.Listener() {
             @Override
             public void onAudioSessionIdChanged(int audioSessionId) {
                 dataRepository.setAudioSessionId(audioSessionId);
+                // TODO mediaSessionConnector.setCustomActionProviders(new AudioEffectProvider(audioSessionId,dataRepository,mediaSessionConnector));
+            }
+
+            @Override
+            public void onEvents(Player player, Player.Events events) {
+                Player.Listener.super.onEvents(player, events);
+            }
+
+            @Override
+            public void onPlayerError(PlaybackException error) {
+                Player.Listener.super.onPlayerError(error);
             }
         });
-//        mExoPlayer.setAudioDebugListener(new AudioRendererEventListener() {
-//            @Override
-//            public void onAudioSessionId(int audioSessionId) {
-//                dataRepository.setAudioSessionId(audioSessionId);
-//                mediaSessionConnector.setCustomActionProviders(new AudioEffectProvider(audioSessionId,dataRepository,mediaSessionConnector));
-////                Equalizer equalizer = new Equalizer(0,audioSessionId);
-////                short[] a = equalizer.getBandLevelRange();
-////                int b = equalizer.getNumberOfBands();
-////                for (int i = 0; i < b; i++) {
-////                    int[] q = equalizer.getBandFreqRange((short) i);
-////                    Log.w("SSSSSS",q[0]+"   "+q[1]);
-////                    Log.w("SSSSSS",equalizer.getCenterFreq((short) i)+"   ");
-////                }
-////                Log.w("SSSSSS",a[0]+"   "+a[1]);
-////                Log.w("SSSSSS",equalizer.getNumberOfBands()+"");
-//            }
-//        });
-        mMediaSession = new MediaSession.Builder(this, mExoPlayer, ).build();
+        mMediaSession = new MediaLibrarySession.Builder(this, mExoPlayer, mediaServiceCallback).build();
         mMediaSession.setSessionActivity(pendingIntent);
+
 
         mMediaController = new MediaControllerCompat(this, MediaSessionCompat.Token.fromToken(mMediaSession.getToken()));
         mMediaController.registerCallback(new MediaControllerCallback());
@@ -137,7 +136,6 @@ public class MusicService extends MediaSessionService {
 
         mCompositeDisposable = new CompositeDisposable();
         mMediaController.getTransportControls().setRepeatMode(dataRepository.getPlayMode());
-        initPlayListData();
 
         mediaSessionConnector = new MediaSessionConnector(mMediaSession);
         mediaSessionConnector.setPlayer(mExoPlayer);
@@ -334,7 +332,7 @@ public class MusicService extends MediaSessionService {
 
     }
 
-    private class MediaServiceCallback implements MediaSession.Callback{
+    private class MediaServiceCallback implements MediaLibrarySession.Callback{
 
     }
 }

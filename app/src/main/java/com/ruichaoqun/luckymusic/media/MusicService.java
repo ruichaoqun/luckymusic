@@ -1,5 +1,7 @@
 package com.ruichaoqun.luckymusic.media;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -26,6 +28,7 @@ import androidx.media.MediaBrowserServiceCompat;
 import androidx.media3.common.AudioAttributes;
 import androidx.media3.common.C;
 import androidx.media3.common.ForwardingSimpleBasePlayer;
+import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
@@ -35,6 +38,8 @@ import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
 import androidx.media3.session.MediaSessionService;
 
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.ruichaoqun.luckymusic.data.DataRepository;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
@@ -59,24 +64,18 @@ import io.reactivex.functions.Function;
  * @date :2019/12/19 19:14
  * description:
  */
-public class MusicService extends MediaLibraryService {
+public class MusicService extends MediaSessionService {
     private static final int NOW_PLAYING_NOTIFICATION = 0xb339;
     public static final String METADATA_KEY_LUCKY_FLAGS = "com.ruichaoqun.luckymusic.media.METADATA_KEY_UAMP_FLAGS";
     public static final String CUSTOM_ACTION_EFFECT = "com.ruichaoqun.luckymusic.media.CUSTOM_ACTION_EFFECT";
 
     public String TAG = this.getClass().getSimpleName();
 
-    private BecomingNoisyReceiver mBecomingNoisyReceiver;
     private MediaSession mMediaSession;
-    private MediaControllerCompat mMediaController;
     private NotificationBuilder mNotificationBuilder;
     private NotificationManagerCompat mNotificationManager;
-
     private boolean isForegroundService = false;
-
-
     private ExoPlayer mExoPlayer;
-    private LuckyPlaybackPreparer mPlaybackPreparer;
     private AudioAttributes uAmpAudioAttributes = new AudioAttributes.Builder()
             .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
             .setUsage(C.USAGE_MEDIA)
@@ -93,7 +92,7 @@ public class MusicService extends MediaLibraryService {
         AndroidInjection.inject(this);
         super.onCreate();
         Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_IMMUTABLE);
 
         mExoPlayer = new ExoPlayer.Builder(this).build();
         mExoPlayer.setAudioAttributes(uAmpAudioAttributes, true);
@@ -115,37 +114,15 @@ public class MusicService extends MediaLibraryService {
                 Player.Listener.super.onPlayerError(error);
             }
         });
-        mMediaSession = new MediaLibrarySession.Builder(this, mExoPlayer, mediaServiceCallback).build();
-        mMediaSession.setSessionActivity(pendingIntent);
+        mMediaSession = new MediaSession.Builder(this, mExoPlayer)
+                .setCallback(mediaServiceCallback)
+                .setSessionActivity(pendingIntent)
+                .build();
 
-
-        mMediaController = new MediaControllerCompat(this, MediaSessionCompat.Token.fromToken(mMediaSession.getToken()));
-        mMediaController.registerCallback(new MediaControllerCallback());
 
         mNotificationBuilder = new NotificationBuilder(this);
         mNotificationManager = NotificationManagerCompat.from(this);
-        mBecomingNoisyReceiver = new BecomingNoisyReceiver(this, mMediaSession.getSessionToken());
-        mBecomingNoisyReceiver.register();
-
-        // Media3中不再使用MediaSessionConnector，直接使用MediaSession
-        DefaultDataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(this);
-        mPlaybackPreparer = new LuckyPlaybackPreparer(mMediaController, dataRepository, mExoPlayer, dataSourceFactory);
-
-        // 设置PlaybackPreparer到MediaSession
-        mMediaSession.setCallback(mPlaybackPreparer);
-
         mCompositeDisposable = new CompositeDisposable();
-        mMediaController.getTransportControls().setRepeatMode(dataRepository.getPlayMode());
-
-        mediaSessionConnector = new MediaSessionConnector(mMediaSession);
-        mediaSessionConnector.setPlayer(mExoPlayer);
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, getApplication().getPackageName()), null);
-        mPlaybackPreparer = new LuckyPlaybackPreparer(mMediaController,mediaSessionConnector,dataRepository, mExoPlayer, dataSourceFactory);
-        mediaSessionConnector.setPlaybackPreparer(mPlaybackPreparer);
-        mediaSessionConnector.setQueueNavigator(new LuckyQueueNavigator(mMediaSession));
-
-        mCompositeDisposable = new CompositeDisposable();
-        mMediaController.getTransportControls().setRepeatMode(dataRepository.getPlayMode());
         initPlayListData();
     }
 
@@ -159,15 +136,15 @@ public class MusicService extends MediaLibraryService {
      * 初始化播放列表
      */
     private void initPlayListData() {
-        dataRepository.rxGetCurrentPlayList()
-                .subscribe(new Consumer<PlayListBean>() {
-                    @Override
-                    public void accept(PlayListBean listBean) throws Exception {
-                        if(listBean != null && listBean.getMPlayListSongBeans() != null && listBean.getMPlayListSongBeans().size() > 0){
-                            mMediaController.getTransportControls().prepareFromMediaId(new MediaID(MediaDataType.CURRENT_PLAY_LIST , listBean.getLastPlaySongId()).asString(), null);
-                        }
-                    }
-                });
+//        dataRepository.rxGetCurrentPlayList()
+//                .subscribe(new Consumer<PlayListBean>() {
+//                    @Override
+//                    public void accept(PlayListBean listBean) throws Exception {
+//                        if(listBean != null && listBean.getMPlayListSongBeans() != null && listBean.getMPlayListSongBeans().size() > 0){
+//                            mMediaController.getTransportControls().prepareFromMediaId(new MediaID(MediaDataType.CURRENT_PLAY_LIST , listBean.getLastPlaySongId()).asString(), null);
+//                        }
+//                    }
+//                });
     }
 
     @Override
@@ -176,163 +153,110 @@ public class MusicService extends MediaLibraryService {
         mExoPlayer.stop();
     }
 
-    @Nullable
-    @Override
-    public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
-        return new BrowserRoot("MusicService", new Bundle());
-    }
 
-    //不通过service订阅数据
-    @Override
-    public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
 
-    }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMediaSession.setActive(false);
         mMediaSession.release();
         mCompositeDisposable.dispose();
-        mBecomingNoisyReceiver.unregister();
     }
 
     private void removeNowPlayingNotification() {
         stopForeground(true);
     }
 
-    private class MediaControllerCallback extends MediaControllerCompat.Callback {
+//    private class MediaControllerCallback extends MediaControllerCompat.Callback {
+//
+//        @Override
+//        public void onMetadataChanged(MediaMetadataCompat metadata) {
+//            if (mMediaController.getPlaybackState() != null) {
+//                updateNotification(mMediaController.getPlaybackState());
+//                String id = metadata.getDescription().getMediaId();
+//                if(!TextUtils.isEmpty(id)){
+//                    dataRepository.updatePlayLastSong(Long.valueOf(id),0);
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void onPlaybackStateChanged(PlaybackStateCompat state) {
+//            updateNotification(state);
+//            switch (state.getState()){
+//                case PlaybackStateCompat.STATE_PAUSED:
+//                    dataRepository.updatePlayLastSong(Long.valueOf(mMediaController.getMetadata().getDescription().getMediaId()),state.getPosition());
+//                    break;
+//                case PlaybackStateCompat.STATE_STOPPED:
+//                    dataRepository.updatePlayList(null,-1,0);
+//                        break;
+//            }
+//        }
+//
+//        private void updateNotification(PlaybackStateCompat state) {
+//            int updatedState = state.getState();
+//            Notification notification = null;
+//            if (mMediaController.getMetadata() != null && updatedState != PlaybackStateCompat.STATE_NONE) {
+//                try {
+//                    notification = mNotificationBuilder.buildNotification(mMediaSession.getSessionToken());
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            switch (updatedState) {
+//                case PlaybackStateCompat.STATE_BUFFERING:
+//                case PlaybackStateCompat.STATE_PLAYING:
+//                    if (notification != null) {
+//                        mNotificationManager.notify(NOW_PLAYING_NOTIFICATION, notification);
+//
+//                        if (!isForegroundService) {
+//                            ContextCompat.startForegroundService(getApplicationContext(),
+//                                    new Intent(getApplicationContext(), MusicService.class));
+//                            startForeground(NOW_PLAYING_NOTIFICATION, notification);
+//                            isForegroundService = true;
+//                        }
+//                    }
+//                    break;
+//                default:
+//                    if (isForegroundService) {
+//                        stopForeground(false);
+//                        isForegroundService = false;
+//
+//                        // If playback has ended, also stop the service.
+//                        if (updatedState == PlaybackStateCompat.STATE_NONE) {
+//                            stopSelf();
+//                        }
+//
+//                        if (notification != null) {
+//                            mNotificationManager.notify(NOW_PLAYING_NOTIFICATION, notification);
+//                        } else {
+//                            removeNowPlayingNotification();
+//                        }
+//                    }
+//            }
+//        }
+//
+//        @Override
+//        public void onRepeatModeChanged(int repeatMode) {
+//            dataRepository.setPlayMode(repeatMode);
+//        }
+//
+//        @Override
+//        public void onShuffleModeChanged(int shuffleMode) {
+//            if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
+//                dataRepository.setPlayMode(3);
+//            }
+//        }
+//    }
 
+    private class MediaServiceCallback implements MediaSession.Callback{
         @Override
-        public void onMetadataChanged(MediaMetadataCompat metadata) {
-            if (mMediaController.getPlaybackState() != null) {
-                updateNotification(mMediaController.getPlaybackState());
-                String id = metadata.getDescription().getMediaId();
-                if(!TextUtils.isEmpty(id)){
-                    dataRepository.updatePlayLastSong(Long.valueOf(id),0);
-                }
-            }
+        public ListenableFuture<List<MediaItem>> onAddMediaItems(MediaSession mediaSession, MediaSession.ControllerInfo controller, List<MediaItem> mediaItems) {
+            mediaItems.stream().map(mediaItem -> {
+
+            });
+            return Futures.immediateFuture(mediaItems);
         }
-
-        @Override
-        public void onPlaybackStateChanged(PlaybackStateCompat state) {
-            updateNotification(state);
-            switch (state.getState()){
-                case PlaybackStateCompat.STATE_PAUSED:
-                    dataRepository.updatePlayLastSong(Long.valueOf(mMediaController.getMetadata().getDescription().getMediaId()),state.getPosition());
-                    break;
-                case PlaybackStateCompat.STATE_STOPPED:
-                    dataRepository.updatePlayList(null,-1,0);
-                        break;
-            }
-        }
-
-        private void updateNotification(PlaybackStateCompat state) {
-            int updatedState = state.getState();
-            Notification notification = null;
-            if (mMediaController.getMetadata() != null && updatedState != PlaybackStateCompat.STATE_NONE) {
-                try {
-                    notification = mNotificationBuilder.buildNotification(mMediaSession.getSessionToken());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-            switch (updatedState) {
-                case PlaybackStateCompat.STATE_BUFFERING:
-                case PlaybackStateCompat.STATE_PLAYING:
-                    if (notification != null) {
-                        mNotificationManager.notify(NOW_PLAYING_NOTIFICATION, notification);
-
-                        if (!isForegroundService) {
-                            ContextCompat.startForegroundService(getApplicationContext(),
-                                    new Intent(getApplicationContext(), MusicService.class));
-                            startForeground(NOW_PLAYING_NOTIFICATION, notification);
-                            isForegroundService = true;
-                        }
-                    }
-                    break;
-                default:
-                    if (isForegroundService) {
-                        stopForeground(false);
-                        isForegroundService = false;
-
-                        // If playback has ended, also stop the service.
-                        if (updatedState == PlaybackStateCompat.STATE_NONE) {
-                            stopSelf();
-                        }
-
-                        if (notification != null) {
-                            mNotificationManager.notify(NOW_PLAYING_NOTIFICATION, notification);
-                        } else {
-                            removeNowPlayingNotification();
-                        }
-                    }
-            }
-        }
-
-        @Override
-        public void onRepeatModeChanged(int repeatMode) {
-            dataRepository.setPlayMode(repeatMode);
-        }
-
-        @Override
-        public void onShuffleModeChanged(int shuffleMode) {
-            if(shuffleMode == PlaybackStateCompat.SHUFFLE_MODE_ALL){
-                dataRepository.setPlayMode(3);
-            }
-        }
-    }
-
-    /**
-     * 监听耳机拔出事件
-     */
-    private class BecomingNoisyReceiver extends BroadcastReceiver {
-        private Context context;
-        private MediaSessionCompat.Token sessionToken;
-
-        private IntentFilter noisyIntentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-        private MediaControllerCompat controller;
-
-        private boolean registered = false;
-
-        public BecomingNoisyReceiver(Context context, MediaSessionCompat.Token sessionToken) {
-            this.context = context;
-            this.sessionToken = sessionToken;
-            try {
-                controller = new MediaControllerCompat(context, sessionToken);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        private void register() {
-            if (!registered) {
-                context.registerReceiver(this, noisyIntentFilter);
-                registered = true;
-            }
-        }
-
-        private void unregister() {
-            if (registered) {
-                context.unregisterReceiver(this);
-                registered = false;
-            }
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == AudioManager.ACTION_AUDIO_BECOMING_NOISY) {
-                if (controller != null) {
-                    controller.getTransportControls().pause();
-                }
-            }
-        }
-
-
-    }
-
-    private class MediaServiceCallback implements MediaLibrarySession.Callback{
-
     }
 }

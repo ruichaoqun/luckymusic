@@ -22,7 +22,6 @@ import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
 import com.ruichaoqun.luckymusic.data.bean.SongBean;
 import com.ruichaoqun.luckymusic.ui.main.discover.BannerAdapter;
 import com.ruichaoqun.luckymusic.utils.UiUtils;
-import com.tmall.ultraviewpager.UltraViewPager;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -87,7 +87,7 @@ public class SearchActivity extends BaseToolBarActivity {
         MenuItemCompat.setShowAsAction(add2, MenuItem.SHOW_AS_ACTION_ALWAYS);
 
 
-        this.mCompleteTextView =  this.mSearchView.findViewById(R.id.search_src_text);
+        this.mCompleteTextView =  this.mSearchView.findViewById(androidx.appcompat.R.id.search_src_text);
 //        this.mCompleteTextView.setAdapter(new onColorGet(this));
         this.mCompleteTextView.setHint(getString(R.string.global_search_hint));
         this.mCompleteTextView.setDropDownBackgroundDrawable(new ColorDrawable(getResourceRouter().getPopupBackgroundColor()));

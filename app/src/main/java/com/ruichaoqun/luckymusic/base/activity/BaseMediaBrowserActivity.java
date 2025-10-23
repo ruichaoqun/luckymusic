@@ -24,6 +24,7 @@ import java.util.List;
 public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity implements MediaBrowserProvider {
     protected MediaBrowserCompat mBrowserCompat;
     protected MediaControllerCompat mControllerCompat;
+
     private MediaControllerCallback mMediaControllerCallback;
 
     protected List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();

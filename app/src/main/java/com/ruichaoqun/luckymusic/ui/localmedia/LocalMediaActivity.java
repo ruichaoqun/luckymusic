@@ -52,6 +52,11 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
     }
 
     @Override
+    public boolean needToolBar() {
+        return false;
+    }
+
+    @Override
     protected void initView() {
         setTitle(R.string.local_music);
         mStrings = getResources().getStringArray(R.array.local_music_tab);

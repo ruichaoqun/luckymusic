@@ -77,6 +77,21 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     }
 
     @Override
+    public void setContentView(View view) {
+        if (isNeedMediaBrowser() && isNeedMiniPlayerBar()) {
+            if (needToolBar()) {
+                super.setContentView(view);
+            } else {
+                super.setContentView(getLayoutInflater().inflate(R.layout.layout_play_bar, null));
+                addChildContentView(view, 0);
+            }
+            findViews();
+        } else {
+            super.setContentView(view);
+        }
+    }
+
+    @Override
     public void doSetContentViewWithToolBar(int i) {
         doSetContentViewWithToolBar(getLayoutInflater().inflate(i, (ViewGroup) null));
     }

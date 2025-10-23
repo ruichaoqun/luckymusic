@@ -40,11 +40,6 @@ import java.util.List;
 import static com.ruichaoqun.luckymusic.Constants.CHANGED_THEME;
 
 public class MainActivity extends BaseMVPActivity<MainContact.Presenter> implements MainContact.View {
-//    @BindView(R.id.tab_layout)
-//    CustomThemeTabLayout mTabLayout;
-//    @BindView(R.id.view_pager)
-//    ViewPager mViewPager;
-
     private String[] mTabTitles;
     private PagerAdapter mPagerAdapter;
     private MainDrawer mMainDrawer = new MainDrawer(this);
@@ -174,11 +169,8 @@ public class MainActivity extends BaseMVPActivity<MainContact.Presenter> impleme
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_search:
-                SearchActivity.launchFrom(this);
-                break;
-            default:
+        if (item.getItemId() == R.id.menu_search) {
+            SearchActivity.launchFrom(this);
         }
         return super.onOptionsItemSelected(item);
     }

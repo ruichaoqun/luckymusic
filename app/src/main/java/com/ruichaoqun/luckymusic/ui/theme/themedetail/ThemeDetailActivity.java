@@ -159,23 +159,16 @@ public class ThemeDetailActivity extends BaseMvpToolbarActivity<ThemeDetailConta
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.click_theme_default:
-                setCurrentTheme(-1);
-                break;
-            case R.id.click_theme_red:
-                setCurrentTheme(-5);
-                break;
-            case R.id.click_theme_black:
-//                setCurrentTheme(-6);
-                showToast("暂未完成");
-                break;
-            case R.id.click_theme_custom_color:
-                ThemeColorDetailActivity.launchFrom(this,100);
-                break;
-            case R.id.click_theme_custom_bg:
-                break;
-            default:
+        int id = view.getId();
+        if (id == R.id.click_theme_default) {
+            setCurrentTheme(-1);
+        } else if (id == R.id.click_theme_red) {
+            setCurrentTheme(-5);
+        } else if (id == R.id.click_theme_black) {//                setCurrentTheme(-6);
+            showToast("暂未完成");
+        } else if (id == R.id.click_theme_custom_color) {
+            ThemeColorDetailActivity.launchFrom(this, 100);
+        } else if (id == R.id.click_theme_custom_bg) {
         }
     }
 }

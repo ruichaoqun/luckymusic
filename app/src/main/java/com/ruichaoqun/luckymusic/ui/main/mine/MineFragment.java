@@ -59,10 +59,8 @@ public class MineFragment extends Fragment implements MainActivity.DispatchReset
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.layout_loacal:
-                LocalMediaActivity.launchFrom(getActivity());
-                break;
+        if (v.getId() == R.id.layout_loacal) {
+            LocalMediaActivity.launchFrom(getActivity());
         }
     }
 }

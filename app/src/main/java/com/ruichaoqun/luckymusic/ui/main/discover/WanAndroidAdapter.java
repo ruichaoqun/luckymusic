@@ -15,7 +15,7 @@ import com.ruichaoqun.luckymusic.data.bean.BannerListBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemBean;
 import com.ruichaoqun.luckymusic.data.bean.HomePageItemType;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
-import com.tmall.ultraviewpager.UltraViewPager;
+
 
 import java.util.List;
 
@@ -43,15 +43,15 @@ public class WanAndroidAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
                     helper.getView(R.id.iv_bac).setBackgroundColor(Color.TRANSPARENT);
                 }
 
-                UltraViewPager ultraViewPager = helper.getView(R.id.ultra_viewpager);
-                ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
-//                设定页面循环播放
-                ultraViewPager.setInfiniteLoop(true);
-                //设定页面自动切换  间隔2秒
-                ultraViewPager.setAutoScroll(2000);
-                BannerAdapter adapter = new BannerAdapter(bannerListBean.getList());
-                ultraViewPager.setAdapter(adapter);
-                ultraViewPager.refresh();
+//                UltraViewPager ultraViewPager = helper.getView(R.id.ultra_viewpager);
+//                ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
+////                设定页面循环播放
+//                ultraViewPager.setInfiniteLoop(true);
+//                //设定页面自动切换  间隔2秒
+//                ultraViewPager.setAutoScroll(2000);
+//                BannerAdapter adapter = new BannerAdapter(bannerListBean.getList());
+//                ultraViewPager.setAdapter(adapter);
+//                ultraViewPager.refresh();
                 break;
             case HomePageItemType.DATA:
                 HomePageItemBean itemBean = (HomePageItemBean) item;

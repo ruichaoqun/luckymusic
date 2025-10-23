@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     namespace 'com.ruichaoqun.luckymusic'
-    compileSdkVersion 31
+    compileSdkVersion 35
     buildToolsVersion "31.0.0"
 
     defaultConfig {

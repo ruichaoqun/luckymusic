@@ -200,16 +200,12 @@ public class EqualizerActivity extends BaseMVPActivity<EqualizerPresenter> imple
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_preinstall:
-                DefaultEffectActivity.launchFrom(this);
-                break;
-            case R.id.tv_save:
-                EqualizerSavePresetActivity.launchFrom(this,mEffectJsonPackage);
-                break;
-            case R.id.tv_advanced_setup:
-                break;
-            default:
+        int id = view.getId();
+        if (id == R.id.tv_preinstall) {
+            DefaultEffectActivity.launchFrom(this);
+        } else if (id == R.id.tv_save) {
+            EqualizerSavePresetActivity.launchFrom(this, mEffectJsonPackage);
+        } else if (id == R.id.tv_advanced_setup) {
         }
     }
 }

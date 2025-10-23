@@ -68,23 +68,21 @@ public class DefaultEffectActivity extends BaseMVPActivity<DefaultEffectContact.
         mEqualizerPresetAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
-                    case R.id.ll_select:
-                        if(mEqualizerPresetAdapter.getItem(position).isChecked()){
-                            return;
-                        }
-                        mEqualizerPresetAdapter.setSelectedPosition(position);
-                        AudioEffectJsonPackage.Eq eq = new AudioEffectJsonPackage.Eq();
-                        eq.setFileName(mEqualizerPresetAdapter.getItem(position).getTitle());
-                        eq.setEqs(mEqualizerPresetAdapter.getItem(position).getmDatas());
-                        mEffectJsonPackage.setEq(eq);
-                        mPresenter.setAudioEffectJsonPackage(mEffectJsonPackage);
-                        updateEqualizer();
-                        setResult(Activity.RESULT_OK);
-                        break;
-                    case R.id.iv_profile:
-                        showCustomEqActionSheet(position);
-                        break;
+                int id = view.getId();
+                if (id == R.id.ll_select) {
+                    if (mEqualizerPresetAdapter.getItem(position).isChecked()) {
+                        return;
+                    }
+                    mEqualizerPresetAdapter.setSelectedPosition(position);
+                    AudioEffectJsonPackage.Eq eq = new AudioEffectJsonPackage.Eq();
+                    eq.setFileName(mEqualizerPresetAdapter.getItem(position).getTitle());
+                    eq.setEqs(mEqualizerPresetAdapter.getItem(position).getmDatas());
+                    mEffectJsonPackage.setEq(eq);
+                    mPresenter.setAudioEffectJsonPackage(mEffectJsonPackage);
+                    updateEqualizer();
+                    setResult(Activity.RESULT_OK);
+                } else if (id == R.id.iv_profile) {
+                    showCustomEqActionSheet(position);
                 }
             }
         });

@@ -146,16 +146,16 @@ public class ThemeHelper {
     }
 
     public static void configSearchViewTheme(Toolbar toolbar, SearchView searchView, int toolbarIconColor, boolean z) {
-        ImageView imageView = searchView.findViewById(R.id.search_close_btn);
-        imageView.setImageDrawable(LuckyMusicApp.sInstance.getResources().getDrawable(R.drawable.abc_ic_clear_material));
-        LinearLayout linearLayout =  searchView.findViewById(R.id.search_plate);
-        linearLayout.setBackgroundDrawable(LuckyMusicApp.sInstance.getResources().getDrawable(R.drawable.abc_textfield_search_material));
+        ImageView imageView = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+        imageView.setImageDrawable(LuckyMusicApp.sInstance.getResources().getDrawable(androidx.appcompat.R.drawable.abc_ic_clear_material));
+        LinearLayout linearLayout =  searchView.findViewById(androidx.appcompat.R.id.search_plate);
+        linearLayout.setBackgroundDrawable(LuckyMusicApp.sInstance.getResources().getDrawable(androidx.appcompat.R.drawable.abc_textfield_search_material));
         configDrawableTheme(linearLayout.getBackground(), toolbarIconColor);
-        View searchText = searchView.findViewById(R.id.search_src_text);
+        View searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         searchText.setPadding(0, searchText.getPaddingTop(), searchText.getPaddingRight(), searchText.getPaddingBottom());
         linearLayout.setPadding(0, linearLayout.getPaddingTop(), linearLayout.getPaddingRight(), linearLayout.getPaddingBottom());
         linearLayout.getLayoutParams().height = searchText.getLayoutParams().height;
-        ((LinearLayout.LayoutParams) searchView.findViewById(R.id.search_edit_frame).getLayoutParams()).leftMargin = 0;
+        ((LinearLayout.LayoutParams) searchView.findViewById(androidx.appcompat.R.id.search_edit_frame).getLayoutParams()).leftMargin = 0;
         ImageButton imageButton = (ImageButton) ReflectUtils.getDeclaredField(Toolbar.class, (Object) toolbar, "mCollapseButtonView");
         if (imageButton != null) {
             imageButton.setImageResource(R.mipmap.icon_arrow_back_white);
@@ -165,7 +165,7 @@ public class ThemeHelper {
             expandSearchView(searchView);
         }
         try {
-            AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) searchView.findViewById(R.id.search_src_text);
+            AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
             autoCompleteTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17.0f);
             autoCompleteTextView.setTextColor(ColorUtils.setAlphaComponent(toolbarIconColor, 178));
             autoCompleteTextView.setHintTextColor(ColorUtils.setAlphaComponent(toolbarIconColor, 76));
@@ -175,7 +175,7 @@ public class ThemeHelper {
 //            } else if (a2.isRedTheme()) {
 //                autoCompleteTextView.setHighlightColor(Color.parseColor("#26000000"));
 //            }
-            Field declaredField = TextView.class.getDeclaredField("mCursorDrawableRes");
+            @SuppressLint("SoonBlockedPrivateApi") Field declaredField = TextView.class.getDeclaredField("mCursorDrawableRes");
             declaredField.setAccessible(true);
             declaredField.set(autoCompleteTextView, LuckyMusicApp.sInstance.getResources().getDrawable(R.drawable.shape_cusor));
         } catch (Exception e2) {

@@ -6,48 +6,37 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
-import android.view.GestureDetector;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatDrawableManager;
-import androidx.appcompat.widget.Toolbar;
-import androidx.transition.Fade;
 
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ruichaoqun.luckymusic.R;
 import com.ruichaoqun.luckymusic.common.GlideApp;
-import com.ruichaoqun.luckymusic.common.WatchMiniPlayBarListener;
 import com.ruichaoqun.luckymusic.theme.ThemeHelper;
 import com.ruichaoqun.luckymusic.theme.core.ResourceRouter;
-import com.ruichaoqun.luckymusic.theme.ui.CustomThemeIconImageView;
 import com.ruichaoqun.luckymusic.theme.ui.CustomThemeTextView;
 import com.ruichaoqun.luckymusic.ui.PlayerActivity;
 import com.ruichaoqun.luckymusic.widget.PlayPauseView;
 
 import java.util.List;
 
-import static com.ruichaoqun.luckymusic.media.MusicService.METADATA_KEY_LUCKY_FLAGS;
 
 /**
  * @author Rui Chaoqun
  * @date :2019/12/30 19:43
  * description:
  */
-public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity  {
+public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity {
     private static final long POSITION_UPDATE_INTERVAL_MILLIS = 100L;
 
     private ViewGroup mMusicContainer;
@@ -63,14 +52,10 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
 
     @Override
     public void setContentView(int layoutResID) {
+        Log.i("MiniPlayerBarActivity", "setContentView layoutResID");
+
         if (isNeedMediaBrowser() && isNeedMiniPlayerBar()) {
-            if (needToolBar()) {
-                super.setContentView(layoutResID);
-            } else {
-                super.setContentView(getLayoutInflater().inflate(R.layout.layout_play_bar, null));
-                addChildContentView(layoutResID, 0);
-            }
-            findViews();
+            doSetContentViewWithPlayerBar(layoutResID);
         } else {
             super.setContentView(layoutResID);
         }
@@ -78,37 +63,22 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
 
     @Override
     public void setContentView(View view) {
+        Log.i("MiniPlayerBarActivity", "setContentView view");
         if (isNeedMediaBrowser() && isNeedMiniPlayerBar()) {
-            if (needToolBar()) {
-                super.setContentView(view);
-            } else {
-                super.setContentView(getLayoutInflater().inflate(R.layout.layout_play_bar, null));
-                addChildContentView(view, 0);
-            }
-            findViews();
+            doSetContentViewWithPlayerBar(view);
         } else {
             super.setContentView(view);
         }
     }
 
-    @Override
-    public void doSetContentViewWithToolBar(int i) {
-        doSetContentViewWithToolBar(getLayoutInflater().inflate(i, (ViewGroup) null));
+    public void doSetContentViewWithPlayerBar(int layoutResID) {
+        doSetContentViewWithPlayerBar(getLayoutInflater().inflate(layoutResID, null));
     }
 
-    @Override
-    public void doSetContentViewWithToolBar(View view) {
-        if (isNeedMediaBrowser() && isNeedMiniPlayerBar()) {
-            super.setContentView(getLayoutInflater().inflate(R.layout.activity_mini_playerbar, (ViewGroup) null));
-            this.toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-            if (this.toolbar == null) {
-                ((ViewStub) findViewById(R.id.view_stub)).inflate();
-            }
-            initToolBar();
-            addChildContentView(view, 1);
-        } else {
-            super.doSetContentViewWithToolBar(view);
-        }
+    public void doSetContentViewWithPlayerBar(View view) {
+        super.setContentView(getLayoutInflater().inflate(R.layout.activity_mini_playerbar, null));
+        addChildContentView(view, 0);
+        findViews();
     }
 
     private void findViews() {
@@ -156,7 +126,7 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
         mPlayBarTitle.onThemeReset();
         mPlayBarArtist.onThemeReset();
         mPlayBarList.setImageDrawable(AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_playlist));
-        ThemeHelper.configDrawableThemeUseTint(mPlayBarList.getDrawable(), ResourceRouter.getInstance().isNightTheme()? 0x99FFFFFF:0xCC000000);
+        ThemeHelper.configDrawableThemeUseTint(mPlayBarList.getDrawable(), ResourceRouter.getInstance().isNightTheme() ? 0x99FFFFFF : 0xCC000000);
     }
 
     private void addChildContentView(int layoutResID, int index) {
@@ -171,8 +141,8 @@ public abstract class BaseMiniPlayerBarActivity extends BaseMediaBrowserActivity
     @Override
     public void onMediaServiceConnected() {
         super.onMediaServiceConnected();
-        if(isNeedMiniPlayerBar()){
-            showMiniPlayerBarStub(mControllerCompat.getQueue()!= null  && mControllerCompat.getQueue().size() > 0);
+        if (isNeedMiniPlayerBar()) {
+            showMiniPlayerBarStub(mControllerCompat.getQueue() != null && mControllerCompat.getQueue().size() > 0);
             setCurrentMedia(mCurrentMetadata);
         }
     }

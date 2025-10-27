@@ -112,7 +112,6 @@
         android:id="@+id/layout_sound_controller"
         android:layout_width="match_parent"
         android:layout_height="19dp"
-        android:layout_below="@+id/toolbar"
         android:clickable="true"
         android:gravity="center_vertical"
         android:paddingLeft="23dip"

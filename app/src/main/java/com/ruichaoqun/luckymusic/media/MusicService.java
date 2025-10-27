@@ -1,16 +1,20 @@
 package com.ruichaoqun.luckymusic.media;
 
 import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Visualizer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
@@ -19,9 +23,11 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.media.MediaBrowserServiceCompat;
@@ -29,6 +35,7 @@ import androidx.media3.common.AudioAttributes;
 import androidx.media3.common.C;
 import androidx.media3.common.ForwardingSimpleBasePlayer;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
@@ -40,6 +47,7 @@ import androidx.media3.session.MediaSessionService;
 
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.ruichaoqun.luckymusic.Constants;
 import com.ruichaoqun.luckymusic.data.DataRepository;
 import com.ruichaoqun.luckymusic.data.bean.MediaID;
 import com.ruichaoqun.luckymusic.data.bean.PlayListBean;
@@ -87,8 +95,10 @@ public class MusicService extends MediaSessionService {
     private MediaServiceCallback mediaServiceCallback = new MediaServiceCallback();
 
 
-    @UnstableApi @Override
+    @UnstableApi
+    @Override
     public void onCreate() {
+        Log.i(TAG, "onCreate");
         AndroidInjection.inject(this);
         super.onCreate();
         Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
@@ -119,7 +129,7 @@ public class MusicService extends MediaSessionService {
                 .setSessionActivity(pendingIntent)
                 .build();
 
-
+        addSession(mMediaSession);
         mNotificationBuilder = new NotificationBuilder(this);
         mNotificationManager = NotificationManagerCompat.from(this);
         mCompositeDisposable = new CompositeDisposable();
@@ -129,7 +139,8 @@ public class MusicService extends MediaSessionService {
     @Nullable
     @Override
     public MediaSession onGetSession(MediaSession.ControllerInfo controllerInfo) {
-        return null;
+        Log.i(TAG, "onGetSession");
+        return mMediaSession;
     }
 
     /**
@@ -152,9 +163,6 @@ public class MusicService extends MediaSessionService {
         super.onTaskRemoved(rootIntent);
         mExoPlayer.stop();
     }
-
-
-
 
 
     @Override
@@ -250,13 +258,54 @@ public class MusicService extends MediaSessionService {
 //        }
 //    }
 
-    private class MediaServiceCallback implements MediaSession.Callback{
+    private class MediaServiceCallback implements MediaSession.Callback {
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public ListenableFuture<List<MediaItem>> onAddMediaItems(MediaSession mediaSession, MediaSession.ControllerInfo controller, List<MediaItem> mediaItems) {
-            mediaItems.stream().map(mediaItem -> {
+            LogUtils.i(TAG, "onAddMediaItems " + mediaItems.size());
+            List<MediaItem> updatedMediaItems = new ArrayList<>();
+            for (MediaItem mediaItem : mediaItems) {
+                MediaID mediaID = MediaID.fromString(mediaItem.mediaId);
+                LogUtils.i(TAG, "mediaId:  " + mediaItem.mediaId);
+                List<SongBean> list = dataRepository.getSongsFromType(mediaID.getType(), null);
+                long position = dataRepository.getLastPosition(mediaID.getType());
+                int index = getCurrentIndex(list, mediaID.getMediaId());
+                if (index == -1) {
+                    LogUtils.e(TAG, "当前音乐列表未匹配到指定音乐id-->" + mediaItem.mediaId);
+                }
+                list.forEach(songBean -> {
+                    if (songBean != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putLong(Constants.INTENT_EXTRA_LIKE,songBean.getIsLike());
+                        MediaItem updatedItem = new MediaItem.Builder()
+                                .setMediaId(String.valueOf(songBean.getId()))
+                                .setUri(ContentUris.withAppendedId(EXTERNAL_CONTENT_URI, songBean.getId()))
+                                .setMediaMetadata(new MediaMetadata.Builder()
+                                        .setTitle(songBean.getTitle())
+                                        .setArtist(songBean.getArtist())
+                                        .setAlbumTitle(songBean.getAlbum())
+                                        .setArtworkUri(TextUtils.isEmpty(songBean.getAlbumArtUri())?null: Uri.parse(songBean.getAlbumArtUri()))
+                                        .setExtras(bundle)
+                                        .build())
+                                .build();
+                        updatedMediaItems.add(updatedItem);
+                    } else {
+                        updatedMediaItems.add(mediaItem);
+                    }
+                });
+            }
+            // 设置播放列表
+            //mExoPlayer.setMediaItems(updatedMediaItems);
+            return Futures.immediateFuture(updatedMediaItems);
+        }
 
-            });
-            return Futures.immediateFuture(mediaItems);
+        private int getCurrentIndex(List<SongBean> list, long mediaId) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getId() == mediaId) {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }

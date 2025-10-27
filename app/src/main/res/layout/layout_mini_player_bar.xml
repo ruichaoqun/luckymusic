@@ -35,7 +35,6 @@
         android:textSize="11sp"
         android:textColor="@color/text_color_light"
         android:maxLines="1"
-        android:layout_toStartOf="@+id/play"
         android:layout_toEndOf="@+id/cover"
         android:layout_alignBottom="@+id/cover"
         android:layout_marginStart="8dp"

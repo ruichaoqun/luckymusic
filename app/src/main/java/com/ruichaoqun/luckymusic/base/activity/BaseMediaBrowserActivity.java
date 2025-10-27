@@ -1,14 +1,20 @@
 package com.ruichaoqun.luckymusic.base.activity;
 
+import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM;
+import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ARTIST;
+import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_TITLE;
+
 import android.content.ComponentName;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,12 +22,14 @@ import androidx.fragment.app.FragmentManager;
 import com.ruichaoqun.luckymusic.media.MediaBrowserProvider;
 import com.ruichaoqun.luckymusic.media.MediaControllerInterface;
 import com.ruichaoqun.luckymusic.media.MusicService;
+import com.ruichaoqun.luckymusic.utils.LogUtils;
 import com.ruichaoqun.luckymusic.widget.BottomSheetDialog.PlaylistBottomSheet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity implements MediaBrowserProvider {
+    public static final String TAG = "BaseMediaBrowser";
     protected MediaBrowserCompat mBrowserCompat;
     protected MediaControllerCompat mControllerCompat;
 
@@ -40,6 +48,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtils.i("BaseMediaBrowserActivity", "onCreate");
         if (isNeedMediaBrowser()) {
             mBrowserCompat = new MediaBrowserCompat(this, new ComponentName(this, MusicService.class), new ConnectionCallback(), null);
             mBrowserCompat.connect();
@@ -102,7 +111,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     }
 
     public void showPlayListDialog(){
-        this.playListDialog = PlaylistBottomSheet.showMusicPlayList(this, queueItems,mCurrentMetadata,playMode);
+        playListDialog = PlaylistBottomSheet.showMusicPlayList(this, queueItems,mCurrentMetadata,playMode);
     }
 
     /**
@@ -110,15 +119,15 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
      * @param position 在播放列表中的index
      */
     public void deletePlayItem(int position){
-        this.mControllerCompat.removeQueueItem(queueItems.get(position).getDescription());
+        mControllerCompat.removeQueueItem(queueItems.get(position).getDescription());
     }
 
     /**
      * 移除整个播放列表
      */
     public void deleteAllPlaylist(){
-//        this.mControllerCompat.getTransportControls().sendCustomAction(MediaCommonConstant.RELEASE_PLAYER,new Bundle());
-        this.mControllerCompat.getTransportControls().stop();
+//        mControllerCompat.getTransportControls().sendCustomAction(MediaCommonConstant.RELEASE_PLAYER,new Bundle());
+        mControllerCompat.getTransportControls().stop();
     }
 
     /**
@@ -126,7 +135,7 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
      * @param position 指定的音乐在播放列表中的位置
      */
     public void playFromQueueIndex(int position){
-        this.mControllerCompat.getTransportControls().skipToQueueItem(position);
+        mControllerCompat.getTransportControls().skipToQueueItem(position);
     }
 
     /**
@@ -135,13 +144,13 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
     public void switchPlayMode(){
         //只支持3中循环模式，列表循环模式，单曲模式，随机播放模式
         //首先判断是否是随机模式
-        if (this.mControllerCompat.getShuffleMode() == 3) {
-            this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
-            this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
-        } else if (this.mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
-            this.mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
+        if (mControllerCompat.getShuffleMode() == 3) {
+            mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
+            mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
+        } else if (mControllerCompat.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
+            mControllerCompat.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
         } else {
-            this.mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_ALL);
+            mControllerCompat.getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_ALL);
         }
     }
 
@@ -165,9 +174,15 @@ public abstract class BaseMediaBrowserActivity extends BaseToolBarActivity imple
             BaseMediaBrowserActivity.this.mMediaControllerCallback = new MediaControllerCallback();
             BaseMediaBrowserActivity.this.mControllerCompat.registerCallback(mMediaControllerCallback);
             MediaControllerCompat.setMediaController(BaseMediaBrowserActivity.this, mControllerCompat);
-            BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
-            BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
-            BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
+            if (mControllerCompat.getQueue() != null) {
+                BaseMediaBrowserActivity.this.queueItems = mControllerCompat.getQueue();
+            }
+            if (mControllerCompat.getMetadata() != null) {
+                BaseMediaBrowserActivity.this.mCurrentMetadata = mControllerCompat.getMetadata();
+            }
+            if (mControllerCompat.getPlaybackState() != null) {
+                BaseMediaBrowserActivity.this.mPlaybackState = mControllerCompat.getPlaybackState();
+            }
             if(mControllerCompat.getShuffleMode() == PlaybackStateCompat.SHUFFLE_MODE_ALL){
                 BaseMediaBrowserActivity.this.playMode = PlaybackStateCompat.SHUFFLE_MODE_ALL;
             }else{

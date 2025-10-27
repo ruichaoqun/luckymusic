@@ -2,6 +2,7 @@ package com.ruichaoqun.luckymusic.ui.localmedia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -24,10 +25,6 @@ import com.ruichaoqun.luckymusic.ui.localmedia.fragment.songs.LocalMediaFragment
  * description:LocalMediaActivity
  */
 public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presenter> implements LocalMediaContact.View{
-//    @BindView(R.id.tab_layout)
-//    TabLayout tabLayout;
-//    @BindView(R.id.view_pager)
-//    ViewPager viewPager;
     private String[] mStrings;
     private LocalMediaActivityBinding mBinding;
 
@@ -51,20 +48,17 @@ public class LocalMediaActivity extends BaseMVPActivity<LocalMediaContact.Presen
 
     }
 
-    @Override
-    public boolean needToolBar() {
-        return false;
-    }
 
     @Override
     protected void initView() {
+        Log.i("LocalMediaActivity", "initView");
         setTitle(R.string.local_music);
         mStrings = getResources().getStringArray(R.array.local_music_tab);
     }
 
     @Override
     protected void initData() {
-
+        Log.i("LocalMediaActivity", "initData");
     }
 
     @Override

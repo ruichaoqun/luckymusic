@@ -14,6 +14,7 @@ import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,7 +79,6 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
 
-
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         //当前页面是否需要toolbar？
@@ -87,6 +87,20 @@ public abstract class BaseToolBarActivity extends BaseActivity {
             transparentStatusBar(true);
         } else {
             super.setContentView(layoutResID);
+        }
+        //设置透明主题
+        applyCurrentTheme();
+
+    }
+
+    @Override
+    public void setContentView(View view) {
+        //当前页面是否需要toolbar？
+        if (needToolBar()) {
+            doSetContentViewWithToolBar(view);
+            transparentStatusBar(true);
+        } else {
+            super.setContentView(view);
         }
         //设置透明主题
         applyCurrentTheme();
@@ -116,7 +130,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
     public void addToolBarByDefaultWrap(View view) {
-        super.setContentView((int) R.layout.layout_contain_toolbar);
+        super.setContentView(R.layout.layout_contain_toolbar);
         initToolBar();
         ((ViewGroup) findViewById(R.id.parent)).addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
@@ -125,7 +139,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
      * 初始化toolbar
      */
     public void initToolBar() {
-        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.toolbar = findViewById(R.id.toolbar);
         if (this.toolbar == null) {
             this.toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.layout_toolbar, null);
         }
@@ -138,7 +152,6 @@ public abstract class BaseToolBarActivity extends BaseActivity {
             }
         }
     }
-
 
 
     @Override
@@ -271,7 +284,6 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
 
-
     public void applyToolbarCurrentTheme() {
         if (getSupportActionBar() != null) {
             applyToolbarCurrentTheme(this.toolbar);
@@ -292,8 +304,8 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         return ResourceRouter.getInstance().getCacheToolBarDrawable();
     }
 
-    public void applyToolbarCurrentThemeWithViewColor(Toolbar toolbar){
-        applyToolbarCurrentThemeWithViewColor(toolbar,isToolbarOnImage());
+    public void applyToolbarCurrentThemeWithViewColor(Toolbar toolbar) {
+        applyToolbarCurrentThemeWithViewColor(toolbar, isToolbarOnImage());
     }
 
     public void applyToolbarCurrentThemeWithViewColor(Toolbar toolbar2, boolean isToolbarOnImage) {
@@ -358,13 +370,13 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         boolean z2 = true;
         boolean z3 = false;
 
-        if(ResourceRouter.getInstance().isWhiteTheme() || ResourceRouter.getInstance().isCustomLightTheme() || ResourceRouter.getInstance().isCustomColorTheme()){
+        if (ResourceRouter.getInstance().isWhiteTheme() || ResourceRouter.getInstance().isCustomLightTheme() || ResourceRouter.getInstance().isCustomColorTheme()) {
             statusBarHolderView.setStatusBarTranslucent(true);
-            if(!isToolbarOnImage){
+            if (!isToolbarOnImage) {
                 getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | 8192);
                 z3 = false;
             }
-        }else{
+        } else {
             if (ResourceRouter.getInstance().getColor(R.color.transpaint) == 0) {
                 z2 = true;
             }
